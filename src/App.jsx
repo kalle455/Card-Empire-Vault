@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Marketplace from "./components/Marketplace";
 import "./index.css";
 
 
@@ -25,12 +26,10 @@ function Dashboard() {
             Hosted by Kalenski™
           </h2>
 
-
           <p className="subtitle hero-description">
             A premium trading platform for collectors,
             duelists and the Card Empire community.
           </p>
-
 
           <div className="hero-buttons">
 
@@ -46,58 +45,27 @@ function Dashboard() {
 
         </div>
 
-
       </section>
-
 
 
       <section className="stats-grid">
 
-
         <div className="card stat-card">
-
-          <span>
-            2500+
-          </span>
-
-          <p>
-            Cards Available
-          </p>
-
+          <span>2500+</span>
+          <p>Cards Available</p>
         </div>
 
-
-
         <div className="card stat-card">
-
-          <span>
-            50+
-          </span>
-
-          <p>
-            Events Hosted
-          </p>
-
+          <span>50+</span>
+          <p>Events Hosted</p>
         </div>
 
-
-
         <div className="card stat-card">
-
-          <span>
-            1000+
-          </span>
-
-          <p>
-            Community Members
-          </p>
-
+          <span>1000+</span>
+          <p>Community Members</p>
         </div>
-
 
       </section>
-
-
 
 
       <section className="home-section">
@@ -106,9 +74,7 @@ function Dashboard() {
           Latest Events
         </h2>
 
-
         <div className="content-grid">
-
 
           <div className="card event-card">
 
@@ -127,7 +93,6 @@ function Dashboard() {
           </div>
 
 
-
           <div className="card event-card">
 
             <h3>
@@ -144,21 +109,16 @@ function Dashboard() {
 
           </div>
 
-
         </div>
 
       </section>
 
 
-
-
       <section className="home-section">
-
 
         <h2 className="section-title">
           About Kalenski™
         </h2>
-
 
         <div className="card about-card">
 
@@ -166,27 +126,18 @@ function Dashboard() {
             Kalenski™ | The ONE AND ONLY Card Empire®
             is built around trading, collecting and
             competitive card gaming.
-            <br />
-            <br />
-            A place created for the community,
-            powered by passion and dedication.
           </p>
 
         </div>
 
-
       </section>
-
-
 
 
       <section className="home-section">
 
-
         <h2 className="section-title">
           Community News
         </h2>
-
 
         <div className="card news-card">
 
@@ -201,7 +152,6 @@ function Dashboard() {
 
         </div>
 
-
       </section>
 
 
@@ -211,28 +161,50 @@ function Dashboard() {
 
 
 
-function Marketplace() {
-  return <h1 className="title">Marketplace</h1>;
-}
-
-
 function Events() {
-  return <h1 className="title">Events</h1>;
+  return (
+    <div className="fade-in">
+      <h1 className="title">
+        Events
+      </h1>
+    </div>
+  );
 }
+
 
 
 function Messages() {
-  return <h1 className="title">Messages</h1>;
+  return (
+    <div className="fade-in">
+      <h1 className="title">
+        Messages
+      </h1>
+    </div>
+  );
 }
+
 
 
 function Profile() {
-  return <h1 className="title">Profile</h1>;
+  return (
+    <div className="fade-in">
+      <h1 className="title">
+        Profile
+      </h1>
+    </div>
+  );
 }
 
 
+
 function Admin() {
-  return <h1 className="title">Admin Panel</h1>;
+  return (
+    <div className="fade-in">
+      <h1 className="title">
+        Admin Panel
+      </h1>
+    </div>
+  );
 }
 
 
@@ -251,17 +223,40 @@ function App() {
 
           <Routes>
 
-            <Route path="/" element={<Dashboard />} />
+            <Route 
+              path="/"
+              element={<Dashboard />}
+            />
 
-            <Route path="/marketplace" element={<Marketplace />} />
 
-            <Route path="/events" element={<Events />} />
+            <Route 
+              path="/marketplace"
+              element={<Marketplace />}
+            />
 
-            <Route path="/messages" element={<Messages />} />
 
-            <Route path="/profile" element={<Profile />} />
+            <Route 
+              path="/events"
+              element={<Events />}
+            />
 
-            <Route path="/admin" element={<Admin />} />
+
+            <Route 
+              path="/messages"
+              element={<Messages />}
+            />
+
+
+            <Route 
+              path="/profile"
+              element={<Profile />}
+            />
+
+
+            <Route 
+              path="/admin"
+              element={<Admin />}
+            />
 
           </Routes>
 
