@@ -1,14 +1,7 @@
 import { useState } from "react";
 import ChatWindow from "./chat/ChatWindow";
+import cards from "../data/cards";
 import "./Marketplace.css";
-
-
-const cards = Array.from({ length: 25 }, (_, index) => ({
-  id: index + 1,
-  name: `Yu-Gi-Oh! Card ${index + 1}`,
-  price: (index + 1) * 10,
-  image: "/images/card-placeholder.png"
-}));
 
 
 export default function Marketplace() {
@@ -20,6 +13,7 @@ export default function Marketplace() {
 
   const [orderOpen, setOrderOpen] = useState(false);
 
+
   const [conversation, setConversation] = useState({
     messages: []
   });
@@ -29,11 +23,8 @@ export default function Marketplace() {
   function addToCart(card) {
 
     setCart(prev => [
-
       ...prev,
-
       card
-
     ]);
 
   }
@@ -55,18 +46,18 @@ export default function Marketplace() {
 
     setConversation({
 
-      messages:[
+      messages: [
 
         {
 
           id: Date.now().toString(),
 
-          sender:"Kalenski™",
+          sender: "Kalenski™",
 
           text:
-          "Thank you very much for your order. I'll be in touch shortly to finalize the details with you.",
+            "Thank you very much for your order. I'll be in touch shortly to finalize the details with you.",
 
-          ts:new Date().toISOString()
+          ts: new Date().toISOString()
 
         }
 
@@ -83,11 +74,11 @@ export default function Marketplace() {
 
 
 
-  function sendMessage(msg){
+  function sendMessage(msg) {
 
     setConversation(prev => ({
 
-      messages:[
+      messages: [
 
         ...prev.messages,
 
@@ -98,7 +89,6 @@ export default function Marketplace() {
     }));
 
   }
-
 
 
 
@@ -117,14 +107,12 @@ export default function Marketplace() {
     <div className="marketplace-page">
 
 
-
       <div className="marketplace-header">
 
 
         <h1 className="title">
           Marketplace
         </h1>
-
 
 
         <button
@@ -161,8 +149,8 @@ export default function Marketplace() {
           >
 
 
-
             <div className="card-image">
+
 
               <img
 
@@ -172,8 +160,8 @@ export default function Marketplace() {
 
               />
 
-            </div>
 
+            </div>
 
 
 
@@ -185,13 +173,24 @@ export default function Marketplace() {
               </h3>
 
 
-
-              <p className="price">
-
-                {card.price} G
-
+              <p>
+                {card.type}
               </p>
 
+
+              <p>
+                {card.rarity}
+              </p>
+
+
+              <p>
+                Condition: {card.condition}
+              </p>
+
+
+              <p className="price">
+                {card.price} G
+              </p>
 
 
 
@@ -223,6 +222,8 @@ export default function Marketplace() {
 
 
 
+
+
       {cartOpen && (
 
 
@@ -238,61 +239,62 @@ export default function Marketplace() {
 
 
 
-            {cart.length === 0 ? (
+            {cart.length === 0 && (
 
               <p>
                 Your cart is empty.
               </p>
 
-            ) : (
-
-
-              cart.map(card => (
-
-                <div
-
-                  key={card.id}
-
-                  style={{
-                    display:"flex",
-                    justifyContent:"space-between",
-                    marginBottom:"10px"
-                  }}
-
-                >
-
-                  <span>
-                    {card.name}
-                  </span>
-
-
-                  <span>
-
-                    {card.price} G
-
-
-                    <button
-
-                      onClick={() =>
-                        removeFromCart(card.id)
-                      }
-
-                    >
-
-                      ✕
-
-                    </button>
-
-                  </span>
-
-
-                </div>
-
-
-              ))
-
-
             )}
+
+
+
+
+            {cart.map(card => (
+
+
+              <div
+
+                key={card.id}
+
+                style={{
+                  display:"flex",
+                  justifyContent:"space-between",
+                  marginBottom:"10px"
+                }}
+
+              >
+
+
+                <span>
+                  {card.name}
+                </span>
+
+
+
+                <span>
+
+                  {card.price} G
+
+
+                  <button
+
+                    onClick={() => removeFromCart(card.id)}
+
+                  >
+
+                    ✕
+
+                  </button>
+
+
+                </span>
+
+
+              </div>
+
+
+            ))}
 
 
 
@@ -300,11 +302,8 @@ export default function Marketplace() {
             <hr />
 
 
-
             <h3>
-
               Total: {total} G
-
             </h3>
 
 
@@ -340,6 +339,7 @@ export default function Marketplace() {
             </button>
 
 
+
           </div>
 
 
@@ -353,6 +353,7 @@ export default function Marketplace() {
 
 
 
+
       {orderOpen && (
 
 
@@ -360,22 +361,27 @@ export default function Marketplace() {
 
 
           currentUser={{
+
             id:"Buyer"
+
           }}
+
 
 
           card={{
 
-            name:
-            `${cart.length} Cards Order`
+            name:`${cart.length} Card Order`
 
           }}
+
 
 
           conversation={conversation}
 
 
+
           onSend={sendMessage}
+
 
 
           onClose={() => setOrderOpen(false)}
@@ -385,8 +391,6 @@ export default function Marketplace() {
 
 
       )}
-
-
 
 
 

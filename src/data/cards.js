@@ -1,42 +1,41 @@
-export const cards = [
+const cards = [
+
   {
-    id: 'royal-knight',
-    name: 'Royal Knight',
-    edition: 'Imperial Gold Edition',
+    id: "custom-001",
+    name: "Cyber Dragon",
+    image: "/images/cyber-dragon.jpg",
+    type: "Effect Monster",
+    rarity: "Ultra Rare",
+    condition: "Near Mint",
+    price: 50,
+    stock: 1
+  },
+
+
+  {
+    id: "custom-002",
+    name: "Blue-Eyes White Dragon",
+    image: "/images/blue-eyes.jpg",
+    type: "Normal Monster",
+    rarity: "Secret Rare",
+    condition: "Near Mint",
     price: 120,
-    status: 'available',
-    stock: 8,
-    image: '/cards/royal-knight.svg',
-    description: 'Gold-laminierte Premium-Karte mit imperialem Artwork und hohem Sammlerwert.',
+    stock: 1
   },
+
+
   {
-    id: 'void-dragon',
-    name: 'Void Dragon',
-    edition: 'Eclipse Signature',
-    price: 220,
-    status: 'available',
-    stock: 3,
-    image: '/cards/void-dragon.svg',
-    description: 'Drachenkarte mit tiefschwarzer Holo-Folie, exklusiv für unsere Elite-Kollektion.',
-  },
-  {
-    id: 'shadow-queen',
-    name: 'Shadow Queen',
-    edition: 'Velvet Prestige',
-    price: 75,
-    status: 'sold',
-    stock: 0,
-    image: '/cards/shadow-queen.svg',
-    description: 'Mystische Premium-Karte mit feinem Goldrand und edlem Kartenmaterial.',
-  },
-  {
-    id: 'phantom-assassin',
-    name: 'Phantom Assassin',
-    edition: 'Nightblade Series',
-    price: 32,
-    status: 'available',
-    stock: 22,
-    image: '/cards/phantom-assassin.svg',
-    description: 'Dynamische Trading Card mit High-Performance-Look und dunklem Design.',
-  },
-]
+    id: "custom-003",
+    name: "Dark Magician",
+    image: "/images/dark-magician.jpg",
+    type: "Normal Monster",
+    rarity: "Ultra Rare",
+    condition: "Light Played",
+    price: 80,
+    stock: 1
+  }
+
+];
+
+
+export default cards;
