@@ -1,0 +1,1251 @@
+<!doctype html>
+<html lang="en">
+ <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260727-05-609cca1"}');</script><script src="/_sdk/728f18890c0241e5.telemetry_sdk.js" integrity="sha512-cMy0xd29wRWs8nyV19fws/+pwQ0u98A3fewCalZ/OWXQXUwzmcx7jKUuZ511uTJlUe1gP0Undii48zuekOylMw=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalenski™ | The ONE AND ONLY Card Empire® ©</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/935a53bc2e11fb8d.data_sdk.js" integrity="sha512-qr2oyPnEys1WebcOABaRh6hG77r5PWpqeWW6JTKbRJqly/INsfBi31CVNlTmHqjgeLpkVmmHZJUdxSx/32tOFQ=="></script>
+  <script src="/_sdk/0a2c59aba90bafcf.editing_sdk.js" integrity="sha512-oJ0eVi6NgEzXGPCIPXJiGxB6ZRyIzQ1VF+WywtAc5NXBkRu8KT/0qsMQvecuVbkhSpdfToUqXoPwRVBZaa+Xxw=="></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Eczar:wght@600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --night:#05070a;
+      --panel:rgba(12,16,21,.82);
+      --panel-strong:#0d1218;
+      --gold:#d8b35d;
+      --gold-light:#f4df9d;
+      --cyan:#54d8e8;
+      --ink:#f4f2ea;
+      --muted:#9aa4ad;
+      --danger:#d75b67;
+      --success:#72d9a0;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; background:var(--night); }
+    body { margin:0; min-width:0; overflow-x:hidden; color:var(--ink); font-family:"DM Sans",sans-serif; }
+    h1,h2,h3,.display-font { font-family:"Eczar",serif; }
+    button,input,select,textarea { font:inherit; }
+    button { touch-action:manipulation; }
+    .app-wrapper {
+      width:100%;
+      min-height:calc(100 * min(var(--vh, 1vh), 1vh));
+      background:
+        radial-gradient(circle at 12% 3%, rgba(216,179,93,.14), transparent 28rem),
+        radial-gradient(circle at 90% 20%, rgba(84,216,232,.09), transparent 30rem),
+        linear-gradient(180deg,#080b10,#05070a 48rem);
+    }
+    .ambient-grid {
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:38px 38px;
+    }
+    .view { animation:rise .45s ease both; }
+    .view[hidden], [hidden] { display:none !important; }
+    @keyframes rise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    .glass {
+      border:1px solid rgba(255,255,255,.09);
+      background:linear-gradient(145deg,rgba(20,25,31,.82),rgba(7,10,14,.9));
+      box-shadow:0 24px 70px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.04);
+      backdrop-filter:blur(18px);
+    }
+    .panel {
+      border:1px solid rgba(216,179,93,.22);
+      background:linear-gradient(145deg,rgba(21,24,27,.94),rgba(7,9,12,.96));
+      box-shadow:0 22px 55px rgba(0,0,0,.32);
+    }
+    .gold-text { color:var(--gold-light); text-shadow:0 0 28px rgba(216,179,93,.12); }
+    .kicker { color:var(--gold); font-size:.72rem; font-weight:800; letter-spacing:.26em; text-transform:uppercase; }
+    .primary {
+      border:1px solid #efd486;
+      background:linear-gradient(135deg,#9a722d,#e7c567 50%,#9d752e);
+      color:#0b0c0d;
+      box-shadow:0 9px 26px rgba(216,179,93,.18),inset 0 1px rgba(255,255,255,.35);
+      transition:.2s ease;
+    }
+    .primary:hover:not(:disabled) { transform:translateY(-2px); filter:brightness(1.08); }
+    .secondary {
+      border:1px solid rgba(216,179,93,.42);
+      background:rgba(5,7,9,.52);
+      color:var(--gold-light);
+      transition:.2s ease;
+    }
+    .secondary:hover:not(:disabled) { transform:translateY(-1px); border-color:var(--gold-light); background:rgba(216,179,93,.08); }
+    .danger { border:1px solid #8c3540; background:#48161d; color:#fff; }
+    button:disabled { opacity:.48; cursor:not-allowed; }
+    .nav-link { color:#b8c0c7; transition:.2s; position:relative; }
+    .nav-link:hover,.nav-link.active { color:var(--gold-light); }
+    .nav-link.active::after { content:""; position:absolute; left:0; right:0; bottom:-9px; height:2px; background:linear-gradient(90deg,var(--gold),var(--cyan)); }
+    .hero {
+      min-height:calc(82 * min(var(--vh, 1vh), 1vh));
+      position:relative;
+      display:grid;
+      align-items:center;
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .hero-image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-3; filter:saturate(.65) contrast(1.18) brightness(.42); }
+    .hero::before { content:""; position:absolute; inset:0; z-index:-2; background:linear-gradient(90deg,#05070af2 4%,#05070a96 52%,#05070ae8),linear-gradient(0deg,#05070a,transparent 50%); }
+    .hero::after { content:""; position:absolute; inset:0; z-index:-1; background:radial-gradient(circle at 66% 42%,rgba(216,179,93,.14),transparent 24rem); }
+    .field {
+      width:100%;
+      border:1px solid rgba(216,179,93,.24);
+      background:rgba(2,5,8,.78);
+      color:#fff;
+      border-radius:.75rem;
+      padding:.78rem .9rem;
+      outline:none;
+      transition:.2s;
+    }
+    .field:focus { border-color:var(--gold-light); box-shadow:0 0 0 3px rgba(216,179,93,.12); }
+    .field::placeholder { color:#6f7880; }
+    select.field option { background:#11161c; color:#fff; }
+    .status {
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      border-radius:999px;
+      padding:.3rem .62rem;
+      font-size:.68rem;
+      font-weight:800;
+      letter-spacing:.07em;
+      text-transform:uppercase;
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .status-open,.status-upcoming { color:#f5df9e; background:rgba(216,179,93,.1); }
+    .status-accepted,.status-completed,.status-available { color:#9af0bd; background:rgba(74,180,116,.12); }
+    .status-declined,.status-unavailable { color:#ffadb4; background:rgba(199,66,79,.12); }
+    .role-admin { color:#0a0b0c; background:linear-gradient(135deg,#f4df9d,#d8b35d); }
+    .role-vip { color:#dffcff; background:linear-gradient(135deg,#08798a,#19a6b8); }
+    .role-potm { color:#fff; background:linear-gradient(135deg,#8c2836,#d75565); }
+    .role-regular { color:#f5df9e; background:#322715; }
+    .role-customer { color:#d1d7dc; background:#20262d; }
+    .card-art {
+      aspect-ratio:3/4.2;
+      overflow:hidden;
+      position:relative;
+      border-radius:1rem;
+      border:1px solid rgba(216,179,93,.32);
+      background:radial-gradient(circle at 50% 28%,rgba(216,179,93,.19),transparent 28%),linear-gradient(145deg,#1c232a,#080b0e);
+    }
+    .card-art img { width:100%; height:100%; object-fit:cover; display:block; }
+    .card-tile { transition:.28s ease; }
+    .card-tile:hover { transform:translateY(-6px); }
+    .placeholder-art { height:100%; display:grid; place-items:center; text-align:center; padding:1.5rem; color:#d9c383; }
+    .modal { position:fixed; inset:0; z-index:80; display:grid; place-items:center; padding:1rem; background:rgba(0,0,0,.82); backdrop-filter:blur(12px); }
+    .modal-card { width:min(96vw,760px); max-height:calc(90 * min(var(--vh, 1vh), 1vh)); overflow:auto; }
+    .toast-stack { position:fixed; right:1rem; bottom:1rem; z-index:120; width:min(92vw,360px); display:grid; gap:.6rem; }
+    .toast { border:1px solid rgba(216,179,93,.35); border-radius:.8rem; background:#11161c; color:#fff; padding:.9rem 1rem; box-shadow:0 16px 45px #000; animation:rise .25s ease; }
+    .thread-active { border-color:var(--gold) !important; background:rgba(216,179,93,.08) !important; }
+    .message-mine { margin-left:auto; background:rgba(216,179,93,.14); border-color:rgba(216,179,93,.3); }
+    .message-other { margin-right:auto; background:rgba(84,216,232,.09); border-color:rgba(84,216,232,.2); }
+    .table-shell { overflow:auto; border:1px solid rgba(255,255,255,.08); border-radius:.8rem; }
+    table { width:100%; border-collapse:collapse; min-width:720px; }
+    th,td { padding:.85rem; border-bottom:1px solid rgba(255,255,255,.07); text-align:left; vertical-align:top; }
+    th { color:var(--gold-light); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
+    .admin-tab.active { border-color:var(--gold); background:rgba(216,179,93,.1); color:var(--gold-light); }
+    .section-rule { height:1px; background:linear-gradient(90deg,transparent,rgba(216,179,93,.55),rgba(84,216,232,.35),transparent); }
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible { outline:3px solid rgba(244,223,157,.75); outline-offset:3px; }
+    @media(max-width:767px) {
+      .hero { min-height:calc(76 * min(var(--vh, 1vh), 1vh)); }
+      .nav-link.active::after { bottom:-3px; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+    }
+  </style>
+  <script src="/_sdk/6030e540d4419216.resizing_sdk.js" type="text/javascript" integrity="sha512-b5KWzyoXsbWP4smq4sftIi6Kts4YVBpBsz0BwCViwbBJkK64a3/Z6ZMdWA+qnplNcXw4mhZeqvQi3mOosiRJdA=="></script>
+ </head>
+ <body data-template-id="__page-root">
+  <div class="app-wrapper ambient-grid">
+   <header data-template-id="site-header" class="canva-header sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl">
+    <div class="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-8"><button type="button" data-route="home" class="min-w-0 text-left"> <span data-template-id="header-brand" class="canva-text display-font block truncate font-bold"></span> <span data-template-id="header-subtitle" class="canva-text hidden uppercase tracking-[.22em] text-white/45 sm:block"></span> </button>
+     <nav aria-label="Primary navigation" class="hidden items-center gap-6 lg:flex"><button type="button" data-route="home" data-template-id="nav-home" class="canva-link nav-link active"></button> <button type="button" data-route="market" data-template-id="nav-market" class="canva-link nav-link"></button> <button type="button" data-route="offers" data-template-id="nav-offers" class="canva-link nav-link"></button> <button type="button" data-route="messages" data-template-id="nav-messages" class="canva-link nav-link"></button> <button type="button" data-route="events" data-template-id="nav-events" class="canva-link nav-link"></button> <button type="button" data-route="reviews" data-template-id="nav-reviews" class="canva-link nav-link"></button> <button id="admin-nav" type="button" data-route="admin" data-template-id="nav-admin" class="canva-link nav-link hidden"></button>
+     </nav>
+     <div class="flex items-center gap-2"><button id="profile-button" type="button" class="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2"> <i data-lucide="user-round" class="h-4 w-4 text-amber-200"></i> <span id="header-username" class="max-w-32 truncate"></span> <span id="header-role" class="status"></span> </button> <button id="create-profile-button" type="button" data-template-id="create-profile-button" class="canva-button primary rounded-lg px-4 py-2 font-bold"></button> <button id="mobile-menu-button" type="button" class="grid h-10 w-10 place-items-center rounded-lg border border-white/10 lg:hidden" aria-label="Open navigation" aria-expanded="false"> <i data-lucide="menu" class="h-5 w-5"></i> </button>
+     </div>
+    </div>
+    <nav id="mobile-nav" aria-label="Mobile navigation" class="hidden border-t border-white/10 bg-black/90 px-5 py-4 lg:hidden">
+     <div class="grid grid-cols-2 gap-3"><button type="button" data-route="home" data-template-id="mobile-home" class="canva-link nav-link text-left"></button> <button type="button" data-route="market" data-template-id="mobile-market" class="canva-link nav-link text-left"></button> <button type="button" data-route="offers" data-template-id="mobile-offers" class="canva-link nav-link text-left"></button> <button type="button" data-route="messages" data-template-id="mobile-messages" class="canva-link nav-link text-left"></button> <button type="button" data-route="events" data-template-id="mobile-events" class="canva-link nav-link text-left"></button> <button type="button" data-route="reviews" data-template-id="mobile-reviews" class="canva-link nav-link text-left"></button> <button id="mobile-admin-nav" type="button" data-route="admin" data-template-id="mobile-admin" class="canva-link nav-link hidden text-left"></button>
+     </div>
+    </nav>
+   </header>
+   <main>
+    <section id="view-home" class="view">
+     <div data-template-id="hero-section" class="canva-banner hero"><img data-template-id="hero-image" loading="lazy" class="canva-image hero-image">
+      <div class="mx-auto w-full max-w-7xl px-5 py-20 lg:px-8">
+       <div class="max-w-3xl">
+        <p data-template-id="hero-kicker" class="canva-text kicker mb-5"></p>
+        <h1 data-template-id="hero-title" class="canva-text gold-text font-extrabold leading-[.98]"></h1>
+        <p data-template-id="hero-copy" class="canva-text mt-6 max-w-2xl leading-relaxed text-white/70"></p>
+        <div class="mt-8 flex flex-wrap gap-3"><button type="button" data-route="market" data-template-id="browse-button" class="canva-button primary rounded-lg px-6 py-3 font-bold"></button> <button type="button" id="hero-profile-button" data-template-id="profile-cta-button" class="canva-button secondary rounded-lg px-6 py-3 font-bold"></button>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3 text-sm text-white/55"><span class="glass rounded-full px-3 py-2"><i data-lucide="shield-check" class="mr-1 inline h-4 w-4 text-amber-200"></i> Password-free profiles</span> <span class="glass rounded-full px-3 py-2"><i data-lucide="messages-square" class="mr-1 inline h-4 w-4 text-cyan-300"></i> Seller conversations</span> <span class="glass rounded-full px-3 py-2"><i data-lucide="scan-search" class="mr-1 inline h-4 w-4 text-amber-200"></i> Automatic card artwork</span>
+        </div>
+       </div>
+      </div>
+     </div>
+     <section class="mx-auto w-full max-w-7xl px-5 py-20 lg:px-8">
+      <div class="mb-9 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+       <div>
+        <p data-template-id="available-kicker" class="canva-text kicker mb-3"></p>
+        <h2 data-template-id="available-title" class="canva-text gold-text font-bold"></h2>
+       </div><button type="button" data-route="market" data-template-id="view-market-button" class="canva-button secondary self-start rounded-lg px-5 py-2.5 font-bold sm:self-auto"></button>
+      </div>
+      <div id="home-card-grid" class="grid gap-7 sm:grid-cols-2 lg:grid-cols-4"></div>
+      <div id="home-card-empty" data-template-id="home-empty-panel" class="canva-panel panel rounded-2xl p-10 text-center"><i data-lucide="layers-3" class="mx-auto mb-4 h-9 w-9 text-amber-200/55"></i>
+       <p data-template-id="home-empty-title" class="canva-text font-bold text-white"></p>
+       <p data-template-id="home-empty-copy" class="canva-text mx-auto mt-2 max-w-lg text-white/50"></p>
+      </div>
+     </section>
+     <section class="border-y border-white/8 bg-black/25">
+      <div class="mx-auto w-full max-w-7xl px-5 py-20 lg:px-8">
+       <div class="text-center">
+        <p data-template-id="how-kicker" class="canva-text kicker mb-3"></p>
+        <h2 data-template-id="how-title" class="canva-text gold-text font-bold"></h2>
+       </div>
+       <div class="mt-10 grid gap-5 md:grid-cols-3">
+        <article data-template-id="step-profile-card" class="canva-card glass rounded-2xl p-7"><i data-lucide="user-plus" class="mb-5 h-8 w-8 text-amber-200"></i>
+         <h3 data-template-id="step-profile-title" class="canva-text font-bold"></h3>
+         <p data-template-id="step-profile-copy" class="canva-text mt-3 text-white/55"></p>
+        </article>
+        <article data-template-id="step-browse-card" class="canva-card glass rounded-2xl p-7"><i data-lucide="gallery-vertical-end" class="mb-5 h-8 w-8 text-cyan-300"></i>
+         <h3 data-template-id="step-browse-title" class="canva-text font-bold"></h3>
+         <p data-template-id="step-browse-copy" class="canva-text mt-3 text-white/55"></p>
+        </article>
+        <article data-template-id="step-connect-card" class="canva-card glass rounded-2xl p-7"><i data-lucide="message-circle-more" class="mb-5 h-8 w-8 text-amber-200"></i>
+         <h3 data-template-id="step-connect-title" class="canva-text font-bold"></h3>
+         <p data-template-id="step-connect-copy" class="canva-text mt-3 text-white/55"></p>
+        </article>
+       </div>
+      </div>
+     </section>
+    </section>
+    <section id="view-market" class="view mx-auto w-full max-w-7xl px-5 py-14 lg:px-8" hidden>
+     <div class="mb-10">
+      <p data-template-id="market-kicker" class="canva-text kicker mb-3"></p>
+      <h1 data-template-id="market-title" class="canva-text gold-text font-bold"></h1>
+      <p data-template-id="market-copy" class="canva-text mt-4 max-w-2xl text-white/55"></p>
+     </div>
+     <form id="market-filter-form" data-template-id="market-filter-panel" class="canva-panel glass mb-8 grid gap-4 rounded-2xl p-5 md:grid-cols-[1fr_240px]" role="search">
+      <div><label for="market-search" data-template-id="market-search-label" class="canva-text mb-2 block font-semibold"></label> <input id="market-search" data-template-id="market-search-input" class="canva-input field" type="search">
+      </div>
+      <div><label for="availability-filter" data-template-id="availability-label" class="canva-text mb-2 block font-semibold"></label> <select id="availability-filter" class="field"> <option value="all">All cards</option> <option value="available">Available</option> <option value="unavailable">Unavailable</option> </select>
+      </div>
+     </form>
+     <p id="market-count" class="mb-5 text-sm text-white/45" aria-live="polite"></p>
+     <div id="market-grid" class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+     <div id="market-empty" data-template-id="market-empty-panel" class="canva-panel panel rounded-2xl p-12 text-center"><i data-lucide="package-open" class="mx-auto mb-4 h-10 w-10 text-amber-200/50"></i>
+      <p data-template-id="market-empty-title" class="canva-text font-bold"></p>
+      <p data-template-id="market-empty-copy" class="canva-text mt-2 text-white/45"></p>
+     </div>
+    </section>
+    <section id="view-offers" class="view mx-auto w-full max-w-7xl px-5 py-14 lg:px-8" hidden>
+     <div class="mb-10">
+      <p data-template-id="offers-kicker" class="canva-text kicker mb-3"></p>
+      <h1 data-template-id="offers-title" class="canva-text gold-text font-bold"></h1>
+      <p data-template-id="offers-copy" class="canva-text mt-4 max-w-2xl text-white/55"></p>
+     </div>
+     <div class="grid gap-10 lg:grid-cols-2">
+      <div>
+       <h2 data-template-id="purchase-history-title" class="canva-text mb-5 font-bold text-white"></h2>
+       <div id="customer-purchases" class="space-y-4"></div>
+      </div>
+      <div>
+       <h2 data-template-id="my-offers-title" class="canva-text mb-5 font-bold text-white"></h2>
+       <div id="customer-offers" class="space-y-4"></div>
+      </div>
+     </div>
+    </section>
+    <section id="view-messages" class="view mx-auto w-full max-w-7xl px-5 py-14 lg:px-8" hidden>
+     <div class="mb-10">
+      <p data-template-id="messages-kicker" class="canva-text kicker mb-3"></p>
+      <h1 data-template-id="messages-title" class="canva-text gold-text font-bold"></h1>
+      <p data-template-id="messages-copy" class="canva-text mt-4 max-w-2xl text-white/55"></p>
+     </div>
+     <div class="grid min-h-[560px] gap-5 lg:grid-cols-[320px_1fr]">
+      <aside data-template-id="conversation-panel" class="canva-sidebar glass rounded-2xl p-4">
+       <h2 data-template-id="conversation-list-title" class="canva-text mb-4 font-bold"></h2>
+       <div id="thread-list" class="space-y-2"></div>
+      </aside>
+      <section data-template-id="chat-panel" class="canva-panel glass flex min-h-[520px] flex-col rounded-2xl p-5">
+       <div id="chat-empty" class="grid flex-1 place-items-center text-center">
+        <div><i data-lucide="messages-square" class="mx-auto mb-4 h-10 w-10 text-cyan-300/50"></i>
+         <p data-template-id="chat-empty-title" class="canva-text font-bold"></p>
+         <p data-template-id="chat-empty-copy" class="canva-text mt-2 text-white/45"></p>
+        </div>
+       </div>
+       <div id="chat-active" class="hidden min-h-0 flex-1 flex-col">
+        <div class="border-b border-white/10 pb-4">
+         <h2 id="chat-heading" class="font-bold text-white"></h2>
+         <p id="chat-meta" class="mt-1 text-sm text-white/45"></p>
+        </div>
+        <div id="message-list" class="flex-1 space-y-3 overflow-auto py-5"></div>
+        <form id="message-form" class="flex gap-3 border-t border-white/10 pt-4"><label for="message-input" data-template-id="message-label" class="canva-text sr-only"></label> <input id="message-input" data-template-id="message-input" class="canva-input field" maxlength="600" required> <button id="message-send" type="submit" data-template-id="message-send-button" class="canva-button primary shrink-0 rounded-lg px-5 font-bold"></button>
+        </form>
+       </div>
+      </section>
+     </div>
+    </section>
+    <section id="view-events" class="view mx-auto w-full max-w-7xl px-5 py-14 lg:px-8" hidden>
+     <div class="mb-10">
+      <p data-template-id="events-kicker" class="canva-text kicker mb-3"></p>
+      <h1 data-template-id="events-title" class="canva-text gold-text font-bold"></h1>
+      <p data-template-id="events-copy" class="canva-text mt-4 max-w-2xl text-white/55"></p>
+     </div>
+     <h2 data-template-id="upcoming-events-title" class="canva-text mb-6 font-bold"></h2>
+     <div id="upcoming-events" class="grid gap-6 lg:grid-cols-2"></div>
+     <div class="section-rule my-12"></div>
+     <h2 data-template-id="past-events-title" class="canva-text mb-6 font-bold"></h2>
+     <div id="past-events" class="grid gap-6 lg:grid-cols-2"></div>
+    </section>
+    <section id="view-reviews" class="view mx-auto w-full max-w-7xl px-5 py-14 lg:px-8" hidden>
+     <div class="grid gap-10 lg:grid-cols-[.72fr_1.28fr]">
+      <div>
+       <p data-template-id="reviews-kicker" class="canva-text kicker mb-3"></p>
+       <h1 data-template-id="reviews-title" class="canva-text gold-text font-bold"></h1>
+       <p data-template-id="reviews-copy" class="canva-text mt-4 text-white/55"></p>
+       <form id="review-form" data-template-id="review-form-panel" class="canva-panel panel mt-8 rounded-2xl p-6">
+        <div class="space-y-5">
+         <div><label for="review-stars" data-template-id="review-stars-label" class="canva-text mb-2 block font-semibold"></label> <select id="review-stars" class="field" required> <option value="5">★★★★★ — 5</option> <option value="4">★★★★☆ — 4</option> <option value="3">★★★☆☆ — 3</option> <option value="2">★★☆☆☆ — 2</option> <option value="1">★☆☆☆☆ — 1</option> </select>
+         </div>
+         <div><label for="review-message" data-template-id="review-message-label" class="canva-text mb-2 block font-semibold"></label> <textarea id="review-message" class="field min-h-32 resize-y" maxlength="500" required></textarea>
+         </div><button id="review-submit" type="submit" data-template-id="review-submit-button" class="canva-button primary w-full rounded-lg px-5 py-3 font-bold"></button>
+         <p id="review-status" class="text-sm text-white/50" aria-live="polite"></p>
+        </div>
+       </form>
+      </div>
+      <div>
+       <h2 data-template-id="review-wall-title" class="canva-text mb-6 font-bold"></h2>
+       <div id="review-list" class="space-y-5"></div>
+      </div>
+     </div>
+    </section>
+    <section id="view-admin" class="view mx-auto w-full max-w-7xl px-5 py-14 lg:px-8" hidden>
+     <div class="mb-9 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+      <div>
+       <p data-template-id="admin-kicker" class="canva-text kicker mb-3"></p>
+       <h1 data-template-id="admin-title" class="canva-text gold-text font-bold"></h1>
+       <p data-template-id="admin-copy" class="canva-text mt-4 max-w-2xl text-white/55"></p>
+      </div><span class="status status-available"><i data-lucide="database" class="h-3.5 w-3.5"></i><span data-template-id="sheet-status" class="canva-text"></span></span>
+     </div>
+     <div class="mb-7 flex gap-2 overflow-x-auto pb-2" role="tablist" aria-label="Administration sections"><button type="button" data-admin-tab="dashboard" data-template-id="admin-tab-dashboard" class="canva-tabs admin-tab active whitespace-nowrap rounded-lg border border-white/10 px-4 py-2"></button> <button type="button" data-admin-tab="cards" data-template-id="admin-tab-cards" class="canva-tabs admin-tab whitespace-nowrap rounded-lg border border-white/10 px-4 py-2"></button> <button type="button" data-admin-tab="users" data-template-id="admin-tab-users" class="canva-tabs admin-tab whitespace-nowrap rounded-lg border border-white/10 px-4 py-2"></button> <button type="button" data-admin-tab="offers" data-template-id="admin-tab-offers" class="canva-tabs admin-tab whitespace-nowrap rounded-lg border border-white/10 px-4 py-2"></button> <button type="button" data-admin-tab="purchases" data-template-id="admin-tab-purchases" class="canva-tabs admin-tab whitespace-nowrap rounded-lg border border-white/10 px-4 py-2"></button> <button type="button" data-admin-tab="messages" data-template-id="admin-tab-messages" class="canva-tabs admin-tab whitespace-nowrap rounded-lg border border-white/10 px-4 py-2"></button> <button type="button" data-admin-tab="events" data-template-id="admin-tab-events" class="canva-tabs admin-tab whitespace-nowrap rounded-lg border border-white/10 px-4 py-2"></button>
+     </div>
+     <div id="admin-dashboard" class="admin-pane">
+      <div class="grid gap-5 md:grid-cols-3">
+       <article class="panel rounded-2xl p-6"><i data-lucide="layers-3" class="mb-5 h-8 w-8 text-amber-200"></i>
+        <h2 data-template-id="dashboard-cards-title" class="canva-text font-bold"></h2>
+        <p data-template-id="dashboard-cards-copy" class="canva-text mt-3 text-white/50"></p>
+       </article>
+       <article class="panel rounded-2xl p-6"><i data-lucide="hand-coins" class="mb-5 h-8 w-8 text-cyan-300"></i>
+        <h2 data-template-id="dashboard-offers-title" class="canva-text font-bold"></h2>
+        <p data-template-id="dashboard-offers-copy" class="canva-text mt-3 text-white/50"></p>
+       </article>
+       <article class="panel rounded-2xl p-6"><i data-lucide="messages-square" class="mb-5 h-8 w-8 text-amber-200"></i>
+        <h2 data-template-id="dashboard-messages-title" class="canva-text font-bold"></h2>
+        <p data-template-id="dashboard-messages-copy" class="canva-text mt-3 text-white/50"></p>
+       </article>
+      </div>
+      <div data-template-id="admin-setup-panel" class="canva-panel glass mt-6 rounded-2xl p-6">
+       <h2 data-template-id="admin-setup-title" class="canva-text font-bold"></h2>
+       <p data-template-id="admin-setup-copy" class="canva-text mt-3 max-w-3xl leading-relaxed text-white/55"></p>
+      </div>
+     </div>
+     <div id="admin-cards" class="admin-pane hidden">
+      <div class="grid gap-7 xl:grid-cols-[.65fr_1.35fr]">
+       <form id="card-form" class="panel rounded-2xl p-6"><input id="card-edit-id" type="hidden">
+        <h2 data-template-id="card-form-title" class="canva-text gold-text mb-5 font-bold"></h2>
+        <div class="space-y-4">
+         <div><label for="card-name" data-template-id="card-name-label" class="canva-text mb-2 block font-semibold"></label> <input id="card-name" class="field" required>
+         </div>
+         <div><label for="card-price" data-template-id="card-price-label" class="canva-text mb-2 block font-semibold"></label> <input id="card-price" class="field" type="number" min="0" step="0.01" required>
+         </div>
+         <div><label for="card-available" data-template-id="card-available-label" class="canva-text mb-2 block font-semibold"></label> <select id="card-available" class="field"> <option value="true">Available</option> <option value="false">Unavailable</option> </select>
+         </div>
+        </div>
+        <p data-template-id="card-image-note" class="canva-text mt-4 text-sm leading-relaxed text-white/45"></p>
+        <div class="mt-5 flex gap-3"><button id="card-save" type="submit" data-template-id="card-save-button" class="canva-button primary flex-1 rounded-lg px-4 py-3 font-bold"></button> <button id="card-cancel" type="button" data-template-id="card-cancel-button" class="canva-button secondary hidden rounded-lg px-4 py-3"></button>
+        </div>
+       </form>
+       <div>
+        <h2 data-template-id="card-list-title" class="canva-text gold-text mb-5 font-bold"></h2>
+        <div id="admin-card-list" class="table-shell"></div>
+       </div>
+      </div>
+     </div>
+     <div id="admin-users" class="admin-pane hidden">
+      <h2 data-template-id="user-list-title" class="canva-text gold-text mb-5 font-bold"></h2>
+      <div id="admin-user-list" class="space-y-4"></div>
+     </div>
+     <div id="admin-offers" class="admin-pane hidden">
+      <h2 data-template-id="offer-list-title" class="canva-text gold-text mb-5 font-bold"></h2>
+      <div id="admin-offer-list" class="space-y-4"></div>
+     </div>
+     <div id="admin-purchases" class="admin-pane hidden">
+      <h2 data-template-id="purchase-list-title" class="canva-text gold-text mb-5 font-bold"></h2>
+      <div id="admin-purchase-list" class="space-y-4"></div>
+     </div>
+     <div id="admin-messages" class="admin-pane hidden">
+      <h2 data-template-id="admin-message-title" class="canva-text gold-text mb-5 font-bold"></h2>
+      <p data-template-id="admin-message-copy" class="canva-text mb-6 text-white/50"></p><button type="button" data-route="messages" data-template-id="open-messages-button" class="canva-button primary rounded-lg px-5 py-3 font-bold"></button>
+     </div>
+     <div id="admin-events" class="admin-pane hidden">
+      <div class="grid gap-7 xl:grid-cols-[.65fr_1.35fr]">
+       <form id="event-form" class="panel rounded-2xl p-6"><input id="event-edit-id" type="hidden">
+        <h2 data-template-id="event-form-title" class="canva-text gold-text mb-5 font-bold"></h2>
+        <div class="space-y-4">
+         <div><label for="event-name" data-template-id="event-name-label" class="canva-text mb-2 block font-semibold"></label> <input id="event-name" class="field" required>
+         </div>
+         <div><label for="event-date" data-template-id="event-date-label" class="canva-text mb-2 block font-semibold"></label> <input id="event-date" class="field" type="datetime-local" required>
+         </div>
+         <div><label for="event-location" data-template-id="event-location-label" class="canva-text mb-2 block font-semibold"></label> <input id="event-location" class="field" required>
+         </div>
+         <div><label for="event-participants" data-template-id="event-participants-label" class="canva-text mb-2 block font-semibold"></label> <input id="event-participants" class="field">
+         </div>
+         <div><label for="event-winner" data-template-id="event-winner-label" class="canva-text mb-2 block font-semibold"></label> <input id="event-winner" class="field">
+         </div>
+         <div><label for="event-prize" data-template-id="event-prize-label" class="canva-text mb-2 block font-semibold"></label> <input id="event-prize" class="field">
+         </div>
+        </div>
+        <div class="mt-5 flex gap-3"><button id="event-save" type="submit" data-template-id="event-save-button" class="canva-button primary flex-1 rounded-lg px-4 py-3 font-bold"></button> <button id="event-cancel" type="button" data-template-id="event-cancel-button" class="canva-button secondary hidden rounded-lg px-4 py-3"></button>
+        </div>
+       </form>
+       <div>
+        <h2 data-template-id="event-list-title" class="canva-text gold-text mb-5 font-bold"></h2>
+        <div id="admin-event-list" class="space-y-4"></div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="view-roles" class="view mx-auto w-full max-w-7xl px-5 py-14 lg:px-8" hidden>
+     <div class="mb-10 text-center">
+      <p data-template-id="roles-kicker" class="canva-text kicker mb-3"></p>
+      <h1 data-template-id="roles-title" class="canva-text gold-text font-bold"></h1>
+      <p data-template-id="roles-copy" class="canva-text mx-auto mt-4 max-w-2xl text-white/55"></p>
+     </div>
+     <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+      <article class="panel rounded-2xl p-6">
+       <span class="status role-admin">ADMIN</span>
+       <p data-template-id="admin-role-copy" class="canva-text mt-5 text-white/55"></p>
+      </article>
+      <article class="panel rounded-2xl p-6">
+       <span class="status role-vip">V.I.P</span>
+       <p data-template-id="vip-role-copy" class="canva-text mt-5 text-white/55"></p>
+      </article>
+      <article class="panel rounded-2xl p-6">
+       <span class="status role-potm">POTM</span>
+       <p data-template-id="potm-role-copy" class="canva-text mt-5 text-white/55"></p>
+      </article>
+      <article class="panel rounded-2xl p-6">
+       <span class="status role-regular">Regular Customer</span>
+       <p data-template-id="regular-role-copy" class="canva-text mt-5 text-white/55"></p>
+      </article>
+      <article class="panel rounded-2xl p-6">
+       <span class="status role-customer">Customer</span>
+       <p data-template-id="customer-role-copy" class="canva-text mt-5 text-white/55"></p>
+      </article>
+     </div>
+    </section>
+   </main>
+   <footer data-template-id="site-footer" class="canva-footer mt-12 border-t border-white/10">
+    <div class="mx-auto grid w-full max-w-7xl gap-8 px-5 py-10 md:grid-cols-3 lg:px-8">
+     <div>
+      <p data-template-id="footer-brand" class="canva-text display-font font-bold text-amber-100"></p>
+      <p data-template-id="footer-copy" class="canva-text mt-3 text-sm leading-relaxed text-white/45"></p>
+     </div>
+     <div>
+      <h2 data-template-id="footer-market-title" class="canva-text font-bold"></h2>
+      <div class="mt-3 flex flex-col items-start gap-2 text-sm"><button type="button" data-route="market" data-template-id="footer-market-link" class="canva-link text-white/50 hover:text-amber-100"></button> <button type="button" data-route="events" data-template-id="footer-events-link" class="canva-link text-white/50 hover:text-amber-100"></button> <button type="button" data-route="roles" data-template-id="footer-roles-link" class="canva-link text-white/50 hover:text-amber-100"></button>
+      </div>
+     </div>
+     <div>
+      <h2 data-template-id="footer-platform-title" class="canva-text font-bold"></h2>
+      <p data-template-id="footer-platform-copy" class="canva-text mt-3 text-sm leading-relaxed text-white/45"></p>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <div id="profile-create-modal" class="modal" hidden>
+   <section class="modal-card panel rounded-2xl p-7" role="dialog" aria-modal="true" aria-labelledby="profile-create-title">
+    <div class="mb-6 flex items-start justify-between gap-4">
+     <div>
+      <p data-template-id="profile-modal-kicker" class="canva-text kicker mb-2"></p>
+      <h2 id="profile-create-title" data-template-id="profile-create-title" class="canva-text gold-text font-bold"></h2>
+     </div><button type="button" class="modal-close grid h-9 w-9 place-items-center rounded-full border border-white/10" aria-label="Close profile window"><i data-lucide="x" class="h-4 w-4"></i></button>
+    </div>
+    <p data-template-id="profile-create-copy" class="canva-text mb-5 text-white/55"></p>
+    <form id="profile-form"><label for="profile-username" data-template-id="profile-username-label" class="canva-text mb-2 block font-semibold"></label> <input id="profile-username" data-template-id="profile-username-input" class="canva-input field" maxlength="30" autocomplete="nickname" required> <button id="profile-submit" type="submit" data-template-id="profile-submit-button" class="canva-button primary mt-5 w-full rounded-lg px-5 py-3 font-bold"></button>
+     <p id="profile-create-status" class="mt-3 text-sm text-white/50" aria-live="polite"></p>
+    </form>
+   </section>
+  </div>
+  <div id="profile-modal" class="modal" hidden>
+   <section class="modal-card panel rounded-2xl p-7" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <div class="mb-6 flex items-start justify-between gap-4">
+     <div>
+      <p data-template-id="profile-view-kicker" class="canva-text kicker mb-2"></p>
+      <h2 id="profile-title" data-template-id="profile-title" class="canva-text gold-text font-bold"></h2>
+     </div><button type="button" class="modal-close grid h-9 w-9 place-items-center rounded-full border border-white/10" aria-label="Close profile"><i data-lucide="x" class="h-4 w-4"></i></button>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+     <div class="glass rounded-xl p-4">
+      <p data-template-id="profile-name-label" class="canva-text text-xs uppercase tracking-widest text-white/40"></p>
+      <p id="profile-name" class="mt-2 font-bold"></p>
+     </div>
+     <div class="glass rounded-xl p-4">
+      <p data-template-id="profile-role-label" class="canva-text text-xs uppercase tracking-widest text-white/40"></p>
+      <div id="profile-role" class="mt-2"></div>
+     </div>
+    </div>
+    <div class="mt-5 grid gap-4 sm:grid-cols-2"><button type="button" data-route="offers" data-template-id="profile-purchases-button" class="canva-button secondary rounded-lg px-4 py-3 font-bold"></button> <button type="button" data-route="reviews" data-template-id="profile-feedback-button" class="canva-button secondary rounded-lg px-4 py-3 font-bold"></button>
+    </div><button id="forget-profile-button" type="button" data-template-id="forget-profile-button" class="canva-button secondary mt-4 w-full rounded-lg px-4 py-3"></button>
+   </section>
+  </div>
+  <div id="card-modal" class="modal" hidden>
+   <section class="modal-card panel rounded-2xl p-7" role="dialog" aria-modal="true" aria-labelledby="detail-name">
+    <div class="mb-5 flex justify-end"><button type="button" class="modal-close grid h-9 w-9 place-items-center rounded-full border border-white/10" aria-label="Close card details"><i data-lucide="x" class="h-4 w-4"></i></button>
+    </div>
+    <div class="grid gap-7 md:grid-cols-[.72fr_1.28fr]">
+     <div id="detail-art" class="card-art">
+      <div class="placeholder-art">
+       <i data-lucide="scan-search" class="mx-auto h-10 w-10"></i>
+      </div>
+     </div>
+     <div><span id="detail-availability" class="status"></span>
+      <h2 id="detail-name" class="gold-text mt-4 text-3xl font-bold"></h2>
+      <p id="detail-price" class="mt-4 text-2xl font-bold text-white"></p>
+      <p data-template-id="card-action-copy" class="canva-text mt-4 text-white/50"></p>
+      <div class="mt-7 grid gap-3 sm:grid-cols-2"><button id="request-buy-button" type="button" data-template-id="request-buy-button" class="canva-button primary rounded-lg px-5 py-3 font-bold"></button> <button id="open-offer-button" type="button" data-template-id="open-offer-button" class="canva-button secondary rounded-lg px-5 py-3 font-bold"></button>
+      </div>
+     </div>
+    </div>
+   </section>
+  </div>
+  <div id="offer-modal" class="modal" hidden>
+   <section class="modal-card panel rounded-2xl p-7" role="dialog" aria-modal="true" aria-labelledby="offer-title">
+    <div class="mb-5 flex items-start justify-between gap-4">
+     <div>
+      <p id="offer-card-name" class="kicker mb-2"></p>
+      <h2 id="offer-title" data-template-id="offer-title" class="canva-text gold-text font-bold"></h2>
+     </div><button type="button" class="modal-close grid h-9 w-9 place-items-center rounded-full border border-white/10" aria-label="Close offer"><i data-lucide="x" class="h-4 w-4"></i></button>
+    </div>
+    <form id="offer-form" class="space-y-4">
+     <div><label for="offer-amount" data-template-id="offer-amount-label" class="canva-text mb-2 block font-semibold"></label> <input id="offer-amount" class="field" type="number" min="0" step="0.01" required>
+     </div>
+     <div><label for="offer-message" data-template-id="offer-message-label" class="canva-text mb-2 block font-semibold"></label> <textarea id="offer-message" class="field min-h-28" maxlength="500" required></textarea>
+     </div><button id="offer-submit" type="submit" data-template-id="offer-submit-button" class="canva-button primary w-full rounded-lg px-5 py-3 font-bold"></button>
+    </form>
+   </section>
+  </div>
+  <div id="reply-modal" class="modal" hidden>
+   <section class="modal-card panel rounded-2xl p-7" role="dialog" aria-modal="true" aria-labelledby="reply-title">
+    <div class="mb-5 flex items-start justify-between gap-4">
+     <h2 id="reply-title" data-template-id="reply-title" class="canva-text gold-text font-bold"></h2><button type="button" class="modal-close grid h-9 w-9 place-items-center rounded-full border border-white/10" aria-label="Close reply"><i data-lucide="x" class="h-4 w-4"></i></button>
+    </div>
+    <form id="reply-form"><label for="reply-message" data-template-id="reply-message-label" class="canva-text mb-2 block font-semibold"></label> <textarea id="reply-message" class="field min-h-28" maxlength="500" required></textarea> <button id="reply-submit" type="submit" data-template-id="reply-submit-button" class="canva-button primary mt-5 w-full rounded-lg px-5 py-3 font-bold"></button>
+    </form>
+   </section>
+  </div>
+  <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+  <template id="card-template">
+   <article data-template-id="market-card" class="canva-card card-tile panel rounded-2xl p-4"><button type="button" class="card-open block w-full text-left">
+     <div class="card-art">
+      <div class="card-image-slot placeholder-art">
+       <div>
+        <i data-lucide="scan-search" class="mx-auto mb-3 h-9 w-9"></i><span class="text-xs uppercase tracking-widest">Loading artwork</span>
+       </div>
+      </div>
+     </div>
+     <div class="pt-4">
+      <div class="flex items-start justify-between gap-3">
+       <h3 data-template-id="market-card-name" class="canva-text card-name font-bold"></h3><span class="card-status status"></span>
+      </div>
+      <p data-template-id="market-card-price" class="canva-text card-price mt-3 font-bold text-amber-100"></p>
+     </div></button>
+   </article>
+  </template>
+  <script>
+  (() => {
+    const BRAND = 'Kalenski™ | The ONE AND ONLY Card Empire® ©';
+    const ROLES = ['ADMIN','V.I.P','POTM','Regular Customer','Customer'];
+    const state = {
+      all: [], users: [], cards: [], offers: [], purchases: [], messages: [], reviews: [], events: [],
+      currentUser: null, selectedCard: null, selectedThread: '', replyOfferId: '',
+      sdkReady: false, imageCache: new Map(), pendingDeletes: new Set()
+    };
+    const $ = id => document.getElementById(id);
+    const nowIso = () => new Date().toISOString();
+    const escapeHtml = (v='') => String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    const formatMoney = n => new Intl.NumberFormat('en-GB',{style:'currency',currency:'EUR'}).format(Number(n)||0);
+    const formatDate = v => {
+      if (!v) return 'Date not set';
+      const d = new Date(v);
+      return Number.isNaN(d.getTime()) ? String(v) : new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short'}).format(d);
+    };
+    const isAdmin = () => state.currentUser?.role === 'ADMIN';
+    const byType = type => state.all.filter(row => row.type === type);
+
+    function blankRecord(partial={}) {
+      return {
+        type:'', username:'', role:'', card_name:'', card_price:0, card_available:false, status:'',
+        offer_amount:0, offer_message:'', chat_from:'', chat_to:'', chat_message:'', chat_card:'',
+        chat_thread:'', feedback_stars:0, feedback_message:'', event_name:'', event_date:'',
+        event_location:'', event_prize:'', event_winner:'', event_participants:'', created_at:nowIso(),
+        ...partial
+      };
+    }
+
+    function toast(message, error=false) {
+      const el = document.createElement('div');
+      el.className = 'toast';
+      if (error) el.style.borderColor = '#9f3c48';
+      el.textContent = message;
+      $('toast-stack').appendChild(el);
+      setTimeout(() => el.remove(), 4200);
+    }
+
+    function busy(button, value) {
+      if (!button) return;
+      button.disabled = value;
+      button.style.cursor = value ? 'wait' : '';
+    }
+
+    async function createRow(row, button) {
+      if (!state.sdkReady) { toast('The marketplace data connection is not ready yet.', true); return false; }
+      if (state.all.length >= 999) { toast('The 999-record limit has been reached. Delete records before adding more.', true); return false; }
+      busy(button,true);
+      const result = await window.dataSdk.create(blankRecord(row));
+      busy(button,false);
+      if (!result.isOk) { toast('The record could not be saved. Please try again.', true); return false; }
+      return true;
+    }
+
+    async function updateRow(row, button) {
+      if (!state.sdkReady) { toast('The marketplace data connection is not ready yet.', true); return false; }
+      busy(button,true);
+      const result = await window.dataSdk.update(row);
+      busy(button,false);
+      if (!result.isOk) { toast('The change could not be saved.', true); return false; }
+      return true;
+    }
+
+    async function deleteRow(row, button) {
+      busy(button,true);
+      const result = await window.dataSdk.delete(row);
+      busy(button,false);
+      if (!result.isOk) { toast('The record could not be deleted.', true); return false; }
+      return true;
+    }
+
+    function roleClass(role) {
+      return role === 'ADMIN' ? 'role-admin' :
+        role === 'V.I.P' ? 'role-vip' :
+        role === 'POTM' ? 'role-potm' :
+        role === 'Regular Customer' ? 'role-regular' : 'role-customer';
+    }
+
+    function normalRole(role) {
+      return ROLES.includes(role) ? role : 'Customer';
+    }
+
+    function statusClass(status) {
+      const value = String(status || 'Open').toLowerCase();
+      if (value === 'accepted') return 'status-accepted';
+      if (value === 'declined') return 'status-declined';
+      if (value === 'completed') return 'status-completed';
+      if (value === 'available') return 'status-available';
+      if (value === 'unavailable') return 'status-unavailable';
+      if (value === 'upcoming') return 'status-upcoming';
+      return 'status-open';
+    }
+
+    function requireProfile() {
+      if (state.currentUser) return true;
+      openModal('profile-create-modal');
+      toast('Create or resume your username profile to continue.');
+      return false;
+    }
+
+    function openModal(id) {
+      $(id).hidden = false;
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => $(id).querySelector('input,textarea,select,button')?.focus(),20);
+    }
+
+    function closeModal(target) {
+      const modal = target.closest ? target.closest('.modal') : target;
+      if (modal) modal.hidden = true;
+      if (![...document.querySelectorAll('.modal')].some(x=>!x.hidden)) document.body.style.overflow = '';
+    }
+
+    function routeTo(route) {
+      if (route === 'admin' && !isAdmin()) { toast('This workspace requires an ADMIN profile.', true); return; }
+      const target = $('view-' + route) ? route : 'home';
+      document.querySelectorAll('.view').forEach(view => view.hidden = view.id !== 'view-' + target);
+      document.querySelectorAll('[data-route]').forEach(button => button.classList.toggle('active',button.dataset.route === target));
+      $('mobile-nav').classList.add('hidden');
+      $('mobile-menu-button').setAttribute('aria-expanded','false');
+      window.scrollTo({top:0,behavior:'smooth'});
+      if (target === 'market') renderMarket();
+      if (target === 'offers') renderCustomerActivity();
+      if (target === 'messages') renderThreads();
+      if (target === 'events') renderEvents();
+      if (target === 'reviews') renderReviews();
+      if (target === 'admin') renderAdmin();
+    }
+
+    function makeThread(username, cardName, sourceId) {
+      return `thread-${sourceId || Date.now()}-${username.toLowerCase().replace(/[^a-z0-9]+/g,'-')}-${cardName.toLowerCase().replace(/[^a-z0-9]+/g,'-')}`;
+    }
+
+    function placeholderArtwork(name) {
+      const node = document.createElement('div');
+      node.className = 'placeholder-art';
+      node.innerHTML = `<div><i data-lucide="scan-search" class="mx-auto mb-3 h-10 w-10"></i><strong class="display-font block">${escapeHtml(name)}</strong><span class="mt-2 block text-xs uppercase tracking-widest text-white/35">Artwork unavailable</span></div>`;
+      return node;
+    }
+
+    async function resolveCardImage(card, slot) {
+      if (!slot?.isConnected) return;
+      const key = card.card_name.trim().toLowerCase();
+      if (state.imageCache.has(key)) return setCardImage(slot,state.imageCache.get(key),card.card_name);
+      try {
+        const response = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?name=${encodeURIComponent(card.card_name)}`);
+        if (!response.ok) throw new Error('Image search failed');
+        const body = await response.json();
+        const url = body?.data?.[0]?.card_images?.[0]?.image_url_cropped || body?.data?.[0]?.card_images?.[0]?.image_url;
+        if (!url) throw new Error('No image');
+        state.imageCache.set(key,url);
+        if (slot.isConnected) setCardImage(slot,url,card.card_name);
+      } catch {
+        state.imageCache.set(key,null);
+        if (slot.isConnected) setCardImage(slot,null,card.card_name);
+      }
+    }
+
+    function setCardImage(slot,url,name) {
+      if (!url) {
+        slot.replaceChildren(placeholderArtwork(name));
+        lucide.createIcons();
+        return;
+      }
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = `${name} card artwork`;
+      img.loading = 'lazy';
+      img.addEventListener('error',()=>{ slot.replaceChildren(placeholderArtwork(name)); lucide.createIcons(); },{once:true});
+      slot.replaceChildren(img);
+    }
+
+    function makeCard(card) {
+      const frag = $('card-template').content.cloneNode(true);
+      const article = frag.querySelector('article');
+      article.dataset.recordId = card.__backendId;
+      frag.querySelector('.card-name').textContent = card.card_name;
+      frag.querySelector('.card-price').textContent = formatMoney(card.card_price);
+      const status = frag.querySelector('.card-status');
+      status.textContent = card.card_available ? 'Available' : 'Unavailable';
+      status.className = `card-status status ${card.card_available?'status-available':'status-unavailable'}`;
+      frag.querySelector('.card-open').addEventListener('click',()=>openCard(card.__backendId));
+      resolveCardImage(card,frag.querySelector('.card-image-slot'));
+      return article;
+    }
+
+    function syncCardGrid(container,cards) {
+      const existing = new Map([...container.children].map(el=>[el.dataset.recordId,el]));
+      cards.forEach(card=>{
+        const next = makeCard(card);
+        const current = existing.get(card.__backendId);
+        if (current) { current.replaceWith(next); existing.delete(card.__backendId); }
+        else container.appendChild(next);
+      });
+      existing.forEach(el=>el.remove());
+      lucide.createIcons();
+    }
+
+    function openCard(id) {
+      const card = state.cards.find(x=>x.__backendId===id);
+      if (!card) return;
+      state.selectedCard = card;
+      $('detail-name').textContent = card.card_name;
+      $('detail-price').textContent = formatMoney(card.card_price);
+      $('detail-availability').textContent = card.card_available ? 'Available' : 'Unavailable';
+      $('detail-availability').className = `status ${card.card_available?'status-available':'status-unavailable'}`;
+      $('request-buy-button').disabled = !card.card_available;
+      $('open-offer-button').disabled = !card.card_available;
+      const art = $('detail-art');
+      art.replaceChildren(placeholderArtwork(card.card_name));
+      resolveCardImage(card,art);
+      openModal('card-modal');
+      lucide.createIcons();
+    }
+
+    function renderHome() {
+      const cards = state.cards.filter(x=>x.card_available).slice(0,4);
+      syncCardGrid($('home-card-grid'),cards);
+      $('home-card-empty').classList.toggle('hidden',cards.length>0);
+    }
+
+    function renderMarket() {
+      const query = $('market-search').value.trim().toLowerCase();
+      const filter = $('availability-filter').value;
+      const cards = state.cards
+        .filter(card => (!query || card.card_name.toLowerCase().includes(query)) &&
+          (filter==='all' || (filter==='available' ? card.card_available : !card.card_available)))
+        .sort((a,b)=>a.card_name.localeCompare(b.card_name,'en'));
+      syncCardGrid($('market-grid'),cards);
+      $('market-count').textContent = `${cards.length} card${cards.length===1?'':'s'}`;
+      $('market-empty').classList.toggle('hidden',cards.length>0);
+    }
+
+    function emptyMarkup(text) {
+      return `<div class="glass rounded-xl p-6 text-center text-sm text-white/45">${escapeHtml(text)}</div>`;
+    }
+
+    function renderCustomerActivity() {
+      if (!state.currentUser) {
+        $('customer-purchases').innerHTML = emptyMarkup('Create a profile to view purchase requests.');
+        $('customer-offers').innerHTML = emptyMarkup('Create a profile to view offers.');
+        return;
+      }
+      const username = state.currentUser.username.toLowerCase();
+      const purchases = state.purchases.filter(x=>x.username.toLowerCase()===username).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+      const offers = state.offers.filter(x=>x.username.toLowerCase()===username).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+      $('customer-purchases').innerHTML = purchases.length ? purchases.map(row=>`
+        <article class="panel rounded-xl p-5">
+          <div class="flex items-start justify-between gap-4">
+            <div><h3 class="font-bold">${escapeHtml(row.card_name)}</h3><p class="mt-2 text-sm text-white/45">${escapeHtml(formatDate(row.created_at))} · ${escapeHtml(formatMoney(row.card_price))}</p></div>
+            <span class="status ${statusClass(row.status)}">${escapeHtml(row.status||'Open')}</span>
+          </div>
+          <button type="button" data-open-thread="${escapeHtml(row.chat_thread)}" class="secondary mt-4 rounded-lg px-4 py-2 text-sm font-bold">Open conversation</button>
+        </article>`).join('') : emptyMarkup('No purchase requests yet.');
+      $('customer-offers').innerHTML = offers.length ? offers.map(row=>`
+        <article class="panel rounded-xl p-5">
+          <div class="flex items-start justify-between gap-4">
+            <div><h3 class="font-bold">${escapeHtml(row.card_name)}</h3><p class="mt-2 text-sm text-white/45">${escapeHtml(formatMoney(row.offer_amount))} · ${escapeHtml(formatDate(row.created_at))}</p><p class="mt-3 text-sm text-white/60">${escapeHtml(row.offer_message)}</p></div>
+            <span class="status ${statusClass(row.status)}">${escapeHtml(row.status||'Open')}</span>
+          </div>
+          <button type="button" data-open-thread="${escapeHtml(row.chat_thread)}" class="secondary mt-4 rounded-lg px-4 py-2 text-sm font-bold">Open conversation</button>
+        </article>`).join('') : emptyMarkup('No offers yet.');
+      document.querySelectorAll('[data-open-thread]').forEach(button=>button.onclick=()=>{
+        state.selectedThread=button.dataset.openThread;
+        routeTo('messages');
+      });
+    }
+
+    function accessibleThreads() {
+      const allThreads = new Map();
+      [...state.offers,...state.purchases].forEach(row=>{
+        if (!row.chat_thread) return;
+        if (isAdmin() || (state.currentUser && row.username.toLowerCase()===state.currentUser.username.toLowerCase())) {
+          allThreads.set(row.chat_thread,{thread:row.chat_thread,username:row.username,card:row.card_name,status:row.status,created_at:row.created_at});
+        }
+      });
+      state.messages.forEach(row=>{
+        if (!row.chat_thread) return;
+        const involved = isAdmin() || (state.currentUser && [row.chat_from,row.chat_to].some(v=>v.toLowerCase()===state.currentUser.username.toLowerCase()));
+        if (involved && !allThreads.has(row.chat_thread)) allThreads.set(row.chat_thread,{thread:row.chat_thread,username:row.chat_from==='ADMIN'?row.chat_to:row.chat_from,card:row.chat_card,status:row.status,created_at:row.created_at});
+      });
+      return [...allThreads.values()].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+    }
+
+    function renderThreads() {
+      const threads = accessibleThreads();
+      if (!threads.some(x=>x.thread===state.selectedThread)) state.selectedThread = threads[0]?.thread || '';
+      $('thread-list').innerHTML = threads.length ? threads.map(thread=>`
+        <button type="button" data-thread="${escapeHtml(thread.thread)}" class="w-full rounded-xl border border-white/8 bg-white/[.025] p-4 text-left ${thread.thread===state.selectedThread?'thread-active':''}">
+          <strong class="block">${escapeHtml(thread.card)}</strong>
+          <span class="mt-1 block text-sm text-white/45">${escapeHtml(thread.username)}</span>
+        </button>`).join('') : emptyMarkup('No conversations yet.');
+      document.querySelectorAll('[data-thread]').forEach(button=>button.onclick=()=>{state.selectedThread=button.dataset.thread;renderThreads();});
+      renderActiveChat();
+    }
+
+    function renderActiveChat() {
+      const thread = accessibleThreads().find(x=>x.thread===state.selectedThread);
+      $('chat-empty').classList.toggle('hidden',!!thread);
+      $('chat-active').classList.toggle('hidden',!thread);
+      $('chat-active').classList.toggle('flex',!!thread);
+      if (!thread) return;
+      $('chat-heading').textContent = thread.card;
+      $('chat-meta').textContent = isAdmin() ? `Customer: ${thread.username}` : `${BRAND} seller conversation`;
+      const rows = state.messages.filter(x=>x.chat_thread===thread.thread).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+      $('message-list').innerHTML = rows.length ? rows.map(message=>{
+        const mine = state.currentUser && message.chat_from.toLowerCase()===state.currentUser.username.toLowerCase();
+        const adminMine = isAdmin() && message.chat_from==='ADMIN';
+        return `<article class="${mine||adminMine?'message-mine':'message-other'} max-w-[85%] rounded-xl border p-3">
+          <div class="flex items-center justify-between gap-4 text-xs text-white/40"><strong class="text-white/65">${escapeHtml(message.chat_from)}</strong><span>${escapeHtml(formatDate(message.created_at))}</span></div>
+          <p class="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-white/80">${escapeHtml(message.chat_message)}</p>
+        </article>`;
+      }).join('') : emptyMarkup('The conversation is ready. Send the first message.');
+      $('message-list').scrollTop = $('message-list').scrollHeight;
+    }
+
+    function reviewMarkup(row) {
+      const stars = Math.max(1,Math.min(5,Number(row.feedback_stars)||1));
+      return `<article class="panel rounded-2xl p-6">
+        <div class="flex items-center justify-between gap-4"><div class="tracking-widest text-amber-200" aria-label="${stars} out of 5 stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</div><span class="text-xs text-white/35">${escapeHtml(formatDate(row.created_at))}</span></div>
+        <p class="mt-4 leading-relaxed text-white/70">“${escapeHtml(row.feedback_message)}”</p>
+        <strong class="mt-5 block text-sm text-amber-100">${escapeHtml(row.username)}</strong>
+      </article>`;
+    }
+
+    function renderReviews() {
+      const rows = [...state.reviews].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+      $('review-list').innerHTML = rows.length ? rows.map(reviewMarkup).join('') : emptyMarkup('No feedback has been published yet.');
+    }
+
+    function eventMarkup(event,past) {
+      return `<article class="panel rounded-2xl p-6">
+        <div class="flex items-start justify-between gap-4"><h3 class="text-xl font-bold">${escapeHtml(event.event_name)}</h3><span class="status ${past?'status-completed':'status-upcoming'}">${past?'Past':'Upcoming'}</span></div>
+        <div class="mt-5 grid gap-3 text-sm text-white/55 sm:grid-cols-2">
+          <span><i data-lucide="calendar" class="mr-2 inline h-4 w-4 text-amber-200"></i>${escapeHtml(formatDate(event.event_date))}</span>
+          <span><i data-lucide="map-pin" class="mr-2 inline h-4 w-4 text-cyan-300"></i>${escapeHtml(event.event_location||'Location not set')}</span>
+          <span><i data-lucide="users" class="mr-2 inline h-4 w-4 text-amber-200"></i>${escapeHtml(event.event_participants||'Participants not set')}</span>
+          <span><i data-lucide="trophy" class="mr-2 inline h-4 w-4 text-cyan-300"></i>${escapeHtml(event.event_prize||'Prize not set')}</span>
+        </div>
+        ${event.event_winner?`<p class="mt-5 border-t border-white/8 pt-4 text-sm"><span class="text-white/40">Winner:</span> <strong class="text-amber-100">${escapeHtml(event.event_winner)}</strong></p>`:''}
+      </article>`;
+    }
+
+    function renderEvents() {
+      const now = Date.now();
+      const upcoming = state.events.filter(x=>new Date(x.event_date).getTime()>=now).sort((a,b)=>new Date(a.event_date)-new Date(b.event_date));
+      const past = state.events.filter(x=>new Date(x.event_date).getTime()<now).sort((a,b)=>new Date(b.event_date)-new Date(a.event_date));
+      $('upcoming-events').innerHTML = upcoming.length ? upcoming.map(x=>eventMarkup(x,false)).join('') : emptyMarkup('No upcoming events have been published.');
+      $('past-events').innerHTML = past.length ? past.map(x=>eventMarkup(x,true)).join('') : emptyMarkup('No past events are available.');
+      lucide.createIcons();
+    }
+
+    function updateCurrentUser() {
+      const saved = localStorage.getItem('kalenski-profile');
+      const match = saved ? state.users.find(x=>x.username.toLowerCase()===saved.toLowerCase()) : null;
+      state.currentUser = match || null;
+      $('create-profile-button').classList.toggle('hidden',!!match);
+      $('profile-button').classList.toggle('hidden',!match);
+      $('profile-button').classList.toggle('md:flex',!!match);
+      $('admin-nav').classList.toggle('hidden',!isAdmin());
+      $('mobile-admin-nav').classList.toggle('hidden',!isAdmin());
+      if (match) {
+        const role = normalRole(match.role);
+        $('header-username').textContent = match.username;
+        $('header-role').textContent = role;
+        $('header-role').className = `status ${roleClass(role)}`;
+        $('profile-name').textContent = match.username;
+        $('profile-role').innerHTML = `<span class="status ${roleClass(role)}">${escapeHtml(role)}</span>`;
+      }
+      renderCustomerActivity();
+      renderThreads();
+    }
+
+    function renderAdmin() {
+      if (!isAdmin()) return;
+      renderAdminCards();
+      renderAdminUsers();
+      renderAdminOffers();
+      renderAdminPurchases();
+      renderAdminEvents();
+    }
+
+    function renderAdminCards() {
+      $('admin-card-list').innerHTML = state.cards.length ? `<table><thead><tr><th>Card</th><th>Price</th><th>Availability</th><th>Actions</th></tr></thead><tbody>${state.cards.map(card=>`
+        <tr>
+          <td><strong>${escapeHtml(card.card_name)}</strong></td>
+          <td>${escapeHtml(formatMoney(card.card_price))}</td>
+          <td><span class="status ${card.card_available?'status-available':'status-unavailable'}">${card.card_available?'Available':'Unavailable'}</span></td>
+          <td><div class="flex gap-2"><button type="button" data-edit-card="${escapeHtml(card.__backendId)}" class="secondary rounded px-3 py-1.5 text-xs">Edit</button><button type="button" data-delete-card="${escapeHtml(card.__backendId)}" class="danger rounded px-3 py-1.5 text-xs">Delete</button></div></td>
+        </tr>`).join('')}</tbody></table>` : emptyMarkup('No cards have been created.');
+      document.querySelectorAll('[data-edit-card]').forEach(button=>button.onclick=()=>startCardEdit(button.dataset.editCard));
+      document.querySelectorAll('[data-delete-card]').forEach(button=>button.onclick=()=>twoStepDelete('card',button.dataset.deleteCard,button));
+    }
+
+    function startCardEdit(id) {
+      const card=state.cards.find(x=>x.__backendId===id); if(!card)return;
+      $('card-edit-id').value=id;
+      $('card-name').value=card.card_name;
+      $('card-price').value=card.card_price;
+      $('card-available').value=String(card.card_available);
+      $('card-cancel').classList.remove('hidden');
+      $('card-name').focus();
+    }
+
+    function renderAdminUsers() {
+      $('admin-user-list').innerHTML = state.users.length ? state.users.map(user=>`
+        <article class="panel flex flex-col gap-4 rounded-xl p-5 md:flex-row md:items-center md:justify-between">
+          <div><strong>${escapeHtml(user.username)}</strong><p class="mt-1 text-sm text-white/40">${escapeHtml(formatDate(user.created_at))}</p></div>
+          <form data-role-form="${escapeHtml(user.__backendId)}" class="flex flex-col gap-2 sm:flex-row">
+            <label for="role-${escapeHtml(user.__backendId)}" class="sr-only">Role for ${escapeHtml(user.username)}</label>
+            <select id="role-${escapeHtml(user.__backendId)}" class="field min-w-52">
+              ${ROLES.map(role=>`<option ${normalRole(user.role)===role?'selected':''}>${escapeHtml(role)}</option>`).join('')}
+            </select>
+            <button type="submit" class="primary rounded-lg px-4 py-2 font-bold">Save role</button>
+          </form>
+        </article>`).join('') : emptyMarkup('No profiles have been created.');
+      document.querySelectorAll('[data-role-form]').forEach(form=>form.onsubmit=async event=>{
+        event.preventDefault();
+        const user=state.users.find(x=>x.__backendId===form.dataset.roleForm);
+        const role=form.querySelector('select').value;
+        if(user && await updateRow({...user,role},form.querySelector('button'))) toast(`Role updated to ${role}.`);
+      });
+    }
+
+    function renderAdminOffers() {
+      $('admin-offer-list').innerHTML = state.offers.length ? [...state.offers].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(offer=>`
+        <article class="panel rounded-xl p-5">
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div><span class="status ${statusClass(offer.status)}">${escapeHtml(offer.status||'Open')}</span><h3 class="mt-3 font-bold">${escapeHtml(offer.card_name)}</h3><p class="mt-1 text-sm text-white/45">${escapeHtml(offer.username)} · ${escapeHtml(formatMoney(offer.offer_amount))}</p><p class="mt-3 text-sm text-white/65">${escapeHtml(offer.offer_message)}</p></div>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" data-offer-status="${escapeHtml(offer.__backendId)}|Accepted" class="primary rounded px-3 py-2 text-sm font-bold">Accept</button>
+              <button type="button" data-offer-status="${escapeHtml(offer.__backendId)}|Declined" class="danger rounded px-3 py-2 text-sm">Decline</button>
+              <button type="button" data-offer-reply="${escapeHtml(offer.__backendId)}" class="secondary rounded px-3 py-2 text-sm">Reply</button>
+            </div>
+          </div>
+        </article>`).join('') : emptyMarkup('No offers have been submitted.');
+      document.querySelectorAll('[data-offer-status]').forEach(button=>button.onclick=async()=>{
+        const [id,status]=button.dataset.offerStatus.split('|');
+        const offer=state.offers.find(x=>x.__backendId===id);
+        if(offer && await updateRow({...offer,status},button)) toast(`Offer marked ${status}.`);
+      });
+      document.querySelectorAll('[data-offer-reply]').forEach(button=>button.onclick=()=>{
+        state.replyOfferId=button.dataset.offerReply;
+        $('reply-message').value='';
+        openModal('reply-modal');
+      });
+    }
+
+    function renderAdminPurchases() {
+      $('admin-purchase-list').innerHTML = state.purchases.length ? [...state.purchases].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(row=>`
+        <article class="panel rounded-xl p-5">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div><span class="status ${statusClass(row.status)}">${escapeHtml(row.status||'Open')}</span><h3 class="mt-3 font-bold">${escapeHtml(row.card_name)}</h3><p class="mt-1 text-sm text-white/45">${escapeHtml(row.username)} · ${escapeHtml(formatMoney(row.card_price))} · ${escapeHtml(formatDate(row.created_at))}</p></div>
+            <form data-purchase-status="${escapeHtml(row.__backendId)}" class="flex gap-2">
+              <label for="purchase-${escapeHtml(row.__backendId)}" class="sr-only">Purchase status</label>
+              <select id="purchase-${escapeHtml(row.__backendId)}" class="field">
+                ${['Open','Accepted','Declined','Completed'].map(status=>`<option ${row.status===status?'selected':''}>${status}</option>`).join('')}
+              </select>
+              <button type="submit" class="primary rounded-lg px-4 py-2 font-bold">Save</button>
+            </form>
+          </div>
+        </article>`).join('') : emptyMarkup('No purchase requests have been submitted.');
+      document.querySelectorAll('[data-purchase-status]').forEach(form=>form.onsubmit=async event=>{
+        event.preventDefault();
+        const row=state.purchases.find(x=>x.__backendId===form.dataset.purchaseStatus);
+        const status=form.querySelector('select').value;
+        if(row && await updateRow({...row,status},form.querySelector('button'))) toast(`Purchase request marked ${status}.`);
+      });
+    }
+
+    function renderAdminEvents() {
+      $('admin-event-list').innerHTML = state.events.length ? [...state.events].sort((a,b)=>new Date(a.event_date)-new Date(b.event_date)).map(event=>`
+        <article class="panel rounded-xl p-5">
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div><h3 class="font-bold">${escapeHtml(event.event_name)}</h3><p class="mt-2 text-sm text-white/45">${escapeHtml(formatDate(event.event_date))} · ${escapeHtml(event.event_location)}</p></div>
+            <div class="flex gap-2"><button type="button" data-edit-event="${escapeHtml(event.__backendId)}" class="secondary rounded px-3 py-2 text-sm">Edit</button><button type="button" data-delete-event="${escapeHtml(event.__backendId)}" class="danger rounded px-3 py-2 text-sm">Delete</button></div>
+          </div>
+        </article>`).join('') : emptyMarkup('No events have been created.');
+      document.querySelectorAll('[data-edit-event]').forEach(button=>button.onclick=()=>startEventEdit(button.dataset.editEvent));
+      document.querySelectorAll('[data-delete-event]').forEach(button=>button.onclick=()=>twoStepDelete('event',button.dataset.deleteEvent,button));
+    }
+
+    function startEventEdit(id) {
+      const event=state.events.find(x=>x.__backendId===id);if(!event)return;
+      $('event-edit-id').value=id;
+      $('event-name').value=event.event_name;
+      const date=new Date(event.event_date);
+      date.setMinutes(date.getMinutes()-date.getTimezoneOffset());
+      $('event-date').value=Number.isNaN(date.getTime())?'':date.toISOString().slice(0,16);
+      $('event-location').value=event.event_location;
+      $('event-participants').value=event.event_participants;
+      $('event-winner').value=event.event_winner;
+      $('event-prize').value=event.event_prize;
+      $('event-cancel').classList.remove('hidden');
+      $('event-name').focus();
+    }
+
+    async function twoStepDelete(type,id,button) {
+      const key=`${type}-${id}`;
+      if(!state.pendingDeletes.has(key)){
+        state.pendingDeletes.add(key);
+        button.textContent='Confirm delete';
+        setTimeout(()=>{state.pendingDeletes.delete(key);if(button.isConnected)button.textContent='Delete';},3500);
+        return;
+      }
+      state.pendingDeletes.delete(key);
+      const row=state.all.find(x=>x.__backendId===id);
+      if(row && await deleteRow(row,button)) toast('Record deleted.');
+    }
+
+    function resetCardForm() {
+      $('card-form').reset(); $('card-edit-id').value=''; $('card-cancel').classList.add('hidden');
+    }
+
+    function resetEventForm() {
+      $('event-form').reset(); $('event-edit-id').value=''; $('event-cancel').classList.add('hidden');
+    }
+
+    async function requestPurchase() {
+      if (!requireProfile() || !state.selectedCard?.card_available) return;
+      const card=state.selectedCard;
+      const thread=makeThread(state.currentUser.username,card.card_name,`purchase-${Date.now()}`);
+      const ok=await createRow({type:'purchase',username:state.currentUser.username,card_name:card.card_name,card_price:Number(card.card_price),status:'Open',chat_thread:thread},$('request-buy-button'));
+      if(!ok)return;
+      await createRow({type:'message',chat_from:state.currentUser.username,chat_to:'ADMIN',chat_message:`I would like to request this card at the listed price of ${formatMoney(card.card_price)}.`,chat_card:card.card_name,chat_thread:thread,status:'Open'},$('request-buy-button'));
+      state.selectedThread=thread;
+      closeModal($('card-modal'));
+      routeTo('messages');
+      toast('Purchase request created.');
+    }
+
+    function bindForms() {
+      $('profile-form').addEventListener('submit',async event=>{
+        event.preventDefault();
+        const username=$('profile-username').value.trim();
+        if(!username)return;
+        let user=state.users.find(x=>x.username.trim().toLowerCase()===username.toLowerCase());
+        if(!user){
+          if(!await createRow({type:'user',username,role:'Customer',status:'Active'},$('profile-submit')))return;
+          localStorage.setItem('kalenski-profile',username);
+        } else {
+          // Reuse the canonical Sheet username so the stored role is preserved.
+          localStorage.setItem('kalenski-profile',user.username);
+        }
+        $('profile-create-status').textContent='Profile saved.';
+        setTimeout(()=>{closeModal($('profile-create-modal'));updateCurrentUser();},300);
+      });
+
+      $('offer-form').addEventListener('submit',async event=>{
+        event.preventDefault();
+        if(!requireProfile() || !state.selectedCard)return;
+        const card=state.selectedCard;
+        const thread=makeThread(state.currentUser.username,card.card_name,`offer-${Date.now()}`);
+        const amount=Number($('offer-amount').value);
+        const message=$('offer-message').value.trim();
+        const ok=await createRow({type:'offer',username:state.currentUser.username,card_name:card.card_name,offer_amount:amount,offer_message:message,status:'Open',chat_thread:thread},$('offer-submit'));
+        if(!ok)return;
+        await createRow({type:'message',chat_from:state.currentUser.username,chat_to:'ADMIN',chat_message:`Offer: ${formatMoney(amount)}\n${message}`,chat_card:card.card_name,chat_thread:thread,status:'Open'},$('offer-submit'));
+        event.currentTarget.reset();
+        state.selectedThread=thread;
+        closeModal($('offer-modal'));
+        routeTo('messages');
+        toast('Offer sent.');
+      });
+
+      $('message-form').addEventListener('submit',async event=>{
+        event.preventDefault();
+        if(!state.currentUser || !state.selectedThread)return;
+        const thread=accessibleThreads().find(x=>x.thread===state.selectedThread);
+        if(!thread)return;
+        const text=$('message-input').value.trim();
+        if(!text)return;
+        const from=isAdmin()?'ADMIN':state.currentUser.username;
+        const to=isAdmin()?thread.username:'ADMIN';
+        if(await createRow({type:'message',chat_from:from,chat_to:to,chat_message:text,chat_card:thread.card,chat_thread:thread.thread,status:'Open'},$('message-send'))) $('message-input').value='';
+      });
+
+      $('review-form').addEventListener('submit',async event=>{
+        event.preventDefault();
+        if(!requireProfile())return;
+        const ok=await createRow({type:'review',username:state.currentUser.username,feedback_stars:Number($('review-stars').value),feedback_message:$('review-message').value.trim(),status:'Published'},$('review-submit'));
+        if(ok){$('review-message').value='';$('review-status').textContent='Your feedback has been published.';toast('Feedback published.');}
+      });
+
+      $('card-form').addEventListener('submit',async event=>{
+        event.preventDefault();
+        const id=$('card-edit-id').value;
+        const current=state.cards.find(x=>x.__backendId===id);
+        const payload={type:'card',card_name:$('card-name').value.trim(),card_price:Number($('card-price').value),card_available:$('card-available').value==='true',status:'Active'};
+        const ok=current?await updateRow({...current,...payload},$('card-save')):await createRow(payload,$('card-save'));
+        if(ok){resetCardForm();toast(current?'Card updated.':'Card created. Artwork will load automatically.');}
+      });
+
+      $('event-form').addEventListener('submit',async event=>{
+        event.preventDefault();
+        const id=$('event-edit-id').value;
+        const current=state.events.find(x=>x.__backendId===id);
+        const payload={type:'event',event_name:$('event-name').value.trim(),event_date:new Date($('event-date').value).toISOString(),event_location:$('event-location').value.trim(),event_participants:$('event-participants').value.trim(),event_winner:$('event-winner').value.trim(),event_prize:$('event-prize').value.trim(),status:'Published'};
+        const ok=current?await updateRow({...current,...payload},$('event-save')):await createRow(payload,$('event-save'));
+        if(ok){resetEventForm();toast(current?'Event updated.':'Event created.');}
+      });
+
+      $('reply-form').addEventListener('submit',async event=>{
+        event.preventDefault();
+        const offer=state.offers.find(x=>x.__backendId===state.replyOfferId);
+        if(!offer)return;
+        const text=$('reply-message').value.trim();
+        if(await createRow({type:'message',chat_from:'ADMIN',chat_to:offer.username,chat_message:text,chat_card:offer.card_name,chat_thread:offer.chat_thread,status:'Open'},$('reply-submit'))){
+          event.currentTarget.reset();
+          closeModal($('reply-modal'));
+          state.selectedThread=offer.chat_thread;
+          routeTo('messages');
+          toast('Reply sent.');
+        }
+      });
+    }
+
+    function bindUI() {
+      document.querySelectorAll('[data-route]').forEach(button=>button.addEventListener('click',()=>{
+        const route=button.dataset.route;
+        closeModal(button);
+        routeTo(route);
+      }));
+      document.querySelectorAll('.modal-close').forEach(button=>button.onclick=()=>closeModal(button));
+      document.querySelectorAll('.modal').forEach(modal=>modal.onclick=event=>{if(event.target===modal)closeModal(modal);});
+      $('mobile-menu-button').onclick=()=>{const hidden=$('mobile-nav').classList.toggle('hidden');$('mobile-menu-button').setAttribute('aria-expanded',String(!hidden));};
+      $('create-profile-button').onclick=()=>openModal('profile-create-modal');
+      $('hero-profile-button').onclick=()=>state.currentUser?openModal('profile-modal'):openModal('profile-create-modal');
+      $('profile-button').onclick=()=>openModal('profile-modal');
+      $('forget-profile-button').onclick=()=>{localStorage.removeItem('kalenski-profile');closeModal($('profile-modal'));updateCurrentUser();toast('This device will no longer remember the profile.');};
+      $('market-filter-form').onsubmit=event=>event.preventDefault();
+      $('market-search').addEventListener('input',renderMarket);
+      $('availability-filter').addEventListener('change',renderMarket);
+      $('request-buy-button').onclick=requestPurchase;
+      $('open-offer-button').onclick=()=>{
+        if(!requireProfile())return;
+        closeModal($('card-modal'));
+        $('offer-card-name').textContent=state.selectedCard?.card_name||'';
+        $('offer-amount').value=state.selectedCard?.card_price||0;
+        openModal('offer-modal');
+      };
+      document.querySelectorAll('.admin-tab').forEach(button=>button.onclick=()=>{
+        document.querySelectorAll('.admin-tab').forEach(x=>x.classList.toggle('active',x===button));
+        document.querySelectorAll('.admin-pane').forEach(pane=>pane.classList.toggle('hidden',pane.id!==`admin-${button.dataset.adminTab}`));
+      });
+      $('card-cancel').onclick=resetCardForm;
+      $('event-cancel').onclick=resetEventForm;
+      document.addEventListener('keydown',event=>{if(event.key==='Escape'){const modal=[...document.querySelectorAll('.modal')].find(x=>!x.hidden);if(modal)closeModal(modal);}});
+    }
+
+    function processData(data) {
+      state.all=data;
+      state.users=byType('user');
+      state.cards=byType('card');
+      state.offers=byType('offer');
+      state.purchases=byType('purchase');
+      state.messages=byType('message');
+      state.reviews=byType('review');
+      state.events=byType('event');
+      updateCurrentUser();
+      renderHome();
+      renderMarket();
+      renderReviews();
+      renderEvents();
+      renderAdmin();
+    }
+
+    async function init() {
+      bindUI();
+      bindForms();
+      lucide.createIcons();
+      const result=await window.dataSdk.init({onDataChanged(data){processData(data);}});
+      if(!result.isOk){toast('The Canva Sheet could not be connected.',true);return;}
+      state.sdkReady=true;
+    }
+    init();
+  })();
+  </script>
+ </body>
+</html>
