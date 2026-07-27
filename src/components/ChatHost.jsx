@@ -26,6 +26,13 @@ export default function ChatHost({ currentUser, chats, setChats }) {
     return () => window.removeEventListener('openChat', handler)
   }, [chats, currentUser, setChats])
 
+  // keep conversation object in sync when chats update
+  useEffect(() => {
+    if (!conversation) return
+    const updated = chats.find((c) => c.id === conversation.id)
+    if (updated) setConversation(updated)
+  }, [chats])
+
   const handleClose = () => setOpen(false)
 
   const handleSend = (msg) => {

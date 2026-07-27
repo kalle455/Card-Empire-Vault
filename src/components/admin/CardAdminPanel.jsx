@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { getCardImage } from '../../utils/cardImageService.js'
+import { fetchCardMetadataByName } from '../../services/cardApi.js'
 
 const emptyCard = {
   id: '',
@@ -32,12 +32,13 @@ export default function CardAdminPanel({ cards, onSave, onDelete, t }) {
     }))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    const meta = await fetchCardMetadataByName(formData.name)
     const normalized = {
       ...formData,
-      id: formData.id.trim() || formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      image: getCardImage(formData.name),
+      id: formData.id.trim() || meta.id,
+      image: meta.image || `/cards/${(formData.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.svg`,
     }
     onSave(normalized)
     setEditorOpen(false)

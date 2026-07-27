@@ -5,13 +5,18 @@ export default function CardItem({ card, userRole, t, onSelect, onMessage }) {
   const isSold = card.status === 'sold'
 
   return (
-    <article className="card-item">
+    <article className="card-item card-common card-gold">
       <div className="card-hero">
         <img src={card.image} alt={card.name} />
+        <span className="card-tag">Premium</span>
         <span className={`status-badge ${card.status}`}>{t(`cards.${card.status}`)}</span>
       </div>
       <div className="card-body">
-        <h3>{card.name}</h3>
+        <div className="card-preview-title">
+          <h3>{card.name}</h3>
+          <span>{card.rarity || 'Legendary'}</span>
+        </div>
+        <p>{card.description || 'Rare collectible premium trading card with custom art and VIP price insights.'}</p>
         <div className="card-meta">
           <div className="price-block">
             {discount > 0 ? (
@@ -29,8 +34,8 @@ export default function CardItem({ card, userRole, t, onSelect, onMessage }) {
           <button type="button" className="ghost-button" onClick={() => onSelect(card.id)}>
             {t('cards.viewDetails')}
           </button>
-          <button type="button" className="primary-button" disabled={isSold} onClick={() => onMessage && onMessage(card)}>
-            {t('cards.contactSeller') || 'Nachricht'}
+          <button type="button" className="btn-gold" disabled={isSold} onClick={() => onMessage && onMessage(card)}>
+            {t('cards.contactSeller') || 'Message'}
           </button>
         </div>
       </div>

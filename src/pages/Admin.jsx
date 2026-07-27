@@ -3,6 +3,7 @@ import UserTable from '../components/admin/UserTable.jsx'
 import CardAdminPanel from '../components/admin/CardAdminPanel.jsx'
 import EventAdminPanel from '../components/admin/EventAdminPanel.jsx'
 import AdminChats from '../components/chat/AdminChats.jsx'
+import SellerDashboard from '../components/seller/SellerDashboard.jsx'
 
 export default function Admin({ currentUser, t, cards, setCards, users, setUsers, events, setEvents, chats, setChats }) {
   const [usersState, setUsersState] = useState(users)
@@ -77,8 +78,13 @@ export default function Admin({ currentUser, t, cards, setCards, users, setUsers
         </section>
 
         <section className="admin-panel shell">
-          <h2>{t('admin.chatManagement') || 'Nachrichten'}</h2>
-          <AdminChats conversations={conversations} onSelect={(id) => { /* handled in chat host */ }} />
+          <h2>Seller Dashboard</h2>
+          <SellerDashboard chats={chats} offers={[]} cards={cards} t={t} />
+        </section>
+
+        <section className="admin-panel shell">
+          <h2>{t('admin.chatManagement') || 'Conversations'}</h2>
+          <AdminChats conversations={chats} setChats={setChats} currentUser={currentUser} />
         </section>
       </div>
     )
