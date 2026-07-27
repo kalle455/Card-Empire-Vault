@@ -1,0 +1,42 @@
+export const users = [
+  {
+    id: 'admin-001',
+    name: 'Admin',
+    role: 'ADMIN',
+    joined: '2024-01',
+    bio: 'Entwicklungs-Admin mit Zugriff auf Dashboard-Tests.',
+    rewards: 'Admin-Zugriff, vollen Funktionszugriff',
+  },
+  {
+    id: 'vip-024',
+    name: 'Luca',
+    role: 'V.I.P',
+    joined: '2024-04',
+    bio: 'VIP-Sammler mit exklusiven Rabatten und erweiterten Shop-Vorteilen.',
+    rewards: '25% Rabatt, Priority-Zugang',
+  },
+  {
+    id: 'potm-007',
+    name: 'Mia',
+    role: 'POTM',
+    joined: '2024-06',
+    bio: 'Player of the Month mit herausragenden Turnierleistungen und Community-Status.',
+    rewards: 'Sonderbadge, Event-Feature',
+  },
+  {
+    id: 'regular-211',
+    name: 'Jonas',
+    role: 'REGULAR',
+    joined: '2023-10',
+    bio: 'Regelmäßiger Sammler mit starkem Interesse an seltenen Editionen.',
+    rewards: 'Treuepunkte, exklusive Drops',
+  },
+  {
+    id: 'customer-112',
+    name: 'Nina',
+    role: 'CUSTOMER',
+    joined: '2024-01',
+    bio: 'Neuer Kunde mit Auge für seltene Karten, starke Deals und exklusive Sammlerangebote.',
+    rewards: 'Willkommensangebote',
+  },
+]

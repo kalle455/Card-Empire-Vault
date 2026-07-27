@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" aria-labelledby="placeholderTitle" preserveAspectRatio="xMidYMid slice">
+  <title id="placeholderTitle">Card Placeholder</title>
+  <rect width="480" height="320" rx="28" ry="28" fill="#13141a" />
+  <rect x="24" y="24" width="432" height="272" rx="20" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.12)" />
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#d4af37" font-family="Inter, Arial, sans-serif" font-size="28">Card Image</text>
+</svg>
