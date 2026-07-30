@@ -5,7 +5,7 @@ const artworkCache = new Map();
 
 function cardNames(value) {
   if (Array.isArray(value)) return value.filter((name) => typeof name === "string" && name.trim()).map((name) => name.trim());
-  if (typeof value === "string") return value.split(/\\n|,/).map((name) => name.trim()).filter(Boolean);
+  if (typeof value === "string") return value.split(/(?:\r?\n|,)/).map((name) => name.trim()).filter(Boolean);
   return [];
 }
 
