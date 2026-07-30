@@ -1,6 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/deck-check.js": { "maxDuration": 25 },
+    "api/card-catalog.js": { "maxDuration": 15 }
+  },
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/:path((?!api/).*)", "destination": "/index.html" }
   ]
 }
