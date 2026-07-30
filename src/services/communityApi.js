@@ -27,3 +27,9 @@ export function subscribeToLiveChanges(onChange) {
     .on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, onChange)
     .subscribe();
 }
+
+export async function getPotmPlayers() {
+  const { data, error } = await supabase.from("profiles").select("username").eq("role", "potm").order("username");
+  if (error) throw error;
+  return data ?? [];
+}
