@@ -39,7 +39,7 @@ function officialDmoCatalog() {
       try {
         const response = await fetch(DMO_CATALOG_URL);
         const raw = await response.text();
-        const match = raw.match(/google\\.visualization\\.Query\\.setResponse\\((.*)\\);?\\s*$/s);
+        const match = raw.match(/google\.visualization\.Query\.setResponse\((.*)\);?\s*$/s);
         if (!response.ok || !match) throw new Error("catalogue unavailable");
 
         const table = JSON.parse(match[1]).table;
