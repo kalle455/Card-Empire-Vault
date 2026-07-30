@@ -120,3 +120,30 @@
 .case-only-card .collector-case{height:94%;width:min(84%,238px)}
 .case-only-card .vault-image:focus-visible{outline:2px solid #baf7c3;outline-offset:5px}
 @media(max-width:600px){.case-only-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.case-only-card .vault-image{height:300px}.case-only-card .collector-case{width:min(90%,180px);height:93%}}
+
+
+/* Kalenski collector-grade label */
+.collector-case .case-label{gap:7px;padding:4px 7px}
+.collector-case .case-name,.collector-case .case-grade,.detail-case-name,.detail-case-grade{display:grid;min-width:0;gap:1px}
+.collector-case .case-name{align-content:center}
+.collector-case .case-name b{font-family:Georgia,serif;font-size:.56rem;letter-spacing:.015em;text-align:left}
+.collector-case .case-name small{color:#334138;font-size:.31rem;font-weight:800;letter-spacing:.055em;line-height:1.05;text-align:left}
+.collector-case .case-grade{align-content:center;justify-items:end;padding-left:7px;border-left:1px solid rgba(32,46,38,.38)}
+.collector-case .case-grade small{color:#35453b;font-size:.30rem;font-weight:900;letter-spacing:.11em;line-height:1;text-align:right}
+.collector-case .case-grade b{color:#15231a;font-family:Arial,sans-serif;font-size:.56rem;font-weight:1000;letter-spacing:.055em;line-height:1;white-space:nowrap;text-align:right}
+.detail-case-name{align-content:center}
+.detail-case-name b{font-family:Georgia,serif;font-size:.71rem;letter-spacing:.015em;text-align:left}
+.detail-case-name small{color:#334138;font-size:.41rem;font-weight:800;letter-spacing:.065em;line-height:1.1;text-align:left}
+.detail-case-grade{align-content:center;justify-items:end;padding-left:9px;border-left:1px solid rgba(32,46,38,.38)}
+.detail-case-grade small{color:#35453b;font-size:.42rem;font-weight:900;letter-spacing:.12em;line-height:1;text-align:right}
+.detail-case-grade b{color:#15231a;font-family:Arial,sans-serif;font-size:.73rem;font-weight:1000;letter-spacing:.06em;line-height:1;white-space:nowrap;text-align:right}
+@media(max-width:600px){
+  .collector-case .case-name b{font-size:.46rem}
+  .collector-case .case-name small{font-size:.27rem}
+  .collector-case .case-grade small{font-size:.25rem}
+  .collector-case .case-grade b{font-size:.45rem}
+  .detail-case-name b{font-size:.61rem}
+  .detail-case-name small{font-size:.35rem}
+  .detail-case-grade small{font-size:.34rem}
+  .detail-case-grade b{font-size:.62rem}
+}
