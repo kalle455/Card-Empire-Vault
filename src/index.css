@@ -692,3 +692,6 @@ body { background:radial-gradient(1000px 700px at 100% 0%,rgba(26,91,64,.16),tra
 .empire-brand span { color:#91d39a!important; }
 .empire-nav a.active,.empire-nav a:hover { color:#a8efb3!important; }
 .empire-nav nav a { color:#aab5af; }
+
+
+.event-banlist{margin-top:16px;border-top:1px solid rgba(145,211,154,.2);padding-top:12px}.event-banlist summary{color:#a8efb3;cursor:pointer;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.event-banlist p{margin-top:9px!important;color:#aebbb3!important;font-size:.77rem;line-height:1.65}
