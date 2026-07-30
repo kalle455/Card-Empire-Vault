@@ -13,3 +13,5 @@
 .vault-card.rainbow .vault-image img { filter:drop-shadow(0 18px 16px #000) saturate(1.15) contrast(1.04); }
 .vault-card.rainbow:hover .vault-image::before { opacity:.72; animation-duration:2.5s; }
 @keyframes rainbow-holo { 0%{background-position:110% 0%}50%{background-position:0% 100%}100%{background-position:110% 0%} }
+
+.vault-cart-panel{max-height:min(720px,calc(100vh - 32px));display:flex;flex-direction:column}.cart-items{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:4px}.cart-items::-webkit-scrollbar{width:6px}.cart-items::-webkit-scrollbar-thumb{background:rgba(145,211,154,.45);border-radius:8px}.cart-summary{flex:0 0 auto}.vault-cart-panel>.vault-submit,.vault-cart-panel>.cart-note{flex:0 0 auto}
