@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 const AuthContext = createContext(null);
@@ -9,12 +9,13 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(isSupabaseConfigured);
 
+  const loadProfile = useCallback(async (user) => {
+    if (!user) return setProfile(null);
+    const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+    setProfile(data ?? null);
+  }, []);
+
   useEffect(() => {
-    async function loadProfile(user) {
-      if (!user) return setProfile(null);
-      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
-      setProfile(data ?? null);
-    }
     supabase.auth.getSession().then(({ data: { session: current } }) => {
       setSession(current); loadProfile(current?.user).finally(() => setLoading(false));
     });
@@ -22,13 +23,13 @@ export function AuthProvider({ children }) {
       setSession(next); loadProfile(next?.user); setLoading(false);
     });
     return () => subscription.unsubscribe();
-  }, []);
+  }, [loadProfile]);
 
   const signIn = (username, password) => supabase.auth.signInWithPassword({ email: accountEmail(username), password });
   const signUp = (username, password) => supabase.auth.signUp({ email: accountEmail(username), password, options: { data: { username } } });
   const signOut = () => supabase.auth.signOut();
 
-  return <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut, configured: isSupabaseConfigured }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut, refreshProfile: () => loadProfile(session?.user), configured: isSupabaseConfigured }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
