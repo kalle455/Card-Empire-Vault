@@ -20,12 +20,18 @@ export default function Marketplace() {
   const [offer, setOffer] = useState("");
   const [notice, setNotice] = useState("");
   const [activeChat, setActiveChat] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
   const isVip = profile?.role === "vip";
   async function loadCards() {
     const { data } = await supabase.from("cards").select("*").gt("quantity", 0).order("created_at", { ascending: false });
     setCards(data ?? []);
+  }
+  async function refreshCards() {
+    setRefreshing(true);
+    await loadCards();
+    setRefreshing(false);
   }
   useEffect(() => {
     loadCards();
@@ -70,7 +76,7 @@ export default function Marketplace() {
   }
 
   return <main className="vault-page">
-    <header className="vault-header"><div><p className="vault-overline">KALENSKI™ PRIVATE COLLECTION</p><h1>Card <em>Vault</em></h1><p>Every card is owned, listed and traded directly by Kalenski™.</p></div><button className="vault-cart" onClick={() => setCartOpen(true)}>Cart <span>{cart.length}</span></button></header>
+    <header className="vault-header"><div><p className="vault-overline">KALENSKI™ PRIVATE COLLECTION</p><h1>Card <em>Vault</em></h1><p>Every card is owned, listed and traded directly by Kalenski™.</p></div><div className="vault-header-actions"><button className="vault-refresh" onClick={refreshCards} disabled={refreshing}>{refreshing ? "Updating…" : "↻ Refresh"}</button><button className="vault-cart" onClick={() => setCartOpen(true)}>Cart <span>{cart.length}</span></button></div></header>
     <section className="vault-tools"><label className="vault-search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the vault" /></label><div className="filter-line">{categories.map((item) => <button key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div><div className="filter-line">{rarities.map((item) => <button key={item} className={rarity === item ? "is-active" : ""} onClick={() => setRarity(item)}>{item}</button>)}</div><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="featured">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select></section>
     <div className="vault-meta"><span>{shownCards.length} cards available</span>{isVip && <strong>VIP: 25% will be deducted in cart</strong>}</div>{notice && <p className="vault-notice">{notice}</p>}
     <section className="vault-grid">{shownCards.length === 0 && <div className="vault-empty"><p className="vault-overline">THE VAULT IS READY</p><h2>No cards listed yet.</h2><p>Kalenski™ will add the first cards from the Admin Dashboard.</p></div>}{shownCards.map((card) => <article className={"vault-card " + (card.rarity || "common").toLowerCase()} key={card.id}><button className="vault-image" onClick={() => setSelectedCard(card)}>{card.image_url && <img src={card.image_url} alt={card.name} />}<span>{card.rarity}</span><small>View card ↗</small></button><div className="vault-card-copy"><p>{card.category} · {card.quantity} in stock</p><h2>{card.name}</h2><div><strong>{Number(card.price).toLocaleString()} G</strong><small>{card.quantity === 1 ? "Last copy" : "Available now"}</small></div><button disabled={quantityInCart(card.id) >= card.quantity} onClick={() => addToCart(card)}>{quantityInCart(card.id) >= card.quantity ? "Maximum in cart" : <>Add to cart <b>+</b></>}</button><button className="offer-button" onClick={() => setOfferCard(card)}>Make offer</button></div></article>)}</section>
