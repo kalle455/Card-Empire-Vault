@@ -25,12 +25,13 @@ export default function AdminDashboard() {
   const [notice, setNotice] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selectedCatalogCard, setSelectedCatalogCard] = useState(null);
+  const [winnerSelections, setWinnerSelections] = useState({});
   const [editingCard, setEditingCard] = useState(null);
 
   async function load() {
     const [cards, events, offers, feedback, players, purchases, banlists] = await Promise.all([
       supabase.from("cards").select("*").order("created_at", { ascending: false }),
-      supabase.from("events").select("*, banlist:banlists(name, card_names, banned_cards, limited_cards)").order("starts_at"),
+      supabase.from("events").select("*, banlist:banlists(name, card_names, banned_cards, limited_cards), registrations:event_registrations(player_id, player:profiles(id, username))").order("starts_at"),
       supabase.from("offers").select("*, player:profiles(username)").order("created_at", { ascending: false }),
       supabase.from("feedback").select("*, player:profiles(username)").order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").order("username"),
@@ -141,6 +142,26 @@ export default function AdminDashboard() {
   async function deleteEvent(id, title) {
     const { error } = await supabase.from("events").delete().eq("id", id);
     setNotice(error ? error.message : title + " was removed.");
+    load();
+  }
+
+  async function confirmWinner(eventId, eventTitle) {
+    const winnerId = winnerSelections[eventId];
+    if (!winnerId) return setNotice("Choose a registered player first.");
+
+    const winner = data.players.find((player) => player.id === winnerId);
+    const { error } = await supabase.rpc("set_event_winner", {
+      p_event_id: eventId,
+      p_winner_id: winnerId,
+    });
+
+    if (error) return setNotice(error.message);
+    setNotice((winner?.username ?? "The selected player") + " won " + eventTitle + " and received +1 win.");
+    setWinnerSelections((current) => {
+      const next = { ...current };
+      delete next[eventId];
+      return next;
+    });
     load();
   }
 
@@ -269,7 +290,27 @@ export default function AdminDashboard() {
         </div>
 
         <section className="admin-panel"><h2>Scheduled events</h2><div className="admin-list">
-          {data.events.map((item) => <div key={item.id} className="admin-event-row"><span><b>{item.title}</b><small>{new Date(item.starts_at).toLocaleString()} · {item.banlist?.name ?? "No banlist"}</small></span><aside><button onClick={() => editEvent(item)}>Edit</button><button onClick={() => deleteEvent(item.id, item.title)}>Remove</button></aside></div>)}
+          {data.events.map((item) => {
+            const registrations = item.registrations ?? [];
+            const selectedWinnerId = winnerSelections[item.id] ?? "";
+            const winner = data.players.find((player) => player.id === item.winner_id);
+
+            return <div key={item.id} className="admin-event-row">
+              <span>
+                <b>{item.title}</b>
+                <small>{new Date(item.starts_at).toLocaleString()} · {item.banlist?.name ?? "No banlist"} · {registrations.length} registered</small>
+                {winner && <em className="event-winner-badge">WINNER · {winner.username} · +1 WIN</em>}
+              </span>
+              {!winner && <div className="event-winner-controls">
+                <select value={selectedWinnerId} onChange={(event) => setWinnerSelections((current) => ({ ...current, [item.id]: event.target.value }))}>
+                  <option value="">Choose winner</option>
+                  {registrations.map((registration) => <option key={registration.player_id} value={registration.player_id}>{registration.player?.username ?? "Player"}</option>)}
+                </select>
+                <button disabled={!selectedWinnerId} onClick={() => confirmWinner(item.id, item.title)}>Confirm winner</button>
+              </div>}
+              <aside><button onClick={() => editEvent(item)}>Edit</button><button onClick={() => deleteEvent(item.id, item.title)}>Remove</button></aside>
+            </div>;
+          })}
           {!data.events.length && <p>No events scheduled yet.</p>}
         </div></section>
 
