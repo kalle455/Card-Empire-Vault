@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import PurchaseChat from "./PurchaseChat";
@@ -24,6 +24,8 @@ export default function Marketplace() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardSize, setCardSize] = useState(25);
   const [redeemLoyalty, setRedeemLoyalty] = useState(false);
+  const tiltFrameRef = useRef(0);
+  const latestTiltRef = useRef(null);
 
   const roleKey = String(profile?.role ?? "guest").toLowerCase().replace(/\s+/g, "_");
   const timedVip = Boolean(profile?.vip_until && new Date(profile.vip_until).getTime() > Date.now());
@@ -55,19 +57,35 @@ export default function Marketplace() {
     setRefreshing(false);
   }
   function tiltCase(event) {
-    const caseElement = event.currentTarget.querySelector(".collector-case");
-    if (!caseElement) return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - .5;
-    const y = (event.clientY - bounds.top) / bounds.height - .5;
-    caseElement.style.setProperty("--case-tilt-x", (-y * 12).toFixed(2) + "deg");
-    caseElement.style.setProperty("--case-tilt-y", (x * 12).toFixed(2) + "deg");
+    if (!window.matchMedia?.("(hover: hover) and (pointer: fine)").matches) return;
+    latestTiltRef.current = { target: event.currentTarget, x: event.clientX, y: event.clientY };
+    if (tiltFrameRef.current) return;
+
+    tiltFrameRef.current = window.requestAnimationFrame(() => {
+      const pending = latestTiltRef.current;
+      tiltFrameRef.current = 0;
+      if (!pending) return;
+      const caseElement = pending.target.querySelector(".collector-case");
+      if (!caseElement) return;
+      const bounds = pending.target.getBoundingClientRect();
+      const x = (pending.x - bounds.left) / bounds.width - .5;
+      const y = (pending.y - bounds.top) / bounds.height - .5;
+      caseElement.style.setProperty("--case-tilt-x", (-y * 12).toFixed(2) + "deg");
+      caseElement.style.setProperty("--case-tilt-y", (x * 12).toFixed(2) + "deg");
+    });
   }
   function resetCaseTilt(event) {
+    if (tiltFrameRef.current) window.cancelAnimationFrame(tiltFrameRef.current);
+    tiltFrameRef.current = 0;
+    latestTiltRef.current = null;
     const caseElement = event.currentTarget.querySelector(".collector-case");
     caseElement?.style.removeProperty("--case-tilt-x");
     caseElement?.style.removeProperty("--case-tilt-y");
   }
+  useEffect(() => () => {
+    if (tiltFrameRef.current) window.cancelAnimationFrame(tiltFrameRef.current);
+  }, []);
+
   useEffect(() => {
     loadCards();
     const channel = supabase.channel("vault-cards").on("postgres_changes", { event: "*", schema: "public", table: "cards" }, loadCards).subscribe();
