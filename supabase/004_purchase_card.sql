@@ -12,6 +12,7 @@ set search_path = public
 as $$
 declare
   available_stock integer;
+  purchased_card_name text;
 begin
   if auth.uid() is null then
     raise exception 'You must be signed in.';
@@ -20,7 +21,7 @@ begin
     raise exception 'Invalid quantity.';
   end if;
 
-  select quantity into available_stock
+  select quantity, name into available_stock, purchased_card_name
   from public.cards
   where id = p_card_id
   for update;
@@ -36,8 +37,8 @@ begin
   set quantity = quantity - p_quantity
   where id = p_card_id;
 
-  insert into public.purchases (player_id, card_id, quantity, paid_gold)
-  values (auth.uid(), p_card_id, p_quantity, p_paid_gold);
+  insert into public.purchases (player_id, card_id, card_name, quantity, paid_gold)
+  values (auth.uid(), p_card_id, purchased_card_name, p_quantity, p_paid_gold);
 end;
 $$;
 
