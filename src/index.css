@@ -685,3 +685,10 @@ body { background:radial-gradient(1000px 700px at 100% 0%,rgba(26,91,64,.16),tra
 .event-panel h2,.news-grid h2{color:#eef2ef}.event-panel p,.news-grid p{color:var(--system-muted)}.event-panel strong,.notice{color:var(--system-accent)}.empty-vault{border-style:dashed;color:var(--system-muted)}
 .account-card{width:min(100%,500px)}.account-card h2{color:#eef2ef}.account-subtitle,.account-form label,.record{color:var(--system-muted)}.account-form input,.feedback-form textarea{background:#090b0b;border-color:var(--system-line);border-radius:4px}.account-form input:focus,.feedback-form textarea:focus{border-color:var(--system-accent)}.account-message,.role-chip,.potm-mark{color:var(--system-accent)}.role-chip{border-color:rgba(145,211,154,.45);background:rgba(145,211,154,.07)}
 .feedback-form{padding:26px;max-width:760px;background:var(--system-panel);border:1px solid var(--system-line);border-radius:6px}.feedback-form textarea{color:#fff}.feedback-form button{justify-self:start}.status-badge{background:var(--system-accent)}
+
+
+/* Navigation: Vault green, never gold */
+.empire-nav { border-bottom-color:rgba(145,211,154,.4)!important; }
+.empire-brand span { color:#91d39a!important; }
+.empire-nav a.active,.empire-nav a:hover { color:#a8efb3!important; }
+.empire-nav nav a { color:#aab5af; }
