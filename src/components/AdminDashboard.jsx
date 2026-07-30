@@ -22,6 +22,7 @@ export default function AdminDashboard() {
   const [editingEventId, setEditingEventId] = useState(null);
   const [notice, setNotice] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [selectedCatalogCard, setSelectedCatalogCard] = useState(null);
   const [editingCard, setEditingCard] = useState(null);
 
   async function load() {
@@ -48,15 +49,24 @@ export default function AdminDashboard() {
   useEffect(() => { load(); }, []);
   useEffect(() => {
     const term = card.name.trim();
-    if (term.length < 2) { setSuggestions([]); return undefined; }
+    if (selectedCatalogCard?.name === term || term.length < 2) {
+      setSuggestions([]);
+      return undefined;
+    }
+
+    let cancelled = false;
     const timer = setTimeout(async () => {
-      const result = await fetch("https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=" + encodeURIComponent(term))
+      const result = await fetch("/api/card-catalog?q=" + encodeURIComponent(term))
         .then((response) => response.ok ? response.json() : null)
         .catch(() => null);
-      setSuggestions(result?.data?.slice(0, 6) ?? []);
+      if (!cancelled) setSuggestions(result?.cards ?? []);
     }, 240);
-    return () => clearTimeout(timer);
-  }, [card.name]);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [card.name, selectedCatalogCard]);
 
   if (profile?.role !== "admin") {
     return <section className="admin-shell"><p className="vault-overline">RESTRICTED AREA</p><h1>Admin access only.</h1><p>Sign in with Kalenski’s administrator account to manage the Empire.</p></section>;
@@ -67,24 +77,31 @@ export default function AdminDashboard() {
 
   async function addCard(e) {
     e.preventDefault();
-    setNotice("Searching YGOPRODeck for the card image…");
-    const lookup = await fetch("https://db.ygoprodeck.com/api/v7/cardinfo.php?name=" + encodeURIComponent(card.name))
+    if (!selectedCatalogCard) {
+      return setNotice("Choose a card from the official DMO catalogue first.");
+    }
+
+    setNotice("Getting the automatic card image…");
+    const lookup = await fetch("https://db.ygoprodeck.com/api/v7/cardinfo.php?name=" + encodeURIComponent(selectedCatalogCard.name))
       .then((r) => r.ok ? r.json() : null)
       .catch(() => null);
     const found = lookup?.data?.[0];
+
     const { error } = await supabase.from("cards").insert({
-      name: card.name,
+      name: selectedCatalogCard.name,
       price: Number(card.price),
       quantity: Number(card.quantity),
-      category: card.category,
-      rarity: card.rarity,
+      category: selectedCatalogCard.category,
+      rarity: selectedCatalogCard.rarity,
       ygo_card_id: found?.id ?? null,
       image_url: found?.card_images?.[0]?.image_url ?? null,
       description: found?.desc ?? "",
     });
+
     if (error) return setNotice(error.message);
-    setNotice(card.name + " was added to the Vault.");
+    setNotice(selectedCatalogCard.name + " was added to the Vault · " + selectedCatalogCard.gameRarity + " rarity.");
     setCard(blankCard);
+    setSelectedCatalogCard(null);
     load();
   }
 
@@ -199,18 +216,18 @@ export default function AdminDashboard() {
 
       {tab === "cards" && <section className="admin-grid">
         <form className="admin-panel" onSubmit={addCard}>
-          <h2>Add a card</h2><p>Enter only the card name — the official image and details are found automatically.</p>
+          <h2>Add a card</h2><p>Only cards from the official DMO catalogue can enter the Vault. Their type and rarity are locked to the game list.</p>
           <div className="card-name-field">
-            <input required autoComplete="off" placeholder="Start typing a card name (e.g. PO)" value={card.name} onChange={(e) => setCard({ ...card, name: e.target.value })} />
+            <input required autoComplete="off" placeholder="Search the official card catalogue (e.g. PO)" value={card.name} onChange={(e) => { setCard({ ...card, name: e.target.value }); setSelectedCatalogCard(null); }} />
             {suggestions.length > 0 && <div className="card-suggestions">{suggestions.map((item) => (
-              <button type="button" key={item.id} onClick={() => { setCard({ ...card, name: item.name }); setSuggestions([]); }}>
-                <img src={item.card_images?.[0]?.image_url_small} alt="" /><span>{item.name}<small>{item.type}</small></span>
+              <button type="button" key={item.name} onClick={() => { setCard({ ...card, name: item.name, category: item.category, rarity: item.rarity }); setSelectedCatalogCard(item); setSuggestions([]); }}>
+                <span>{item.name}<small>{item.category} · {item.gameRarity}</small></span><b>{item.gameRarity}</b>
               </button>
             ))}</div>}
           </div>
           <div className="admin-row"><input required type="number" min="0" placeholder="Price in Gold" value={card.price} onChange={(e) => setCard({ ...card, price: e.target.value })} /><input required type="number" min="0" placeholder="Quantity" value={card.quantity} onChange={(e) => setCard({ ...card, quantity: e.target.value })} /></div>
-          <div className="admin-row"><select value={card.category} onChange={(e) => setCard({ ...card, category: e.target.value })}><option value="monster">Monster</option><option value="spell">Spell</option><option value="trap">Trap</option></select><select value={card.rarity} onChange={(e) => setCard({ ...card, rarity: e.target.value })}><option value="common">Common</option><option value="rare">Rare</option><option value="gold">Gold</option><option value="rainbow">Rainbow</option></select></div>
-          <button className="vault-submit">Add to vault</button>
+          <div className="admin-row"><input readOnly value={selectedCatalogCard ? selectedCatalogCard.category.toUpperCase() + " · official type" : "Official type"} /><input readOnly value={selectedCatalogCard ? selectedCatalogCard.gameRarity + " · official rarity" : "Official rarity"} /></div>
+          <button className="vault-submit" disabled={!selectedCatalogCard}>{selectedCatalogCard ? "Add to vault" : "Choose official card"}</button>
         </form>
         <section className="admin-panel"><h2>Vault stock</h2><div className="admin-list">
           {data.cards.map((item) => editingCard?.id === item.id ? (
