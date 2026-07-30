@@ -43,7 +43,15 @@ export default function VaultLoader() {
     }
 
     loadVaultTreasures();
-    return () => { active = false; };
+    const channel = supabase
+      .channel("homepage-vault-loader")
+      .on("postgres_changes", { event: "*", schema: "public", table: "cards" }, loadVaultTreasures)
+      .subscribe();
+
+    return () => {
+      active = false;
+      channel.unsubscribe();
+    };
   }, []);
 
   const treasures = cards.length ? cards : emptySlots;
