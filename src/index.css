@@ -581,3 +581,13 @@ button {
   border-radius:10px;
 
 }
+
+/* Player accounts */
+.account-panel { max-width: 520px; padding: 32px; display: grid; gap: 18px; }
+.account-form { display: grid; gap: 12px; }
+.account-form input { width: 100%; padding: 13px 15px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,.22); color: var(--text-main); }
+.account-message { color: var(--gold-light); }
+.text-button { border: 0; padding: 0; background: transparent; color: var(--gold); text-align: left; }
+.role-badge, .potm-badge { width: fit-content; padding: 7px 11px; border-radius: 999px; background: rgba(245,197,66,.18); color: var(--gold-light); font-weight: 700; }
+.potm-badge { background: rgba(128,82,255,.2); color: #ddc7ff; }
+.player-record { display: flex; gap: 24px; color: var(--text-secondary); }
