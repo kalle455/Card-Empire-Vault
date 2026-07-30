@@ -39,8 +39,8 @@ export default function Marketplace() {
     const bounds = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - bounds.left) / bounds.width - .5;
     const y = (event.clientY - bounds.top) / bounds.height - .5;
-    caseElement.style.setProperty("--case-tilt-x", (-y * 8).toFixed(2) + "deg");
-    caseElement.style.setProperty("--case-tilt-y", (x * 8).toFixed(2) + "deg");
+    caseElement.style.setProperty("--case-tilt-x", (-y * 12).toFixed(2) + "deg");
+    caseElement.style.setProperty("--case-tilt-y", (x * 12).toFixed(2) + "deg");
   }
   function resetCaseTilt(event) {
     const caseElement = event.currentTarget.querySelector(".collector-case");
