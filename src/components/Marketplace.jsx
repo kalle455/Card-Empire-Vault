@@ -19,7 +19,7 @@ export default function Marketplace() {
   const [offerCard, setOfferCard] = useState(null);
   const [offer, setOffer] = useState("");
   const [notice, setNotice] = useState("");
-  const [chatCards, setChatCards] = useState([]);
+  const [activeChat, setActiveChat] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
 
   const isVip = profile?.role === "vip";
@@ -60,7 +60,13 @@ export default function Marketplace() {
     const results = await Promise.all(cart.map((card) => supabase.rpc("purchase_card", { p_card_id: card.id, p_quantity: 1, p_paid_gold: isVip ? Number(card.price) * .75 : Number(card.price) })));
     const failure = results.find((result) => result.error);
     if (failure) return setNotice(failure.error.message);
-    const purchased = [...cart]; setCart([]); setCartOpen(false); setChatCards(purchased); setNotice(""); loadCards();
+    const purchased = [...cart];
+    const cardSummary = purchased.map((card) => card.name).join(", ");
+    const { data: chatId, error: chatError } = await supabase.rpc("start_purchase_chat", { p_card_summary: cardSummary });
+    setCart([]); setCartOpen(false); loadCards();
+    if (chatError) return setNotice("Purchase request received, but the live chat could not be created. Please tell Kalenski™.");
+    setActiveChat({ id: chatId, card_summary: cardSummary });
+    setNotice("");
   }
 
   return <main className="vault-page">
@@ -71,6 +77,6 @@ export default function Marketplace() {
     {selectedCard && <div className="vault-overlay"><article className={"card-detail-modal " + (selectedCard.rarity || "common").toLowerCase()}><button className="detail-close" onClick={() => setSelectedCard(null)}>×</button><div className="detail-image">{selectedCard.image_url && <img src={selectedCard.image_url} alt={selectedCard.name} />}</div><div className="detail-copy"><p className="vault-overline">{selectedCard.category} · {selectedCard.rarity}</p><h2>{selectedCard.name}</h2><p>{selectedCard.description || "A card from Kalenski™’s private Card Vault."}</p><dl><div><dt>Price</dt><dd>{Number(selectedCard.price).toLocaleString()} G</dd></div><div><dt>Stock</dt><dd>{selectedCard.quantity} available</dd></div></dl><button className="vault-submit" disabled={quantityInCart(selectedCard.id) >= selectedCard.quantity} onClick={() => addToCart(selectedCard)}>{quantityInCart(selectedCard.id) >= selectedCard.quantity ? "Maximum in cart" : "Add to cart"}</button><button className="detail-offer" onClick={() => { setOfferCard(selectedCard); setSelectedCard(null); }}>Make offer</button></div></article></div>}
     {offerCard && <div className="vault-overlay"><form className="vault-modal" onSubmit={submitOffer}><p className="vault-overline">MAKE AN OFFER</p><h2>{offerCard.name}</h2><label>Your offer in Gold<input required value={offer} onChange={(event) => setOffer(event.target.value)} inputMode="numeric" placeholder="e.g. 45000" /></label><textarea placeholder="Message for Kalenski™ (optional)" /><button className="vault-submit">Send offer</button><button type="button" className="vault-cancel" onClick={() => setOfferCard(null)}>Cancel</button></form></div>}
     {cartOpen && <div className="vault-overlay"><aside className="vault-cart-panel"><div className="cart-panel-head"><h2>Your cart</h2><button onClick={() => setCartOpen(false)}>×</button></div><div className="cart-items">{cart.length ? cart.map((card, index) => <div className="cart-line" key={card.id + index}><span>{card.name}</span><strong>{Number(card.price).toLocaleString()} G</strong><button onClick={() => setCart((current) => current.filter((_, i) => i !== index))}>Remove</button></div>) : <p className="cart-empty">Your vault cart is empty.</p>}</div><div className="cart-summary"><span>Subtotal <b>{subtotal.toLocaleString()} G</b></span>{isVip && <span className="cart-vip">VIP discount <b>−{discount.toLocaleString()} G</b></span>}<strong>Total <b>{total.toLocaleString()} G</b></strong></div><button className="vault-submit" disabled={!cart.length} onClick={purchase}>Request purchase</button><p className="cart-note">In-game Gold only. No real payments.</p></aside></div>}
-    {chatCards.length > 0 && <PurchaseChat buyer={profile?.username} cards={chatCards} onClose={() => setChatCards([])} />}
+    {activeChat && <PurchaseChat chat={activeChat} onClose={() => setActiveChat(null)} />}
   </main>;
 }
