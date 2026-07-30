@@ -5,10 +5,17 @@ import officialDmoCatalog from "virtual:dmo-card-catalog";
 import "./AdminDashboard.css";
 
 const blankCard = { name: "", price: "", quantity: "1", category: "monster", rarity: "rare" };
-const blankEvent = { title: "", starts_at: "", description: "", banlist_id: "" };
+const blankEvent = { title: "", starts_at: "", description: "", banlist_id: "", event_format: "five_way_ffa" };
 const blankBanlist = { name: "", banned: "", limited: "" };
 const roles = ["customer", "regular_customer", "vip", "potm", "admin"];
 const roleLabels = { customer: "Customer", regular_customer: "Regular Customer", vip: "V.I.P", potm: "POTM · Player of the Tournament", admin: "Kalenski · Admin" };
+const eventFormats = [
+  { value: "five_way_ffa", label: "5-WAY FFA", detail: "5 players", capacity: 5 },
+  { value: "six_way_ffa", label: "6-WAY FFA", detail: "6 players", capacity: 6 },
+  { value: "three_way_ffa", label: "3-WAY FFA", detail: "2v2v2 · 6 players", capacity: 6 },
+  { value: "four_way_ffa", label: "4-WAY FFA", detail: "2v2v2v2 · 8 players", capacity: 8 },
+];
+const getEventFormat = (value) => eventFormats.find((format) => format.value === value) ?? { label: "OPEN FORMAT", detail: "No player limit", capacity: null };
 
 const toLocalDateTime = (value) => value ? new Date(value).toISOString().slice(0, 16) : "";
 const cardNamesFromText = (value) => [...new Set(value.split(/\n|,/).map((name) => name.trim()).filter(Boolean))];
@@ -116,6 +123,7 @@ export default function AdminDashboard() {
       starts_at: event.starts_at,
       description: event.description,
       banlist_id: event.banlist_id || null,
+      event_format: event.event_format,
     };
     const result = editingEventId
       ? await supabase.from("events").update(payload).eq("id", editingEventId)
@@ -135,6 +143,7 @@ export default function AdminDashboard() {
       starts_at: toLocalDateTime(item.starts_at),
       description: item.description ?? "",
       banlist_id: item.banlist_id ?? "",
+      event_format: eventFormats.some((format) => format.value === item.event_format) ? item.event_format : "five_way_ffa",
     });
     setNotice("Editing " + item.title + ".");
   }
@@ -274,6 +283,9 @@ export default function AdminDashboard() {
             <h2>{editingEventId ? "Edit event" : "Create event"}</h2>
             <input required placeholder="Event name" value={event.title} onChange={(e) => setEvent({ ...event, title: e.target.value })} />
             <input required type="datetime-local" value={event.starts_at} onChange={(e) => setEvent({ ...event, starts_at: e.target.value })} />
+            <select value={event.event_format} onChange={(e) => setEvent({ ...event, event_format: e.target.value })}>
+              {eventFormats.map((format) => <option value={format.value} key={format.value}>{format.label} · {format.detail}</option>)}
+            </select>
             <select value={event.banlist_id} onChange={(e) => setEvent({ ...event, banlist_id: e.target.value })}><option value="">No banlist assigned</option>{data.banlists.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select>
             <textarea placeholder="Rules, location, prize…" value={event.description} onChange={(e) => setEvent({ ...event, description: e.target.value })} />
             <button className="vault-submit">{editingEventId ? "Save event" : "Publish event"}</button>
@@ -292,13 +304,14 @@ export default function AdminDashboard() {
         <section className="admin-panel"><h2>Scheduled events</h2><div className="admin-list">
           {data.events.map((item) => {
             const registrations = item.registrations ?? [];
+            const eventFormat = getEventFormat(item.event_format);
             const selectedWinnerId = winnerSelections[item.id] ?? "";
             const winner = data.players.find((player) => player.id === item.winner_id);
 
             return <div key={item.id} className="admin-event-row">
               <span>
                 <b>{item.title}</b>
-                <small>{new Date(item.starts_at).toLocaleString()} · {item.banlist?.name ?? "No banlist"} · {registrations.length} registered</small>
+                <small>{new Date(item.starts_at).toLocaleString()} · {eventFormat.label} · {eventFormat.detail} · {registrations.length}{eventFormat.capacity ? " / " + eventFormat.capacity : ""} registered · {item.banlist?.name ?? "No banlist"}</small>
                 {winner && <em className="event-winner-badge">WINNER · {winner.username} · +1 WIN</em>}
               </span>
               {!winner && <div className="event-winner-controls">
