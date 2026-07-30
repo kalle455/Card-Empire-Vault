@@ -9,6 +9,10 @@ as $$
 begin
   if new.role = 'customer' and new.loyalty_points >= 10 then
     new.role := 'regular_customer';
+    if tg_op = 'UPDATE' then
+      insert into public.notifications (player_id, message)
+      values (new.id, 'Loyalty Level 10 unlocked: Regular Customer.');
+    end if;
   end if;
   return new;
 end;
