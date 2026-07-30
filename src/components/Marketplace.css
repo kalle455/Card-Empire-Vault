@@ -169,3 +169,14 @@
   .case-only-card .case-grade small{font-size:.25rem}
   .case-only-card .case-grade b{font-size:.49rem}
 }
+
+/* Always keep the compact certificate ink readable, regardless of card rarity. */
+.case-only-card .case-label .case-name b,
+.case-only-card .case-label .case-name small,
+.case-only-card .case-label .case-grade small,
+.case-only-card .case-label .case-grade b{
+  color:#142019!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+.case-only-card .case-label .case-name small{color:#324238!important}
