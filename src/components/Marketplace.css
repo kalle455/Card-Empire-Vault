@@ -278,3 +278,7 @@
 .cart-line .cart-line-vip{display:flex;align-items:baseline;gap:6px;color:#fff1a7}
 .cart-line .cart-line-vip del{color:#79847d;font-size:.68rem;font-weight:500;text-decoration-thickness:1px}
 @media(max-width:600px){.vault-meta{gap:10px;align-items:flex-start}.market-role-chip{max-width:190px;text-align:right;justify-content:center;line-height:1.25}.case-only-card .vault-image .case-price-chip{bottom:7px;min-width:102px;padding:5px 7px}.case-only-card .vault-image .case-price-chip b{font-size:.67rem}}
+
+
+/* Empire Loyalty in the Card Vault */
+.loyalty-market-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid rgba(232,199,103,.34);border-radius:999px;background:rgba(93,70,17,.2);color:#efd27d;font-size:.61rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.cart-loyalty-toggle{display:flex;align-items:center;gap:9px;margin:14px 0 2px;padding:11px 12px;border:1px solid rgba(232,199,103,.31);background:rgba(99,74,16,.13);color:#f0d587;font-size:.68rem;font-weight:800;line-height:1.4}.cart-loyalty-toggle input{accent-color:#e8c767}@media(max-width:680px){.loyalty-market-chip{width:100%;justify-content:center}}
