@@ -1,58 +1,59 @@
-import './Navbar.css'
-import { roleLabels } from '../data/roleLabels.js'
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { supabase } from "../lib/supabase";
+import "./Navbar.css";
 
-export default function Navbar({ activePage, onNav, currentUser, setCurrentUser, t }) {
-  const navItems = ['home', 'shop', 'events', 'profile']
-  if (currentUser && currentUser.role === 'ADMIN') {
-    navItems.push('admin')
-  }
+const links = [
+  ["/", "Empire"],
+  ["/marketplace", "Card Market"],
+  ["/events", "Events"],
+  ["/news", "News"],
+  ["/feedback", "Feedback"],
+  ["/about", "About Kalenski"],
+];
+
+export default function Navbar() {
+  const { profile, session } = useAuth();
+  const [unread, setUnread] = useState(0);
+
+  useEffect(() => {
+    if (!session) {
+      setUnread(0);
+      return undefined;
+    }
+
+    async function loadUnread() {
+      const { data } = await supabase.from("notifications").select("id").eq("read", false);
+      setUnread(data?.length ?? 0);
+    }
+
+    loadUnread();
+    const channel = supabase.channel("nav-notifications")
+      .on("postgres_changes", {
+        event: "*",
+        schema: "public",
+        table: "notifications",
+        filter: "player_id=eq." + session.user.id,
+      }, loadUnread)
+      .subscribe();
+
+    return () => channel.unsubscribe();
+  }, [session]);
 
   return (
-    <header className="navbar shell">
-      <div className="brand">
-        <div className="brand-mark">K</div>
-        <div>
-          <p>{t('brand.name')}</p>
-          <span>{t('brand.tagline')}</span>
-        </div>
-      </div>
-
-      <nav className="nav-links" aria-label="Primary navigation">
-        {navItems.map((key) => (
-          <button
-            key={key}
-            type="button"
-            className={key === activePage ? 'nav-link active' : 'nav-link'}
-            onClick={() => onNav(key)}
-          >
-            {t(`nav.${key}`)}
-          </button>
-        ))}
-      </nav>
-
-      <div className="nav-right">
-        
-        <div className="user-panel">
-          {currentUser ? (
-            <>
-              <div className="user-avatar">{currentUser.name.charAt(0)}</div>
-              <div>
-                <span className="user-name">{currentUser.name}</span>
-                <span className="user-role">{roleLabels[currentUser.role] || currentUser.role}</span>
-              </div>
-              <div className="user-actions">
-                <button type="button" className="ghost-button" onClick={() => onNav('profile')}>{t('nav.profile')}</button>
-                <button type="button" className="ghost-button" onClick={() => { window.localStorage.removeItem('kalenskiUser'); setCurrentUser(null); onNav('home') }}>{t('auth.logout') || 'Logout'}</button>
-              </div>
-            </>
-          ) : (
-            <div className="auth-links">
-              <button type="button" className="ghost-button" onClick={() => onNav('login')}>{t('auth.login')}</button>
-              <button type="button" className="ghost-button" onClick={() => onNav('register')}>{t('auth.register')}</button>
-            </div>
-          )}
-        </div>
+    <header className="empire-nav">
+      <NavLink to="/" className="empire-brand"><span>Kalenski™</span><strong>Card Empire®</strong></NavLink>
+      <nav>{links.map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}</nav>
+      <div className="nav-account">
+        {profile?.role === "vip" && <span className="nav-vip">VIP −25%</span>}
+        <NavLink className="notification-bell" to="/messages" aria-label={unread ? `${unread} unread notifications` : "Notifications"}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
+          {unread > 0 && <span className="notification-count">{unread > 9 ? "9+" : unread}</span>}
+        </NavLink>
+        <NavLink to="/profile">{profile?.username ?? "Player Login"}</NavLink>
+        {profile?.role === "admin" && <NavLink to="/admin">Admin</NavLink>}
       </div>
     </header>
-  )
+  );
 }

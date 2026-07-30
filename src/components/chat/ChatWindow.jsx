@@ -1,49 +1,192 @@
-import { useEffect, useState } from 'react'
+import { useState } from "react";
 
-export default function ChatWindow({ currentUser, card, onClose, onSend, conversation }) {
-  const [message, setMessage] = useState('')
 
-  useEffect(() => {
-    setMessage('')
-  }, [conversation])
+export default function ChatWindow({
+  card,
+  onClose,
+  conversation,
+  onSend,
+  currentUser
+}) {
 
-  const handleSend = () => {
-    if (!message.trim()) return
-    const msg = {
+
+  const [message, setMessage] = useState("");
+
+
+
+  function sendMessage() {
+
+    if (!message.trim()) return;
+
+
+    onSend({
+
       id: Date.now().toString(),
-      sender: currentUser.id,
+
+      sender: currentUser?.id || "Buyer",
+
       text: message.trim(),
-      ts: new Date().toISOString(),
-    }
-    onSend(msg)
-    setMessage('')
+
+      ts: new Date().toISOString()
+
+    });
+
+
+    setMessage("");
+
   }
 
-  if (!card) return null
+
 
   return (
-    <div className="chat-window">
-      <div className="chat-header">
-        <strong>{card.name}</strong>
-        <button type="button" className="ghost-button" onClick={onClose}>Schließen</button>
-      </div>
-      <div className="chat-body">
-        {conversation?.messages?.length ? (
-          conversation.messages.map((m) => (
-            <div key={m.id} className={`chat-msg ${m.sender === currentUser.id ? 'me' : 'them'}`}>
-              <div className="chat-text">{m.text}</div>
-              <div className="chat-ts">{new Date(m.ts).toLocaleString()}</div>
-            </div>
-          ))
-        ) : (
-          <div className="chat-empty">Keine Nachrichten</div>
-        )}
+
+    <div
+      style={{
+        position:"fixed",
+        right:"25px",
+        bottom:"25px",
+        width:"380px",
+        height:"520px",
+        background:"#151c2b",
+        color:"white",
+        borderRadius:"20px",
+        zIndex:9999,
+        display:"flex",
+        flexDirection:"column",
+        boxShadow:"0 10px 40px rgba(0,0,0,.5)"
+      }}
+    >
+
+
+      <div
+        style={{
+          padding:"18px",
+          borderBottom:"1px solid rgba(255,255,255,.1)",
+          display:"flex",
+          justifyContent:"space-between"
+        }}
+      >
+
+        <div>
+
+          <strong>
+            Order Chat
+          </strong>
+
+          <div
+            style={{
+              color:"#f5c542",
+              fontSize:"14px"
+            }}
+          >
+            {card?.name}
+          </div>
+
+        </div>
+
+
+        <button
+          onClick={onClose}
+          style={{
+            background:"none",
+            border:"none",
+            color:"white",
+            cursor:"pointer"
+          }}
+        >
+          ✕
+        </button>
+
+
       </div>
 
-      <div className="chat-input">
-        <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Nachricht schreiben..." />
-        <button type="button" className="primary-button" onClick={handleSend}>Senden</button>
+
+
+      <div
+        style={{
+          flex:1,
+          padding:"15px",
+          overflowY:"auto"
+        }}
+      >
+
+        {conversation?.messages?.map((msg)=>(
+
+          <div
+            key={msg.id}
+            style={{
+              background:
+                msg.sender === "Kalenski™"
+                ? "#2d2410"
+                : "#202b40",
+              borderRadius:"12px",
+              padding:"12px",
+              marginBottom:"10px"
+            }}
+          >
+
+            <strong>
+              {msg.sender}
+            </strong>
+
+            <p>
+              {msg.text}
+            </p>
+
+
+          </div>
+
+        ))}
+
+
       </div>
+
+
+
+      <div
+        style={{
+          padding:"15px",
+          display:"flex",
+          gap:"10px"
+        }}
+      >
+
+        <input
+
+          value={message}
+
+          onChange={(e)=>setMessage(e.target.value)}
+
+          placeholder="Write a message..."
+
+          style={{
+            flex:1,
+            background:"#0f141f",
+            border:"1px solid rgba(255,255,255,.1)",
+            color:"white",
+            padding:"12px",
+            borderRadius:"10px"
+          }}
+
+        />
+
+
+        <button
+
+          onClick={sendMessage}
+
+          className="btn-primary"
+
+        >
+          Send
+        </button>
+
+
+      </div>
+
+
     </div>
-  )
+
+  );
+
 }
