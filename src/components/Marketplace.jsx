@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import cards from "../data/cards";
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import "./Marketplace.css";
 
@@ -8,6 +8,7 @@ const rarities = ["All rarities", "Common", "Rare", "Gold", "Rainbow"];
 
 export default function Marketplace() {
   const { profile } = useAuth();
+  const [cards, setCards] = useState([]);
   const [cart, setCart] = useState([]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All cards");
@@ -18,9 +19,15 @@ export default function Marketplace() {
   const [offer, setOffer] = useState("");
 
   const isVip = profile?.role === "vip";
+  useEffect(() => {
+    const loadCards = () => supabase.from("cards").select("*").order("created_at", { ascending: false }).then(({ data }) => setCards(data ?? []));
+    loadCards();
+    const channel = supabase.channel("vault-cards").on("postgres_changes", { event: "*", schema: "public", table: "cards" }, loadCards).subscribe();
+    return () => channel.unsubscribe();
+  }, []);
   const shownCards = useMemo(() => cards
     .filter((card) => card.name.toLowerCase().includes(query.toLowerCase()))
-    .filter((card) => category === "All cards" || card.type?.toLowerCase().includes(category.toLowerCase()))
+    .filter((card) => category === "All cards" || (card.category ?? card.type ?? "").toLowerCase().includes(category.toLowerCase()))
     .filter((card) => rarity === "All rarities" || card.rarity?.toLowerCase() === rarity.toLowerCase())
     .sort((a, b) => sort === "low" ? a.price - b.price : sort === "high" ? b.price - a.price : 0), [query, category, rarity, sort]);
 
@@ -43,9 +50,9 @@ export default function Marketplace() {
     </section>
 
     <div className="vault-meta"><span>{shownCards.length} cards available</span>{isVip && <strong>VIP: 25% will be deducted in cart</strong>}</div>
-    <section className="vault-grid">{shownCards.map((card) => <article className={"vault-card " + (card.rarity || "common").toLowerCase()} key={card.id}>
-      <div className="vault-image"><img src={card.image} alt={card.name} /><span>{card.rarity}</span></div>
-      <div className="vault-card-copy"><p>{card.type} · {card.condition}</p><h2>{card.name}</h2><div><strong>{Number(card.price).toLocaleString()} G</strong><small>Available now</small></div><button onClick={() => addToCart(card)}>Add to cart <b>+</b></button><button className="offer-button" onClick={() => setOfferCard(card)}>Make offer</button></div>
+    <section className="vault-grid">{shownCards.length === 0 && <div className="vault-empty"><p className="vault-overline">THE VAULT IS READY</p><h2>No cards listed yet.</h2><p>Kalenski™ will add the first cards from the Admin Dashboard.</p></div>}{shownCards.map((card) => <article className={"vault-card " + (card.rarity || "common").toLowerCase()} key={card.id}>
+      <div className="vault-image">{card.image_url && <img src={card.image_url} alt={card.name} />}<span>{card.rarity}</span></div>
+      <div className="vault-card-copy"><p>{card.category ?? card.type} · {card.rarity}</p><h2>{card.name}</h2><div><strong>{Number(card.price).toLocaleString()} G</strong><small>Available now</small></div><button onClick={() => addToCart(card)}>Add to cart <b>+</b></button><button className="offer-button" onClick={() => setOfferCard(card)}>Make offer</button></div>
     </article>)}</section>
 
     {offerCard && <div className="vault-overlay"><form className="vault-modal" onSubmit={(event) => { event.preventDefault(); setOfferCard(null); setOffer(""); }}><p className="vault-overline">MAKE AN OFFER</p><h2>{offerCard.name}</h2><label>Your offer in Gold<input required value={offer} onChange={(event) => setOffer(event.target.value)} inputMode="numeric" placeholder="e.g. 45000" /></label><textarea placeholder="Message for Kalenski™ (optional)" /><button className="vault-submit">Send offer</button><button type="button" className="vault-cancel" onClick={() => setOfferCard(null)}>Cancel</button></form></div>}
