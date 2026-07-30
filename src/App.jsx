@@ -8,7 +8,7 @@ import NotificationsPanel from "./components/NotificationsPanel";
 import BanlistGallery from "./components/BanlistGallery";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";
-import { addFeedback, getEvents, getPotmPlayers, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
+import { addFeedback, getEvents, getPotmPlayers, getPublishedFeedback, registerForEvent, subscribeToFeedbackChanges, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
 
 function Home() {
@@ -245,11 +245,28 @@ function Feedback() {
   const { session } = useAuth();
   const [text, setText] = useState("");
   const [message, setMessage] = useState("");
+  const [entries, setEntries] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    const loadFeedback = () => getPublishedFeedback().then((data) => { if (active) setEntries(data); }).catch(() => { if (active) setEntries([]); });
+    loadFeedback();
+    const channel = subscribeToFeedbackChanges(loadFeedback);
+    return () => { active = false; channel.unsubscribe(); };
+  }, []);
+
   async function submit(event) {
     event.preventDefault();
     if (!session) return setMessage("Please sign in to leave feedback.");
-    try { await addFeedback(session.user.id, text); setText(""); setMessage("Transmission received — thank you for leaving your mark."); } catch (error) { setMessage(error.message); }
+    try {
+      await addFeedback(session.user.id, text.trim());
+      setText("");
+      setMessage("Transmission received — it is now visible in the Empire.");
+    } catch (error) {
+      setMessage(error.message);
+    }
   }
+
   return (
     <div className="empire-page feedback-world">
       <section className="feedback-stage">
@@ -266,8 +283,8 @@ function Feedback() {
         <form className="feedback-form feedback-console" onSubmit={submit}>
           <header><div><p>PLAYER TRANSMISSION</p><h2>Leave your mark.</h2></div><span><i />Secure line</span></header>
           <label htmlFor="empire-feedback">Your message</label>
-          <textarea id="empire-feedback" required value={text} onChange={(e) => setText(e.target.value)} placeholder="How did the Empire feel?" />
-          <footer><small>Your feedback is saved directly to the Empire.</small><button className="feedback-submit-button"><span>Send transmission</span><b>↗</b></button></footer>
+          <textarea id="empire-feedback" required value={text} onChange={(event) => setText(event.target.value)} placeholder="How did the Empire feel?" />
+          <footer><small>Your feedback is saved and displayed directly in the Empire.</small><button className="feedback-submit-button"><span>Send transmission</span><b>↗</b></button></footer>
           {message && <p className="notice feedback-notice">{message}</p>}
         </form>
         <aside className="feedback-pledge">
@@ -275,6 +292,17 @@ function Feedback() {
           <span>02</span><p>REAL PEOPLE</p><h3>Every message<br />gets read.</h3>
           <span>03</span><p>BETTER EMPIRE</p><h3>Your feedback<br />shapes the vault.</h3>
         </aside>
+      </section>
+      <section className="feedback-wall">
+        <header><div><p className="stage-kicker"><span>✦</span> LIVE EMPIRE RECORD</p><h2>Voices from<br /><em>the vault.</em></h2></div><span>{entries.length ? String(entries.length).padStart(2, "0") + " latest transmissions" : "Awaiting the first transmission"}</span></header>
+        <div className="feedback-wall-grid">
+          {entries.map((entry, index) => <article key={entry.id} className={"feedback-entry entry-" + (index % 3)}>
+            <span>0{index + 1}</span>
+            <p>“{entry.message}”</p>
+            <small>EMPIRE PLAYER · {new Date(entry.created_at).toLocaleDateString()}</small>
+          </article>)}
+          {!entries.length && <article className="feedback-wall-empty"><p>The first player transmission will appear here.</p></article>}
+        </div>
       </section>
     </div>
   );
