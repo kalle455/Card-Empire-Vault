@@ -51,6 +51,9 @@ export default function Navbar() {
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
           {unread > 0 && <span className="notification-count">{unread > 9 ? "9+" : unread}</span>}
         </NavLink>
+        <NavLink className="chat-bubble" to="/messages" aria-label="Open purchase chats">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.48 8.7 8.7 0 0 1-3.58-.78L4 19.5l1.3-3.72A7.5 7.5 0 1 1 20 11.5Z" /><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01" /></svg>
+        </NavLink>
         <NavLink to="/profile">{profile?.username ?? "Player Login"}</NavLink>
         {profile?.role === "admin" && <NavLink to="/admin">Admin</NavLink>}
       </div>
