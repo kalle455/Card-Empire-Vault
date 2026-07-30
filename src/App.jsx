@@ -400,7 +400,7 @@ function EmpireFooter() {
           <h2>Parent company<br /><em>confirmed.</em></h2>
           <strong>KALENSKI HOLDINGS → KAIBACORP</strong>
           <span>In the fictional Empire universe, Kalenski Holdings quietly owns the Kaiba Company. Every Duel Disc report ends up in the same vault.</span>
-          <div className="archive-integrity-note"><b>INTEGRITY PROTOCOL</b><span>Wer das Empire scammen will, verliert nicht seine Seele. Nur seinen Zugang. Der Rest landet im Seelenarchiv.</span></div>
+          <div className="archive-integrity-note"><b>INTEGRITY PROTOCOL</b><span>SCAM DETECTED. Das Seelenarchiv ist erwacht. Der Zugang wurde den Jägern übergeben.</span></div>
           <small>Fictional fan-lore easter egg. No official affiliation or endorsement.</small>
           <button type="button" className="archive-seal" onClick={() => setArchiveOpen(false)}>Seal archive</button>
         </article>
