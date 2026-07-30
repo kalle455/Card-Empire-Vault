@@ -6,6 +6,7 @@ import AccountPanel from "./components/AccountPanel";
 import AdminDashboard from "./components/AdminDashboard";
 import NotificationsPanel from "./components/NotificationsPanel";
 import BanlistGallery from "./components/BanlistGallery";
+import DeckScanner from "./components/DeckScanner";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";
 import { addFeedback, getEvents, getPotmPlayers, getPublishedFeedback, registerForEvent, subscribeToFeedbackChanges, subscribeToLiveChanges } from "./services/communityApi";
@@ -353,6 +354,7 @@ function EmpireFooter() {
           <p>EXPLORE</p>
           <Link to="/marketplace">Card Market <b>↗</b></Link>
           <Link to="/events">Events <b>↗</b></Link>
+              <Link to="/deck-check">Deck scanner <b>↗</b></Link>
           <Link to="/feedback">Feedback <b>↗</b></Link>
           <Link to="/about">About Kalenski <b>↗</b></Link>
         </nav>
@@ -394,7 +396,8 @@ function EmpireFooter() {
 export default function App() {
   return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
     <Route path="/" element={<Home />} /><Route path="/marketplace" element={<Marketplace />} />
-    <Route path="/events" element={<Events />} /><Route path="/feedback" element={<Feedback />} />
+    <Route path="/events" element={<Events />} />
+        <Route path="/deck-check" element={<DeckScanner />} /><Route path="/feedback" element={<Feedback />} />
     <Route path="/about" element={<About />} /><Route path="/profile" element={<Profile />} /><Route path="/messages" element={<NotificationsPanel />} /><Route path="/chats" element={<NotificationsPanel chatOnly />} /><Route path="/admin" element={<Admin />} />
   </Routes></main><EmpireFooter /></div></BrowserRouter>;
 }
