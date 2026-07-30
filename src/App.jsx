@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Marketplace from "./components/Marketplace";
 import AccountPanel from "./components/AccountPanel";
+import AdminDashboard from "./components/AdminDashboard";
 import { useAuth } from "./context/AuthContext";
 import { addFeedback, getEvents, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
@@ -83,7 +84,7 @@ function About() {
 }
 
 function Profile() { return <div className="empire-page"><AccountPanel /></div>; }
-function Admin() { const { profile } = useAuth(); return <div className="empire-page"><section className="page-hero"><p className="eyebrow">ROYAL CONTROL ROOM</p><h1>Admin Dashboard</h1><p>{profile?.role === "admin" ? "Manage cards, stock, offers, events, news, feedback and player roles." : "This area is reserved for Kalenski™."}</p></section></div>; }
+function Admin() { return <AdminDashboard />; }
 
 export default function App() {
   return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
