@@ -324,10 +324,63 @@ function About() {
 function Profile() { return <div className="empire-page"><AccountPanel /></div>; }
 function Admin() { return <AdminDashboard />; }
 
+function EmpireFooter() {
+  const [archiveOpen, setArchiveOpen] = useState(false);
+
+  return (
+    <footer className="empire-footer">
+      <div className="empire-footer-top">
+        <section className="footer-brand-column">
+          <Link to="/" className="footer-brand"><span>Kalenski™</span><strong>Card Empire®</strong></Link>
+          <p>Private cards. Direct deals. A vault built for players who collect with intention.</p>
+          <span className="footer-signal"><i /> Empire system online</span>
+        </section>
+        <nav className="footer-column" aria-label="Explore the Empire">
+          <p>EXPLORE</p>
+          <Link to="/marketplace">Card Market <b>↗</b></Link>
+          <Link to="/events">Events <b>↗</b></Link>
+          <Link to="/feedback">Feedback <b>↗</b></Link>
+          <Link to="/about">About Kalenski <b>↗</b></Link>
+        </nav>
+        <nav className="footer-column" aria-label="Player links">
+          <p>PLAYER ACCESS</p>
+          <Link to="/profile">Player profile <b>↗</b></Link>
+          <Link to="/messages">Notifications <b>↗</b></Link>
+          <Link to="/chats">Live trade chat <b>↗</b></Link>
+          <Link to="/admin">Empire Admin <b>↗</b></Link>
+        </nav>
+        <section className="footer-column footer-standard">
+          <p>THE STANDARD</p>
+          <span><i>01</i> Live vault updates</span>
+          <span><i>02</i> 25% V.I.P advantage</span>
+          <span><i>03</i> Private collector cases</span>
+          <span><i>04</i> Official event banlists</span>
+        </section>
+      </div>
+      <div className="empire-footer-bottom">
+        <p>© 2026 Kalenski™ Card Empire®. All original Empire branding, website design and original content are protected.</p>
+        <button type="button" className="footer-archive-button" onClick={() => setArchiveOpen(true)}><span>✦</span> Holdings archive</button>
+        <p className="footer-fan-note">Unofficial fan experience. Yu-Gi-Oh! and related names belong to their respective owners.</p>
+      </div>
+      {archiveOpen && <div className="archive-overlay" role="dialog" aria-modal="true" aria-label="Classified Empire archive" onClick={() => setArchiveOpen(false)}>
+        <article className="archive-card" onClick={(event) => event.stopPropagation()}>
+          <button type="button" className="archive-close" onClick={() => setArchiveOpen(false)} aria-label="Close archive">×</button>
+          <p>CLASSIFIED FILE · K-01</p>
+          <h2>Parent company<br /><em>confirmed.</em></h2>
+          <strong>KALENSKI HOLDINGS → KAIBACORP</strong>
+          <span>In the fictional Empire universe, Kalenski Holdings quietly owns the Kaiba Company. Every Duel Disc report ends up in the same vault.</span>
+          <small>Fictional fan-lore easter egg. No official affiliation or endorsement.</small>
+          <button type="button" className="archive-seal" onClick={() => setArchiveOpen(false)}>Seal archive</button>
+        </article>
+      </div>}
+    </footer>
+  );
+}
+
 export default function App() {
   return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
     <Route path="/" element={<Home />} /><Route path="/marketplace" element={<Marketplace />} />
     <Route path="/events" element={<Events />} /><Route path="/feedback" element={<Feedback />} />
     <Route path="/about" element={<About />} /><Route path="/profile" element={<Profile />} /><Route path="/messages" element={<NotificationsPanel />} /><Route path="/chats" element={<NotificationsPanel chatOnly />} /><Route path="/admin" element={<Admin />} />
-  </Routes></main></div></BrowserRouter>;
+  </Routes></main><EmpireFooter /></div></BrowserRouter>;
 }
