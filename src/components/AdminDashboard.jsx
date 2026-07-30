@@ -250,6 +250,12 @@ export default function AdminDashboard() {
     load();
   }
 
+  async function deletePlayer(id, username) {
+    const { data, error } = await supabase.rpc("delete_player_profile", { p_player_id: id });
+    setNotice(error ? error.message : (data ?? username) + " was removed from Card Empire.");
+    load();
+  }
+
   return (
     <main className="admin-shell">
       <header><div><p className="vault-overline">KALENSKI™ CONTROL ROOM</p><h1>Empire Admin</h1></div><span>Live system</span></header>
@@ -369,8 +375,8 @@ export default function AdminDashboard() {
         {!data.feedback.length && <p>No feedback yet.</p>}
       </div></section>}
 
-      {tab === "players" && <section className="admin-panel"><h2>Player roles</h2><div className="admin-list">
-        {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.username}</b><small>{item.wins}W / {item.losses}L</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select></div>)}
+      {tab === "players" && <section className="admin-panel"><h2>Player roles</h2><p>Delete removes the player profile and their Empire data. Administrator profiles are protected.</p><div className="admin-list">
+        {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.username}</b><small>{item.wins}W / {item.losses}L</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select>{item.id !== profile.id && item.role !== "admin" && <button className="admin-delete-player" onClick={() => deletePlayer(item.id, item.username)}>Delete player</button>}</div>)}
       </div></section>}
     </main>
   );
