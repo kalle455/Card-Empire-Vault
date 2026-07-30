@@ -17,8 +17,20 @@ export default function PurchaseChat({ chat, onClose }) {
   const partnerName = isAdmin ? chat?.buyer?.username ?? "Customer" : "Kalenski™";
 
   useEffect(() => {
+    let active = true;
     setStatus(chat?.status ?? "open");
-  }, [chat?.id, chat?.status]);
+    setNotice("");
+    setText("");
+
+    async function loadCurrentStatus() {
+      const { data } = await supabase.rpc("list_purchase_chats");
+      const storedChat = data?.find((item) => item.id === chat?.id);
+      if (active && storedChat) setStatus(storedChat.status);
+    }
+
+    if (chat?.id && session) loadCurrentStatus();
+    return () => { active = false; };
+  }, [chat?.id, chat?.status, session]);
 
   useEffect(() => {
     if (!chat?.id || !session) return undefined;
@@ -83,7 +95,7 @@ export default function PurchaseChat({ chat, onClose }) {
 
     if (error) return setNotice(error.message);
     setStatus("deal_completed");
-    setNotice("Deal marked as completed. This chat is now closed.");
+    setNotice("");
   }
 
   return (
