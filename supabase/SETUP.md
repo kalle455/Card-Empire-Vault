@@ -11,8 +11,9 @@
 9. Run `009_banlist_categories.sql` eighth. This separates Banned and Limited cards in every banlist.
 10. Run `010_king_of_1_banlist.sql` ninth. This adds the official **KING OF 1** banlist.
 11. Run `011_keep_sales_history_when_removing_cards.sql` tenth. This lets you remove cards from the Vault without deleting their completed sales from the Bücher.
-12. In **Authentication → Providers → Email**, enable email/password login and turn off email confirmation.
-13. Create your account through the website. Then, in the SQL Editor, make Kalenski the administrator:
+12. Run `012_public_card_market.sql` next. This makes cards visible in the Card Market even when a visitor is not signed in.
+13. In **Authentication → Providers → Email**, enable email/password login and turn off email confirmation.
+14. Create your account through the website. Then, in the SQL Editor, make Kalenski the administrator:
 
 ```sql
 update public.profiles
