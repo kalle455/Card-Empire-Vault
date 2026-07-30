@@ -6,7 +6,7 @@ import AccountPanel from "./components/AccountPanel";
 import AdminDashboard from "./components/AdminDashboard";
 import NotificationsPanel from "./components/NotificationsPanel";
 import { useAuth } from "./context/AuthContext";
-import { addFeedback, getEvents, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
+import { addFeedback, getEvents, getPotmPlayers, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
 
 function Home() {
@@ -33,18 +33,21 @@ function Home() {
 function Events() {
   const { session } = useAuth();
   const [events, setEvents] = useState([]);
+  const [potmPlayers, setPotmPlayers] = useState([]);
   const [notice, setNotice] = useState("");
   useEffect(() => {
     let channel;
-    getEvents().then(setEvents).catch(() => setEvents([]));
-    try { channel = subscribeToLiveChanges(() => getEvents().then(setEvents)); } catch { /* Supabase tables may not be installed yet. */ }
+    const loadEvents = () => getEvents().then(setEvents).catch(() => setEvents([]));
+    loadEvents();
+    getPotmPlayers().then(setPotmPlayers).catch(() => setPotmPlayers([]));
+    try { channel = subscribeToLiveChanges(loadEvents); } catch { /* Supabase tables may not be installed yet. */ }
     return () => channel?.unsubscribe();
   }, []);
   async function join(id) {
     if (!session) return setNotice("Please sign in before registering.");
     try { await registerForEvent(id, session.user.id); setNotice("Registration confirmed — welcome to the event."); } catch (error) { setNotice(error.message); }
   }
-  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">KALENSKI™ CARD EMPIRE EVENTS</p><h1>Enter the arena</h1><p>Live registrations, tournament banlists and player highlights.</p></section>{notice && <p className="notice">{notice}</p>}
+  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">KALENSKI™ CARD EMPIRE EVENTS</p><h1>Enter the arena</h1><p>Live registrations, tournament banlists and player highlights.</p></section>{potmPlayers.length > 0 && <section className="potm-event-banner"><div><p className="eyebrow">PLAYER OF THE TOURNAMENT</p><strong>✦ {potmPlayers.map((player) => player.username).join(" · ")}</strong></div><span>Honored at every upcoming Empire event</span></section>}{notice && <p className="notice">{notice}</p>}
     <div className="event-list">{events.length ? events.map((event) => <article className="event-panel" key={event.id}><div><p className="eyebrow">{event.banlist?.name ?? "Official Banlist"}</p><h2>{event.title}</h2><p>{event.description}</p><strong>{new Date(event.starts_at).toLocaleString()}</strong>{((event.banlist?.banned_cards?.length ?? 0) + (event.banlist?.limited_cards?.length ?? 0) + ((!event.banlist?.banned_cards?.length && !event.banlist?.limited_cards?.length) ? (event.banlist?.card_names?.length ?? 0) : 0) > 0) && <details className="event-banlist"><summary>View official banlist</summary>{event.banlist?.banned_cards?.length > 0 && <><b>Banned</b><p>{event.banlist.banned_cards.join(" · ")}</p></>}{event.banlist?.limited_cards?.length > 0 && <><b>Limited</b><p>{event.banlist.limited_cards.join(" · ")}</p></>}{!event.banlist?.banned_cards?.length && !event.banlist?.limited_cards?.length && event.banlist?.card_names?.length > 0 && <p>{event.banlist.card_names.join(" · ")}</p>}</details>}</div><button className="gold-button" onClick={() => join(event.id)}>Register</button></article>) : <div className="empty-vault"><p className="vault-overline">NO EVENTS YET</p><h2>No events scheduled yet.</h2><p>Kalenski™ will publish the next tournament here.</p></div>}</div>
   </div>;
 }
