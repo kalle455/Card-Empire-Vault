@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
+import officialDmoCatalog from "virtual:dmo-card-catalog";
 import "./AdminDashboard.css";
 
 const blankCard = { name: "", price: "", quantity: "1", category: "monster", rarity: "rare" };
@@ -11,6 +12,7 @@ const roleLabels = { customer: "Customer", regular_customer: "Regular Customer",
 
 const toLocalDateTime = (value) => value ? new Date(value).toISOString().slice(0, 16) : "";
 const cardNamesFromText = (value) => [...new Set(value.split(/\n|,/).map((name) => name.trim()).filter(Boolean))];
+const normaliseCardName = (value) => String(value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
 export default function AdminDashboard() {
   const { profile } = useAuth();
@@ -54,18 +56,19 @@ export default function AdminDashboard() {
       return undefined;
     }
 
-    let cancelled = false;
-    const timer = setTimeout(async () => {
-      const result = await fetch("/api/card-catalog?q=" + encodeURIComponent(term))
-        .then((response) => response.ok ? response.json() : null)
-        .catch(() => null);
-      if (!cancelled) setSuggestions(result?.cards ?? []);
-    }, 240);
+    const query = normaliseCardName(term);
+    const exact = officialDmoCatalog.filter((item) => normaliseCardName(item.name) === query);
+    const startsWith = officialDmoCatalog.filter((item) => normaliseCardName(item.name).startsWith(query));
+    const includes = officialDmoCatalog.filter((item) => normaliseCardName(item.name).includes(query));
+    const matches = new Map();
 
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
+    for (const item of [...exact, ...startsWith, ...includes]) {
+      if (!matches.has(item.name)) matches.set(item.name, item);
+      if (matches.size === 8) break;
+    }
+
+    const timer = setTimeout(() => setSuggestions([...matches.values()]), 120);
+    return () => clearTimeout(timer);
   }, [card.name, selectedCatalogCard]);
 
   if (profile?.role !== "admin") {
