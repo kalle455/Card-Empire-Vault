@@ -28,3 +28,8 @@
 .banlist-groups.is-list .banlist-entry-name b{font-size:.7rem}
 @media(max-width:760px){.banlist-groups,.banlist-groups.is-list{grid-template-columns:1fr}.banlist-gallery{padding:13px}.banlist-gallery-header strong{font-size:.82rem}.banlist-entry-name b{font-size:.72rem}}
 @media(max-width:430px){.banlist-gallery-header{align-items:flex-start}.banlist-view-switch button{min-width:45px}.banlist-entry{min-height:55px}.banlist-entry img,.banlist-card-placeholder{flex-basis:31px;width:31px;height:44px}}
+
+.event-banlist-toggle{margin-top:2px;padding:8px 11px;border:1px solid rgba(168,239,179,.36);border-radius:8px;background:rgba(14,29,20,.72);color:#a8efb3;font-size:.66rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.event-banlist-toggle:hover{border-color:#d9bc69;color:#f1d77c}
+.visual-banlist-fallback{display:grid;gap:5px;margin-top:14px;padding:14px;border:1px solid rgba(239,113,119,.35);border-radius:9px;background:rgba(65,14,18,.22);color:#ffd9d9;font-size:.76rem}
+.visual-banlist-fallback span{color:#e7bfc0;font-size:.7rem}
