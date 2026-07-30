@@ -119,17 +119,7 @@ function Home() {
         <p className="arena-side-mark">DUEL<br />SYSTEM<br /><b>ACTIVE</b></p>
       </section>
 
-      <section className="home-transmissions">
-        <div className="home-section-copy transmission-heading">
-          <p className="home-eyebrow">EMPIRE TRANSMISSIONS</p>
-          <h2>What moves<br /><em>the vault.</em></h2>
-        </div>
-        <div className="transmission-list">
-          <article><span>01</span><p>VAULT SIGNAL</p><h3>New cards enter quietly. The right collectors find them first.</h3><button type="button" onClick={() => enterEmpire("/marketplace")}>See the market <b>↗</b></button></article>
-          <article><span>02</span><p>PLAYER SIGNAL</p><h3>VIP advantage is live: 25% comes off automatically in your cart.</h3><button type="button" onClick={() => enterEmpire("/profile")}>View profile <b>↗</b></button></article>
-          <article><span>03</span><p>ARENA SIGNAL</p><h3>New formats, banlists and tournament registrations appear live.</h3><button type="button" onClick={() => enterEmpire("/news")}>Read news <b>↗</b></button></article>
-        </div>
-      </section>
+
 
       <section className="home-feedback-zone">
         <div className="feedback-orbit" aria-hidden="true"><i /><i /><i /><b>✦</b></div>
@@ -146,7 +136,6 @@ function Home() {
         <div>
           <h2>I’m not a card seller<br />like everyone else.<br /><em>I’m the one who makes<br />the card matter.</em></h2>
           <p>Every card has a history. Every trade deserves trust. Kalenski™ Card Empire® is a private vault for collectors who expect more than a listing.</p>
-          <button type="button" onClick={() => enterEmpire("/about")}>Meet Kalenski™ <b>→</b></button>
         </div>
         <strong aria-hidden="true">K</strong>
       </section>
@@ -238,10 +227,6 @@ function Events() {
   );
 }
 
-function News() {
-  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">EMPIRE CHRONICLES</p><h1>News & announcements</h1></section><div className="news-grid"><article><span>NEW CARDS</span><h2>Legendary stock arrives soon</h2><p>New Gold and Rainbow cards are being prepared for the royal vault.</p></article><article><span>SHOP UPDATE</span><h2>VIP privilege activated</h2><p>VIP players automatically receive 25% off in their cart.</p></article><article><span>EVENTS</span><h2>The next tournament is near</h2><p>Watch the events page for registration and the official banlist.</p></article></div></div>;
-}
-
 function Feedback() {
   const { session } = useAuth();
   const [text, setText] = useState("");
@@ -264,7 +249,7 @@ function Admin() { return <AdminDashboard />; }
 export default function App() {
   return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
     <Route path="/" element={<Home />} /><Route path="/marketplace" element={<Marketplace />} />
-    <Route path="/events" element={<Events />} /><Route path="/news" element={<News />} /><Route path="/feedback" element={<Feedback />} />
+    <Route path="/events" element={<Events />} /><Route path="/feedback" element={<Feedback />} />
     <Route path="/about" element={<About />} /><Route path="/profile" element={<Profile />} /><Route path="/messages" element={<NotificationsPanel />} /><Route path="/chats" element={<NotificationsPanel chatOnly />} /><Route path="/admin" element={<Admin />} />
   </Routes></main></div></BrowserRouter>;
 }

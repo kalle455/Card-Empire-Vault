@@ -776,3 +776,17 @@ body { background:radial-gradient(1000px 700px at 100% 0%,rgba(26,91,64,.16),tra
 @media(max-width:900px){.home-vault-passage{grid-template-columns:1fr;min-height:auto}.home-vault-copy{max-width:420px}.vault-spotlight-stage{width:100%;min-height:380px}.vault-section-cta{margin-top:-8px}.home-arena{min-height:620px}.arena-duelist-left{left:-15%;opacity:.74}.arena-duelist-right{right:-17%;opacity:.74}.arena-copy{margin-left:0}.arena-side-mark{display:none}.home-transmissions{grid-template-columns:1fr}.transmission-heading{max-width:480px}.feedback-orbit{right:-12%;opacity:.68}.feedback-copy{margin-left:0}.home-manifesto{padding-right:28px}.home-manifesto h2{max-width:680px}}
 @media(max-width:600px){.home-vault-passage{padding:85px 24px}.vault-spotlight-stage{min-height:305px}.vault-spotlight-card{width:118px}.card-position-0{transform:translate(-217%,-50%) rotate(-24deg) translateY(14px)}.card-position-1{transform:translate(-137%,-52%) rotate(-12deg)}.card-position-2{transform:translate(-50%,-54%)}.card-position-3{transform:translate(37%,-52%) rotate(12deg)}.card-position-4{transform:translate(117%,-50%) rotate(24deg) translateY(14px)}.home-arena{padding:95px 24px;min-height:590px}.arena-duelist{min-width:210px;height:56%;opacity:.58}.arena-copy h2{font-size:clamp(4rem,20vw,6rem)}.home-transmissions{padding:90px 24px}.transmission-list article{grid-template-columns:28px 1fr;gap:12px;padding:22px 0}.transmission-list p,.transmission-list h3{grid-column:2}.transmission-list button{grid-column:2;grid-row:auto;width:max-content;margin-top:10px}.home-feedback-zone{padding:105px 24px;min-height:570px}.feedback-orbit{right:-36%;top:55%;opacity:.45}.home-manifesto{min-height:640px;padding:100px 24px}.home-manifesto h2{font-size:clamp(2.7rem,13.5vw,4.5rem)}}
 @media(prefers-reduced-motion:reduce){.vault-spotlight-card,.spotlight-card-shell,.arena-light,.arena-impact,.arena-impact i,.feedback-orbit{animation:none!important;transition:none!important}}
+
+
+/* Official Yu-Gi-Oh! card-back artwork on the five interactive Vault cards. */
+.spotlight-card-back {
+  background-color:#090807;
+  background-image:url("https://images.ygoprodeck.com/images/cards/back_high.jpg");
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  box-shadow:0 13px 30px rgba(0,0,0,.52),inset 0 0 0 3px rgba(171,99,35,.68);
+}
+.spotlight-card-back::before,
+.spotlight-card-back i,
+.spotlight-card-back b { display:none; }
