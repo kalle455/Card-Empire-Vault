@@ -228,3 +228,17 @@
   transform:translateZ(0);
   backface-visibility:hidden;
 }
+
+
+/* Player-controlled Market card size. */
+.vault-page{--vault-card-min:255px;--vault-card-height:455px;--vault-case-width:270px}
+.vault-tools{grid-template-columns:1.7fr auto auto auto auto}
+.card-size-control{height:42px;display:grid;grid-template-columns:auto auto minmax(74px,104px) auto;align-items:center;gap:7px;padding:0 10px;border:1px solid rgba(145,211,154,.22);background:#101514;color:#aebbb3;border-radius:4px;white-space:nowrap}
+.card-size-control small{color:#b6dcb9;font-size:.56rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.card-size-control>span,.card-size-control>b{color:#a5ecae;font-size:.9rem;font-weight:800;line-height:1}
+.card-size-control input{width:100%;margin:0;accent-color:#91d39a;cursor:pointer}
+.case-only-grid{grid-template-columns:repeat(auto-fill,minmax(var(--vault-card-min),1fr))}
+.case-only-card .vault-image{height:var(--vault-card-height)}
+.case-only-card .collector-case{width:min(90%,var(--vault-case-width))}
+@media(max-width:1100px){.vault-tools{grid-template-columns:1fr auto}.card-size-control{grid-column:2}}
+@media(max-width:600px){.card-size-control{grid-column:auto;width:100%;grid-template-columns:auto auto minmax(100px,1fr) auto}.case-only-card .vault-image{height:var(--vault-card-height)}}
