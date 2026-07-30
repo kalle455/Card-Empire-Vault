@@ -33,3 +33,5 @@
 .card-detail-modal.rainbow .detail-image::after{content:none}
 .card-detail-modal.rainbow .detail-card-art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;mix-blend-mode:color-dodge;background:linear-gradient(120deg,transparent 24%,rgba(255,101,191,.35) 37%,rgba(104,230,255,.5) 48%,rgba(248,238,145,.5) 57%,rgba(184,103,255,.48) 68%,transparent 80%);background-size:280% 100%;animation:rainbow-holo 5.5s linear infinite}
 @media(max-width:680px){.detail-card-art img{max-height:290px}}
+
+.vault-image>.vault-card-art{position:relative;z-index:1;top:auto;left:auto;height:88%;max-width:78%;padding:0;background:none;border:0;border-radius:0;color:inherit;font-size:initial;letter-spacing:normal;text-transform:none}
