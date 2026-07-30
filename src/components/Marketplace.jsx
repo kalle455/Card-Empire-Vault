@@ -1,112 +1,55 @@
-import { useState } from "react";
-import ChatWindow from "./chat/ChatWindow";
+import { useMemo, useState } from "react";
 import cards from "../data/cards";
 import { useAuth } from "../context/AuthContext";
 import "./Marketplace.css";
 
+const categories = ["All cards", "Monster", "Spell", "Trap"];
+const rarities = ["All rarities", "Common", "Rare", "Gold", "Rainbow"];
+
 export default function Marketplace() {
   const { profile } = useAuth();
   const [cart, setCart] = useState([]);
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("All cards");
+  const [rarity, setRarity] = useState("All rarities");
+  const [sort, setSort] = useState("featured");
   const [cartOpen, setCartOpen] = useState(false);
-  const [orderOpen, setOrderOpen] = useState(false);
-  const [conversation, setConversation] = useState({ messages: [] });
+  const [offerCard, setOfferCard] = useState(null);
+  const [offer, setOffer] = useState("");
 
   const isVip = profile?.role === "vip";
+  const shownCards = useMemo(() => cards
+    .filter((card) => card.name.toLowerCase().includes(query.toLowerCase()))
+    .filter((card) => category === "All cards" || card.type?.toLowerCase().includes(category.toLowerCase()))
+    .filter((card) => rarity === "All rarities" || card.rarity?.toLowerCase() === rarity.toLowerCase())
+    .sort((a, b) => sort === "low" ? a.price - b.price : sort === "high" ? b.price - a.price : 0), [query, category, rarity, sort]);
+
   const subtotal = cart.reduce((sum, card) => sum + card.price, 0);
-  const vipDiscount = isVip ? subtotal * 0.25 : 0;
-  const total = subtotal - vipDiscount;
+  const discount = isVip ? subtotal * .25 : 0;
+  const total = subtotal - discount;
+  const addToCart = (card) => setCart((current) => [...current, card]);
 
-  function addToCart(card) {
-    setCart((previous) => [...previous, card]);
-  }
+  return <main className="vault-page">
+    <header className="vault-header">
+      <div><p className="vault-overline">KALENSKI™ PRIVATE COLLECTION</p><h1>Card <em>Vault</em></h1><p>Every card is owned, listed and traded directly by Kalenski™.</p></div>
+      <button className="vault-cart" onClick={() => setCartOpen(true)}>Cart <span>{cart.length}</span></button>
+    </header>
 
-  function removeFromCart(id) {
-    setCart((previous) => previous.filter((card) => card.id !== id));
-  }
+    <section className="vault-tools">
+      <label className="vault-search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the vault" /></label>
+      <div className="filter-line">{categories.map((item) => <button key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div>
+      <div className="filter-line">{rarities.map((item) => <button key={item} className={rarity === item ? "is-active" : ""} onClick={() => setRarity(item)}>{item}</button>)}</div>
+      <select value={sort} onChange={(event) => setSort(event.target.value)}><option value="featured">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select>
+    </section>
 
-  function checkout() {
-    setConversation({
-      messages: [{
-        id: Date.now().toString(),
-        sender: "Kalenski™",
-        text: "Thank you very much for your order. I'll be in touch shortly to finalize the details with you.",
-        ts: new Date().toISOString(),
-      }],
-    });
-    setCartOpen(false);
-    setOrderOpen(true);
-  }
+    <div className="vault-meta"><span>{shownCards.length} cards available</span>{isVip && <strong>VIP: 25% will be deducted in cart</strong>}</div>
+    <section className="vault-grid">{shownCards.map((card) => <article className={"vault-card " + (card.rarity || "common").toLowerCase()} key={card.id}>
+      <div className="vault-image"><img src={card.image} alt={card.name} /><span>{card.rarity}</span></div>
+      <div className="vault-card-copy"><p>{card.type} · {card.condition}</p><h2>{card.name}</h2><div><strong>{Number(card.price).toLocaleString()} G</strong><small>Available now</small></div><button onClick={() => addToCart(card)}>Add to cart <b>+</b></button><button className="offer-button" onClick={() => setOfferCard(card)}>Make offer</button></div>
+    </article>)}</section>
 
-  function sendMessage(message) {
-    setConversation((previous) => ({ messages: [...previous.messages, message] }));
-  }
+    {offerCard && <div className="vault-overlay"><form className="vault-modal" onSubmit={(event) => { event.preventDefault(); setOfferCard(null); setOffer(""); }}><p className="vault-overline">MAKE AN OFFER</p><h2>{offerCard.name}</h2><label>Your offer in Gold<input required value={offer} onChange={(event) => setOffer(event.target.value)} inputMode="numeric" placeholder="e.g. 45000" /></label><textarea placeholder="Message for Kalenski™ (optional)" /><button className="vault-submit">Send offer</button><button type="button" className="vault-cancel" onClick={() => setOfferCard(null)}>Cancel</button></form></div>}
 
-  return (
-    <div className="marketplace-page">
-      <div className="marketplace-header">
-        <div>
-          <h1 className="title">Marketplace</h1>
-          {isVip && <p className="vip-notice">V.I.P active — 25% is deducted in your cart.</p>}
-        </div>
-        <button className="btn-primary" onClick={() => setCartOpen(true)}>
-          🛒 Cart ({cart.length})
-        </button>
-      </div>
-
-      <div className="card-grid">
-        {cards.map((card) => (
-          <div className="market-card" key={card.id}>
-            <div className="card-image">
-              <img src={card.image} alt={card.name} />
-            </div>
-            <div className="market-card-info">
-              <h3>{card.name}</h3>
-              <p>{card.type}</p>
-              <p>{card.rarity}</p>
-              <p>Condition: {card.condition}</p>
-              <p className="price">{card.price} G</p>
-              <button className="btn-primary" onClick={() => addToCart(card)}>Add to Cart</button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {cartOpen && (
-        <div className="modal-overlay">
-          <div className="offer-modal card">
-            <h2>Your Cart</h2>
-            {cart.length === 0 && <p>Your cart is empty.</p>}
-            {cart.map((card) => (
-              <div className="cart-row" key={card.id}>
-                <span>{card.name}</span>
-                <span>
-                  {card.price} G <button className="cart-remove" aria-label={"Remove " + card.name} onClick={() => removeFromCart(card.id)}>✕</button>
-                </span>
-              </div>
-            ))}
-            <hr />
-            <div className="cart-total"><span>Subtotal</span><strong>{subtotal.toFixed(2)} G</strong></div>
-            {isVip && (
-              <div className="cart-total vip-discount">
-                <span>V.I.P discount (25%)</span><strong>−{vipDiscount.toFixed(2)} G</strong>
-              </div>
-            )}
-            <div className="cart-total grand-total"><span>Total</span><strong>{total.toFixed(2)} G</strong></div>
-            <button className="btn-primary" disabled={cart.length === 0} onClick={checkout}>Checkout</button>
-            <button className="btn-secondary" onClick={() => setCartOpen(false)}>Close</button>
-          </div>
-        </div>
-      )}
-
-      {orderOpen && (
-        <ChatWindow
-          currentUser={{ id: profile?.id ?? "Buyer" }}
-          card={{ name: cart.length + " Card Order" }}
-          conversation={conversation}
-          onSend={sendMessage}
-          onClose={() => setOrderOpen(false)}
-        />
-      )}
-    </div>
-  );
+    {cartOpen && <div className="vault-overlay"><aside className="vault-cart-panel"><div className="cart-panel-head"><h2>Your cart</h2><button onClick={() => setCartOpen(false)}>×</button></div>{cart.length ? cart.map((card, index) => <div className="cart-line" key={card.id + index}><span>{card.name}</span><strong>{Number(card.price).toLocaleString()} G</strong><button onClick={() => setCart((current) => current.filter((_, i) => i !== index))}>Remove</button></div>) : <p className="cart-empty">Your vault cart is empty.</p>}<div className="cart-summary"><span>Subtotal <b>{subtotal.toLocaleString()} G</b></span>{isVip && <span className="cart-vip">VIP discount <b>−{discount.toLocaleString()} G</b></span>}<strong>Total <b>{total.toLocaleString()} G</b></strong></div><button className="vault-submit" disabled={!cart.length}>Request purchase</button><p className="cart-note">In-game Gold only. No real payments.</p></aside></div>}
+  </main>;
 }
