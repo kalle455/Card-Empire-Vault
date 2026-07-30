@@ -5,8 +5,9 @@
 3. Run `002_empire_catalog.sql` second.
 4. Run `004_purchase_card.sql` third. This makes stock reduction safe when players buy cards.
 5. Run `005_live_purchase_chat.sql` fourth. This activates the private real-time chat after a purchase.
-6. In **Authentication → Providers → Email**, enable email/password login and turn off email confirmation.
-7. Create your account through the website. Then, in the SQL Editor, make Kalenski the administrator:
+6. Run `006_complete_purchase_chat.sql` fifth. This lets Kalenski™ mark a deal as completed and closes the chat.
+7. In **Authentication → Providers → Email**, enable email/password login and turn off email confirmation.
+8. Create your account through the website. Then, in the SQL Editor, make Kalenski the administrator:
 
 ```sql
 update public.profiles
