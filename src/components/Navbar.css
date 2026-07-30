@@ -12,38 +12,51 @@
 .nav-account { display: flex; align-items: center; gap: 12px; }
 .nav-vip { color: #1a1000; background: linear-gradient(135deg,#f7dc79,#be8b14); padding: 6px 9px; border-radius: 99px; font-size: .7rem; font-weight: 800; }
 
-.notification-bell {
+.empire-nav .notification-bell {
   position: relative; display: grid; place-items: center; width: 34px; height: 34px;
   border: 1px solid rgba(145, 211, 154, .28); border-radius: 50%;
   background: rgba(145, 211, 154, .05); color: #b7e8bc !important;
 }
-.notification-bell:hover, .notification-bell.active {
+.empire-nav .notification-bell:hover, .empire-nav .notification-bell.active {
   border-color: rgba(145, 211, 154, .85); background: rgba(145, 211, 154, .14);
   color: #d6ffda !important;
 }
-.notification-bell svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.empire-nav .notification-bell svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .notification-count {
   position: absolute; top: -7px; right: -9px; min-width: 18px; height: 18px; padding: 0 4px;
   display: grid; place-items: center; border-radius: 999px; background: #77f08a; color: #061009;
   border: 2px solid #070a08; box-shadow: 0 0 14px rgba(119, 240, 138, .75);
   font-size: .6rem; font-weight: 950; line-height: 1;
 }
-.chat-bubble {
+.empire-nav .chat-bubble {
   display: grid; place-items: center; width: 34px; height: 34px;
   border: 1px solid rgba(145, 211, 154, .28); border-radius: 50%;
   background: rgba(145, 211, 154, .05); color: #b7e8bc !important;
 }
-.chat-bubble:hover, .chat-bubble.active {
+.empire-nav .chat-bubble:hover, .empire-nav .chat-bubble.active {
   border-color: rgba(145, 211, 154, .85); background: rgba(145, 211, 154, .14);
   color: #d6ffda !important;
 }
-.chat-bubble svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.empire-nav .chat-bubble svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
 @media(max-width: 900px) {
-  .empire-nav { gap: 16px; overflow-x: auto; }
-  .empire-nav nav { justify-content: flex-start; }
-  .nav-account { display: flex; margin-left: auto; }
-  .nav-account > :not(.notification-bell):not(.chat-bubble) { display: none; }
+  .empire-nav {
+    gap: 12px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+  }
+  .empire-nav nav {
+    min-width: 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .empire-nav nav::-webkit-scrollbar { display: none; }
+  .nav-account { display: flex; flex: 0 0 auto; margin-left: 0; gap: 8px; }
+  .nav-account > :not(.empire-nav .notification-bell):not(.empire-nav .chat-bubble) { display: none; }
+  .notification-count { top: -5px; right: -5px; }
 }
 
 
@@ -67,9 +80,9 @@
 .empire-nav nav a{position:relative;display:inline-flex;align-items:center;min-height:34px;padding:0 4px;font-size:.7rem;font-weight:800;letter-spacing:.045em;text-transform:uppercase;transition:color .25s ease,transform .25s ease,text-shadow .25s ease}
 .empire-nav nav a::after{content:"";position:absolute;left:50%;right:50%;bottom:0;height:1px;background:linear-gradient(90deg,#8eed9a,#f1d06f);box-shadow:0 0 10px rgba(142,237,154,.6);transition:left .25s ease,right .25s ease}
 .empire-nav nav a:hover{transform:translateY(-2px);text-shadow:0 0 18px rgba(245,213,92,.28)}.empire-nav nav a:hover::after,.empire-nav nav a.active::after{left:3px;right:3px}
-.nav-account{padding-left:4px}.nav-account>a:not(.notification-bell):not(.chat-bubble){position:relative;padding:7px 0;color:#cbd4ce;font-size:.72rem;font-weight:800;letter-spacing:.04em}.nav-account>a:not(.notification-bell):not(.chat-bubble)::after{content:"";position:absolute;right:0;bottom:3px;width:0;height:1px;background:#9aefa7;transition:width .22s ease}.nav-account>a:not(.notification-bell):not(.chat-bubble):hover::after{width:100%}
-.notification-bell,.chat-bubble{overflow:visible;transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease}.notification-bell::before,.chat-bubble::before{content:"";position:absolute;inset:-5px;border:1px solid transparent;border-radius:50%;opacity:0;transform:scale(.8);transition:opacity .22s ease,transform .22s ease}.notification-bell:hover,.chat-bubble:hover{transform:translateY(-2px) rotate(-5deg);box-shadow:0 0 18px rgba(132,231,150,.15)}.chat-bubble:hover{transform:translateY(-2px) rotate(5deg)}.notification-bell:hover::before,.chat-bubble:hover::before{border-color:rgba(153,239,168,.33);opacity:1;transform:scale(1)}.notification-count{animation:notification-pulse 2.2s ease-in-out infinite}
+.nav-account{padding-left:4px}.nav-account>a:not(.empire-nav .notification-bell):not(.empire-nav .chat-bubble){position:relative;padding:7px 0;color:#cbd4ce;font-size:.72rem;font-weight:800;letter-spacing:.04em}.nav-account>a:not(.empire-nav .notification-bell):not(.empire-nav .chat-bubble)::after{content:"";position:absolute;right:0;bottom:3px;width:0;height:1px;background:#9aefa7;transition:width .22s ease}.nav-account>a:not(.empire-nav .notification-bell):not(.empire-nav .chat-bubble):hover::after{width:100%}
+.empire-nav .notification-bell,.empire-nav .chat-bubble{overflow:visible;transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease}.empire-nav .notification-bell::before,.empire-nav .chat-bubble::before{content:"";position:absolute;inset:-5px;border:1px solid transparent;border-radius:50%;opacity:0;transform:scale(.8);transition:opacity .22s ease,transform .22s ease}.empire-nav .notification-bell:hover,.empire-nav .chat-bubble:hover{transform:translateY(-2px) rotate(-5deg);box-shadow:0 0 18px rgba(132,231,150,.15)}.empire-nav .chat-bubble:hover{transform:translateY(-2px) rotate(5deg)}.empire-nav .notification-bell:hover::before,.empire-nav .chat-bubble:hover::before{border-color:rgba(153,239,168,.33);opacity:1;transform:scale(1)}.notification-count{animation:notification-pulse 2.2s ease-in-out infinite}
 .nav-vip{position:relative;overflow:hidden;border:1px solid rgba(255,230,139,.58);box-shadow:0 5px 17px rgba(199,147,28,.2);letter-spacing:.07em}.nav-vip::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 22%,rgba(255,255,255,.5) 43%,transparent 62%);transform:translateX(-120%);animation:vip-shimmer 4.4s ease-in-out infinite}
 @keyframes empire-nav-sweep{0%,20%{transform:translateX(0);opacity:0}30%,70%{opacity:1}80%,100%{transform:translateX(490%);opacity:0}}@keyframes notification-pulse{0%,100%{transform:scale(1);box-shadow:0 0 14px rgba(119,240,138,.75)}50%{transform:scale(1.12);box-shadow:0 0 22px rgba(119,240,138,.95)}}@keyframes vip-shimmer{0%,58%{transform:translateX(-120%)}78%,100%{transform:translateX(120%)}}
-@media(prefers-reduced-motion:reduce){.empire-nav::after,.notification-count,.nav-vip::after{animation:none}.empire-nav,.empire-brand,.empire-nav nav a,.notification-bell,.chat-bubble{transition:none}}
+@media(prefers-reduced-motion:reduce){.empire-nav::after,.notification-count,.nav-vip::after{animation:none}.empire-nav,.empire-brand,.empire-nav nav a,.empire-nav .notification-bell,.empire-nav .chat-bubble{transition:none}}
 @media(max-width:900px){.empire-nav{min-height:62px;padding-top:10px;padding-bottom:10px}.empire-brand{min-width:126px}.empire-nav nav a{font-size:.63rem}.empire-nav::after{display:none}}
