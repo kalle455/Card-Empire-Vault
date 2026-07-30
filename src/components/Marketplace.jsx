@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabase";
+import initialVaultCards from "../data/initialVaultCards";
 import { useAuth } from "../context/AuthContext";
 import "./Marketplace.css";
 
@@ -8,7 +9,7 @@ const rarities = ["All rarities", "Common", "Rare", "Gold", "Rainbow"];
 
 export default function Marketplace() {
   const { profile } = useAuth();
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState(initialVaultCards);
   const [cart, setCart] = useState([]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All cards");
@@ -20,7 +21,7 @@ export default function Marketplace() {
 
   const isVip = profile?.role === "vip";
   useEffect(() => {
-    const loadCards = () => supabase.from("cards").select("*").order("created_at", { ascending: false }).then(({ data }) => setCards(data ?? []));
+    const loadCards = () => supabase.from("cards").select("*").order("created_at", { ascending: false }).then(({ data }) => { if (data?.length) setCards(data); });
     loadCards();
     const channel = supabase.channel("vault-cards").on("postgres_changes", { event: "*", schema: "public", table: "cards" }, loadCards).subscribe();
     return () => channel.unsubscribe();
