@@ -21,7 +21,7 @@ function Home() {
     async function loadSpotlight() {
       const { data } = await supabase
         .from("cards")
-        .select("id, name, image_url, price, rarity, category")
+        .select("id, name, image_url, ygo_card_id, price, rarity, category")
         .gt("quantity", 0)
         .order("price", { ascending: false })
         .limit(5);
@@ -37,6 +37,12 @@ function Home() {
       channel.unsubscribe();
     };
   }, []);
+
+  function cardImage(card) {
+    return card?.ygo_card_id
+      ? "https://images.ygoprodeck.com/images/cards/" + card.ygo_card_id + ".jpg"
+      : card?.image_url;
+  }
 
   function enterEmpire(path) {
     if (transitioning) return;
@@ -92,7 +98,7 @@ function Home() {
               <span className="spotlight-card-shell">
                 <span className="spotlight-card-back" aria-hidden="true"><i /><b>K</b></span>
                 <span className="spotlight-card-front">
-                  {card.image_url && <img src={card.image_url} alt="" />}
+                  {cardImage(card) && <img src={cardImage(card)} alt="" decoding="async" />}
                   <span className="spotlight-card-info"><b>{card.name}</b><small>{Number(card.price).toLocaleString()} G · {card.rarity}</small></span>
                 </span>
               </span>

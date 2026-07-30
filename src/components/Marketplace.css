@@ -218,3 +218,13 @@
   }
 }
 @media(hover:none){.case-only-card .collector-case{transform:rotateX(1.5deg) rotateY(-2deg)}}
+
+/* High-resolution source and crisp rendering for every card inside its collector case. */
+.vault-card-art img,
+.detail-card-art img,
+.spotlight-card-front img {
+  image-rendering:-webkit-optimize-contrast;
+  filter:contrast(1.035) saturate(1.045);
+  transform:translateZ(0);
+  backface-visibility:hidden;
+}
