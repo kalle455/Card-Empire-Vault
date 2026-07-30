@@ -1,0 +1,30 @@
+.banlist-gallery{margin-top:22px;padding:18px;border:1px solid rgba(157,196,170,.22);border-radius:14px;background:linear-gradient(145deg,rgba(13,23,19,.97),rgba(7,12,10,.97));box-shadow:inset 0 1px rgba(255,255,255,.035),0 18px 32px rgba(0,0,0,.2)}
+.banlist-gallery-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:1px solid rgba(180,215,190,.14)}
+.banlist-gallery-header .eyebrow{margin:0 0 4px;color:#94aa9c;font-size:.58rem}
+.banlist-gallery-header strong{color:#f1f4ef;font-size:.92rem;letter-spacing:.015em}
+.banlist-view-switch{display:flex;padding:3px;border:1px solid rgba(175,218,188,.2);border-radius:9px;background:#080e0b}
+.banlist-view-switch button{min-width:52px;padding:6px 8px;border:0;border-radius:6px;background:transparent;color:#8d9f94;font-size:.61rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.banlist-view-switch button.active{background:#c6a24b;color:#10130f;box-shadow:0 2px 8px rgba(0,0,0,.32)}
+.banlist-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:15px}
+.banlist-group{min-width:0;padding:13px;border:1px solid rgba(174,206,184,.16);border-radius:10px;background:rgba(3,8,6,.45)}
+.banlist-group>header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+.banlist-group>header div{display:grid;gap:3px}
+.banlist-group>header span{font-size:.72rem;font-weight:1000;letter-spacing:.1em;text-transform:uppercase}
+.banlist-group.banned>header span{color:#ff6d77}.banlist-group.limited>header span{color:#e7c45b}
+.banlist-group>header small{color:#82968a;font-size:.59rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.banlist-group>header>b{display:grid;place-items:center;min-width:25px;height:25px;border-radius:50%;background:rgba(255,255,255,.065);color:#eaf1ea;font-size:.7rem}
+.banlist-entries{display:grid;gap:7px}
+.banlist-entry{display:flex;align-items:center;gap:10px;min-width:0;min-height:59px;padding:5px 9px 5px 5px;border:1px solid rgba(172,201,181,.16);border-radius:7px;background:linear-gradient(100deg,rgba(255,255,255,.045),rgba(255,255,255,.014));transition:border-color .18s ease,transform .18s ease,background .18s ease}
+.banlist-entry:hover{border-color:rgba(222,190,100,.6);background:rgba(213,176,78,.07);transform:translateX(3px)}
+.banlist-entry img,.banlist-card-placeholder{flex:0 0 34px;width:34px;height:48px;border:1px solid rgba(224,234,226,.38);border-radius:3px;object-fit:cover;background:#111b15;box-shadow:0 4px 8px rgba(0,0,0,.35)}
+.banlist-card-placeholder{display:grid;place-items:center;color:#d4b15b;font-size:.85rem}
+.banlist-entry-name{display:grid;min-width:0;gap:2px}
+.banlist-entry-name small{color:#6e8477;font-size:.55rem;font-weight:800;letter-spacing:.08em}
+.banlist-entry-name b{overflow:hidden;color:#f1f4ef;font-size:.76rem;font-weight:800;line-height:1.2;text-overflow:ellipsis;white-space:nowrap}
+.banlist-groups.is-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.banlist-groups.is-list .banlist-group{padding:11px}
+.banlist-groups.is-list .banlist-entry{min-height:38px;padding:5px 7px}
+.banlist-groups.is-list .banlist-entry-name{grid-template-columns:20px minmax(0,1fr);align-items:center;gap:4px}
+.banlist-groups.is-list .banlist-entry-name b{font-size:.7rem}
+@media(max-width:760px){.banlist-groups,.banlist-groups.is-list{grid-template-columns:1fr}.banlist-gallery{padding:13px}.banlist-gallery-header strong{font-size:.82rem}.banlist-entry-name b{font-size:.72rem}}
+@media(max-width:430px){.banlist-gallery-header{align-items:flex-start}.banlist-view-switch button{min-width:45px}.banlist-entry{min-height:55px}.banlist-entry img,.banlist-card-placeholder{flex-basis:31px;width:31px;height:44px}}
