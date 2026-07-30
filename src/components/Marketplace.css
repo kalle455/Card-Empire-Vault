@@ -109,3 +109,14 @@
 .collector-case .vault-card-art{transform:translateZ(10px)}.collector-case .case-label,.collector-case .case-plaque{transform:translateZ(18px)}.collector-case .case-glass{transform:translateZ(22px)}
 .detail-collector-case::before{content:"";position:absolute;z-index:-1;inset:5px -7px -8px 6px;border:2px solid rgba(4,7,7,.9);border-radius:5px;background:linear-gradient(135deg,rgba(111,128,121,.44),rgba(0,0,0,.8));box-shadow:0 11px 16px rgba(0,0,0,.5);transform:translateZ(-14px)}.detail-collector-case .detail-card-art{transform:translateZ(10px)}.detail-collector-case .detail-case-label,.detail-collector-case .detail-case-plaque{transform:translateZ(18px)}.detail-collector-case .detail-case-glass{transform:translateZ(22px)}
 @media(hover:none){.vault-card:hover .collector-case{transform:none}.detail-collector-case{transform:none}}
+
+
+/* Card Market gallery: cases only. Details and purchase actions open on click. */
+.case-only-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+.case-only-card{padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;overflow:visible}
+.case-only-card:hover{transform:none;border-color:transparent;box-shadow:none}
+.case-only-card .vault-image{height:410px;border-radius:7px;background:radial-gradient(ellipse at 50% 75%,rgba(145,211,154,.08),transparent 54%),linear-gradient(160deg,#0f1413,#070909)}
+.case-only-card .vault-image::after{bottom:9px;width:56%;opacity:.72}
+.case-only-card .collector-case{height:94%;width:min(84%,238px)}
+.case-only-card .vault-image:focus-visible{outline:2px solid #baf7c3;outline-offset:5px}
+@media(max-width:600px){.case-only-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.case-only-card .vault-image{height:300px}.case-only-card .collector-case{width:min(90%,180px);height:93%}}
