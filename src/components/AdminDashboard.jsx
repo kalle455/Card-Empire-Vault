@@ -267,7 +267,7 @@ export default function AdminDashboard() {
       {tab === "books" && <section className="admin-books">
         <div className="sales-summary"><article><small>Total Gold</small><strong>{totalGold.toLocaleString()} G</strong></article><article><small>Cards sold</small><strong>{cardsSold}</strong></article><article><small>Purchases</small><strong>{data.purchases.length}</strong></article></div>
         <section className="admin-panel"><h2>Sales book</h2><p>Every completed purchase is saved here with buyer, card, price and time.</p><div className="admin-list">
-          {data.purchases.map((item) => <div key={item.id} className="admin-sale"><span><b>{item.card?.name ?? "Card"}</b><small>Buyer: {item.player?.username ?? "Player"} · {item.quantity} copy/copies</small></span><span><b>{Number(item.paid_gold).toLocaleString()} G</b><small>{new Date(item.created_at).toLocaleString()}</small></span></div>)}
+          {data.purchases.map((item) => <div key={item.id} className="admin-sale"><span><b>{item.card?.name ?? item.card_name ?? "Removed card"}</b><small>Buyer: {item.player?.username ?? "Player"} · {item.quantity} copy/copies</small></span><span><b>{Number(item.paid_gold).toLocaleString()} G</b><small>{new Date(item.created_at).toLocaleString()}</small></span></div>)}
           {!data.purchases.length && <p>No purchases have been recorded yet.</p>}
         </div></section>
       </section>}
