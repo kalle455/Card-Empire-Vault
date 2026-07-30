@@ -12,9 +12,10 @@ const roleLabels = {
 };
 
 const loyaltyLevel = (points) => {
-  if (points >= 250) return { name: "Vault Legend", next: null, color: "legend" };
-  if (points >= 100) return { name: "Empire Elite", next: 250, color: "elite" };
-  if (points >= 10) return { name: "Regular Customer", next: 100, color: "regular" };
+  if (points >= 100) return { name: "Vault Legend", next: null, color: "legend" };
+  if (points >= 50) return { name: "Empire Elite", next: 100, color: "elite" };
+  if (points >= 20) return { name: "Regular Customer", next: 50, color: "regular" };
+  if (points >= 10) return { name: "Regular Customer", next: 20, color: "regular" };
   return { name: "Vault Initiate", next: 10, color: "initiate" };
 };
 
@@ -34,7 +35,7 @@ export default function AccountPanel() {
     const loyaltyPurchases = Number(profile?.loyalty_purchases ?? 0);
     const vaultPasses = Number(profile?.loyalty_free_card_credits ?? 0);
     const loyalty = loyaltyLevel(loyaltyPoints);
-    const levelStart = loyaltyPoints >= 250 ? 250 : loyaltyPoints >= 100 ? 100 : loyaltyPoints >= 10 ? 10 : 0;
+    const levelStart = loyaltyPoints >= 100 ? 100 : loyaltyPoints >= 50 ? 50 : loyaltyPoints >= 20 ? 20 : loyaltyPoints >= 10 ? 10 : 0;
     const progress = loyalty.next ? Math.min(100, Math.round(((loyaltyPoints - levelStart) / (loyalty.next - levelStart)) * 100)) : 100;
     const displayedRole = timedVip && activeRole !== "vip" ? "V.I.P PASS" : (roleLabels[activeRole] ?? "Customer");
     return (
@@ -54,7 +55,7 @@ export default function AccountPanel() {
         <section className={"loyalty-record loyalty-" + loyalty.color}>
           <header><div><small>EMPIRE LOYALTY</small><b>{loyalty.name}</b></div><strong>LVL {loyaltyPoints} <small>· {loyaltyPoints} PTS</small></strong></header>
           <div className="loyalty-progress"><i style={{ width: progress + "%" }} /></div>
-          <footer><span>{loyalty.next ? loyalty.next - loyaltyPoints + " pts to " + (loyalty.next === 10 ? "Regular Customer" : loyalty.next === 100 ? "V.I.P Pass" : "Vault Legend") : "Maximum loyalty level reached"}</span><b>{loyaltyPurchases} purchases · {vaultPasses} Vault Pass{vaultPasses === 1 ? "" : "es"}</b></footer>
+          <footer><span>{loyalty.next ? loyalty.next - loyaltyPoints + " pts to " + (loyalty.next === 10 ? "Regular Customer" : loyalty.next === 20 ? "Vault Pass" : loyalty.next === 50 ? "7-day V.I.P Pass" : "30-day V.I.P Pass") : "Maximum loyalty level reached"}</span><b>{loyaltyPurchases} purchases · {vaultPasses} Vault Pass{vaultPasses === 1 ? "" : "es"}</b></footer>
           {timedVip && <p>V.I.P Pass active until {new Date(profile.vip_until).toLocaleDateString()} · −25% in the Card Vault</p>}
         </section>
         <button className="button-quiet player-signout" onClick={signOut}>Sign out</button>
