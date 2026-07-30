@@ -50,10 +50,6 @@ function Events() {
   </div>;
 }
 
-function Collection() {
-  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">PLAYER VAULT</p><h1>Your collection</h1><p>Purchased cards will be recorded here with rarity, quantity and purchase date.</p></section><div className="empty-vault">Sign in and complete an in-game purchase to start your personal card vault.</div></div>;
-}
-
 function News() {
   return <div className="empire-page"><section className="page-hero"><p className="eyebrow">EMPIRE CHRONICLES</p><h1>News & announcements</h1></section><div className="news-grid"><article><span>NEW CARDS</span><h2>Legendary stock arrives soon</h2><p>New Gold and Rainbow cards are being prepared for the royal vault.</p></article><article><span>SHOP UPDATE</span><h2>VIP privilege activated</h2><p>VIP players automatically receive 25% off in their cart.</p></article><article><span>EVENTS</span><h2>The next tournament is near</h2><p>Watch the events page for registration and the official banlist.</p></article></div></div>;
 }
@@ -79,7 +75,7 @@ function Admin() { return <AdminDashboard />; }
 
 export default function App() {
   return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
-    <Route path="/" element={<Home />} /><Route path="/marketplace" element={<Marketplace />} /><Route path="/collection" element={<Collection />} />
+    <Route path="/" element={<Home />} /><Route path="/marketplace" element={<Marketplace />} />
     <Route path="/events" element={<Events />} /><Route path="/news" element={<News />} /><Route path="/feedback" element={<Feedback />} />
     <Route path="/about" element={<About />} /><Route path="/profile" element={<Profile />} /><Route path="/admin" element={<Admin />} />
   </Routes></main></div></BrowserRouter>;
