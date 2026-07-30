@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Marketplace from "./components/Marketplace";
 import AccountPanel from "./components/AccountPanel";
 import AdminDashboard from "./components/AdminDashboard";
+import NotificationsPanel from "./components/NotificationsPanel";
 import { useAuth } from "./context/AuthContext";
 import { addFeedback, getEvents, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
