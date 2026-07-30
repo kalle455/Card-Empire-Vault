@@ -3,10 +3,16 @@ import "./BanlistGallery.css";
 
 const artworkCache = new Map();
 
+function cardNames(value) {
+  if (Array.isArray(value)) return value.filter((name) => typeof name === "string" && name.trim()).map((name) => name.trim());
+  if (typeof value === "string") return value.split(/\\n|,/).map((name) => name.trim()).filter(Boolean);
+  return [];
+}
+
 function getGroups(banlist) {
-  const banned = banlist?.banned_cards ?? [];
-  const limited = banlist?.limited_cards ?? [];
-  const legacyCards = !banned.length && !limited.length ? (banlist?.card_names ?? []) : [];
+  const banned = cardNames(banlist?.banned_cards);
+  const limited = cardNames(banlist?.limited_cards);
+  const legacyCards = !banned.length && !limited.length ? cardNames(banlist?.card_names) : [];
 
   return [
     { key: "banned", title: "Banned", note: "Not allowed", cards: banned.length ? banned : legacyCards },
@@ -31,7 +37,8 @@ async function findArtwork(name) {
 
 export default function BanlistGallery({ banlist }) {
   const [mode, setMode] = useState("visual");
-  const groups = useMemo(() => getGroups(banlist), [banlist]);
+  const safeBanlist = useMemo(() => Array.isArray(banlist) ? (banlist[0] ?? {}) : (banlist ?? {}), [banlist]);
+  const groups = useMemo(() => getGroups(safeBanlist), [safeBanlist]);
   const names = useMemo(() => [...new Set(groups.flatMap((group) => group.cards))], [groups]);
   const namesKey = names.join("|");
   const [artwork, setArtwork] = useState({});
@@ -59,7 +66,7 @@ export default function BanlistGallery({ banlist }) {
   return (
     <section className="banlist-gallery">
       <header className="banlist-gallery-header">
-        <div><p className="eyebrow">OFFICIAL FORMAT</p><strong>{banlist?.name ?? "Tournament banlist"}</strong></div>
+        <div><p className="eyebrow">OFFICIAL FORMAT</p><strong>{safeBanlist.name ?? "Tournament banlist"}</strong></div>
         <div className="banlist-view-switch" aria-label="Banlist view">
           <button type="button" className={mode === "visual" ? "active" : ""} onClick={() => setMode("visual")}>Cards</button>
           <button type="button" className={mode === "list" ? "active" : ""} onClick={() => setMode("list")}>List</button>
