@@ -5,7 +5,6 @@ import "./Navbar.css";
 const links = [
   ["/", "Empire"],
   ["/marketplace", "Card Market"],
-  ["/collection", "Collection"],
   ["/events", "Events"],
   ["/news", "News"],
   ["/feedback", "Feedback"],
