@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Marketplace from "./components/Marketplace";
 import AccountPanel from "./components/AccountPanel";
@@ -29,6 +29,28 @@ function Home() {
       <div className="hero-side-label">KALENSKI™<br />CARD EMPIRE®</div>
     </section>
   </div>;
+}
+
+class VisualBanlistBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { failed: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidUpdate(previousProps) {
+    if (previousProps.resetKey !== this.props.resetKey && this.state.failed) this.setState({ failed: false });
+  }
+
+  render() {
+    if (this.state.failed) {
+      return <div className="visual-banlist-fallback"><strong>Banlist could not load visually.</strong><span>Close and reopen it once — the event page stays available.</span></div>;
+    }
+    return this.props.children;
+  }
 }
 
 function Events() {
@@ -77,10 +99,12 @@ function Events() {
                 <h2>{event.title}</h2>
                 <p>{event.description}</p>
                 <strong>{new Date(event.starts_at).toLocaleString()}</strong>
-                {hasBanlistCards && <details className="event-banlist" onToggle={(toggleEvent) => setOpenBanlists((current) => ({ ...current, [event.id]: toggleEvent.currentTarget.open }))}>
-                  <summary>Open visual banlist</summary>
-                  {openBanlists[event.id] && <BanlistGallery banlist={banlist} />}
-                </details>}
+                {hasBanlistCards && <section className="event-banlist">
+                  <button type="button" className="event-banlist-toggle" onClick={() => setOpenBanlists((current) => ({ ...current, [event.id]: !current[event.id] }))}>
+                    {openBanlists[event.id] ? "Hide visual banlist" : "Open visual banlist"}
+                  </button>
+                  {openBanlists[event.id] && <VisualBanlistBoundary resetKey={event.id}><BanlistGallery banlist={banlist} /></VisualBanlistBoundary>}
+                </section>}
               </div>
               <button className="gold-button" onClick={() => join(event.id)}>Register</button>
             </article>
