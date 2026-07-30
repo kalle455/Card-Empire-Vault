@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 const AuthContext = createContext(null);
+const accountEmail = (username) => `${username.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "")}@players.cardempire.local`;
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
@@ -9,42 +10,23 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(isSupabaseConfigured);
 
   useEffect(() => {
-    if (!supabase) return;
-
     async function loadProfile(user) {
-      if (!user) {
-        setProfile(null);
-        return;
-      }
+      if (!user) return setProfile(null);
       const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
       setProfile(data ?? null);
     }
-
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      setSession(currentSession);
-      loadProfile(currentSession?.user).finally(() => setLoading(false));
+    supabase.auth.getSession().then(({ data: { session: current } }) => {
+      setSession(current); loadProfile(current?.user).finally(() => setLoading(false));
     });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession);
-      loadProfile(nextSession?.user);
-      setLoading(false);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, next) => {
+      setSession(next); loadProfile(next?.user); setLoading(false);
     });
-
     return () => subscription.unsubscribe();
   }, []);
 
-  async function signIn(email, password) {
-    return supabase.auth.signInWithPassword({ email, password });
-  }
-
-  async function signUp(email, password, username) {
-    return supabase.auth.signUp({ email, password, options: { data: { username } } });
-  }
-
-  async function signOut() {
-    return supabase.auth.signOut();
-  }
+  const signIn = (username, password) => supabase.auth.signInWithPassword({ email: accountEmail(username), password });
+  const signUp = (username, password) => supabase.auth.signUp({ email: accountEmail(username), password, options: { data: { username } } });
+  const signOut = () => supabase.auth.signOut();
 
   return <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut, configured: isSupabaseConfigured }}>{children}</AuthContext.Provider>;
 }
