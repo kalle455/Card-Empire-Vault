@@ -62,3 +62,18 @@
 .vault-card:hover .rarity-tag.rarity-rainbow{animation:rainbow-label 3.2s linear infinite}
 .vault-card:hover .rarity-tag.rarity-rainbow::after{animation:rainbow-label-sheen 3.2s linear infinite}
 .vault-card.gold:hover .vault-card-art::after{animation:gold-foil 3.3s ease-in-out infinite}
+
+
+/* When a panel is open, do not paint the entire image grid beneath it. */
+.vault-page.is-overlay-open>.vault-header,
+.vault-page.is-overlay-open>.vault-tools,
+.vault-page.is-overlay-open>.vault-meta,
+.vault-page.is-overlay-open>.vault-notice,
+.vault-page.is-overlay-open>.vault-grid{display:none}
+
+/* Calm foil at rest; the moving highlight is reserved for intentional hover. */
+.vault-card.rainbow .vault-card-art::after{background-position:50% 50%;opacity:.58}
+.vault-card.gold .vault-card-art::after{background-position:50% 0;opacity:.38}
+.rarity-tag.rarity-rainbow::after{background-position:50% 0}
+.vault-card.rainbow .vault-card-art{box-shadow:inset 0 0 0 1px rgba(215,155,255,.32),0 0 16px rgba(108,216,255,.16)}
+.vault-card.gold .vault-card-art{box-shadow:inset 0 0 0 1px rgba(255,225,136,.38),0 0 15px rgba(233,181,57,.16)}
