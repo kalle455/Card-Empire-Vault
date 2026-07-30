@@ -7,6 +7,7 @@ import "./Navbar.css";
 const links = [
   ["/", "Empire"],
   ["/marketplace", "Card Market"],
+  ["/trade-hub", "Trade Hub"],
   ["/events", "Events"],
   ["/feedback", "Feedback"],
   ["/about", "About Kalenski"],
