@@ -84,7 +84,7 @@ function Home() {
         <div className="home-section-copy home-vault-copy">
           <p className="home-eyebrow">THE PRIVATE SELECTION · 01—05</p>
           <h2>Turn over<br /><em>the impossible.</em></h2>
-          <p>The five most valuable cards currently inside the vault. Hover to reveal them — every one is ready for its next owner.</p>
+          <p>Maybe your next hand.</p>
         </div>
         <div className={"vault-spotlight-stage" + (spotlightCards.length ? "" : " is-empty")}>
           {spotlightCards.map((card, index) => (
