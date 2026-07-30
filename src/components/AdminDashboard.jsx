@@ -5,11 +5,11 @@ import "./AdminDashboard.css";
 
 const blankCard = { name: "", price: "", quantity: "1", category: "monster", rarity: "rare" };
 const blankEvent = { title: "", starts_at: "", description: "", banlist_id: "" };
-const blankBanlist = { name: "", cards: "" };
+const blankBanlist = { name: "", banned: "", limited: "" };
 const roles = ["customer", "regular_customer", "trusted_trader", "vip", "potm", "admin"];
 
 const toLocalDateTime = (value) => value ? new Date(value).toISOString().slice(0, 16) : "";
-const cardNamesFromText = (value) => value.split(/\n|,/).map((name) => name.trim()).filter(Boolean);
+const cardNamesFromText = (value) => [...new Set(value.split(/\n|,/).map((name) => name.trim()).filter(Boolean))];
 
 export default function AdminDashboard() {
   const { profile } = useAuth();
@@ -26,7 +26,7 @@ export default function AdminDashboard() {
   async function load() {
     const [cards, events, offers, feedback, players, purchases, banlists] = await Promise.all([
       supabase.from("cards").select("*").order("created_at", { ascending: false }),
-      supabase.from("events").select("*, banlist:banlists(name, card_names)").order("starts_at"),
+      supabase.from("events").select("*, banlist:banlists(name, card_names, banned_cards, limited_cards)").order("starts_at"),
       supabase.from("offers").select("*, player:profiles(username)").order("created_at", { ascending: false }),
       supabase.from("feedback").select("*, player:profiles(username)").order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").order("username"),
@@ -125,15 +125,19 @@ export default function AdminDashboard() {
 
   async function addBanlist(e) {
     e.preventDefault();
-    const card_names = cardNamesFromText(banlist.cards);
-    if (!card_names.length) return setNotice("Add at least one card to the banlist.");
+    const banned_cards = cardNamesFromText(banlist.banned);
+    const limited_cards = cardNamesFromText(banlist.limited);
+    const card_names = [...banned_cards, ...limited_cards];
+    if (!card_names.length) return setNotice("Add at least one Banned or Limited card.");
     const { error } = await supabase.from("banlists").insert({
       name: banlist.name.trim(),
       card_names,
+      banned_cards,
+      limited_cards,
       created_by: profile.id,
     });
     if (error) return setNotice(error.message);
-    setNotice(banlist.name + " was saved with " + card_names.length + " cards.");
+    setNotice(banlist.name + " was saved: " + banned_cards.length + " Banned · " + limited_cards.length + " Limited.");
     setBanlist(blankBanlist);
     load();
   }
@@ -235,9 +239,10 @@ export default function AdminDashboard() {
           </form>
 
           <form className="admin-panel" onSubmit={addBanlist}>
-            <h2>Create banlist</h2><p>Paste one card per line, or separate cards with commas.</p>
+            <h2>Create banlist</h2><p>Paste one card per line, or separate cards with commas. Duplicate names are removed automatically.</p>
             <input required placeholder="Banlist name" value={banlist.name} onChange={(e) => setBanlist({ ...banlist, name: e.target.value })} />
-            <textarea required placeholder={"Pot of Greed\nGraceful Charity\n…"} value={banlist.cards} onChange={(e) => setBanlist({ ...banlist, cards: e.target.value })} />
+            <label className="banlist-field"><span>Banned cards</span><textarea placeholder={"Pot of Greed\nGraceful Charity\n…"} value={banlist.banned} onChange={(e) => setBanlist({ ...banlist, banned: e.target.value })} /></label>
+            <label className="banlist-field"><span>Limited cards</span><textarea placeholder={"Jinzo\nCaius the Shadow Monarch\n…"} value={banlist.limited} onChange={(e) => setBanlist({ ...banlist, limited: e.target.value })} /></label>
             <button className="vault-submit">Save banlist</button>
           </form>
         </div>
@@ -248,7 +253,7 @@ export default function AdminDashboard() {
         </div></section>
 
         <section className="admin-panel"><h2>Banlist Library</h2><div className="admin-list">
-          {data.banlists.map((item) => <div key={item.id} className="admin-banlist-row"><span><b>{item.name}</b><small>{item.card_names.length} cards · {item.card_names.slice(0, 4).join(" · ")}{item.card_names.length > 4 ? " …" : ""}</small></span><button onClick={() => deleteBanlist(item.id, item.name)}>Remove</button></div>)}
+          {data.banlists.map((item) => { const banned = item.banned_cards ?? []; const limited = item.limited_cards ?? []; const allCards = [...banned, ...limited]; return <div key={item.id} className="admin-banlist-row"><span><b>{item.name}</b><small>{banned.length} Banned · {limited.length} Limited · {allCards.slice(0, 4).join(" · ")}{allCards.length > 4 ? " …" : ""}</small></span><button onClick={() => deleteBanlist(item.id, item.name)}>Remove</button></div>; })}
           {!data.banlists.length && <p>No banlists saved yet.</p>}
         </div></section>
       </section>}
