@@ -112,14 +112,14 @@
 
 
 /* Card Market gallery: cases only. Details and purchase actions open on click. */
-.case-only-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+.case-only-grid{grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:26px}
 .case-only-card{padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;overflow:visible}
 .case-only-card:hover{transform:none;border-color:transparent;box-shadow:none}
-.case-only-card .vault-image{height:410px;border-radius:7px;background:radial-gradient(ellipse at 50% 75%,rgba(145,211,154,.08),transparent 54%),linear-gradient(160deg,#0f1413,#070909)}
-.case-only-card .vault-image::after{bottom:9px;width:56%;opacity:.72}
-.case-only-card .collector-case{height:94%;width:min(84%,238px)}
+.case-only-card .vault-image{height:455px;border-radius:8px;background:radial-gradient(ellipse at 50% 75%,rgba(145,211,154,.08),transparent 54%),linear-gradient(160deg,#0f1413,#070909)}
+.case-only-card .vault-image::after{bottom:9px;width:60%;opacity:.72}
+.case-only-card .collector-case{height:95%;width:min(90%,270px)}
 .case-only-card .vault-image:focus-visible{outline:2px solid #baf7c3;outline-offset:5px}
-@media(max-width:600px){.case-only-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.case-only-card .vault-image{height:300px}.case-only-card .collector-case{width:min(90%,180px);height:93%}}
+@media(max-width:600px){.case-only-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.case-only-card .vault-image{height:330px}.case-only-card .collector-case{width:min(94%,190px);height:94%}}
 
 
 /* Kalenski collector-grade label */
