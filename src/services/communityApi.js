@@ -3,7 +3,7 @@ import { supabase } from "../lib/supabase";
 export async function getEvents() {
   const { data, error } = await supabase
     .from("events")
-    .select("*, banlist:banlists(name, card_names), registrations:event_registrations(count)")
+    .select("*, banlist:banlists(name, card_names, banned_cards, limited_cards), registrations:event_registrations(count)")
     .order("starts_at", { ascending: true });
   if (error) throw error;
   return data;
