@@ -191,37 +191,59 @@ function Events() {
     }
   }
 
+  function showSchedule() {
+    document.getElementById("event-schedule")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
-    <div className="empire-page">
-      <section className="page-hero">
-        <p className="eyebrow">KALENSKI™ CARD EMPIRE EVENTS</p>
-        <h1>Enter the arena</h1>
-        <p>Live registrations, tournament banlists and player highlights.</p>
+    <div className="empire-page event-world">
+      <section className="event-stage-hero">
+        <div className="event-stage-grid" aria-hidden="true" />
+        <div className="event-stage-beam beam-a" aria-hidden="true" />
+        <div className="event-stage-beam beam-b" aria-hidden="true" />
+        <div className="event-stage-player stage-player-one" aria-hidden="true"><i /><b /></div>
+        <div className="event-stage-player stage-player-two" aria-hidden="true"><i /><b /></div>
+        <div className="event-stage-core" aria-hidden="true"><i /><i /><i /></div>
+        <div className="event-stage-copy">
+          <p className="stage-kicker"><span>✦</span> KALENSKI™ TOURNAMENT SYSTEM</p>
+          <h1>Enter<br />the <em>arena.</em></h1>
+          <p>Live registrations. Official banlists. No second chances once the duel begins.</p>
+          <button type="button" onClick={showSchedule}><span>View active events</span><b>↓</b></button>
+        </div>
+        <div className="event-stage-stats" aria-label="Event status"><span><b>LIVE</b><small>System status</small></span><span><b>{String(events.length).padStart(2, "0")}</b><small>Active events</small></span></div>
+        <p className="event-stage-mark">DUEL<br />ARENA<br /><b>01</b></p>
       </section>
-      {potmPlayers.length > 0 && <section className="potm-event-banner"><div><p className="eyebrow">PLAYER OF THE TOURNAMENT</p><strong>✦ {potmPlayers.map((player) => player.username).join(" · ")}</strong></div><span>Honored at every upcoming Empire event</span></section>}
-      {notice && <p className="notice">{notice}</p>}
-      <div className="event-list">
-        {events.length ? events.map((event) => {
+
+      {potmPlayers.length > 0 && <section className="potm-event-banner event-potm-banner"><div><p className="eyebrow">PLAYER OF THE TOURNAMENT</p><strong>✦ {potmPlayers.map((player) => player.username).join(" · ")}</strong></div><span>Recognized in the arena</span></section>}
+      {notice && <p className="notice event-notice">{notice}</p>}
+
+      <section className="event-schedule" id="event-schedule">
+        <div><p className="schedule-kicker">UPCOMING BATTLES</p><h2>Claim your<br /><em>place.</em></h2></div>
+        <p>Every event is managed directly inside the Empire. Open the banlist, read the format and enter only when your deck is ready.</p>
+      </section>
+      <div className="event-list event-command-list">
+        {events.length ? events.map((event, index) => {
           const banlist = event.banlist;
           const hasBanlistCards = (banlist?.banned_cards?.length ?? 0) + (banlist?.limited_cards?.length ?? 0) + ((!banlist?.banned_cards?.length && !banlist?.limited_cards?.length) ? (banlist?.card_names?.length ?? 0) : 0) > 0;
           return (
-            <article className="event-panel" key={event.id}>
-              <div>
+            <article className="event-panel event-command-panel" key={event.id}>
+              <span className="event-number">0{index + 1}</span>
+              <div className="event-command-copy">
                 <p className="eyebrow">{banlist?.name ?? "Official Banlist"}</p>
                 <h2>{event.title}</h2>
                 <p>{event.description}</p>
-                <strong>{new Date(event.starts_at).toLocaleString()}</strong>
+                <strong><i>◷</i> {new Date(event.starts_at).toLocaleString()}</strong>
                 {hasBanlistCards && <section className="event-banlist">
                   <button type="button" className="event-banlist-toggle" onClick={() => setOpenBanlists((current) => ({ ...current, [event.id]: !current[event.id] }))}>
-                    {openBanlists[event.id] ? "Hide visual banlist" : "Open visual banlist"}
+                    {openBanlists[event.id] ? "Close visual banlist" : "Inspect visual banlist"}
                   </button>
                   {openBanlists[event.id] && <VisualBanlistBoundary resetKey={event.id}><BanlistGallery banlist={banlist} /></VisualBanlistBoundary>}
                 </section>}
               </div>
-              <button className="gold-button" onClick={() => join(event.id)}>Register</button>
+              <button className="event-register-button" onClick={() => join(event.id)}><span>Register</span><b>↗</b></button>
             </article>
           );
-        }) : <div className="empty-vault"><p className="vault-overline">NO EVENTS YET</p><h2>No events scheduled yet.</h2><p>Kalenski™ will publish the next tournament here.</p></div>}
+        }) : <div className="empty-vault event-empty"><p className="vault-overline">NO EVENTS YET</p><h2>The arena is quiet.</h2><p>Kalenski™ will publish the next tournament here.</p></div>}
       </div>
     </div>
   );
@@ -234,13 +256,63 @@ function Feedback() {
   async function submit(event) {
     event.preventDefault();
     if (!session) return setMessage("Please sign in to leave feedback.");
-    try { await addFeedback(session.user.id, text); setText(""); setMessage("Thank you — your feedback was submitted for approval."); } catch (error) { setMessage(error.message); }
+    try { await addFeedback(session.user.id, text); setText(""); setMessage("Transmission received — thank you for leaving your mark."); } catch (error) { setMessage(error.message); }
   }
-  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">THE EMPIRE’S REPUTATION</p><h1>Player feedback</h1><p>Share your experience with Kalenski™ Card Empire®.</p></section><form className="feedback-form" onSubmit={submit}><textarea required value={text} onChange={(e) => setText(e.target.value)} placeholder="Your feedback…" /><button className="gold-button">Submit feedback</button>{message && <p className="notice">{message}</p>}</form></div>;
+  return (
+    <div className="empire-page feedback-world">
+      <section className="feedback-stage">
+        <div className="feedback-stage-lines" aria-hidden="true" />
+        <div className="feedback-stage-seal" aria-hidden="true"><i /><i /><i /><b>✦</b></div>
+        <div className="feedback-stage-copy">
+          <p className="stage-kicker"><span>✦</span> PRIVATE EMPIRE TRANSMISSION</p>
+          <h1>Make it<br /><em>count.</em></h1>
+          <p>Every experience matters. Tell the Empire what should stay, improve or become legendary.</p>
+        </div>
+        <p className="feedback-stage-mark">VOICE<br />OF THE<br /><b>PLAYER</b></p>
+      </section>
+      <section className="feedback-console-wrap">
+        <form className="feedback-form feedback-console" onSubmit={submit}>
+          <header><div><p>PLAYER TRANSMISSION</p><h2>Leave your mark.</h2></div><span><i />Secure line</span></header>
+          <label htmlFor="empire-feedback">Your message</label>
+          <textarea id="empire-feedback" required value={text} onChange={(e) => setText(e.target.value)} placeholder="How did the Empire feel?" />
+          <footer><small>Your feedback is saved directly to the Empire.</small><button className="feedback-submit-button"><span>Send transmission</span><b>↗</b></button></footer>
+          {message && <p className="notice feedback-notice">{message}</p>}
+        </form>
+        <aside className="feedback-pledge">
+          <span>01</span><p>NO NOISE</p><h3>Clear deals.<br />Direct answers.</h3>
+          <span>02</span><p>REAL PEOPLE</p><h3>Every message<br />gets read.</h3>
+          <span>03</span><p>BETTER EMPIRE</p><h3>Your feedback<br />shapes the vault.</h3>
+        </aside>
+      </section>
+    </div>
+  );
 }
 
 function About() {
-  return <div className="empire-page"><section className="about-hero"><p className="eyebrow">THE OWNER. THE COLLECTION. THE EMPIRE.</p><h1>About Kalenski™</h1><p>Kalenski™ is the one and only seller. Every card, bundle and event is personally selected and managed from a private DMO collection.</p><p>This is no public marketplace. It is a royal vault for legendary cards and trusted players.</p></section></div>;
+  return (
+    <div className="empire-page about-world">
+      <section className="about-stage">
+        <div className="about-stage-grain" aria-hidden="true" />
+        <div className="about-stage-monogram" aria-hidden="true">K</div>
+        <div className="about-stage-copy">
+          <p className="stage-kicker"><span>✦</span> THE OWNER · THE COLLECTION · THE EMPIRE</p>
+          <h1>I’m not a card seller<br />like everyone else.</h1>
+          <p className="about-lead">I’m the one who knows that a card is never just a card.</p>
+          <p>Every piece in this vault is chosen, listed and traded by Kalenski™ himself. No random inventory. No empty promises. Just a private collection, managed with standards.</p>
+        </div>
+        <div className="about-stage-stamp"><small>EST.</small><b>K</b><small>CARD EMPIRE®</small></div>
+      </section>
+      <section className="about-principles">
+        <p className="schedule-kicker">THE KALENSKI™ STANDARD</p>
+        <div className="about-principle-grid">
+          <article><span>01</span><h2>Every card<br />has a story.</h2><p>Condition, history and character matter. The right card never feels ordinary.</p></article>
+          <article><span>02</span><h2>Every deal<br />has a name.</h2><p>You don’t trade with a faceless platform. You trade directly with the Empire.</p></article>
+          <article><span>03</span><h2>Every player<br />has a place.</h2><p>Collectors, customers and tournament players all enter through the same gate.</p></article>
+        </div>
+      </section>
+      <section className="about-closing"><p>THIS ISN’T A STORE.</p><h2>This is<br /><em>the Empire.</em></h2><span>Kalenski™ Card Empire®</span></section>
+    </div>
+  );
 }
 
 function Profile() { return <div className="empire-page"><AccountPanel /></div>; }
