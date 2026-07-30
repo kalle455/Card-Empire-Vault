@@ -147,3 +147,25 @@
   .detail-case-grade small{font-size:.34rem}
   .detail-case-grade b{font-size:.62rem}
 }
+
+/* Keep the compact grading strip cleanly above the card art. */
+.case-only-card .collector-case{padding-top:58px}
+.case-only-card .case-label{
+  top:9px;left:9px;right:9px;min-height:34px;padding:5px 7px;
+  display:grid!important;overflow:hidden;isolation:isolate;
+  background:linear-gradient(180deg,#f8fbf7,#bec8bd)!important;
+  border-color:#7d8880!important;color:#111714!important;
+}
+.case-only-card .case-label > *{position:static!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.case-only-card .case-name b{font-size:.62rem}
+.case-only-card .case-name small{font-size:.34rem}
+.case-only-card .case-grade small{font-size:.33rem}
+.case-only-card .case-grade b{font-size:.62rem}
+@media(max-width:600px){
+  .case-only-card .collector-case{padding-top:52px}
+  .case-only-card .case-label{min-height:30px;padding:4px 5px}
+  .case-only-card .case-name b{font-size:.49rem}
+  .case-only-card .case-name small{font-size:.27rem}
+  .case-only-card .case-grade small{font-size:.25rem}
+  .case-only-card .case-grade b{font-size:.49rem}
+}
