@@ -11,6 +11,13 @@ const roleLabels = {
   admin: "Kalenski · Admin",
 };
 
+const loyaltyLevel = (points) => {
+  if (points >= 250) return { name: "Vault Legend", next: null, color: "legend" };
+  if (points >= 100) return { name: "Empire Elite", next: 250, color: "elite" };
+  if (points >= 25) return { name: "Regular Customer", next: 100, color: "regular" };
+  return { name: "Vault Initiate", next: 25, color: "initiate" };
+};
+
 export default function AccountPanel() {
   const { configured, loading, session, profile, signIn, signUp, signOut } = useAuth();
   const [mode, setMode] = useState("signin");
@@ -22,6 +29,14 @@ export default function AccountPanel() {
   if (loading) return <div className="account-card">Loading player account…</div>;
   if (session) {
     const activeRole = String(profile?.role ?? "customer").toLowerCase().replace(/\s+/g, "_");
+    const timedVip = Boolean(profile?.vip_until && new Date(profile.vip_until).getTime() > Date.now());
+    const loyaltyPoints = Number(profile?.loyalty_points ?? 0);
+    const loyaltyPurchases = Number(profile?.loyalty_purchases ?? 0);
+    const vaultPasses = Number(profile?.loyalty_free_card_credits ?? 0);
+    const loyalty = loyaltyLevel(loyaltyPoints);
+    const levelStart = loyaltyPoints >= 250 ? 250 : loyaltyPoints >= 100 ? 100 : loyaltyPoints >= 25 ? 25 : 0;
+    const progress = loyalty.next ? Math.min(100, Math.round(((loyaltyPoints - levelStart) / (loyalty.next - levelStart)) * 100)) : 100;
+    const displayedRole = timedVip && activeRole !== "vip" ? "V.I.P PASS" : (roleLabels[activeRole] ?? "Customer");
     return (
       <section className="account-card player-identity-card">
         <header className="player-profile-head">
@@ -34,8 +49,14 @@ export default function AccountPanel() {
         </div>
         <div className="profile-record">
           <div className="profile-score-record"><small>S / N</small><b>{profile?.wins ?? 0} <i>/</i> {profile?.losses ?? 0}</b></div>
-          <div className="profile-role-record"><small>ROLE</small><b className={"role-chip role-" + activeRole}>{roleLabels[activeRole] ?? "Customer"}</b></div>
+          <div className="profile-role-record"><small>ROLE</small><b className={"role-chip role-" + (timedVip ? "vip" : activeRole)}>{displayedRole}</b></div>
         </div>
+        <section className={"loyalty-record loyalty-" + loyalty.color}>
+          <header><div><small>EMPIRE LOYALTY</small><b>{loyalty.name}</b></div><strong>{loyaltyPoints} <small>PTS</small></strong></header>
+          <div className="loyalty-progress"><i style={{ width: progress + "%" }} /></div>
+          <footer><span>{loyalty.next ? loyalty.next - loyaltyPoints + " pts to " + (loyalty.next === 100 ? "V.I.P Pass" : "Vault Legend") : "Maximum loyalty level reached"}</span><b>{loyaltyPurchases} purchases · {vaultPasses} Vault Pass{vaultPasses === 1 ? "" : "es"}</b></footer>
+          {timedVip && <p>V.I.P Pass active until {new Date(profile.vip_until).toLocaleDateString()} · −25% in the Card Vault</p>}
+        </section>
         <button className="button-quiet player-signout" onClick={signOut}>Sign out</button>
       </section>
     );
