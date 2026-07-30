@@ -46,7 +46,7 @@ function Events() {
   }
   const examples = [{ id:"demo-1", title:"6-Way Free For All", starts_at:"Coming soon", description:"Police Station · 8000 Life Points · Prize: United We Stand", banlist:{name:"Empire Tournament Banlist"} }];
   return <div className="empire-page"><section className="page-hero"><p className="eyebrow">KALENSKI™ CARD EMPIRE EVENTS</p><h1>Enter the arena</h1><p>Live registrations, tournament banlists and player highlights.</p></section>{notice && <p className="notice">{notice}</p>}
-    <div className="event-list">{(events.length ? events : examples).map((event) => <article className="event-panel" key={event.id}><div><p className="eyebrow">{event.banlist?.name ?? "Official Banlist"}</p><h2>{event.title}</h2><p>{event.description}</p><strong>{event.starts_at === "Coming soon" ? event.starts_at : new Date(event.starts_at).toLocaleString()}</strong></div><button className="gold-button" onClick={() => join(event.id)} disabled={event.id === "demo-1"}>Register</button></article>)}</div>
+    <div className="event-list">{(events.length ? events : examples).map((event) => <article className="event-panel" key={event.id}><div><p className="eyebrow">{event.banlist?.name ?? "Official Banlist"}</p><h2>{event.title}</h2><p>{event.description}</p><strong>{event.starts_at === "Coming soon" ? event.starts_at : new Date(event.starts_at).toLocaleString()}</strong>{event.banlist?.card_names?.length > 0 && <details className="event-banlist"><summary>View banlist · {event.banlist.card_names.length} cards</summary><p>{event.banlist.card_names.join(" · ")}</p></details>}</div><button className="gold-button" onClick={() => join(event.id)} disabled={event.id === "demo-1"}>Register</button></article>)}</div>
   </div>;
 }
 
