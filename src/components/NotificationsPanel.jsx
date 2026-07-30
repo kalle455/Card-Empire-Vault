@@ -56,6 +56,14 @@ export default function NotificationsPanel({ chatOnly = false }) {
 
   const unread = notifications.filter((item) => !item.read).length;
   const isAdmin = profile?.role === "admin";
+  const openChats = chats.filter((chat) => chat.status !== "deal_completed");
+  const closedChats = chats.filter((chat) => chat.status === "deal_completed");
+  const chatRow = (chat, closed = false) => (
+    <button className={closed ? "closed-chat-row" : ""} key={chat.id} onClick={() => setActiveChat(chat)}>
+      <span><strong>{isAdmin ? chat.buyer?.username ?? "Customer" : "Kalenski™"}</strong><small>{new Date(chat.created_at).toLocaleString()}</small></span>
+      <em>{chat.card_summary}</em><b>{closed ? "Deal complete" : "Open ↗"}</b>
+    </button>
+  );
 
   return (
     <main className="notifications-page">
@@ -77,15 +85,14 @@ export default function NotificationsPanel({ chatOnly = false }) {
           </section>}
 
           <section className="purchase-chat-inbox">
-            <div className="inbox-section-head"><div><p className="vault-overline">PRIVATE TRADE CHAT</p><h2>{isAdmin ? "Customer chats" : "Your chats with Kalenski™"}</h2></div><span>{chats.length}</span></div>
+            <div className="inbox-section-head"><div><p className="vault-overline">PRIVATE TRADE CHAT</p><h2>{isAdmin ? "Customer chats" : "Your chats with Kalenski™"}</h2></div><span>{openChats.length}</span></div>
             <div className="purchase-chat-list">
-              {chatLoadError ? <p className="notifications-empty">{chatLoadError}</p> : chats.length ? chats.map((chat) => (
-                <button key={chat.id} onClick={() => setActiveChat(chat)}>
-                  <span><strong>{isAdmin ? chat.buyer?.username ?? "Customer" : "Kalenski™"}</strong><small>{new Date(chat.created_at).toLocaleString()}</small></span>
-                  <em>{chat.card_summary}</em><b>Open ↗</b>
-                </button>
-              )) : <p className="notifications-empty">Your purchase chats will appear here.</p>}
+              {chatLoadError ? <p className="notifications-empty">{chatLoadError}</p> : openChats.length ? openChats.map((chat) => chatRow(chat)) : <p className="notifications-empty">No active purchase chats.</p>}
             </div>
+            {!chatLoadError && closedChats.length > 0 && <section className="closed-chat-section">
+              <div className="closed-chat-heading"><p>Closed chats</p><strong>Deal complete · {closedChats.length}</strong></div>
+              <div className="purchase-chat-list closed-chat-list">{closedChats.map((chat) => chatRow(chat, true))}</div>
+            </section>}
           </section>
         </>
       )}
