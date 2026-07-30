@@ -49,3 +49,16 @@
 .card-detail-modal.gold .detail-card-art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.31;mix-blend-mode:screen;background:linear-gradient(112deg,transparent 28%,rgba(255,244,185,.12) 40%,rgba(255,203,65,.48) 49%,rgba(255,248,207,.13) 56%,transparent 67%);background-size:240% 100%;animation:gold-foil 7s ease-in-out infinite}
 @keyframes rainbow-label{0%,100%{color:#ffb3dd;text-shadow:0 0 7px #f363ae,0 0 12px rgba(207,112,255,.52)}33%{color:#baf6ff;text-shadow:0 0 7px #71e2ff,0 0 12px rgba(84,221,255,.52)}66%{color:#fff1ae;text-shadow:0 0 7px #ffe36c,0 0 12px rgba(255,205,95,.52)}}@keyframes rainbow-label-sheen{0%,100%{background-position:0 0}50%{background-position:100% 0}}@keyframes gold-foil{0%,100%{background-position:120% 0}48%,52%{background-position:-20% 0}}
 @media(prefers-reduced-motion:reduce){.rarity-tag.rarity-rainbow,.rarity-tag.rarity-rainbow::after,.vault-card.gold .vault-card-art::after,.card-detail-modal.gold .detail-card-art::after{animation:none}}
+
+
+/* Overlay performance: opening Cart or Make Offer must remain instant. */
+.vault-overlay{background:rgba(3,8,7,.92);backdrop-filter:none}
+.vault-card{contain:layout paint style}
+.vault-card.rainbow .vault-card-art::after,
+.rarity-tag.rarity-rainbow,
+.rarity-tag.rarity-rainbow::after,
+.vault-card.gold .vault-card-art::after{animation:none}
+.vault-card.rainbow:hover .vault-card-art::after{animation:rainbow-holo 2.5s linear infinite}
+.vault-card:hover .rarity-tag.rarity-rainbow{animation:rainbow-label 3.2s linear infinite}
+.vault-card:hover .rarity-tag.rarity-rainbow::after{animation:rainbow-label-sheen 3.2s linear infinite}
+.vault-card.gold:hover .vault-card-art::after{animation:gold-foil 3.3s ease-in-out infinite}
