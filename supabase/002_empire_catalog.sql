@@ -23,7 +23,8 @@ create table public.cards (
 create table public.purchases (
   id uuid primary key default gen_random_uuid(),
   player_id uuid not null references public.profiles(id) on delete cascade,
-  card_id uuid not null references public.cards(id),
+  card_id uuid references public.cards(id) on delete set null,
+  card_name text not null,
   quantity integer not null default 1 check (quantity > 0),
   paid_gold numeric(10,2) not null check (paid_gold >= 0),
   created_at timestamptz not null default now()
