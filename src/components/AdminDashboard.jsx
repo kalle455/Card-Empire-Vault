@@ -24,7 +24,7 @@ const normaliseCardName = (value) => String(value ?? "").toLowerCase().replace(/
 export default function AdminDashboard() {
   const { profile } = useAuth();
   const [tab, setTab] = useState("cards");
-  const [data, setData] = useState({ cards: [], events: [], offers: [], feedback: [], players: [], purchases: [], banlists: [] });
+  const [data, setData] = useState({ cards: [], events: [], offers: [], trades: [], feedback: [], players: [], purchases: [], banlists: [] });
   const [card, setCard] = useState(blankCard);
   const [event, setEvent] = useState(blankEvent);
   const [banlist, setBanlist] = useState(blankBanlist);
@@ -36,10 +36,11 @@ export default function AdminDashboard() {
   const [editingCard, setEditingCard] = useState(null);
 
   async function load() {
-    const [cards, events, offers, feedback, players, purchases, banlists] = await Promise.all([
+    const [cards, events, offers, trades, feedback, players, purchases, banlists] = await Promise.all([
       supabase.from("cards").select("*").order("created_at", { ascending: false }),
       supabase.from("events").select("*, banlist:banlists(name, card_names, banned_cards, limited_cards), registrations:event_registrations(player_id, player:profiles(id, username))").order("starts_at"),
       supabase.from("offers").select("*, player:profiles(username)").order("created_at", { ascending: false }),
+      supabase.from("trade_offers").select("*, player:profiles(username), card:cards(name)").order("created_at", { ascending: false }),
       supabase.from("feedback").select("*, player:profiles(username)").order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").order("username"),
       supabase.from("purchases").select("*, player:profiles(username), card:cards(name)").order("created_at", { ascending: false }),
@@ -49,6 +50,7 @@ export default function AdminDashboard() {
       cards: cards.data ?? [],
       events: events.data ?? [],
       offers: offers.data ?? [],
+      trades: trades.data ?? [],
       feedback: feedback.data ?? [],
       players: players.data ?? [],
       purchases: purchases.data ?? [],
@@ -225,6 +227,17 @@ export default function AdminDashboard() {
     load();
   }
 
+  async function respondToTrade(id, status) {
+    const { data: chatId, error } = await supabase.rpc("respond_to_trade_offer", {
+      p_offer_id: id,
+      p_status: status,
+    });
+    if (error) return setNotice(error.message);
+    setNotice(status === "declined" ? "Trade offer declined." : "Trade chat opened. Taking you to the inbox…");
+    load();
+    if (chatId) window.setTimeout(() => window.location.assign("/chats"), 450);
+  }
+
   async function approveFeedback(id, approved) {
     const { error } = await supabase.from("feedback").update({ approved }).eq("id", id);
     setNotice(error ? error.message : approved ? "Feedback approved." : "Feedback hidden.");
@@ -241,7 +254,7 @@ export default function AdminDashboard() {
     <main className="admin-shell">
       <header><div><p className="vault-overline">KALENSKI™ CONTROL ROOM</p><h1>Empire Admin</h1></div><span>Live system</span></header>
       <nav className="admin-tabs">
-        {[["cards", "Cards"], ["events", "Events & Banlists"], ["offers", "Offers"], ["books", "Bücher"], ["feedback", "Feedback"], ["players", "Players"]].map(([item, label]) => (
+        {[["cards", "Cards"], ["events", "Events & Banlists"], ["offers", "Offers"], ["trades", "Trade Hub"], ["books", "Bücher"], ["feedback", "Feedback"], ["players", "Players"]].map(([item, label]) => (
           <button key={item} className={tab === item ? "active" : ""} onClick={() => setTab(item)}>{label}</button>
         ))}
       </nav>
@@ -336,6 +349,11 @@ export default function AdminDashboard() {
       {tab === "offers" && <section className="admin-panel"><h2>Offers</h2><div className="admin-list">
         {data.offers.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> offered {Number(item.amount).toLocaleString()} G for {item.card_name}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => setOffer(item.id, "accepted")}>Accept</button><button onClick={() => setOffer(item.id, "rejected")}>Decline</button></aside>}</div>)}
         {!data.offers.length && <p>No offers yet.</p>}
+      </div></section>}
+
+      {tab === "trades" && <section className="admin-panel"><h2>Trade Hub</h2><p>Players choose a Vault card and propose what they offer in return. Accepting or negotiating opens the private live chat.</p><div className="admin-list">
+        {data.trades.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> wants <strong>{item.card?.name ?? "Vault card"}</strong><br /><small>Offers: {item.offered_cards}</small>{item.message && <small>Message: {item.message}</small>}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToTrade(item.id, "accepted")}>Accept + chat</button><button onClick={() => respondToTrade(item.id, "negotiating")}>Negotiate + chat</button><button onClick={() => respondToTrade(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <aside><button onClick={() => window.location.assign("/chats")}>Open chat</button></aside>}</div>)}
+        {!data.trades.length && <p>No Trade Hub offers yet.</p>}
       </div></section>}
 
       {tab === "books" && <section className="admin-books">
