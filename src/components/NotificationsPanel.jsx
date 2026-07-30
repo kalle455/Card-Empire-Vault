@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 import PurchaseChat from "./PurchaseChat";
 import "./NotificationsPanel.css";
 
-export default function NotificationsPanel() {
+export default function NotificationsPanel({ chatOnly = false }) {
   const { profile, session } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [chats, setChats] = useState([]);
@@ -49,7 +49,7 @@ export default function NotificationsPanel() {
   }
 
   if (!session) {
-    return <main className="notifications-page"><p className="vault-overline">LIVE UPDATES</p><h1>Notifications</h1><div className="notifications-empty">Sign in to receive Card Empire updates and purchase chats.</div></main>;
+    return <main className="notifications-page"><p className="vault-overline">{chatOnly ? "PRIVATE TRADE CHAT" : "LIVE UPDATES"}</p><h1>{chatOnly ? "Purchase chats" : "Notifications"}</h1><div className="notifications-empty">Sign in to receive Card Empire updates and purchase chats.</div></main>;
   }
 
   const unread = notifications.filter((item) => !item.read).length;
@@ -58,13 +58,13 @@ export default function NotificationsPanel() {
   return (
     <main className="notifications-page">
       <header>
-        <div><p className="vault-overline">LIVE UPDATES</p><h1>Notifications</h1><p>Offers, events and purchase confirmations arrive here automatically.</p></div>
-        {unread > 0 && <button onClick={markAllRead}>Mark all read <span>{unread}</span></button>}
+        <div><p className="vault-overline">{chatOnly ? "PRIVATE TRADE CHAT" : "LIVE UPDATES"}</p><h1>{chatOnly ? isAdmin ? "Customer chats" : "Your purchase chats" : "Notifications"}</h1><p>{chatOnly ? "Open a purchase to chat with " + (isAdmin ? "the customer" : "Kalenski™") + " in real time." : "Offers, events and purchase confirmations arrive here automatically."}</p></div>
+        {!chatOnly && unread > 0 && <button onClick={markAllRead}>Mark all read <span>{unread}</span></button>}
       </header>
 
       {loading ? <p className="notification-loading">Loading updates…</p> : (
         <>
-          <section className="notification-list">
+          {!chatOnly && <section className="notification-list">
             {notifications.length ? notifications.map((item) => (
               <article className={item.read ? "read" : "unread"} key={item.id}>
                 <span className="notification-dot" />
@@ -72,7 +72,7 @@ export default function NotificationsPanel() {
                 <button aria-label="Mark as read" onClick={() => markRead(item.id)}>✓</button>
               </article>
             )) : <div className="notifications-empty">No notifications yet.</div>}
-          </section>
+          </section>}
 
           <section className="purchase-chat-inbox">
             <div className="inbox-section-head"><div><p className="vault-overline">PRIVATE TRADE CHAT</p><h2>{isAdmin ? "Customer chats" : "Your chats with Kalenski™"}</h2></div><span>{chats.length}</span></div>
