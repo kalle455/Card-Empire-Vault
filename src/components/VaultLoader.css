@@ -69,3 +69,25 @@
 @media(max-width:900px){.vault-loader-layout{grid-template-columns:1fr}.vault-loader-stage{min-height:530px}.vault-loader-copy{margin:auto;text-align:center}.vault-loader-copy>p:not(.vault-loader-kicker):not(.vault-loader-note){margin-left:auto;margin-right:auto}.vault-loader-cta{margin:auto}.vault-loader-note{justify-content:center}}
 @media(max-width:600px){.vault-loader-section{min-height:0}.vault-loader-stage{min-height:430px}.vault-loader-box{width:min(82%,290px);height:385px;bottom:18px}.vault-loader-base{height:280px}.vault-loader-lid{height:112px}.vault-loader-lid-inner b{font-size:.86rem}.vault-loader-slots{inset:-48px -43px 60px}.vault-loader-card{min-width:47px}.vault-loader-card-case{padding:2px}.vault-loader-front-mark{left:21px;bottom:18px}.vault-loader-front-mark span{width:47px;height:47px;font-size:1.45rem}.vault-loader-front-mark small{font-size:.42rem}.vault-loader-seal{right:14px;bottom:13px;width:26px;height:26px}.vault-loader-section.is-open .vault-loader-card{transform:translateY(-98px) translateZ(58px) rotateX(var(--treasure-tilt-x,0deg)) rotateY(var(--treasure-tilt-y,0deg)) rotateZ(var(--vault-lean))}.vault-loader-card:hover{transform:translateY(-110px) translateZ(78px) rotateX(var(--treasure-tilt-x,0deg)) rotateY(var(--treasure-tilt-y,0deg)) rotateZ(0)!important}.vault-loader-stage-caption{bottom:-1px;font-size:.42rem}}
 @media(prefers-reduced-motion:reduce){.vault-loader-section.is-open .vault-loader-lid{transform:rotateX(-90deg) translateZ(20px)}.vault-loader-section.is-open .vault-loader-card{transform:translateY(-80px) translateZ(25px) rotateZ(var(--vault-lean))}.vault-loader-transition,.vault-loader-layout{transition:none!important}}
+
+/* Click-to-open Deck Vault behavior and collector-blue deckbox finish. */
+.vault-loader-box-trigger{position:absolute;inset:0;width:100%;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation}
+.vault-loader-box-trigger:focus-visible{outline:2px solid #d8efff;outline-offset:8px;border-radius:14px}
+.vault-loader-box{transform:translateX(-50%) rotateX(var(--box-tilt-x,0deg)) rotateY(var(--box-tilt-y,0deg));transition:transform .18s ease-out}
+.vault-loader-base{border-color:rgba(213,240,255,.72);background:linear-gradient(112deg,rgba(255,255,255,.28),transparent 13%,transparent 58%,rgba(0,0,0,.28)),linear-gradient(160deg,#2b9bce 0%,#13467a 48%,#081327 92%)}
+.vault-loader-base::before{border-color:rgba(222,246,255,.27);background:linear-gradient(137deg,rgba(229,250,255,.12),transparent 32%),linear-gradient(160deg,#216c9d,#092341 86%)}
+.vault-loader-base::after{border-color:rgba(228,248,255,.24);background:linear-gradient(135deg,transparent 0 37%,rgba(236,250,255,.28) 37.4% 38.2%,transparent 38.6% 100%),linear-gradient(45deg,transparent 0 64%,rgba(235,250,255,.18) 64.4% 65%,transparent 65.4% 100%)}
+.vault-loader-rim{border-top-color:#e7f7ff;background:linear-gradient(180deg,#d3f0fa,#639ec0 54%,#102b4c)}
+.vault-loader-lid{border-color:rgba(219,246,255,.78);background:linear-gradient(132deg,rgba(255,255,255,.32),transparent 18%,transparent 67%,rgba(255,255,255,.08)),linear-gradient(160deg,#36a6da,#15517f 72%,#09172c)}
+.vault-loader-lid::before{border-color:rgba(229,250,255,.34);background:linear-gradient(135deg,transparent 0 41%,rgba(240,252,255,.27) 41.5% 42.5%,transparent 43% 100%),radial-gradient(ellipse at 50% 50%,rgba(230,250,255,.17),transparent 58%)}
+.vault-loader-lid-inner b{color:#f2fbff;text-shadow:0 1px 2px rgba(2,24,46,.72)}.vault-loader-lid-inner small{color:#daf4ff}
+.vault-loader-front-mark{color:#e6f6ff}.vault-loader-front-mark::before{border-color:rgba(225,246,255,.24)}.vault-loader-front-mark span{border-color:rgba(227,248,255,.78);background:radial-gradient(circle at 34% 29%,#f2fbff,#8bc9e4 56%,#205a89);color:#0a294c}.vault-loader-front-mark small{color:#e8f7ff}
+.vault-loader-seal{border-color:rgba(225,248,255,.82);background:radial-gradient(circle at 35% 28%,#f2fbff,#8ac6e1 64%,#1d5888);color:#092b4f}
+.vault-loader-section.is-ready .vault-loader-copy{opacity:1;transform:translateX(0)}
+.vault-loader-section.is-ready .vault-loader-box-trigger{animation:vault-box-ready .75s cubic-bezier(.2,.86,.26,1) both}
+@keyframes vault-box-ready{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.vault-loader-section.is-open .vault-loader-box{transform:translateX(-50%) rotateX(var(--box-tilt-x,0deg)) rotateY(var(--box-tilt-y,0deg))}
+.vault-loader-section.is-open .vault-loader-card{pointer-events:none}
+.vault-loader-section.is-launching .vault-loader-box{transform:translateX(-50%) scale(1.13) rotateX(-4deg);opacity:0;transition:transform .55s ease,opacity .4s ease}
+.vault-loader-section.is-launching .vault-loader-copy{opacity:0;transform:translateX(26px)}
+@media(max-width:600px){.vault-loader-box-trigger{inset:-10px}.vault-loader-section.is-ready .vault-loader-copy{transform:none}.vault-loader-section.is-launching .vault-loader-box{transform:translateX(-50%) scale(1.08)}}
