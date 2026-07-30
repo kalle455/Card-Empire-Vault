@@ -866,3 +866,8 @@ input[type="text"],input[type="password"],input[type="number"],input[type="searc
 .cinematic-home .hero-grid{opacity:.1}
 .cinematic-home .hero-scanline{opacity:.08;mask-image:none}
 @media(max-width:760px){.cinematic-home .hero-film{object-position:58% center;filter:saturate(.92) contrast(1.04) brightness(.8)}.cinematic-home .hero-film-shade{background:linear-gradient(0deg,rgba(4,7,7,.65),rgba(4,7,7,.04) 52%)}}
+
+
+/* Keep the full Kaiba silhouette inside the frame. */
+.cinematic-home .hero-film{object-position:center top;transform:none}
+@media(max-width:760px){.cinematic-home .hero-film{object-position:64% top;transform:none}}
