@@ -23,14 +23,25 @@
 }
 .notification-bell svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .notification-count {
-  position: absolute; top: -6px; right: -8px; min-width: 17px; height: 17px; padding: 0 4px;
-  display: grid; place-items: center; border-radius: 999px; background: #91d39a; color: #061009;
-  border: 2px solid #070a08; font-size: .58rem; font-weight: 900; line-height: 1;
+  position: absolute; top: -7px; right: -9px; min-width: 18px; height: 18px; padding: 0 4px;
+  display: grid; place-items: center; border-radius: 999px; background: #77f08a; color: #061009;
+  border: 2px solid #070a08; box-shadow: 0 0 14px rgba(119, 240, 138, .75);
+  font-size: .6rem; font-weight: 950; line-height: 1;
 }
+.chat-bubble {
+  display: grid; place-items: center; width: 34px; height: 34px;
+  border: 1px solid rgba(145, 211, 154, .28); border-radius: 50%;
+  background: rgba(145, 211, 154, .05); color: #b7e8bc !important;
+}
+.chat-bubble:hover, .chat-bubble.active {
+  border-color: rgba(145, 211, 154, .85); background: rgba(145, 211, 154, .14);
+  color: #d6ffda !important;
+}
+.chat-bubble svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
 @media(max-width: 900px) {
   .empire-nav { gap: 16px; overflow-x: auto; }
   .empire-nav nav { justify-content: flex-start; }
   .nav-account { display: flex; margin-left: auto; }
-  .nav-account > :not(.notification-bell) { display: none; }
+  .nav-account > :not(.notification-bell):not(.chat-bubble) { display: none; }
 }
