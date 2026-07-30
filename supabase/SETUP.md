@@ -10,8 +10,9 @@
 8. Run `008_live_updates.sql` seventh. This enables instant live updates for cards, chats and notification badges.
 9. Run `009_banlist_categories.sql` eighth. This separates Banned and Limited cards in every banlist.
 10. Run `010_king_of_1_banlist.sql` ninth. This adds the official **KING OF 1** banlist.
-11. In **Authentication → Providers → Email**, enable email/password login and turn off email confirmation.
-12. Create your account through the website. Then, in the SQL Editor, make Kalenski the administrator:
+11. Run `011_keep_sales_history_when_removing_cards.sql` tenth. This lets you remove cards from the Vault without deleting their completed sales from the Bücher.
+12. In **Authentication → Providers → Email**, enable email/password login and turn off email confirmation.
+13. Create your account through the website. Then, in the SQL Editor, make Kalenski the administrator:
 
 ```sql
 update public.profiles
