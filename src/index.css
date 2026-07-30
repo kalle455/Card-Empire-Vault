@@ -727,3 +727,13 @@ body { background:radial-gradient(1000px 700px at 100% 0%,rgba(26,91,64,.16),tra
 @keyframes cinema-rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}@keyframes film-breathe{0%,100%{transform:scale(1.025)}50%{transform:scale(1.055)}}
 @media(max-width:760px){.cinematic-home .vanguard-hero{min-height:calc(100svh - 66px)}.hero-film{object-position:60% center;opacity:.56}.hero-film-shade{background:linear-gradient(90deg,rgba(4,7,7,.94),rgba(4,7,7,.5)),linear-gradient(0deg,rgba(4,7,7,.94),transparent 52%)}.cinematic-home .vanguard-content{width:calc(100% - 48px);margin-left:24px;padding:88px 0 48px}.cinematic-home .vanguard-content h1{font-size:clamp(3.65rem,16vw,5.6rem);line-height:.8}.cinematic-home .vanguard-copy{font-size:.92rem}.cinematic-home .hero-actions{gap:16px}.cinematic-home .hero-cta{min-width:0;padding:14px 15px}.hero-index{display:none}.cinematic-home .hero-metrics{margin-top:43px}.cinematic-home .hero-metrics div:nth-child(3){display:none}.cinematic-home .hero-side-label{display:block;right:22px;bottom:19px;font-size:.45rem}.home-afterglow{display:grid;align-items:center;min-height:360px;padding:74px 24px 48px}.home-afterglow p{left:24px;top:24px}.home-afterglow h2{font-size:clamp(2.6rem,13vw,4rem)}}
 @media(prefers-reduced-motion:reduce){.hero-film,.cinematic-home .hero-kicker,.cinematic-home .vanguard-content h1,.cinematic-home .vanguard-copy,.cinematic-home .hero-actions,.cinematic-home .hero-metrics{animation:none!important;opacity:1}.home-route-transition,.home-route-transition span{transition:none!important}}
+
+
+/* Rooftop duel scene — the hero is a living still, not a video loop. */
+.hero-rooftop-art { object-position:center center; filter:saturate(.82) contrast(1.1) brightness(.7); }
+.hero-cloud { position:absolute; z-index:1; width:22vw; min-width:180px; aspect-ratio:2.9; border-radius:50%; pointer-events:none; opacity:.13; filter:blur(18px); background:radial-gradient(ellipse at 50% 55%,rgba(213,227,229,.82) 0 18%,rgba(196,211,214,.42) 35%,transparent 68%); animation:cloud-drift 22s ease-in-out infinite; }
+.hero-cloud-one { top:13%; right:32%; }
+.hero-cloud-two { top:26%; right:2%; width:18vw; opacity:.09; animation-delay:-11s; }
+@keyframes cloud-drift { 0%,100% { transform:translate3d(-10px,0,0) scale(.92); } 50% { transform:translate3d(36px,-11px,0) scale(1.08); } }
+@media(max-width:760px) { .hero-rooftop-art { object-position:65% center; } .hero-cloud { opacity:.07; } }
+@media(prefers-reduced-motion:reduce) { .hero-cloud { animation:none!important; } }

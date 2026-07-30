@@ -24,9 +24,9 @@ function Home() {
     <div className={"home cinematic-home " + (transitioning ? "is-transitioning" : "")}>
       <div className="home-route-transition" aria-hidden="true"><span>K</span></div>
       <section className="vanguard-hero">
-        <video className="hero-film" autoPlay muted loop playsInline preload="metadata">
-          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260606_154941_df1a96e1-a06f-450c-bd02-d863414cc1a0.mp4" type="video/mp4" />
-        </video>
+        <img className="hero-film hero-rooftop-art" src="/kalenski-rooftop-hero.png" alt="" />
+        <div className="hero-cloud hero-cloud-one" aria-hidden="true" />
+        <div className="hero-cloud hero-cloud-two" aria-hidden="true" />
         <div className="hero-film-shade" aria-hidden="true" />
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-scanline" aria-hidden="true" />
