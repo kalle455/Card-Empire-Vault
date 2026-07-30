@@ -75,7 +75,9 @@ export default function Marketplace() {
     setNotice("");
   }
 
-  return <main className="vault-page">
+  const isOverlayOpen = Boolean(cartOpen || offerCard || selectedCard || activeChat);
+
+  return <main className={"vault-page" + (isOverlayOpen ? " is-overlay-open" : "")}>
     <header className="vault-header"><div><p className="vault-overline">KALENSKI™ PRIVATE COLLECTION</p><h1>Card <em>Vault</em></h1><p>Every card is owned, listed and traded directly by Kalenski™.</p></div><div className="vault-header-actions"><button className="vault-refresh" onClick={refreshCards} disabled={refreshing}>{refreshing ? "Updating…" : "↻ Refresh"}</button><button className="vault-cart" onClick={() => setCartOpen(true)}>Cart <span>{cart.length}</span></button></div></header>
     <section className="vault-tools"><label className="vault-search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the vault" /></label><div className="filter-line">{categories.map((item) => <button key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div><div className="filter-line">{rarities.map((item) => <button key={item} className={rarity === item ? "is-active" : ""} onClick={() => setRarity(item)}>{item}</button>)}</div><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="featured">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select></section>
     <div className="vault-meta"><span>{shownCards.length} cards available</span>{isVip && <strong>VIP: 25% will be deducted in cart</strong>}</div>{notice && <p className="vault-notice">{notice}</p>}
