@@ -1,4 +1,4 @@
--- Empire Loyalty: points, recurring Vault Passes and timed V.I.P rewards.
+-- Empire Loyalty: 2 points per 1,000 G, Vault Passes and timed V.I.P rewards.
 -- Run after 004_purchase_card.sql in the Supabase SQL Editor.
 
 alter table public.profiles
@@ -94,11 +94,11 @@ begin
 
   v_points_earned := case
     when v_expected_gold <= 0 then 0
-    else greatest(1, floor(v_expected_gold / 1000)::integer)
+    else greatest(2, floor(v_expected_gold / 1000)::integer * 2)
   end;
   v_new_points := v_points + v_points_earned;
   v_new_purchases := v_purchases + p_quantity;
-  v_vault_passes_earned := floor(v_new_purchases / 2) - floor(v_purchases / 2);
+  v_vault_passes_earned := floor(v_new_points / 20) - floor(v_points / 20);
   v_new_free_credits := v_free_credits - case when p_redeem_loyalty then 1 else 0 end + v_vault_passes_earned;
   v_new_vip_until := v_vip_until;
 
@@ -106,12 +106,12 @@ begin
     v_became_regular := true;
   end if;
 
-  if v_points < 100 and v_new_points >= 100 then
+  if v_points < 50 and v_new_points >= 50 then
     v_new_vip_until := greatest(coalesce(v_vip_until, now()), now()) + interval '7 days';
     v_vip_week_unlocked := true;
   end if;
 
-  if v_points < 250 and v_new_points >= 250 then
+  if v_points < 100 and v_new_points >= 100 then
     v_new_vip_until := greatest(coalesce(v_new_vip_until, now()), now()) + interval '30 days';
     v_vip_month_unlocked := true;
   end if;
@@ -129,7 +129,7 @@ begin
 
   if v_vault_passes_earned > 0 then
     insert into public.notifications (player_id, message)
-    values (auth.uid(), 'Vault Pass unlocked: buy 2 cards, your next card up to 5,000 G is free.');
+    values (auth.uid(), 'Vault Pass unlocked at 20 Empire Points: one card up to 5,000 G is free.');
   end if;
 
   if v_became_regular then
@@ -144,7 +144,7 @@ begin
 
   if v_vip_month_unlocked then
     insert into public.notifications (player_id, message)
-    values (auth.uid(), 'Vault Legend reward: V.I.P extended by 30 days.');
+    values (auth.uid(), 'Empire Elite reward: V.I.P unlocked for 30 days.');
   end if;
 end;
 $$;
