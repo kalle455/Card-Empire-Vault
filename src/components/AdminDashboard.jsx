@@ -6,7 +6,8 @@ import "./AdminDashboard.css";
 const blankCard = { name: "", price: "", quantity: "1", category: "monster", rarity: "rare" };
 const blankEvent = { title: "", starts_at: "", description: "", banlist_id: "" };
 const blankBanlist = { name: "", banned: "", limited: "" };
-const roles = ["customer", "regular_customer", "trusted_trader", "vip", "potm", "admin"];
+const roles = ["customer", "regular_customer", "vip", "potm", "admin"];
+const roleLabels = { customer: "Customer", regular_customer: "Regular Customer", vip: "V.I.P", potm: "POTM · Player of the Tournament", admin: "Kalenski · Admin" };
 
 const toLocalDateTime = (value) => value ? new Date(value).toISOString().slice(0, 16) : "";
 const cardNamesFromText = (value) => [...new Set(value.split(/\n|,/).map((name) => name.trim()).filter(Boolean))];
@@ -277,7 +278,7 @@ export default function AdminDashboard() {
       </div></section>}
 
       {tab === "players" && <section className="admin-panel"><h2>Player roles</h2><div className="admin-list">
-        {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.username}</b><small>{item.wins}W / {item.losses}L</small></span><select value={item.role} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{role}</option>)}</select></div>)}
+        {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.username}</b><small>{item.wins}W / {item.losses}L</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select></div>)}
       </div></section>}
     </main>
   );
