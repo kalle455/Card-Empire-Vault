@@ -27,7 +27,7 @@ function Home() {
         <h1><span>Collect.</span><span>Command.</span><span>Conquer.</span></h1>
         <p className="vanguard-copy">The private DMO card vault of Kalenski™.<br />Legendary cards. Premium trades. Zero noise.</p>
         <div className="hero-actions"><Link className="hero-cta" to="/marketplace">Enter Card Market <b>↗</b></Link><Link className="hero-link" to="/events">View events <b>→</b></Link></div>
-        <div className="hero-metrics"><div><strong>2500<span>+</span></strong><small>Cards in the vault</small></div><div><strong>25<span>%</span></strong><small>VIP cart advantage</small></div><div><strong>01</strong><small>Seller · Kalenski™</small></div></div>
+        <div className="hero-metrics"><div><strong>25<span>%</span></strong><small>VIP cart advantage</small></div><div><strong>LIVE</strong><small>Events · Offers · Updates</small></div></div>
       </div>
       <div className="hero-side-label">KALENSKI™<br />CARD EMPIRE®</div>
     </section>
