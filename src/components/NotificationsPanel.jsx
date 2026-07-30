@@ -9,6 +9,7 @@ export default function NotificationsPanel({ chatOnly = false }) {
   const [notifications, setNotifications] = useState([]);
   const [chats, setChats] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
+  const [chatLoadError, setChatLoadError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,10 +23,11 @@ export default function NotificationsPanel({ chatOnly = false }) {
     async function load() {
       const [notificationResult, chatResult] = await Promise.all([
         supabase.from("notifications").select("*").order("created_at", { ascending: false }),
-        supabase.from("purchase_chats").select("*, buyer:profiles(username)").order("created_at", { ascending: false }),
+        supabase.rpc("list_purchase_chats"),
       ]);
       setNotifications(notificationResult.data ?? []);
-      setChats(chatResult.data ?? []);
+      setChats((chatResult.data ?? []).map((chat) => ({ ...chat, buyer: { username: chat.buyer_username } })));
+      setChatLoadError(chatResult.error?.message ?? "");
       setLoading(false);
     }
 
@@ -77,7 +79,7 @@ export default function NotificationsPanel({ chatOnly = false }) {
           <section className="purchase-chat-inbox">
             <div className="inbox-section-head"><div><p className="vault-overline">PRIVATE TRADE CHAT</p><h2>{isAdmin ? "Customer chats" : "Your chats with Kalenski™"}</h2></div><span>{chats.length}</span></div>
             <div className="purchase-chat-list">
-              {chats.length ? chats.map((chat) => (
+              {chatLoadError ? <p className="notifications-empty">{chatLoadError}</p> : chats.length ? chats.map((chat) => (
                 <button key={chat.id} onClick={() => setActiveChat(chat)}>
                   <span><strong>{isAdmin ? chat.buyer?.username ?? "Customer" : "Kalenski™"}</strong><small>{new Date(chat.created_at).toLocaleString()}</small></span>
                   <em>{chat.card_summary}</em><b>Open ↗</b>
