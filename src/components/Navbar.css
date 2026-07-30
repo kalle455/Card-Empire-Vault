@@ -51,3 +51,25 @@
 .empire-nav.is-home-nav { color:#edf4ef; }
 .empire-nav.is-home-nav .empire-brand span { color:#b8f1c0!important; }
 .empire-nav.is-home-nav .empire-brand strong { color:#f4f7f4!important; }
+
+
+/* Premium Command Bar */
+.empire-nav{isolation:isolate;gap:clamp(18px,2.6vw,42px);min-height:72px;padding-top:15px;padding-bottom:15px;box-shadow:0 10px 42px rgba(0,0,0,.2);transition:min-height .32s ease,padding .32s ease,background .32s ease,border-color .32s ease,box-shadow .32s ease}
+.empire-nav::before{content:"";position:absolute;z-index:-2;inset:0;background:linear-gradient(105deg,rgba(92,211,118,.065),transparent 26%,transparent 67%,rgba(246,213,92,.065));pointer-events:none}
+.empire-nav::after{content:"";position:absolute;z-index:-1;left:-26%;bottom:-1px;width:26%;height:1px;background:linear-gradient(90deg,transparent,#9aefa7,#f4d36e,transparent);box-shadow:0 0 15px rgba(154,239,167,.55);animation:empire-nav-sweep 8s ease-in-out infinite;pointer-events:none}
+.empire-nav.is-scrolled{min-height:62px;padding-top:10px;padding-bottom:10px;background:rgba(4,8,6,.91);border-color:rgba(150,233,165,.27);box-shadow:0 14px 45px rgba(0,0,0,.38)}
+.empire-brand{position:relative;padding:3px 17px 4px 0;transition:transform .28s ease,filter .28s ease}
+.empire-brand::after{content:"";position:absolute;right:0;top:3px;bottom:3px;width:1px;background:linear-gradient(transparent,rgba(235,205,111,.72),transparent);box-shadow:0 0 10px rgba(235,205,111,.35)}
+.empire-brand span{font-family:var(--font-display,Georgia,serif);font-size:1.22rem;font-weight:700;letter-spacing:-.025em;text-shadow:0 0 18px rgba(164,240,176,.14)}
+.empire-brand strong{font-size:.67rem;letter-spacing:.23em;transition:letter-spacing .28s ease,color .28s ease}
+.empire-brand:hover{filter:brightness(1.14);transform:translateY(-1px)}.empire-brand:hover strong{color:#c7f4ce;letter-spacing:.27em}
+.empire-nav nav{gap:clamp(7px,1.3vw,22px)}
+.empire-nav nav a{position:relative;display:inline-flex;align-items:center;min-height:34px;padding:0 4px;font-size:.7rem;font-weight:800;letter-spacing:.045em;text-transform:uppercase;transition:color .25s ease,transform .25s ease,text-shadow .25s ease}
+.empire-nav nav a::after{content:"";position:absolute;left:50%;right:50%;bottom:0;height:1px;background:linear-gradient(90deg,#8eed9a,#f1d06f);box-shadow:0 0 10px rgba(142,237,154,.6);transition:left .25s ease,right .25s ease}
+.empire-nav nav a:hover{transform:translateY(-2px);text-shadow:0 0 18px rgba(245,213,92,.28)}.empire-nav nav a:hover::after,.empire-nav nav a.active::after{left:3px;right:3px}
+.nav-account{padding-left:4px}.nav-account>a:not(.notification-bell):not(.chat-bubble){position:relative;padding:7px 0;color:#cbd4ce;font-size:.72rem;font-weight:800;letter-spacing:.04em}.nav-account>a:not(.notification-bell):not(.chat-bubble)::after{content:"";position:absolute;right:0;bottom:3px;width:0;height:1px;background:#9aefa7;transition:width .22s ease}.nav-account>a:not(.notification-bell):not(.chat-bubble):hover::after{width:100%}
+.notification-bell,.chat-bubble{overflow:visible;transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease}.notification-bell::before,.chat-bubble::before{content:"";position:absolute;inset:-5px;border:1px solid transparent;border-radius:50%;opacity:0;transform:scale(.8);transition:opacity .22s ease,transform .22s ease}.notification-bell:hover,.chat-bubble:hover{transform:translateY(-2px) rotate(-5deg);box-shadow:0 0 18px rgba(132,231,150,.15)}.chat-bubble:hover{transform:translateY(-2px) rotate(5deg)}.notification-bell:hover::before,.chat-bubble:hover::before{border-color:rgba(153,239,168,.33);opacity:1;transform:scale(1)}.notification-count{animation:notification-pulse 2.2s ease-in-out infinite}
+.nav-vip{position:relative;overflow:hidden;border:1px solid rgba(255,230,139,.58);box-shadow:0 5px 17px rgba(199,147,28,.2);letter-spacing:.07em}.nav-vip::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 22%,rgba(255,255,255,.5) 43%,transparent 62%);transform:translateX(-120%);animation:vip-shimmer 4.4s ease-in-out infinite}
+@keyframes empire-nav-sweep{0%,20%{transform:translateX(0);opacity:0}30%,70%{opacity:1}80%,100%{transform:translateX(490%);opacity:0}}@keyframes notification-pulse{0%,100%{transform:scale(1);box-shadow:0 0 14px rgba(119,240,138,.75)}50%{transform:scale(1.12);box-shadow:0 0 22px rgba(119,240,138,.95)}}@keyframes vip-shimmer{0%,58%{transform:translateX(-120%)}78%,100%{transform:translateX(120%)}}
+@media(prefers-reduced-motion:reduce){.empire-nav::after,.notification-count,.nav-vip::after{animation:none}.empire-nav,.empire-brand,.empire-nav nav a,.notification-bell,.chat-bubble{transition:none}}
+@media(max-width:900px){.empire-nav{min-height:62px;padding-top:10px;padding-bottom:10px}.empire-brand{min-width:126px}.empire-nav nav a{font-size:.63rem}.empire-nav::after{display:none}}
