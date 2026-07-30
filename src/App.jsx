@@ -14,13 +14,22 @@ const featured = [
 ];
 
 function Home() {
-  return <div className="empire-page home">
-    <section className="throne-hero">
-      <div className="hero-crown">✦ THE ONE AND ONLY ✦</div>
-      <p className="eyebrow">KALENSKI™ PRESENTS</p>
-      <h1>KALENSKI™<span>CARD EMPIRE®</span></h1>
-      <p className="hero-copy">Welcome to the exclusive DMO Card Empire.<br />A legendary collection. A premium experience.</p>
-      <div className="hero-actions"><Link className="gold-button" to="/marketplace">Enter Card Market</Link><Link className="dark-button" to="/events">View Events</Link></div>
+  return <div className="home">
+    <section className="vanguard-hero">
+      <div className="hero-grid" aria-hidden="true" />
+      <div className="hero-orb orb-one" aria-hidden="true" />
+      <div className="hero-orb orb-two" aria-hidden="true" />
+      <div className="hero-particles" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
+      <div className="hero-character character-kaiba" aria-hidden="true">K</div>
+      <div className="hero-character character-yugi" aria-hidden="true">Y</div>
+      <div className="vanguard-content">
+        <p className="hero-kicker"><span>✦</span> The One and Only Card Empire</p>
+        <h1><span>Collect.</span><span>Command.</span><span>Conquer.</span></h1>
+        <p className="vanguard-copy">The private DMO card vault of Kalenski™.<br />Legendary cards. Premium trades. Zero noise.</p>
+        <div className="hero-actions"><Link className="hero-cta" to="/marketplace">Enter Card Market <b>↗</b></Link><Link className="hero-link" to="/events">View events <b>→</b></Link></div>
+        <div className="hero-metrics"><div><strong>2500<span>+</span></strong><small>Cards in the vault</small></div><div><strong>25<span>%</span></strong><small>VIP cart advantage</small></div><div><strong>01</strong><small>Seller · Kalenski™</small></div></div>
+      </div>
+      <div className="hero-side-label">KALENSKI™<br />CARD EMPIRE®</div>
     </section>
     <section className="section-intro"><p className="eyebrow">ROYAL SELECTION</p><h2>Featured legendary cards</h2><p>Every card belongs to Kalenski’s private collection. One seller. One empire.</p></section>
     <section className="featured-grid">{featured.map((card) => <article className={"royal-card rarity-" + card.rarity.toLowerCase()} key={card.name}>
