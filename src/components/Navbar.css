@@ -45,3 +45,9 @@
   .nav-account { display: flex; margin-left: auto; }
   .nav-account > :not(.notification-bell):not(.chat-bubble) { display: none; }
 }
+
+
+/* Home navigation begins as part of the scene, then becomes glass while scrolling. */
+.empire-nav.is-home-nav { color:#edf4ef; }
+.empire-nav.is-home-nav .empire-brand span { color:#b8f1c0!important; }
+.empire-nav.is-home-nav .empire-brand strong { color:#f4f7f4!important; }

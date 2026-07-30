@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
 import "./Navbar.css";
@@ -15,7 +15,16 @@ const links = [
 
 export default function Navbar() {
   const { profile, session } = useAuth();
+  const { pathname } = useLocation();
   const [unread, setUnread] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const updateScrollState = () => setIsScrolled(window.scrollY > 24);
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrollState);
+  }, [pathname]);
 
   useEffect(() => {
     if (!session) {
@@ -54,7 +63,7 @@ export default function Navbar() {
   }, [session]);
 
   return (
-    <header className="empire-nav">
+    <header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "")}>
       <NavLink to="/" className="empire-brand"><span>Kalenski™</span><strong>Card Empire®</strong></NavLink>
       <nav>{links.map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}</nav>
       <div className="nav-account">

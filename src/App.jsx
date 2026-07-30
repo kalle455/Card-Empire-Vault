@@ -7,12 +7,36 @@ import AdminDashboard from "./components/AdminDashboard";
 import NotificationsPanel from "./components/NotificationsPanel";
 import BanlistGallery from "./components/BanlistGallery";
 import { useAuth } from "./context/AuthContext";
+import { supabase } from "./lib/supabase";
 import { addFeedback, getEvents, getPotmPlayers, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
 
 function Home() {
   const navigate = useNavigate();
   const [transitioning, setTransitioning] = useState(false);
+  const [spotlightCards, setSpotlightCards] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    async function loadSpotlight() {
+      const { data } = await supabase
+        .from("cards")
+        .select("id, name, image_url, price, rarity, category")
+        .gt("quantity", 0)
+        .order("price", { ascending: false })
+        .limit(5);
+      if (active) setSpotlightCards(data ?? []);
+    }
+    loadSpotlight();
+    const channel = supabase
+      .channel("home-vault-spotlight")
+      .on("postgres_changes", { event: "*", schema: "public", table: "cards" }, loadSpotlight)
+      .subscribe();
+    return () => {
+      active = false;
+      channel.unsubscribe();
+    };
+  }, []);
 
   function enterEmpire(path) {
     if (transitioning) return;
@@ -23,6 +47,7 @@ function Home() {
   return (
     <div className={"home cinematic-home " + (transitioning ? "is-transitioning" : "")}>
       <div className="home-route-transition" aria-hidden="true"><span>K</span></div>
+
       <section className="vanguard-hero">
         <img className="hero-film hero-rooftop-art" src="/kalenski-rooftop-hero.png" alt="" />
         <div className="hero-cloud hero-cloud-one" aria-hidden="true" />
@@ -48,10 +73,82 @@ function Home() {
         </div>
         <div className="hero-side-label">SCROLL TO<br />ENTER THE EMPIRE <b>↓</b></div>
       </section>
-      <section className="home-afterglow">
-        <p>THE KALENSKI™ STANDARD</p>
-        <h2>Every card deserves<br /><em>a proper vault.</em></h2>
-        <button type="button" onClick={() => enterEmpire("/marketplace")}>Explore the market <b>↗</b></button>
+
+      <section className="home-vault-passage">
+        <div className="home-section-copy home-vault-copy">
+          <p className="home-eyebrow">THE PRIVATE SELECTION · 01—05</p>
+          <h2>Turn over<br /><em>the impossible.</em></h2>
+          <p>The five most valuable cards currently inside the vault. Hover to reveal them — every one is ready for its next owner.</p>
+        </div>
+        <div className={"vault-spotlight-stage" + (spotlightCards.length ? "" : " is-empty")}>
+          {spotlightCards.map((card, index) => (
+            <button
+              className={"vault-spotlight-card card-position-" + index}
+              key={card.id}
+              type="button"
+              onClick={() => enterEmpire("/marketplace")}
+              aria-label={"Reveal " + card.name + " in Card Market"}
+            >
+              <span className="spotlight-card-shell">
+                <span className="spotlight-card-back" aria-hidden="true"><i /><b>K</b></span>
+                <span className="spotlight-card-front">
+                  {card.image_url && <img src={card.image_url} alt="" />}
+                  <span className="spotlight-card-info"><b>{card.name}</b><small>{Number(card.price).toLocaleString()} G · {card.rarity}</small></span>
+                </span>
+              </span>
+            </button>
+          ))}
+          {!spotlightCards.length && <div className="spotlight-vault-empty"><span>THE VAULT IS PREPARING</span><p>Cards will appear here as soon as Kalenski™ adds them.</p></div>}
+        </div>
+        <button type="button" className="home-section-cta vault-section-cta" onClick={() => enterEmpire("/marketplace")}><span>Enter Card Market</span><b>↗</b></button>
+      </section>
+
+      <section className="home-arena">
+        <div className="arena-grid" aria-hidden="true" />
+        <div className="arena-light arena-light-left" aria-hidden="true" />
+        <div className="arena-light arena-light-right" aria-hidden="true" />
+        <div className="arena-duelist arena-duelist-left" aria-hidden="true"><i /></div>
+        <div className="arena-duelist arena-duelist-right" aria-hidden="true"><i /></div>
+        <div className="arena-impact" aria-hidden="true"><i /><i /><i /></div>
+        <div className="home-section-copy arena-copy">
+          <p className="home-eyebrow">THE EMPIRE TOURNAMENTS · LIVE</p>
+          <h2>Events<br /><em>start here.</em></h2>
+          <p>Two players. One arena. Your next story is waiting for a seat across the table.</p>
+          <button type="button" className="arena-cta" onClick={() => enterEmpire("/events")}><span>Enter the arena</span><b>→</b></button>
+        </div>
+        <p className="arena-side-mark">DUEL<br />SYSTEM<br /><b>ACTIVE</b></p>
+      </section>
+
+      <section className="home-transmissions">
+        <div className="home-section-copy transmission-heading">
+          <p className="home-eyebrow">EMPIRE TRANSMISSIONS</p>
+          <h2>What moves<br /><em>the vault.</em></h2>
+        </div>
+        <div className="transmission-list">
+          <article><span>01</span><p>VAULT SIGNAL</p><h3>New cards enter quietly. The right collectors find them first.</h3><button type="button" onClick={() => enterEmpire("/marketplace")}>See the market <b>↗</b></button></article>
+          <article><span>02</span><p>PLAYER SIGNAL</p><h3>VIP advantage is live: 25% comes off automatically in your cart.</h3><button type="button" onClick={() => enterEmpire("/profile")}>View profile <b>↗</b></button></article>
+          <article><span>03</span><p>ARENA SIGNAL</p><h3>New formats, banlists and tournament registrations appear live.</h3><button type="button" onClick={() => enterEmpire("/news")}>Read news <b>↗</b></button></article>
+        </div>
+      </section>
+
+      <section className="home-feedback-zone">
+        <div className="feedback-orbit" aria-hidden="true"><i /><i /><i /><b>✦</b></div>
+        <div className="home-section-copy feedback-copy">
+          <p className="home-eyebrow">THE EMPIRE REMEMBERS</p>
+          <h2>Leave your<br /><em>mark.</em></h2>
+          <p>Every deal, event and conversation leaves a trace. Tell the Empire how it felt.</p>
+          <button type="button" className="feedback-cta" onClick={() => enterEmpire("/feedback")}><span>Share feedback</span><b>↗</b></button>
+        </div>
+      </section>
+
+      <section className="home-manifesto">
+        <p className="home-eyebrow">ABOUT KALENSKI™</p>
+        <div>
+          <h2>I’m not a card seller<br />like everyone else.<br /><em>I’m the one who makes<br />the card matter.</em></h2>
+          <p>Every card has a history. Every trade deserves trust. Kalenski™ Card Empire® is a private vault for collectors who expect more than a listing.</p>
+          <button type="button" onClick={() => enterEmpire("/about")}>Meet Kalenski™ <b>→</b></button>
+        </div>
+        <strong aria-hidden="true">K</strong>
       </section>
     </div>
   );
