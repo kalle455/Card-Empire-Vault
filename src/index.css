@@ -781,7 +781,7 @@ body { background:radial-gradient(1000px 700px at 100% 0%,rgba(26,91,64,.16),tra
 /* Official Yu-Gi-Oh! card-back artwork on the five interactive Vault cards. */
 .spotlight-card-back {
   background-color:#090807;
-  background-image:url("/kalenski-card-back.svg");
+  background-image:url("/yugioh-card-back-hq.png");
   background-position:center;
   background-size:cover;
   background-repeat:no-repeat;
