@@ -8,6 +8,7 @@ const links = [
   ["/", "Empire"],
   ["/marketplace", "Card Market"],
   ["/events", "Events"],
+  ["/deck-check", "Deck Scan"],
   ["/feedback", "Feedback"],
   ["/about", "About Kalenski"],
 ];
