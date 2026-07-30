@@ -1,63 +1,28 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
 
-function Navbar() {
+const links = [
+  ["/", "Empire"],
+  ["/marketplace", "Card Market"],
+  ["/collection", "Collection"],
+  ["/events", "Events"],
+  ["/news", "News"],
+  ["/feedback", "Feedback"],
+  ["/about", "About Kalenski"],
+];
+
+export default function Navbar() {
+  const { profile } = useAuth();
   return (
-    <aside className="sidebar">
-
-      <div className="brand">
-        <h2>Kalenski™</h2>
-        <span>Card Empire®</span>
+    <header className="empire-nav">
+      <NavLink to="/" className="empire-brand"><span>Kalenski™</span><strong>Card Empire®</strong></NavLink>
+      <nav>{links.map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}</nav>
+      <div className="nav-account">
+        {profile?.role === "vip" && <span className="nav-vip">VIP −25%</span>}
+        <NavLink to="/profile">{profile?.username ?? "Player Login"}</NavLink>
+        {profile?.role === "admin" && <NavLink to="/admin">Admin</NavLink>}
       </div>
-
-
-      <nav className="nav-menu">
-
-        <NavLink to="/">
-          Dashboard
-        </NavLink>
-
-        <NavLink to="/marketplace">
-          Marketplace
-        </NavLink>
-
-        <NavLink to="/events">
-          Events
-        </NavLink>
-
-        <NavLink to="/messages">
-          Messages
-        </NavLink>
-
-        <NavLink to="/profile">
-          Profile
-        </NavLink>
-
-        <NavLink to="/admin">
-          Admin
-        </NavLink>
-
-      </nav>
-
-
-      <div className="sidebar-footer">
-
-        <div className="user-box">
-
-          <strong>
-            Kalenski
-          </strong>
-
-          <span>
-            Admin
-          </span>
-
-        </div>
-
-      </div>
-
-    </aside>
+    </header>
   );
 }
-
-export default Navbar;
