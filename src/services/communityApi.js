@@ -9,8 +9,8 @@ export async function getEvents() {
   return data;
 }
 
-export async function registerForEvent(eventId, playerId) {
-  const { error } = await supabase.from("event_registrations").insert({ event_id: eventId, player_id: playerId });
+export async function registerForEvent(eventId) {
+  const { error } = await supabase.rpc("register_for_event", { p_event_id: eventId });
   if (error) throw error;
 }
 
