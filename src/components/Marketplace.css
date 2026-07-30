@@ -35,3 +35,17 @@
 @media(max-width:680px){.detail-card-art img{max-height:290px}}
 
 .vault-image>.vault-card-art{position:relative;z-index:1;top:auto;left:auto;height:88%;max-width:78%;padding:0;background:none;border:0;border-radius:0;color:inherit;font-size:initial;letter-spacing:normal;text-transform:none}
+
+
+/* Rarity labels: the label itself carries the personality of the rarity. */
+.vault-image>.rarity-tag{position:absolute;z-index:3;top:10px;left:10px;overflow:hidden;isolation:isolate}
+.rarity-tag.rarity-rainbow{border-color:rgba(184,131,255,.9);color:#f5d4ff;text-shadow:0 0 7px rgba(207,112,255,.8),0 0 12px rgba(84,221,255,.52);animation:rainbow-label 3.2s linear infinite}
+.rarity-tag.rarity-rainbow::after{content:"";position:absolute;inset:-2px;z-index:-1;opacity:.32;background:linear-gradient(100deg,#fa57a4,#76e8ff,#fff09a,#a884ff,#fa57a4);background-size:240% 100%;animation:rainbow-label-sheen 3.2s linear infinite}
+.rarity-tag.rarity-gold{border-color:rgba(247,207,104,.86);color:#ffe7a1;text-shadow:0 0 7px rgba(244,192,67,.65);box-shadow:0 0 12px rgba(229,177,56,.12)}
+.vault-card.gold{border-color:rgba(232,187,78,.43);box-shadow:inset 0 0 0 1px rgba(255,232,159,.07),0 0 22px rgba(207,153,40,.08)}
+.vault-card.gold:hover{border-color:rgba(255,214,107,.8);box-shadow:inset 0 0 0 1px rgba(255,232,159,.16),0 24px 50px #0008,0 0 30px rgba(225,169,46,.16)}
+.vault-card.gold .vault-card-art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.26;mix-blend-mode:screen;background:linear-gradient(112deg,transparent 28%,rgba(255,244,185,.12) 40%,rgba(255,203,65,.48) 49%,rgba(255,248,207,.13) 56%,transparent 67%);background-size:240% 100%;animation:gold-foil 7s ease-in-out infinite}
+.vault-card.gold:hover .vault-card-art::after{opacity:.48;animation-duration:3.3s}
+.card-detail-modal.gold .detail-card-art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.31;mix-blend-mode:screen;background:linear-gradient(112deg,transparent 28%,rgba(255,244,185,.12) 40%,rgba(255,203,65,.48) 49%,rgba(255,248,207,.13) 56%,transparent 67%);background-size:240% 100%;animation:gold-foil 7s ease-in-out infinite}
+@keyframes rainbow-label{0%,100%{color:#ffb3dd;text-shadow:0 0 7px #f363ae,0 0 12px rgba(207,112,255,.52)}33%{color:#baf6ff;text-shadow:0 0 7px #71e2ff,0 0 12px rgba(84,221,255,.52)}66%{color:#fff1ae;text-shadow:0 0 7px #ffe36c,0 0 12px rgba(255,205,95,.52)}}@keyframes rainbow-label-sheen{0%,100%{background-position:0 0}50%{background-position:100% 0}}@keyframes gold-foil{0%,100%{background-position:120% 0}48%,52%{background-position:-20% 0}}
+@media(prefers-reduced-motion:reduce){.rarity-tag.rarity-rainbow,.rarity-tag.rarity-rainbow::after,.vault-card.gold .vault-card-art::after,.card-detail-modal.gold .detail-card-art::after{animation:none}}
