@@ -28,7 +28,13 @@ export default function Navbar() {
       setUnread(data?.length ?? 0);
     }
 
+    function refreshWhenVisible() {
+      if (document.visibilityState === "visible") loadUnread();
+    }
+
     loadUnread();
+    const refreshTimer = window.setInterval(loadUnread, 8000);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
     const channel = supabase.channel("nav-notifications")
       .on("postgres_changes", {
         event: "*",
@@ -36,9 +42,15 @@ export default function Navbar() {
         table: "notifications",
         filter: "player_id=eq." + session.user.id,
       }, loadUnread)
-      .subscribe();
+      .subscribe((state) => {
+        if (state === "SUBSCRIBED") loadUnread();
+      });
 
-    return () => channel.unsubscribe();
+    return () => {
+      window.clearInterval(refreshTimer);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+      channel.unsubscribe();
+    };
   }, [session]);
 
   return (
