@@ -9,12 +9,6 @@ import { useAuth } from "./context/AuthContext";
 import { addFeedback, getEvents, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
 
-const featured = [
-  { name: "Jinzo", rarity: "Rainbow", price: "50,000 G", image: "https://images.ygoprodeck.com/images/cards/77585513.jpg" },
-  { name: "Cyber Dragon", rarity: "Gold", price: "22,000 G", image: "https://images.ygoprodeck.com/images/cards/70095154.jpg" },
-  { name: "Blue-Eyes White Dragon", rarity: "Rare", price: "18,000 G", image: "https://images.ygoprodeck.com/images/cards/89631139.jpg" },
-];
-
 function Home() {
   return <div className="home">
     <section className="vanguard-hero">
@@ -33,10 +27,6 @@ function Home() {
       </div>
       <div className="hero-side-label">KALENSKI™<br />CARD EMPIRE®</div>
     </section>
-    <section className="section-intro"><p className="eyebrow">ROYAL SELECTION</p><h2>Featured legendary cards</h2><p>Every card belongs to Kalenski’s private collection. One seller. One empire.</p></section>
-    <section className="featured-grid">{featured.map((card) => <article className={"royal-card rarity-" + card.rarity.toLowerCase()} key={card.name}>
-      <img src={card.image} alt={card.name} /><div><span>{card.rarity}</span><h3>{card.name}</h3><strong>{card.price}</strong></div>
-    </article>)}</section>
   </div>;
 }
 
