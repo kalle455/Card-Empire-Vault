@@ -6,6 +6,7 @@ import AccountPanel from "./components/AccountPanel";
 import AdminDashboard from "./components/AdminDashboard";
 import NotificationsPanel from "./components/NotificationsPanel";
 import BanlistGallery from "./components/BanlistGallery";
+import TradeHub from "./components/TradeHub";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";
 import { addFeedback, getEvents, getPotmPlayers, getPublishedFeedback, registerForEvent, subscribeToFeedbackChanges, subscribeToLiveChanges } from "./services/communityApi";
@@ -369,6 +370,7 @@ function EmpireFooter() {
         <nav className="footer-column" aria-label="Explore the Empire">
           <p>EXPLORE</p>
           <Link to="/marketplace">Card Market <b>↗</b></Link>
+          <Link to="/trade-hub">Trade Hub <b>↗</b></Link>
           <Link to="/events">Events <b>↗</b></Link>
           <Link to="/feedback">Feedback <b>↗</b></Link>
           <Link to="/about">About Kalenski <b>↗</b></Link>
@@ -412,6 +414,7 @@ function EmpireFooter() {
 export default function App() {
   return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
     <Route path="/" element={<Home />} /><Route path="/marketplace" element={<Marketplace />} />
+    <Route path="/trade-hub" element={<TradeHub />} />
     <Route path="/events" element={<Events />} />
 <Route path="/feedback" element={<Feedback />} />
     <Route path="/about" element={<About />} /><Route path="/profile" element={<Profile />} /><Route path="/messages" element={<NotificationsPanel />} /><Route path="/chats" element={<NotificationsPanel chatOnly />} /><Route path="/admin" element={<Admin />} />
