@@ -1,73 +1,85 @@
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Marketplace from "./components/Marketplace";
 import AccountPanel from "./components/AccountPanel";
-import { getCards } from "./services/cardApi";
-import { useEffect } from "react";
+import { useAuth } from "./context/AuthContext";
+import { addFeedback, getEvents, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
 
-function Dashboard() {
-  const navigate = useNavigate();
+const featured = [
+  { name: "Jinzo", rarity: "Rainbow", price: "50,000 G", image: "https://images.ygoprodeck.com/images/cards/77585513.jpg" },
+  { name: "Cyber Dragon", rarity: "Gold", price: "22,000 G", image: "https://images.ygoprodeck.com/images/cards/70095154.jpg" },
+  { name: "Blue-Eyes White Dragon", rarity: "Rare", price: "18,000 G", image: "https://images.ygoprodeck.com/images/cards/89631139.jpg" },
+];
 
-  useEffect(() => {
-    getCards().catch((error) => console.error("CARD API ERROR:", error));
-  }, []);
-
-  return (
-    <div className="fade-in home-page">
-      <section className="hero card">
-        <div className="hero-content">
-          <p className="hero-small">Welcome to</p>
-          <h1 className="title">The ONE AND ONLY<br />Card Empire®</h1>
-          <h2 className="gold-text">Hosted by Kalenski™</h2>
-          <p className="subtitle hero-description">A premium trading platform for collectors, duelists and the Card Empire community.</p>
-          <div className="hero-buttons">
-            <button className="btn-primary" onClick={() => navigate("/marketplace")}>Enter Marketplace</button>
-            <button className="btn-secondary" onClick={() => navigate("/events")}>View Events</button>
-          </div>
-        </div>
-      </section>
-      <section className="stats-grid">
-        <div className="card stat-card"><span>2500+</span><p>Cards Available</p></div>
-        <div className="card stat-card"><span>50+</span><p>Events Hosted</p></div>
-        <div className="card stat-card"><span>1000+</span><p>Community Members</p></div>
-      </section>
-    </div>
-  );
+function Home() {
+  return <div className="empire-page home">
+    <section className="throne-hero">
+      <div className="hero-crown">✦ THE ONE AND ONLY ✦</div>
+      <p className="eyebrow">KALENSKI™ PRESENTS</p>
+      <h1>KALENSKI™<span>CARD EMPIRE®</span></h1>
+      <p className="hero-copy">Welcome to the exclusive DMO Card Empire.<br />A legendary collection. A premium experience.</p>
+      <div className="hero-actions"><Link className="gold-button" to="/marketplace">Enter Card Market</Link><Link className="dark-button" to="/events">View Events</Link></div>
+    </section>
+    <section className="section-intro"><p className="eyebrow">ROYAL SELECTION</p><h2>Featured legendary cards</h2><p>Every card belongs to Kalenski’s private collection. One seller. One empire.</p></section>
+    <section className="featured-grid">{featured.map((card) => <article className={"royal-card rarity-" + card.rarity.toLowerCase()} key={card.name}>
+      <img src={card.image} alt={card.name} /><div><span>{card.rarity}</span><h3>{card.name}</h3><strong>{card.price}</strong></div>
+    </article>)}</section>
+  </div>;
 }
 
 function Events() {
-  return <div className="fade-in"><h1 className="title">Events</h1><p className="subtitle">Live events and registrations will appear here.</p></div>;
+  const { session } = useAuth();
+  const [events, setEvents] = useState([]);
+  const [notice, setNotice] = useState("");
+  useEffect(() => {
+    let channel;
+    getEvents().then(setEvents).catch(() => setEvents([]));
+    try { channel = subscribeToLiveChanges(() => getEvents().then(setEvents)); } catch { /* Supabase tables may not be installed yet. */ }
+    return () => channel?.unsubscribe();
+  }, []);
+  async function join(id) {
+    if (!session) return setNotice("Please sign in before registering.");
+    try { await registerForEvent(id, session.user.id); setNotice("Registration confirmed — welcome to the event."); } catch (error) { setNotice(error.message); }
+  }
+  const examples = [{ id:"demo-1", title:"6-Way Free For All", starts_at:"Coming soon", description:"Police Station · 8000 Life Points · Prize: United We Stand", banlist:{name:"Empire Tournament Banlist"} }];
+  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">KALENSKI™ CARD EMPIRE EVENTS</p><h1>Enter the arena</h1><p>Live registrations, tournament banlists and player highlights.</p></section>{notice && <p className="notice">{notice}</p>}
+    <div className="event-list">{(events.length ? events : examples).map((event) => <article className="event-panel" key={event.id}><div><p className="eyebrow">{event.banlist?.name ?? "Official Banlist"}</p><h2>{event.title}</h2><p>{event.description}</p><strong>{event.starts_at === "Coming soon" ? event.starts_at : new Date(event.starts_at).toLocaleString()}</strong></div><button className="gold-button" onClick={() => join(event.id)} disabled={event.id === "demo-1"}>Register</button></article>)}</div>
+  </div>;
 }
 
-function Messages() {
-  return <div className="fade-in"><h1 className="title">Notifications</h1><p className="subtitle">Offer decisions, event updates and registration confirmations appear here in real time.</p></div>;
+function Collection() {
+  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">PLAYER VAULT</p><h1>Your collection</h1><p>Purchased cards will be recorded here with rarity, quantity and purchase date.</p></section><div className="empty-vault">Sign in and complete an in-game purchase to start your personal card vault.</div></div>;
 }
 
-function Profile() {
-  return <div className="fade-in"><AccountPanel /></div>;
+function News() {
+  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">EMPIRE CHRONICLES</p><h1>News & announcements</h1></section><div className="news-grid"><article><span>NEW CARDS</span><h2>Legendary stock arrives soon</h2><p>New Gold and Rainbow cards are being prepared for the royal vault.</p></article><article><span>SHOP UPDATE</span><h2>VIP privilege activated</h2><p>VIP players automatically receive 25% off in their cart.</p></article><article><span>EVENTS</span><h2>The next tournament is near</h2><p>Watch the events page for registration and the official banlist.</p></article></div></div>;
 }
 
-function Admin() {
-  return <div className="fade-in"><h1 className="title">Admin Panel</h1><p className="subtitle">Manage events, banlists, players and offers here.</p></div>;
+function Feedback() {
+  const { session } = useAuth();
+  const [text, setText] = useState("");
+  const [message, setMessage] = useState("");
+  async function submit(event) {
+    event.preventDefault();
+    if (!session) return setMessage("Please sign in to leave feedback.");
+    try { await addFeedback(session.user.id, text); setText(""); setMessage("Thank you — your feedback was submitted for approval."); } catch (error) { setMessage(error.message); }
+  }
+  return <div className="empire-page"><section className="page-hero"><p className="eyebrow">THE EMPIRE’S REPUTATION</p><h1>Player feedback</h1><p>Share your experience with Kalenski™ Card Empire®.</p></section><form className="feedback-form" onSubmit={submit}><textarea required value={text} onChange={(e) => setText(e.target.value)} placeholder="Your feedback…" /><button className="gold-button">Submit feedback</button>{message && <p className="notice">{message}</p>}</form></div>;
 }
+
+function About() {
+  return <div className="empire-page"><section className="about-hero"><p className="eyebrow">THE OWNER. THE COLLECTION. THE EMPIRE.</p><h1>About Kalenski™</h1><p>Kalenski™ is the one and only seller. Every card, bundle and event is personally selected and managed from a private DMO collection.</p><p>This is no public marketplace. It is a royal vault for legendary cards and trusted players.</p></section></div>;
+}
+
+function Profile() { return <div className="empire-page"><AccountPanel /></div>; }
+function Admin() { const { profile } = useAuth(); return <div className="empire-page"><section className="page-hero"><p className="eyebrow">ROYAL CONTROL ROOM</p><h1>Admin Dashboard</h1><p>{profile?.role === "admin" ? "Manage cards, stock, offers, events, news, feedback and player roles." : "This area is reserved for Kalenski™."}</p></section></div>; }
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <div className="app-layout">
-        <Navbar />
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/messages" element={<Messages />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/admin" element={<Admin />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
-  );
+  return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
+    <Route path="/" element={<Home />} /><Route path="/marketplace" element={<Marketplace />} /><Route path="/collection" element={<Collection />} />
+    <Route path="/events" element={<Events />} /><Route path="/news" element={<News />} /><Route path="/feedback" element={<Feedback />} />
+    <Route path="/about" element={<About />} /><Route path="/profile" element={<Profile />} /><Route path="/admin" element={<Admin />} />
+  </Routes></main></div></BrowserRouter>;
 }
