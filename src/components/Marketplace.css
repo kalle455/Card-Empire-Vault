@@ -77,3 +77,6 @@
 .rarity-tag.rarity-rainbow::after{background-position:50% 0}
 .vault-card.rainbow .vault-card-art{box-shadow:inset 0 0 0 1px rgba(215,155,255,.32),0 0 16px rgba(108,216,255,.16)}
 .vault-card.gold .vault-card-art{box-shadow:inset 0 0 0 1px rgba(255,225,136,.38),0 0 15px rgba(233,181,57,.16)}
+
+/* Keep the purchase panels on their own lightweight rendering layer. */
+.vault-overlay{isolation:isolate}
