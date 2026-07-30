@@ -31,13 +31,25 @@ export default function NotificationsPanel({ chatOnly = false }) {
       setLoading(false);
     }
 
+    function refreshWhenVisible() {
+      if (document.visibilityState === "visible") load();
+    }
+
     load();
+    const refreshTimer = window.setInterval(load, 8000);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
     const channel = supabase.channel("player-inbox")
       .on("postgres_changes", { event: "*", schema: "public", table: "notifications", filter: "player_id=eq." + session.user.id }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "purchase_chats" }, load)
-      .subscribe();
+      .subscribe((state) => {
+        if (state === "SUBSCRIBED") load();
+      });
 
-    return () => channel.unsubscribe();
+    return () => {
+      window.clearInterval(refreshTimer);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+      channel.unsubscribe();
+    };
   }, [session]);
 
   async function markAllRead() {
