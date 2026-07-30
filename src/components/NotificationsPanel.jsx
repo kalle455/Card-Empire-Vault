@@ -63,7 +63,7 @@ export default function NotificationsPanel({ chatOnly = false }) {
   }
 
   if (!session) {
-    return <main className="notifications-page"><p className="vault-overline">{chatOnly ? "PRIVATE TRADE CHAT" : "LIVE UPDATES"}</p><h1>{chatOnly ? "Purchase chats" : "Notifications"}</h1><div className="notifications-empty">Sign in to receive Card Empire updates and purchase chats.</div></main>;
+    return <main className="notifications-page"><p className="vault-overline">{chatOnly ? "PRIVATE TRADE CHAT" : "LIVE UPDATES"}</p><h1>{chatOnly ? "Live chats" : "Notifications"}</h1><div className="notifications-empty">Sign in to receive Card Empire updates and live trade chats.</div></main>;
   }
 
   const unread = notifications.filter((item) => !item.read).length;
@@ -80,7 +80,7 @@ export default function NotificationsPanel({ chatOnly = false }) {
   return (
     <main className="notifications-page">
       <header>
-        <div><p className="vault-overline">{chatOnly ? "PRIVATE TRADE CHAT" : "LIVE UPDATES"}</p><h1>{chatOnly ? isAdmin ? "Customer chats" : "Your purchase chats" : "Notifications"}</h1><p>{chatOnly ? "Open a purchase to chat with " + (isAdmin ? "the customer" : "Kalenski™") + " in real time." : "Offers, events and purchase confirmations arrive here automatically."}</p></div>
+        <div><p className="vault-overline">{chatOnly ? "PRIVATE TRADE CHAT" : "LIVE UPDATES"}</p><h1>{chatOnly ? isAdmin ? "Customer chats" : "Your purchase chats" : "Notifications"}</h1><p>{chatOnly ? "Open a purchase or Trade Hub request to chat with " + (isAdmin ? "the customer" : "Kalenski™") + " in real time." : "Offers, events and purchase confirmations arrive here automatically."}</p></div>
         {!chatOnly && unread > 0 && <button onClick={markAllRead}>Mark all read <span>{unread}</span></button>}
       </header>
 
@@ -99,7 +99,7 @@ export default function NotificationsPanel({ chatOnly = false }) {
           <section className="purchase-chat-inbox">
             <div className="inbox-section-head"><div><p className="vault-overline">PRIVATE TRADE CHAT</p><h2>{isAdmin ? "Customer chats" : "Your chats with Kalenski™"}</h2></div><span>{openChats.length}</span></div>
             <div className="purchase-chat-list">
-              {chatLoadError ? <p className="notifications-empty">{chatLoadError}</p> : openChats.length ? openChats.map((chat) => chatRow(chat)) : <p className="notifications-empty">No active purchase chats.</p>}
+              {chatLoadError ? <p className="notifications-empty">{chatLoadError}</p> : openChats.length ? openChats.map((chat) => chatRow(chat)) : <p className="notifications-empty">No active chats.</p>}
             </div>
             {!chatLoadError && closedChats.length > 0 && <section className="closed-chat-section">
               <div className="closed-chat-heading"><p>Closed chats</p><strong>Deal complete · {closedChats.length}</strong></div>
