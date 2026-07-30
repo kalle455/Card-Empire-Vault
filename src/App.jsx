@@ -6,6 +6,7 @@ import AccountPanel from "./components/AccountPanel";
 import AdminDashboard from "./components/AdminDashboard";
 import NotificationsPanel from "./components/NotificationsPanel";
 import BanlistGallery from "./components/BanlistGallery";
+import VaultLoader from "./components/VaultLoader";
 import { useAuth } from "./context/AuthContext";
 import { addFeedback, getEvents, getPotmPlayers, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
@@ -28,6 +29,7 @@ function Home() {
       </div>
       <div className="hero-side-label">KALENSKI™<br />CARD EMPIRE®</div>
     </section>
+    <VaultLoader />
   </div>;
 }
 
