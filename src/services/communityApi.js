@@ -15,8 +15,26 @@ export async function registerForEvent(eventId, playerId) {
 }
 
 export async function addFeedback(playerId, message) {
-  const { error } = await supabase.from("feedback").insert({ player_id: playerId, message });
+  const { error } = await supabase.from("feedback").insert({ player_id: playerId, message, approved: true });
   if (error) throw error;
+}
+
+export async function getPublishedFeedback() {
+  const { data, error } = await supabase
+    .from("feedback")
+    .select("id, message, created_at")
+    .eq("approved", true)
+    .order("created_at", { ascending: false })
+    .limit(9);
+  if (error) throw error;
+  return data ?? [];
+}
+
+export function subscribeToFeedbackChanges(onChange) {
+  return supabase
+    .channel("empire-feedback-wall")
+    .on("postgres_changes", { event: "*", schema: "public", table: "feedback" }, onChange)
+    .subscribe();
 }
 
 export function subscribeToLiveChanges(onChange) {
