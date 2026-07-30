@@ -880,3 +880,12 @@ input[type="text"],input[type="password"],input[type="number"],input[type="searc
 .cinematic-home .hero-grid{z-index:3;opacity:.08}
 .cinematic-home .hero-scanline{z-index:3}
 @media(max-width:760px){.cinematic-home .vanguard-hero::before{filter:blur(18px) saturate(.7) brightness(.45)}.cinematic-home .hero-film{object-fit:contain;object-position:center;filter:saturate(.94) contrast(1.03) brightness(.84)}}
+
+
+/* One uninterrupted hero image: no blurred side panels and no crop. */
+.cinematic-home .vanguard-hero{display:block;min-height:0;height:auto}
+.cinematic-home .vanguard-hero::before{display:none}
+.cinematic-home .hero-film{position:relative;inset:auto;display:block;width:100%;height:auto;object-fit:initial;object-position:initial;z-index:1;opacity:1;filter:saturate(1) contrast(1.05) brightness(.91);transform:none;animation:none}
+.cinematic-home .hero-film-shade{z-index:2;background:linear-gradient(0deg,rgba(4,7,7,.56),transparent 42%,rgba(4,7,7,.04))}
+.cinematic-home .hero-grid,.cinematic-home .hero-scanline{z-index:3}
+@media(max-width:760px){.cinematic-home .hero-film{width:100%;height:auto;filter:saturate(.94) contrast(1.03) brightness(.84)}}
