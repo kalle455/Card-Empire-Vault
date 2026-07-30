@@ -180,3 +180,41 @@
   text-shadow:none!important;
 }
 .case-only-card .case-label .case-name small{color:#324238!important}
+
+
+/* Deeper collector-slab construction: rear shell, elevated art and a floating acrylic face. */
+.vault-image{perspective:720px;perspective-origin:50% 44%}
+.case-only-card .collector-case{
+  transform:rotateX(var(--case-tilt-x,1.5deg)) rotateY(var(--case-tilt-y,-2deg)) translateZ(0);
+  box-shadow:inset 0 0 0 2px rgba(0,0,0,.6),inset 0 0 0 5px rgba(234,243,237,.07),inset 0 0 22px rgba(255,255,255,.09),0 22px 30px rgba(0,0,0,.62);
+}
+.case-only-card .collector-case::before{inset:5px -9px -11px 7px;transform:translate3d(7px,11px,-28px);box-shadow:0 16px 24px rgba(0,0,0,.62)}
+.case-only-card .collector-case::after{
+  content:"";position:absolute;z-index:5;inset:3px;pointer-events:none;border:1px solid rgba(241,255,248,.34);border-radius:2px;
+  background:linear-gradient(116deg,rgba(255,255,255,.16),transparent 14%,transparent 61%,rgba(255,255,255,.07) 78%,transparent 89%);
+  box-shadow:inset 5px 0 8px rgba(255,255,255,.05),inset -7px -8px 12px rgba(0,0,0,.28);
+  transform:translateZ(42px);
+}
+.case-only-card .vault-card-art{transform:translateZ(18px)}
+.case-only-card .case-label{transform:translateZ(32px)}
+.case-only-card .case-plaque{transform:translateZ(30px)}
+.case-only-card .case-glass{transform:translateZ(48px)}
+.detail-collector-case{transform:rotateX(4deg) rotateY(-6deg) translateZ(0);box-shadow:inset 0 0 0 2px rgba(0,0,0,.55),inset 0 0 30px rgba(255,255,255,.07),0 30px 45px rgba(0,0,0,.62)}
+.detail-collector-case::before{inset:6px -10px -13px 8px;transform:translate3d(8px,12px,-30px);box-shadow:0 18px 27px rgba(0,0,0,.64)}
+.detail-collector-case::after{
+  content:"";position:absolute;z-index:5;inset:4px;pointer-events:none;border:1px solid rgba(241,255,248,.3);border-radius:3px;
+  background:linear-gradient(116deg,rgba(255,255,255,.14),transparent 15%,transparent 62%,rgba(255,255,255,.07) 79%,transparent 90%);
+  box-shadow:inset 6px 0 10px rgba(255,255,255,.05),inset -8px -9px 14px rgba(0,0,0,.28);
+  transform:translateZ(48px);
+}
+.detail-collector-case .detail-card-art{transform:translateZ(18px)}
+.detail-collector-case .detail-case-label{transform:translateZ(34px)}
+.detail-collector-case .detail-case-plaque{transform:translateZ(32px)}
+.detail-collector-case .detail-case-glass{transform:translateZ(52px)}
+@media(hover:hover) and (pointer:fine){
+  .case-only-card .vault-image:hover .collector-case{
+    transform:rotateX(var(--case-tilt-x,3deg)) rotateY(var(--case-tilt-y,-5deg)) translateY(-7px) translateZ(12px);
+    box-shadow:inset 0 0 0 2px rgba(0,0,0,.55),inset 0 0 26px rgba(255,255,255,.11),0 32px 39px rgba(0,0,0,.66);
+  }
+}
+@media(hover:none){.case-only-card .collector-case{transform:rotateX(1.5deg) rotateY(-2deg)}}
