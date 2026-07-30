@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-const roleLabels = { vip: "V.I.P", potm: "Player of the Tournament", trusted_trader: "Trusted Trader", regular_customer: "Regular Customer", customer: "Customer", admin: "Kalenski — Admin" };
+const roleLabels = { vip: "V.I.P", potm: "POTM · Player of the Tournament", regular_customer: "Regular Customer", customer: "Customer", admin: "Kalenski · Admin" };
 
 export default function AccountPanel() {
   const { configured, loading, session, profile, signIn, signUp, signOut } = useAuth();
@@ -12,7 +12,10 @@ export default function AccountPanel() {
 
   if (!configured) return <div className="account-card"><h2>Player account</h2><p>Player accounts will be available shortly.</p></div>;
   if (loading) return <div className="account-card">Loading player account…</div>;
-  if (session) return <section className="account-card"><p className="overline">PLAYER PROFILE</p><h2>{profile?.username ?? "Player"}</h2><span className="role-chip">{roleLabels[profile?.role] ?? "Customer"}</span>{profile?.role === "potm" && <p className="potm-mark">✦ Player of the Tournament</p>}<div className="record"><span><b>{profile?.wins ?? 0}</b> Wins</span><span><b>{profile?.losses ?? 0}</b> Losses</span></div><button className="button-quiet" onClick={signOut}>Sign out</button></section>;
+  if (session) {
+    const activeRole = profile?.role ?? "customer";
+    return <section className="account-card"><p className="overline">PLAYER PROFILE</p><h2>{profile?.username ?? "Player"}</h2><div className="profile-record"><div><small>S / N</small><b>{profile?.wins ?? 0} / {profile?.losses ?? 0}</b></div><div><small>ROLE</small><b className={"role-chip role-" + activeRole}>{roleLabels[activeRole] ?? "Customer"}</b></div></div><button className="button-quiet" onClick={signOut}>Sign out</button></section>;
+  }
 
   async function submit(event) {
     event.preventDefault();
