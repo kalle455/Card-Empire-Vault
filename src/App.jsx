@@ -11,6 +11,18 @@ import { supabase } from "./lib/supabase";
 import { addFeedback, getEvents, getPotmPlayers, getPublishedFeedback, registerForEvent, subscribeToFeedbackChanges, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
 
+const eventFormats = {
+  five_way_ffa: { label: "5-WAY FFA", teams: "5 players", capacity: 5 },
+  six_way_ffa: { label: "6-WAY FFA", teams: "6 players", capacity: 6 },
+  three_way_ffa: { label: "3-WAY FFA", teams: "2v2v2 · 6 players", capacity: 6 },
+  four_way_ffa: { label: "4-WAY FFA", teams: "2v2v2v2 · 8 players", capacity: 8 },
+  open: { label: "OPEN FORMAT", teams: "No player limit", capacity: null },
+};
+
+function getEventFormat(format) {
+  return eventFormats[format] ?? eventFormats.open;
+}
+
 function Home() {
   const navigate = useNavigate();
   const [transitioning, setTransitioning] = useState(false);
@@ -176,7 +188,7 @@ function Events() {
   async function join(id) {
     if (!session) return setNotice("Please sign in before registering.");
     try {
-      await registerForEvent(id, session.user.id);
+      await registerForEvent(id);
       setNotice("Registration confirmed — welcome to the event.");
     } catch (error) {
       setNotice(error.message);
@@ -217,6 +229,10 @@ function Events() {
         {events.length ? events.map((event, index) => {
           const banlist = event.banlist;
           const hasBanlistCards = (banlist?.banned_cards?.length ?? 0) + (banlist?.limited_cards?.length ?? 0) + ((!banlist?.banned_cards?.length && !banlist?.limited_cards?.length) ? (banlist?.card_names?.length ?? 0) : 0) > 0;
+          const format = getEventFormat(event.event_format);
+          const registrations = event.registrations?.[0]?.count ?? 0;
+          const isFull = format.capacity !== null && registrations >= format.capacity;
+          const isCompleted = Boolean(event.winner_id);
           return (
             <article className="event-panel event-command-panel" key={event.id}>
               <span className="event-number">0{index + 1}</span>
@@ -224,7 +240,8 @@ function Events() {
                 <p className="eyebrow">{banlist?.name ?? "Official Banlist"}</p>
                 <h2>{event.title}</h2>
                 <p>{event.description}</p>
-                <strong><i>◷</i> {new Date(event.starts_at).toLocaleString()}</strong>
+                <strong><i>◷</i> {new Date(event.starts_at).toLocaleString()} · {format.label} · {format.teams}</strong>
+                <p className="event-registration-status">{isCompleted ? "Event complete" : format.capacity === null ? "Open registration" : registrations + " / " + format.capacity + " players registered"}</p>
                 {hasBanlistCards && <section className="event-banlist">
                   <button type="button" className="event-banlist-toggle" onClick={() => setOpenBanlists((current) => ({ ...current, [event.id]: !current[event.id] }))}>
                     {openBanlists[event.id] ? "Close visual banlist" : "Inspect visual banlist"}
@@ -232,7 +249,7 @@ function Events() {
                   {openBanlists[event.id] && <VisualBanlistBoundary resetKey={event.id}><BanlistGallery banlist={banlist} /></VisualBanlistBoundary>}
                 </section>}
               </div>
-              <button className="event-register-button" onClick={() => join(event.id)}><span>Register</span><b>↗</b></button>
+              <button className="event-register-button" disabled={isFull || isCompleted} onClick={() => join(event.id)}><span>{isCompleted ? "Complete" : isFull ? "Event full" : "Register"}</span><b>{isFull || isCompleted ? "—" : "↗"}</b></button>
             </article>
           );
         }) : <div className="empty-vault event-empty"><p className="vault-overline">NO EVENTS YET</p><h2>The arena is quiet.</h2><p>Kalenski™ will publish the next tournament here.</p></div>}
