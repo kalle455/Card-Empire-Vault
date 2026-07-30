@@ -63,21 +63,7 @@ function Home() {
         <div className="hero-scanline" aria-hidden="true" />
         <div className="hero-particles" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
         <div className="hero-index" aria-hidden="true"><span>01</span><i /><small>KALENSKI™<br />CARD EMPIRE®</small></div>
-        <div className="vanguard-content">
-          <p className="hero-kicker"><span>✦</span> The one and only card empire</p>
-          <h1><span>Collect.</span><span>Command.</span><span>Conquer.</span></h1>
-          <p className="vanguard-copy">A private vault for players who collect with intention.<br />Legendary cards. Premium trades. Zero noise.</p>
-          <div className="hero-actions">
-            <button type="button" className="hero-cta" onClick={() => enterEmpire("/marketplace")}><span>Enter Card Market</span><b>↗</b></button>
-            <button type="button" className="hero-link" onClick={() => enterEmpire("/events")}>View events <b>→</b></button>
-          </div>
-          <div className="hero-metrics">
-            <div><strong>25<span>%</span></strong><small>VIP advantage</small></div>
-            <div><strong>LIVE</strong><small>Vault updates</small></div>
-            <div><strong>01</strong><small>One seller</small></div>
-          </div>
-        </div>
-        <div className="hero-side-label">SCROLL TO<br />ENTER THE EMPIRE <b>↓</b></div>
+
       </section>
 
       <section className="home-vault-passage">
