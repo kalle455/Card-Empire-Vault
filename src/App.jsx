@@ -108,6 +108,23 @@ function Home() {
         <button type="button" className="home-section-cta vault-section-cta" onClick={() => enterEmpire("/marketplace")}><span>Enter Card Market</span><b>↗</b></button>
       </section>
 
+      <section className="home-trade-portal">
+        <div className="trade-portal-grid" aria-hidden="true" />
+        <div className="trade-portal-signal" aria-hidden="true"><i /><i /><i /></div>
+        <div className="trade-card-stack" aria-hidden="true">
+          <span className="trade-swap-card trade-swap-card-left"><b>OFFER</b></span>
+          <span className="trade-swap-card trade-swap-card-right"><b>ACCEPT</b></span>
+          <span className="trade-swap-core">⇄</span>
+        </div>
+        <div className="home-section-copy trade-portal-copy">
+          <p className="home-eyebrow">THE PRIVATE EXCHANGE · PLAYER TO PLAYER</p>
+          <h2>Make the<br /><em>right trade.</em></h2>
+          <p>Choose a card from the Vault. Present your offer. Kalenski™ accepts, declines or enters a private live negotiation.</p>
+          <button type="button" className="trade-portal-cta" onClick={() => enterEmpire("/trade-hub")}><span>Enter Trade Hub</span><b>↗</b></button>
+        </div>
+        <p className="trade-portal-mark">01 SELECT<br />02 OFFER<br /><b>03 NEGOTIATE</b></p>
+      </section>
+
       <section className="home-arena">
         <div className="arena-grid" aria-hidden="true" />
         <div className="arena-light arena-light-left" aria-hidden="true" />
