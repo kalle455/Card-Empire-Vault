@@ -871,3 +871,12 @@ input[type="text"],input[type="password"],input[type="number"],input[type="searc
 /* Keep the full Kaiba silhouette inside the frame. */
 .cinematic-home .hero-film{object-position:center top;transform:none}
 @media(max-width:760px){.cinematic-home .hero-film{object-position:64% top;transform:none}}
+
+
+/* Full rooftop composition: preserve both duelists instead of cropping the artwork. */
+.cinematic-home .vanguard-hero::before{display:block;inset:-32px;z-index:0;background:url("/kalenski-rooftop-hero.png") center/cover no-repeat;filter:blur(25px) saturate(.78) brightness(.52);transform:scale(1.09);opacity:.82}
+.cinematic-home .hero-film{z-index:1;object-fit:contain;object-position:center;opacity:1;filter:saturate(1) contrast(1.05) brightness(.91);transform:none;animation:none}
+.cinematic-home .hero-film-shade{z-index:2;background:linear-gradient(0deg,rgba(4,7,7,.62),transparent 43%,rgba(4,7,7,.08))}
+.cinematic-home .hero-grid{z-index:3;opacity:.08}
+.cinematic-home .hero-scanline{z-index:3}
+@media(max-width:760px){.cinematic-home .vanguard-hero::before{filter:blur(18px) saturate(.7) brightness(.45)}.cinematic-home .hero-film{object-fit:contain;object-position:center;filter:saturate(.94) contrast(1.03) brightness(.84)}}
