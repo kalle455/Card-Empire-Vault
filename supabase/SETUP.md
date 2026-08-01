@@ -23,3 +23,29 @@ where username = 'YOUR_KALENSKI_USERNAME';
 ```
 
 The website only shows a username and password. It uses an internal technical email address in the background because Supabase requires one. Never add a service-role key to the frontend.
+
+
+## Discord-only login upgrade
+
+17. Run `017_discord_login_and_notification_cleanup.sql` in the SQL Editor.
+18. Open the [Discord Developer Portal](https://discord.com/developers/applications), create an application and open **OAuth2**.
+19. Add this exact Discord redirect URL:
+
+```text
+https://ewpqnrhhrqvlywmdbral.supabase.co/auth/v1/callback
+```
+
+20. In Supabase open **Authentication → Providers → Discord**, enable Discord and paste the Discord **Client ID** and **Client Secret**. The secret stays in Supabase and must never be added to GitHub.
+21. In Supabase open **Authentication → URL Configuration**:
+    - Site URL: `https://card-empire-vault.onrender.com`
+    - Redirect URL: `https://card-empire-vault.onrender.com/**`
+22. Deploy the newest `main` commit on Render.
+23. Sign out of the old account and sign in through Discord. Then restore the admin role for the new Discord profile:
+
+```sql
+update public.profiles
+set role = 'admin'
+where username = 'YOUR_DISCORD_NAME';
+```
+
+24. After the Discord login works, disable the Email provider in **Authentication → Providers → Email**.
