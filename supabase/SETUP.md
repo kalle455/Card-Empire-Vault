@@ -25,27 +25,42 @@ where username = 'YOUR_KALENSKI_USERNAME';
 The website only shows a username and password. It uses an internal technical email address in the background because Supabase requires one. Never add a service-role key to the frontend.
 
 
-## Discord-only login upgrade
+## Minimal Discord login without email
 
-17. Run `017_discord_login_and_notification_cleanup.sql` in the SQL Editor.
-18. Open the [Discord Developer Portal](https://discord.com/developers/applications), create an application and open **OAuth2**.
-19. Add this exact Discord redirect URL:
+17. Run `017_discord_login_and_notification_cleanup.sql` if you have not already done so.
+18. Run `018_minimal_discord_identity.sql` in the Supabase SQL Editor.
+19. In Supabase open **Authentication → Providers → Anonymous Sign-Ins** and enable anonymous sign-ins. This creates the private Supabase session before Discord is linked.
+20. In the [Discord Developer Portal](https://discord.com/developers/applications) open your application → **OAuth2** and add this exact redirect:
+
+```text
+https://card-empire-vault.vercel.app/api/discord-callback
+```
+
+21. Remove the old Supabase callback from the Discord application if it is no longer needed:
 
 ```text
 https://ewpqnrhhrqvlywmdbral.supabase.co/auth/v1/callback
 ```
 
-20. In Supabase open **Authentication → Providers → Discord**, enable Discord and paste the Discord **Client ID** and **Client Secret**. The secret stays in Supabase and must never be added to GitHub.
-21. In Supabase open **Authentication → URL Configuration**:
-    - Site URL: `https://card-empire-vault.vercel.app`
-    - Redirect URL: `https://card-empire-vault.vercel.app/**`
-22. Deploy the newest `main` commit to **Production** on Vercel.
-23. Sign out of the old account and sign in through Discord. Then restore the admin role for the new Discord profile:
+22. Disable the built-in Discord provider in Supabase. The website now uses its own minimal Discord callback with the mandatory `identify` scope only.
+23. In Vercel open **card-empire-vault → Settings → Environment Variables** and add these server-only variables for Production and Preview:
+
+```text
+DISCORD_CLIENT_ID          = Discord application Client ID
+DISCORD_CLIENT_SECRET      = Discord application Client Secret
+SUPABASE_SERVICE_ROLE_KEY  = Supabase Project Settings → API → service_role key
+APP_URL                    = https://card-empire-vault.vercel.app
+```
+
+Never prefix the secret variables with `VITE_` and never paste them into GitHub. Only Vercel server functions may read them.
+
+24. Deploy the newest `main` commit to Production.
+25. Sign in with Discord. Card Empire stores only the Discord ID and username, then asks once for the exact DMO player name. It does not request or store email, avatar, banner, messages, friends or servers.
+26. If an old Card Empire session is still active, the Discord identity is linked to that same profile so its role, record and loyalty points stay intact.
+27. If you linked a completely new profile, restore the admin role once:
 
 ```sql
 update public.profiles
 set role = 'admin'
-where username = 'YOUR_DISCORD_NAME';
+where dmo_name = 'YOUR_DMO_NAME';
 ```
-
-24. After the Discord login works, disable the Email provider in **Authentication → Providers → Email**.

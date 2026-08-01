@@ -24,19 +24,29 @@ function DiscordMark() {
 }
 
 export default function AccountPanel() {
-  const { configured, loading, session, profile, signInWithDiscord, signOut, discordConnected } = useAuth();
+  const { configured, loading, session, profile, signInWithDiscord, saveDmoName, signOut, discordConnected } = useAuth();
   const [message, setMessage] = useState("");
   const [connecting, setConnecting] = useState(false);
+  const [savingDmo, setSavingDmo] = useState(false);
+  const [dmoName, setDmoName] = useState("");
 
   async function connectDiscord() {
     setMessage("");
     setConnecting(true);
-    if (session && !discordConnected) await signOut();
     const { error } = await signInWithDiscord();
     if (error) {
       setMessage(error.message);
       setConnecting(false);
     }
+  }
+
+  async function saveDmoIdentity(event) {
+    event.preventDefault();
+    setMessage("");
+    setSavingDmo(true);
+    const { error } = await saveDmoName(dmoName);
+    if (error) setMessage(error.message);
+    setSavingDmo(false);
   }
 
   if (!configured) return <div className="account-card"><h2>Discord access</h2><p>Player access will be available shortly.</p></div>;
@@ -47,12 +57,31 @@ export default function AccountPanel() {
       <p className="overline">CARD EMPIRE · VERIFIED ACCESS</p>
       <div className="discord-access-mark"><DiscordMark /></div>
       <h2>Continue with Discord</h2>
-      <p className="account-subtitle">A connected Discord account is required to enter the Card Market, Trade Hub and private chats. No separate password is stored by Card Empire.</p>
+      <p className="account-subtitle">A connected Discord account is required to enter the Card Market, Trade Hub and private chats. Card Empire uses only your Discord ID and username — never your email, avatar, banner, messages, friends or servers.</p>
       <button className="discord-login-button" type="button" onClick={connectDiscord} disabled={connecting}>
         <DiscordMark /><span>{connecting ? "Connecting…" : "Connect Discord account"}</span>
       </button>
       {session && !discordConnected && <p className="discord-migration-note">Your old player login is no longer accepted. Connect Discord to continue.</p>}
       {message && <p className="account-message">{message}</p>}
+    </section>;
+  }
+
+  if (session && discordConnected && !profile?.dmo_name) {
+    return <section className="account-card discord-access-card dmo-name-card">
+      <p className="overline">DISCORD VERIFIED · FINAL PLAYER STEP</p>
+      <div className="discord-access-mark"><DiscordMark /></div>
+      <h2>Enter your DMO name</h2>
+      <p className="account-subtitle">This is the exact name Kalenski will see for you inside DMO. It is stored separately from your Discord username.</p>
+      <form onSubmit={saveDmoIdentity}>
+        <label htmlFor="dmo-player-name">DMO player name</label>
+        <input id="dmo-player-name" value={dmoName} onChange={(event) => setDmoName(event.target.value)} minLength="2" maxLength="30" autoComplete="off" required placeholder="Your name in DMO" />
+        <button className="discord-login-button" type="submit" disabled={savingDmo}>
+          <span>{savingDmo ? "Saving…" : "Confirm DMO name"}</span>
+        </button>
+      </form>
+      <p className="discord-migration-note">Discord: @{profile?.username ?? "verified"} · No email stored</p>
+      {message && <p className="account-message">{message}</p>}
+      <button className="button-quiet player-signout" type="button" onClick={signOut}>Use another Discord account</button>
     </section>;
   }
 
@@ -73,8 +102,8 @@ export default function AccountPanel() {
         <span className="player-profile-status"><i /> Online</span>
       </header>
       <div className="player-name-record">
-        <small>DISCORD PLAYER</small>
-        <h2>{profile?.username ?? session.user.user_metadata?.name ?? "Player"}</h2>
+        <small>DMO PLAYER · DISCORD @{profile?.username ?? "verified"}</small>
+        <h2>{profile?.dmo_name ?? "DMO Player"}</h2>
       </div>
       <div className="profile-record">
         <div className="profile-score-record"><small>S / N</small><b>{profile?.wins ?? 0} <i>/</i> {profile?.losses ?? 0}</b></div>

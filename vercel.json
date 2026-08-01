@@ -1,9 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/card-catalog.js": { "maxDuration": 15 }
+    "api/card-catalog.js": {
+      "maxDuration": 15
+    },
+    "api/discord-start.js": {
+      "maxDuration": 10
+    },
+    "api/discord-callback.js": {
+      "maxDuration": 10
+    }
   },
   "rewrites": [
-    { "source": "/:path((?!api/).*)", "destination": "/index.html" }
+    {
+      "source": "/:path((?!api/).*)",
+      "destination": "/index.html"
+    }
   ]
 }
