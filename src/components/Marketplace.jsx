@@ -5,7 +5,7 @@ import PurchaseChat from "./PurchaseChat";
 import "./Marketplace.css";
 
 const categories = ["All cards", "Monster", "Spell", "Trap"];
-const rarities = ["All rarities", "Common", "Rare", "Gold", "Rainbow"];
+const rarities = ["All rarities", "Common", "Rare", "Silver", "Gold", "Rainbow"];
 
 export default function Marketplace() {
   const { profile, session, refreshProfile } = useAuth();
