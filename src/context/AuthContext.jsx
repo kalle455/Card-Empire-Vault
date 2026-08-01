@@ -1,8 +1,16 @@
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 const AuthContext = createContext(null);
-const accountEmail = (username) => `${username.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "")}@players.cardempire.local`;
+
+function hasDiscordIdentity(user) {
+  if (!user) return false;
+  const provider = user.app_metadata?.provider;
+  const providers = user.app_metadata?.providers ?? [];
+  return provider === "discord"
+    || providers.includes("discord")
+    || user.identities?.some((identity) => identity.provider === "discord");
+}
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
@@ -10,26 +18,49 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(isSupabaseConfigured);
 
   const loadProfile = useCallback(async (user) => {
-    if (!user) return setProfile(null);
-    const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+    if (!user) {
+      setProfile(null);
+      return;
+    }
+    const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
     setProfile(data ?? null);
   }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session: current } }) => {
-      setSession(current); loadProfile(current?.user).finally(() => setLoading(false));
+      setSession(current);
+      loadProfile(current?.user).finally(() => setLoading(false));
     });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, next) => {
-      setSession(next); loadProfile(next?.user); setLoading(false);
+      setSession(next);
+      loadProfile(next?.user);
+      setLoading(false);
     });
+
     return () => subscription.unsubscribe();
   }, [loadProfile]);
 
-  const signIn = (username, password) => supabase.auth.signInWithPassword({ email: accountEmail(username), password });
-  const signUp = (username, password) => supabase.auth.signUp({ email: accountEmail(username), password, options: { data: { username } } });
+  const signInWithDiscord = () => supabase.auth.signInWithOAuth({
+    provider: "discord",
+    options: {
+      redirectTo: window.location.origin + "/profile",
+      scopes: "identify email",
+    },
+  });
   const signOut = () => supabase.auth.signOut();
+  const discordConnected = useMemo(() => hasDiscordIdentity(session?.user), [session]);
 
-  return <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut, refreshProfile: () => loadProfile(session?.user), configured: isSupabaseConfigured }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{
+    session,
+    profile,
+    loading,
+    signInWithDiscord,
+    signOut,
+    discordConnected,
+    refreshProfile: () => loadProfile(session?.user),
+    configured: isSupabaseConfigured,
+  }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
