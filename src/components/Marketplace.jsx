@@ -5,7 +5,7 @@ import PurchaseChat from "./PurchaseChat";
 import "./Marketplace.css";
 
 const categories = ["All cards", "Monster", "Spell", "Trap"];
-const rarities = ["All rarities", "Common", "Rare", "Silver", "Gold", "Rainbow"];
+const rarities = ["All rarities", "Common", "Silver", "Gold", "Rainbow"];
 
 function PriceHistoryPanel({ history, loading }) {
   if (loading) return <section className="price-memory is-loading"><span /><span /><span /></section>;

@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 import officialDmoCatalog from "virtual:dmo-card-catalog";
 import "./AdminDashboard.css";
 
-const blankCard = { name: "", price: "", quantity: "1", category: "monster", rarity: "rare" };
+const blankCard = { name: "", price: "", quantity: "1", category: "monster", rarity: "silver" };
 const blankEvent = { title: "", starts_at: "", description: "", banlist_id: "", event_format: "five_way_ffa" };
 const blankBanlist = { name: "", banned: "", limited: "" };
 const roles = ["customer", "regular_customer", "vip", "potm", "admin"];
@@ -325,7 +325,7 @@ export default function AdminDashboard() {
               <strong>{item.name}</strong>
               <div className="admin-row"><label>My price<input type="number" min="0" value={editingCard.price} onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })} /></label><label>Stock<input type="number" min="0" value={editingCard.quantity} onChange={(e) => setEditingCard({ ...editingCard, quantity: e.target.value })} /></label></div>
               <div className="admin-row"><label>Other seller price<input type="number" min="0" placeholder="No exact listing" value={editingCard.external_market_price ?? ""} onChange={(e) => setEditingCard({ ...editingCard, external_market_price: e.target.value })} /></label><a className="admin-market-source" href="https://dmo-market.onrender.com/" target="_blank" rel="noreferrer">Check DMO Market ↗</a></div>
-              <div className="admin-row"><select value={editingCard.category} onChange={(e) => setEditingCard({ ...editingCard, category: e.target.value })}><option value="monster">Monster</option><option value="spell">Spell</option><option value="trap">Trap</option></select><select value={editingCard.rarity} onChange={(e) => setEditingCard({ ...editingCard, rarity: e.target.value })}><option value="common">Common</option><option value="rare">Rare</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="rainbow">Rainbow</option></select></div>
+              <div className="admin-row"><select value={editingCard.category} onChange={(e) => setEditingCard({ ...editingCard, category: e.target.value })}><option value="monster">Monster</option><option value="spell">Spell</option><option value="trap">Trap</option></select><select value={editingCard.rarity} onChange={(e) => setEditingCard({ ...editingCard, rarity: e.target.value })}><option value="common">Common</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="rainbow">Rainbow</option></select></div>
               <aside><button type="submit">Save</button><button type="button" onClick={() => setEditingCard(null)}>Cancel</button></aside>
             </form>
           ) : (

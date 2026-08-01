@@ -1,7 +1,7 @@
 -- Run after schema.sql in the Supabase SQL Editor.
 alter type public.app_role add value if not exists 'trusted_trader';
 
-create type public.card_rarity as enum ('common', 'rare', 'gold', 'rainbow');
+create type public.card_rarity as enum ('common', 'silver', 'gold', 'rainbow');
 create type public.card_category as enum ('monster', 'spell', 'trap');
 
 create table public.cards (

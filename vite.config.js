@@ -11,7 +11,7 @@ function dmoRarity(value) {
   const rarity = normalise(value);
   if (rarity === "rainbow") return "rainbow";
   if (rarity === "gold") return "gold";
-  if (rarity === "silver") return "rare";
+  if (rarity === "silver") return "silver";
   return "common";
 }
 
@@ -83,4 +83,3 @@ export default defineConfig({
     allowedHosts: true,
   },
 });
-
