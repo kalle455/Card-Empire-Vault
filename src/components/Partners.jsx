@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import "./Partners.css";
 
 const issues = [
-  { number: "001", title: "Domino Pulse · Issue 001", url: "https://heyzine.com/flip-book/a3c1161398.html", accent: "violet" },
-  { number: "002", title: "Domino Pulse · Issue 002", url: "https://heyzine.com/flip-book/4dee3cbbcf.html#page/1", accent: "emerald" },
+  { number: "001", title: "Domino Pulse · Issue 001", cover: "/domino-pulse-issue-001.jpg", url: "https://heyzine.com/flip-book/a3c1161398.html", accent: "violet" },
+  { number: "002", title: "Domino Pulse · Issue 002", cover: "/domino-pulse-issue-002.jpg", url: "https://heyzine.com/flip-book/4dee3cbbcf.html#page/1", accent: "emerald" },
 ];
 
 export default function Partners() {
@@ -32,14 +32,26 @@ export default function Partners() {
       <div className="magazine-grid">
         {issues.map((issue) => <article className={"magazine-issue " + issue.accent} key={issue.number}>
           <button type="button" className="magazine-cover" onClick={() => setActiveIssue(issue)} aria-label={"Open " + issue.title}>
-            <span className="magazine-spine">DOMINO PULSE</span>
-            <span className="magazine-pulse" aria-hidden="true"><i /><i /><i /></span>
-            <small>DMO CULTURE · NEWS · META</small>
-            <strong>ISSUE<br />{issue.number}</strong>
+            <img className="magazine-cover-art" src={issue.cover} alt={issue.title + " cover"} />
+            <span className="magazine-cover-shine" aria-hidden="true" />
             <em>READ NOW ↗</em>
           </button>
           <div><span>INTERACTIVE FLIPBOOK</span><h3>{issue.title}</h3><p>Turn pages, zoom into articles and enter fullscreen without leaving the Empire.</p><button type="button" onClick={() => setActiveIssue(issue)}>Open magazine</button></div>
         </article>)}
+      </div>
+    </section>
+
+    <section className="soul-hunter-partner">
+      <div className="soul-hunter-seal">
+        <img src="/soul-hunter-partner.jpg" alt="Soul Hunter covenant seal" />
+        <span aria-hidden="true" />
+      </div>
+      <div className="soul-hunter-copy">
+        <p className="vault-overline">CLASSIFIED PARTNER · THE COVENANT</p>
+        <h2>Soul<br /><em>Hunter.</em></h2>
+        <p>Little is known about this order. They hunt wandering souls and bind them inside cards, beyond the reach of the living.</p>
+        <blockquote>“I made a pact with them. They protect Card Empire and act as my bounty hunters. In return, I promised them my soul — and many more to follow.”</blockquote>
+        <div><span>STATUS · ACTIVE</span><span>ACCESS · RESTRICTED</span><span>CONTRACT · SEALED</span></div>
       </div>
     </section>
 

@@ -69,11 +69,4 @@ where dmo_name = 'YOUR_DMO_NAME';
 ## Cardstock profile, wishlist and Community
 
 29. Run `021_cardstock_community.sql`. This adds profile XP/ranks, order-history support, wishlists, the new Community system, polls, reviews, comments and live wishlist events. Existing cards, purchases and profiles are preserved.
-30. The Edge Function `wishlist-discord` must be deployed from `supabase/functions/wishlist-discord/index.ts`.
-31. For direct Discord wishlist messages, create a Discord bot in the same application and add its token only under **Supabase → Edge Functions → Secrets**:
-
-```text
-DISCORD_BOT_TOKEN = your private Discord bot token
-```
-
-Never put the bot token in Vercel, GitHub or frontend variables. Without the token, in-site wishlist notifications continue to work and Discord deliveries wait safely in the queue.
+30. Run `023_pause_wishlist_discord.sql` after `022_secure_wishlist_discord.sql`. Wishlist updates remain available inside Card Empire, while direct Discord delivery is paused and no new Discord queue entries are created.

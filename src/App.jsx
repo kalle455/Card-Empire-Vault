@@ -200,8 +200,8 @@ function Home() {
         <div className="feedback-orbit" aria-hidden="true"><i /><i /><i /><b>✦</b></div>
         <div className="home-section-copy feedback-copy">
           <p className="home-eyebrow">THE COMMUNITY BUILDS</p>
-          <h2>Shape what<br /><em>comes next.</em></h2>
-          <p>Suggest features, vote in live polls, publish reviews and speak directly with the Card Empire team.</p>
+          <h2>Your voice.<br /><em>Our next move.</em></h2>
+          <p>Suggest features, vote in live polls and help shape the next chapter of Card Empire.</p>
           <button type="button" className="feedback-cta" onClick={() => enterEmpire("/community")}><span>Enter Community</span><b>↗</b></button>
         </div>
       </section>

@@ -21,6 +21,20 @@ const toLocalDateTime = (value) => value ? new Date(value).toISOString().slice(0
 const cardNamesFromText = (value) => [...new Set(value.split(/\n|,/).map((name) => name.trim()).filter(Boolean))];
 const normaliseCardName = (value) => String(value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
+const adminIconPaths = {
+  cards: "M6 3h12v18H6zM9 7h6M9 11h6M9 15h4",
+  books: "M4 5h6a3 3 0 0 1 3 3v12a3 3 0 0 0-3-3H4zM20 5h-6a3 3 0 0 0-3 3v12a3 3 0 0 1 3-3h6z",
+  offers: "M4 7h16v12H4zM8 7V5h8v2M8 12h8M8 15h5",
+  trades: "M7 7h11l-3-3m3 3-3 3M17 17H6l3 3m-3-3 3-3",
+  events: "M5 5h14v15H5zM8 3v4M16 3v4M5 9h14M9 13h2M13 13h2M9 16h2",
+  community: "M5 6h14v10H9l-4 4zM9 10h6M9 13h4",
+  players: "M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 1a2.5 2.5 0 1 0 0-5M3 20a5 5 0 0 1 10 0M14 20a4 4 0 0 1 7 0",
+};
+
+function AdminIcon({ name }) {
+  return <span className="admin-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d={adminIconPaths[name]} /></svg></span>;
+}
+
 export default function AdminDashboard() {
   const { profile } = useAuth();
   const [tab, setTab] = useState("cards");
@@ -34,6 +48,8 @@ export default function AdminDashboard() {
   const [selectedCatalogCard, setSelectedCatalogCard] = useState(null);
   const [winnerSelections, setWinnerSelections] = useState({});
   const [editingCard, setEditingCard] = useState(null);
+  const [adminAnnouncement, setAdminAnnouncement] = useState({ title: "", body: "" });
+  const [adminPoll, setAdminPoll] = useState({ question: "", options: "" });
 
   async function load() {
     const [cards, events, offers, trades, players, purchases, banlists] = await Promise.all([
@@ -248,12 +264,40 @@ export default function AdminDashboard() {
     load();
   }
 
+  async function publishAnnouncement(e) {
+    e.preventDefault();
+    const { error } = await supabase.from("community_announcements").insert({ title: adminAnnouncement.title.trim(), body: adminAnnouncement.body.trim() });
+    if (error) return setNotice(error.message);
+    setAdminAnnouncement({ title: "", body: "" });
+    setNotice("Announcement published to the Community.");
+  }
+
+  async function publishPoll(e) {
+    e.preventDefault();
+    const labels = adminPoll.options.split(",").map((item) => item.trim()).filter(Boolean).slice(0, 6);
+    if (labels.length < 2) return setNotice("A poll needs at least two comma-separated options.");
+    const { data: poll, error } = await supabase.from("community_polls").insert({ question: adminPoll.question.trim() }).select().single();
+    if (error) return setNotice(error.message);
+    const optionResult = await supabase.from("community_poll_options").insert(labels.map((label, position) => ({ poll_id: poll.id, label, position })));
+    if (optionResult.error) return setNotice(optionResult.error.message);
+    setAdminPoll({ question: "", options: "" });
+    setNotice("Community poll opened.");
+  }
+
   return (
     <main className="admin-shell">
       <header><div><p className="vault-overline">KALENSKI™ CONTROL ROOM</p><h1>Empire Admin</h1></div><span>Live system</span></header>
       <nav className="admin-tabs">
-        {[["cards", "Cards"], ["events", "Events & Banlists"], ["offers", "Offers"], ["trades", "Trade Hub"], ["books", "Bücher"], ["community", "Community"], ["players", "Players"]].map(([item, label]) => (
-          <button key={item} className={tab === item ? "active" : ""} onClick={() => setTab(item)}>{label}</button>
+        {[
+          ["cards", "Cards", data.cards.length + " in stock"],
+          ["books", "Orders", data.purchases.length + " sales"],
+          ["offers", "Offers", data.offers.filter((entry) => entry.status === "pending").length + " pending"],
+          ["trades", "Trade Hub", data.trades.filter((entry) => entry.status === "pending").length + " pending"],
+          ["events", "Events & Banlists", data.events.length + " events"],
+          ["community", "Community", "Team channel"],
+          ["players", "Players", data.players.length + " profiles"],
+        ].map(([item, label, detail]) => (
+          <button key={item} className={tab === item ? "active" : ""} onClick={() => setTab(item)}><AdminIcon name={item} /><b>{label}</b><small>{detail}</small></button>
         ))}
       </nav>
       {notice && <p className="admin-notice">{notice}</p>}
@@ -362,7 +406,13 @@ export default function AdminDashboard() {
         </div></section>
       </section>}
 
-      {tab === "community" && <section className="admin-panel"><h2>Community command</h2><p>Publish announcements and polls, reply to players and move suggestions through Planned, In Development, Released or Rejected.</p><button className="admin-save" type="button" onClick={() => window.location.assign("/community")}>Open Community console</button></section>}
+      {tab === "community" && <section className="admin-community-console">
+        <header><div><p className="vault-overline">CARD EMPIRE TEAM CHANNEL</p><h2>Speak directly to the community.</h2></div><button type="button" onClick={() => window.location.assign("/community")}>View public Community ↗</button></header>
+        <div className="admin-grid">
+          <form className="admin-panel" onSubmit={publishAnnouncement}><AdminIcon name="community" /><h3>New announcement</h3><p>Send an official message to every verified player.</p><input required value={adminAnnouncement.title} onChange={(e) => setAdminAnnouncement({ ...adminAnnouncement, title: e.target.value })} placeholder="Announcement title" /><textarea required value={adminAnnouncement.body} onChange={(e) => setAdminAnnouncement({ ...adminAnnouncement, body: e.target.value })} placeholder="Message to every player" /><button className="vault-submit">Publish announcement</button></form>
+          <form className="admin-panel" onSubmit={publishPoll}><AdminIcon name="offers" /><h3>New community poll</h3><p>Separate each answer with a comma. Up to six options are supported.</p><input required value={adminPoll.question} onChange={(e) => setAdminPoll({ ...adminPoll, question: e.target.value })} placeholder="Community question" /><input required value={adminPoll.options} onChange={(e) => setAdminPoll({ ...adminPoll, options: e.target.value })} placeholder="Option one, Option two, Option three" /><button className="vault-submit">Open poll</button></form>
+        </div>
+      </section>}
 
       {tab === "players" && <section className="admin-panel"><h2>Player roles</h2><p>Delete removes the player profile and their Empire data. Administrator profiles are protected.</p><div className="admin-list">
         {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.dmo_name || "DMO name missing"}</b><small>Discord @{item.username} · {item.wins}W / {item.losses}L</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select>{item.id !== profile.id && item.role !== "admin" && <button className="admin-delete-player" onClick={() => deletePlayer(item.id, item.dmo_name || item.username)}>Delete player</button>}</div>)}

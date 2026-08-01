@@ -33,4 +33,6 @@
   <ellipse cx="500" cy="720" rx="61" ry="30" fill="#020202" stroke="#713115" stroke-width="8"/>
   <path d="M120 270C330 180 610 173 877 290M114 1159C363 1256 650 1241 889 1128" fill="none" stroke="#ffbd5c" stroke-width="4" opacity=".42"/>
   <path d="M93 175L907 1285" stroke="#fff4cf" stroke-width="11" opacity=".1"/>
+  <text x="78" y="112" fill="#fff5d7" font-family="Georgia,serif" font-size="42" font-weight="700" letter-spacing="2">Kalenski™</text>
+  <text x="920" y="1340" fill="#fff5d7" font-family="Arial,sans-serif" font-size="56" font-weight="900" letter-spacing="5" text-anchor="end">DMO</text>
 </svg>

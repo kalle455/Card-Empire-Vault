@@ -26,15 +26,13 @@ export default function Community() {
   const [suggestionForm, setSuggestionForm] = useState({ title: "", body: "" });
   const [reviewForm, setReviewForm] = useState({ rating: 5, body: "" });
   const [comments, setComments] = useState({});
-  const [adminAnnouncement, setAdminAnnouncement] = useState({ title: "", body: "" });
-  const [adminPoll, setAdminPoll] = useState({ question: "", options: "" });
   const isAdmin = profile?.role === "admin";
 
   async function load() {
     if (!session || !discordConnected) return;
     const [suggestionResult, reviewResult, announcementResult, pollResult] = await Promise.all([
-      supabase.from("community_suggestions").select("*, player:profiles(username,dmo_name), votes:community_suggestion_votes(rating,player_id), comments:community_comments(id,body,created_at,player_id,player:profiles(username,dmo_name))").order("created_at", { ascending: false }),
-      supabase.from("community_reviews").select("*, player:profiles(username,dmo_name)").order("created_at", { ascending: false }).limit(30),
+      supabase.from("community_suggestions").select("*, player:profiles!community_suggestions_player_id_fkey(username,dmo_name), votes:community_suggestion_votes(rating,player_id), comments:community_comments(id,body,created_at,player_id,player:profiles!community_comments_player_id_fkey(username,dmo_name))").order("created_at", { ascending: false }),
+      supabase.from("community_reviews").select("*, player:profiles!community_reviews_player_id_fkey(username,dmo_name)").order("created_at", { ascending: false }).limit(30),
       supabase.from("community_announcements").select("*").order("created_at", { ascending: false }),
       supabase.from("community_polls").select("*, options:community_poll_options(*), votes:community_poll_votes(option_id,player_id)").eq("active", true).order("created_at", { ascending: false }),
     ]);
@@ -105,33 +103,13 @@ export default function Community() {
     if (error) setNotice(error.message); else load();
   }
 
-  async function publishAnnouncement(event) {
-    event.preventDefault();
-    const { error } = await supabase.from("community_announcements").insert(adminAnnouncement);
-    if (error) return setNotice(error.message);
-    setAdminAnnouncement({ title: "", body: "" });
-    load();
-  }
-
-  async function publishPoll(event) {
-    event.preventDefault();
-    const labels = adminPoll.options.split(",").map((item) => item.trim()).filter(Boolean).slice(0, 6);
-    if (labels.length < 2) return setNotice("A poll needs at least two comma-separated options.");
-    const { data: poll, error } = await supabase.from("community_polls").insert({ question: adminPoll.question.trim() }).select().single();
-    if (error) return setNotice(error.message);
-    const optionResult = await supabase.from("community_poll_options").insert(labels.map((label, position) => ({ poll_id: poll.id, label, position })));
-    if (optionResult.error) return setNotice(optionResult.error.message);
-    setAdminPoll({ question: "", options: "" });
-    load();
-  }
-
   if (!session || !discordConnected) return <main className="community-page community-locked"><p className="vault-overline">COMMUNITY ACCESS</p><h1>Connect Discord<br /><em>to take part.</em></h1><button onClick={() => window.location.assign("/profile")}>Open player profile</button></main>;
 
   return <main className="community-page">
     <section className="community-hero">
       <div className="community-radar" aria-hidden="true"><i /><i /><i /></div>
       <p className="vault-overline">CARD EMPIRE · COMMUNITY COMMAND</p>
-      <h1>Shape what<br /><em>comes next.</em></h1>
+      <h1>Your voice.<br /><em>Moves the Empire.</em></h1>
       <p>Suggestions, reviews, polls and direct signals between the Card Empire team and every verified player.</p>
       <div className="community-score"><Stars value={Math.round(averageReview)} /><strong>{averageReview ? averageReview.toFixed(1) : "—"}</strong><span>{reviews.length} written reviews</span></div>
     </section>
@@ -196,10 +174,5 @@ export default function Community() {
       <div>{reviews.map((review) => <article key={review.id}><Stars value={review.rating} /><p>“{review.body}”</p><span>{review.player?.dmo_name ?? review.player?.username ?? "Verified player"}</span></article>)}</div>
     </section>
 
-    {isAdmin && <section className="community-team-console">
-      <header><p className="vault-overline">CARD EMPIRE TEAM CHANNEL</p><h2>Speak directly to the community.</h2></header>
-      <form onSubmit={publishAnnouncement}><h3>New announcement</h3><input required value={adminAnnouncement.title} onChange={(event) => setAdminAnnouncement({ ...adminAnnouncement, title: event.target.value })} placeholder="Announcement title" /><textarea required value={adminAnnouncement.body} onChange={(event) => setAdminAnnouncement({ ...adminAnnouncement, body: event.target.value })} placeholder="Message to every player" /><button>Publish</button></form>
-      <form onSubmit={publishPoll}><h3>New poll</h3><input required value={adminPoll.question} onChange={(event) => setAdminPoll({ ...adminPoll, question: event.target.value })} placeholder="Community question" /><input required value={adminPoll.options} onChange={(event) => setAdminPoll({ ...adminPoll, options: event.target.value })} placeholder="Option one, Option two, Option three" /><button>Open poll</button></form>
-    </section>}
   </main>;
 }

@@ -73,7 +73,7 @@ export default function Navbar() {
     <header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "") + (mobileOpen ? " mobile-open" : "")}>
       <div className="brand-partner-cluster">
         <NavLink to="/" className="empire-brand"><span>Kalenski™</span><strong>Card Empire®</strong></NavLink>
-        <NavLink to="/partners" className="partners-nav-link"><small>+</small><span>Partners</span></NavLink>
+        <NavLink to="/partners" className="partners-nav-link" aria-label="Partners"><small>+</small></NavLink>
       </div>
       <nav id="empire-primary-navigation" aria-label="Primary navigation">
         {links.map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}
