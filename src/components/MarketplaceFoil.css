@@ -21,12 +21,19 @@
 
 .vault-card.gold .vault-card-art::after,
 .card-detail-modal.gold .detail-card-art::after {
-  opacity: .6;
+  opacity: .76;
+  mix-blend-mode: screen;
   background:
-    linear-gradient(112deg, transparent 12%, rgba(255,205,74,.1) 27%, rgba(255,250,214,.72) 42%, rgba(226,150,27,.2) 55%, rgba(255,231,139,.4) 65%, transparent 82%),
-    radial-gradient(ellipse at 68% 30%, rgba(255,216,102,.26), transparent 48%);
+    linear-gradient(112deg, transparent 10%, rgba(255,190,35,.18) 25%, rgba(255,252,213,.86) 41%, rgba(231,147,18,.3) 54%, rgba(255,226,111,.56) 66%, transparent 84%),
+    radial-gradient(ellipse at 68% 30%, rgba(255,209,77,.38), transparent 51%);
   background-size: 285% 210%, 180% 180%;
   animation: foil-gold-flow 5s ease-in-out infinite;
+}
+
+.vault-card.gold .collector-case,
+.card-detail-modal.gold .detail-collector-case {
+  border-color: rgba(246,205,86,.88);
+  box-shadow: inset 0 0 0 2px rgba(75,46,0,.7), inset 0 0 25px rgba(255,211,81,.18), 0 22px 34px rgba(0,0,0,.65), 0 0 22px rgba(231,175,48,.13);
 }
 
 .vault-card.rainbow .vault-card-art::after,
