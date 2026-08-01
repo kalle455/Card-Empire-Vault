@@ -99,7 +99,7 @@ export default function PurchaseChat({ chat, onClose }) {
   }
 
   return (
-    <aside className="purchase-chat" aria-label={"Live chat with " + partnerName}>
+    <aside className={"purchase-chat" + (dealCompleted ? " is-closed-chat" : "")} aria-label={"Live chat with " + partnerName}>
       <header>
         <div>
           <span className={dealCompleted ? "deal-status complete" : "deal-status"}>{dealCompleted ? "✓ Deal completed" : "● Live chat"}</span>
@@ -125,7 +125,7 @@ export default function PurchaseChat({ chat, onClose }) {
         <span ref={messagesEnd} />
       </main>
       {notice && <p className="chat-notice">{notice}</p>}
-      {dealCompleted ? <p className="chat-closed">This deal is complete. New messages are disabled.</p> : (
+      {dealCompleted ? <section className="chat-closed"><span>✓</span><div><strong>Deal complete</strong><p>This conversation is sealed in the Deal Archive. New messages are disabled.</p></div></section> : (
         <form onSubmit={send}>
           <input value={text} onChange={(event) => setText(event.target.value)} maxLength="1200" placeholder={"Write to " + partnerName + "…"} />
           <button disabled={sending}>{sending ? "…" : "Send"}</button>
