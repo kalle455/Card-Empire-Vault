@@ -1,6 +1,7 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createCipheriv, createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 
 const FALLBACK_SUPABASE_URL = "https://ewpqnrhhrqvlywmdbral.supabase.co";
+const FALLBACK_ANON_KEY = "sb_publishable_1TfSf_SXnqVROAidTGvuIQ_5qo7xIPt";
 const FALLBACK_APP_URL = "https://card-empire-vault.vercel.app";
 
 function readCookie(req, name) {
@@ -26,6 +27,14 @@ function safeUsername(value, discordId) {
   const original = String(value || "DiscordPlayer").trim().slice(0, 30);
   if (original.length >= 3) return original;
   return `Player_${String(discordId).slice(-6)}`;
+}
+
+function encryptSession(payload, secret) {
+  const key = createHash("sha256").update(secret).digest();
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", key, iv);
+  const encrypted = Buffer.concat([cipher.update(JSON.stringify(payload), "utf8"), cipher.final()]);
+  return [iv.toString("base64url"), cipher.getAuthTag().toString("base64url"), encrypted.toString("base64url")].join(".");
 }
 
 function redirect(res, appUrl, error = "") {
@@ -93,13 +102,40 @@ export default async function handler(req, res) {
 
   try {
     const linked = await findProfile(supabaseUrl, serviceRole, "discord_id", discord.id);
-    if (linked && linked.id !== oauth.playerId) {
-      return redirect(res, appUrl, "This Discord account is already linked to another player.");
+    let targetPlayerId = linked?.id || oauth.playerId;
+    const syntheticEmail = `discord_${discord.id}@users.card-empire.invalid`;
+    const temporaryPassword = randomBytes(48).toString("base64url");
+
+    if (!targetPlayerId) {
+      const createResponse = await fetch(`${supabaseUrl}/auth/v1/admin/users`, {
+        method: "POST",
+        headers: {
+          apikey: serviceRole,
+          Authorization: `Bearer ${serviceRole}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: syntheticEmail, password: temporaryPassword, email_confirm: true }),
+      });
+      if (!createResponse.ok) throw new Error("Player account creation failed.");
+      const created = await createResponse.json();
+      targetPlayerId = created?.id || created?.user?.id;
+      if (!targetPlayerId) throw new Error("Player account ID was missing.");
+    } else {
+      const userResponse = await fetch(`${supabaseUrl}/auth/v1/admin/users/${targetPlayerId}`, {
+        method: "PUT",
+        headers: {
+          apikey: serviceRole,
+          Authorization: `Bearer ${serviceRole}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: syntheticEmail, password: temporaryPassword, email_confirm: true }),
+      });
+      if (!userResponse.ok) throw new Error("Player authentication update failed.");
     }
 
     let username = safeUsername(discord.username, discord.id);
     const usernameOwner = await findProfile(supabaseUrl, serviceRole, "username", username);
-    if (usernameOwner && usernameOwner.id !== oauth.playerId) {
+    if (usernameOwner && usernameOwner.id !== targetPlayerId) {
       username = `${username.slice(0, 25)}_${String(discord.id).slice(-4)}`;
     }
 
@@ -112,16 +148,50 @@ export default async function handler(req, res) {
         Prefer: "resolution=merge-duplicates,return=minimal",
       },
       body: JSON.stringify({
-        id: oauth.playerId,
+        id: targetPlayerId,
         username,
         discord_id: String(discord.id),
         discord_connected_at: new Date().toISOString(),
       }),
     });
     if (!profileResponse.ok) throw new Error("Profile update failed.");
-  } catch {
+
+    // The synthetic address is an internal login ID. No personal Discord email is requested.
+    const anonKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || FALLBACK_ANON_KEY;
+    const sessionResponse = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+      method: "POST",
+      headers: { apikey: anonKey, "Content-Type": "application/json" },
+      body: JSON.stringify({ email: syntheticEmail, password: temporaryPassword }),
+    });
+    if (!sessionResponse.ok) throw new Error("Player session creation failed.");
+    const session = await sessionResponse.json();
+    if (!session.access_token || !session.refresh_token) throw new Error("Player session was incomplete.");
+
+    const sessionCookie = encryptSession({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token,
+      expiresAt: Date.now() + 60 * 1000,
+    }, clientSecret);
+    res.setHeader("Set-Cookie", [
+      "discord_oauth=; HttpOnly; Secure; SameSite=Lax; Path=/api/discord-callback; Max-Age=0",
+      `discord_session=${sessionCookie}; HttpOnly; Secure; SameSite=Strict; Path=/api/discord-session; Max-Age=60`,
+    ]);
+
+    if (linked && linked.id !== oauth.playerId && oauth.playerWasAnonymous) {
+      await fetch(`${supabaseUrl}/auth/v1/admin/users/${oauth.playerId}`, {
+        method: "DELETE",
+        headers: { apikey: serviceRole, Authorization: `Bearer ${serviceRole}` },
+      });
+    }
+  } catch (error) {
+    console.error("Discord callback failed:", error?.message ?? "Unknown error");
     return redirect(res, appUrl, "Your Card Empire profile could not be linked.");
   }
 
-  return redirect(res, appUrl);
+  const destination = new URL("/profile", appUrl);
+  destination.searchParams.set("discord", "connected");
+  res.statusCode = 302;
+  res.setHeader("Location", destination.toString());
+  return res.end();
 }
+

@@ -28,18 +28,23 @@ export default async function handler(req, res) {
   }
 
   const authorization = String(req.headers.authorization || "");
-  if (!authorization.startsWith("Bearer ")) return res.status(401).json({ error: "Player session missing." });
-
-  const userResponse = await fetch(`${supabaseUrl}/auth/v1/user`, {
-    headers: { apikey: anonKey, Authorization: authorization },
-  });
-  if (!userResponse.ok) return res.status(401).json({ error: "Player session is invalid or expired." });
-
-  const player = await userResponse.json();
-  if (!player?.id) return res.status(401).json({ error: "Player session could not be verified." });
+  let player = null;
+  if (authorization.startsWith("Bearer ")) {
+    const userResponse = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: { apikey: anonKey, Authorization: authorization },
+    });
+    if (!userResponse.ok) return res.status(401).json({ error: "Player session is invalid or expired." });
+    player = await userResponse.json();
+    if (!player?.id) return res.status(401).json({ error: "Player session could not be verified." });
+  }
 
   const state = randomBytes(32).toString("base64url");
-  const cookie = encodeCookie({ state, playerId: player.id, expiresAt: Date.now() + 10 * 60 * 1000 }, clientSecret);
+  const cookie = encodeCookie({
+    state,
+    playerId: player?.id ?? null,
+    playerWasAnonymous: Boolean(player?.is_anonymous),
+    expiresAt: Date.now() + 10 * 60 * 1000,
+  }, clientSecret);
   res.setHeader("Set-Cookie", `discord_oauth=${cookie}; HttpOnly; Secure; SameSite=Lax; Path=/api/discord-callback; Max-Age=600`);
 
   const redirectUri = `${appUrl}/api/discord-callback`;
@@ -53,3 +58,4 @@ export default async function handler(req, res) {
 
   return res.status(200).json({ url: authorize.toString() });
 }
+

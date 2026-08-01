@@ -57,7 +57,7 @@ export default function AccountPanel() {
       <p className="overline">CARD EMPIRE · VERIFIED ACCESS</p>
       <div className="discord-access-mark"><DiscordMark /></div>
       <h2>Continue with Discord</h2>
-      <p className="account-subtitle">A connected Discord account is required to enter the Card Market, Trade Hub and private chats. Card Empire uses only your Discord ID and username — never your email, avatar, banner, messages, friends or servers.</p>
+      <p className="account-subtitle">A connected Discord account is required to enter the Card Market, Trade Hub and private chats. Card Empire uses only your Discord ID and username — never your personal email, messages, friends or servers.</p>
       <button className="discord-login-button" type="button" onClick={connectDiscord} disabled={connecting}>
         <DiscordMark /><span>{connecting ? "Connecting…" : "Connect Discord account"}</span>
       </button>
@@ -79,7 +79,7 @@ export default function AccountPanel() {
           <span>{savingDmo ? "Saving…" : "Confirm DMO name"}</span>
         </button>
       </form>
-      <p className="discord-migration-note">Discord: @{profile?.username ?? "verified"} · No email stored</p>
+      <p className="discord-migration-note">Discord: @{profile?.username ?? "verified"} · No personal email stored</p>
       {message && <p className="account-message">{message}</p>}
       <button className="button-quiet player-signout" type="button" onClick={signOut}>Use another Discord account</button>
     </section>;

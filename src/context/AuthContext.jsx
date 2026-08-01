@@ -13,9 +13,6 @@ function cleanDiscordCallbackUrl() {
 
 function friendlyLoginError(error) {
   const message = error?.message ?? String(error ?? "Discord login failed.");
-  if (message.toLowerCase().includes("anonymous")) {
-    return new Error("Anonymous sign-ins are not enabled in Supabase yet.");
-  }
   return new Error(message);
 }
 
@@ -44,10 +41,29 @@ export function AuthProvider({ children }) {
       setLoading(true);
       const callback = new URLSearchParams(window.location.search);
       const callbackError = callback.get("discord_error");
+      let exchangeError = "";
+
+      if (callback.get("discord") === "connected") {
+        try {
+          const response = await fetch("/api/discord-session", { method: "POST" });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok || !payload.access_token || !payload.refresh_token) {
+            throw new Error(payload.error ?? "Discord session could not be completed.");
+          }
+          const restored = await supabase.auth.setSession({
+            access_token: payload.access_token,
+            refresh_token: payload.refresh_token,
+          });
+          if (restored.error) throw restored.error;
+        } catch (error) {
+          exchangeError = error.message;
+        }
+      }
+
       const { data: { session: current }, error } = await supabase.auth.getSession();
       if (!active) return;
       setSession(current);
-      setAuthError(callbackError ? decodeURIComponent(callbackError) : (error?.message ?? ""));
+      setAuthError(callbackError ? decodeURIComponent(callbackError) : (exchangeError || error?.message || ""));
       await loadProfile(current?.user);
       if (active) setLoading(false);
       cleanDiscordCallbackUrl();
@@ -73,21 +89,12 @@ export function AuthProvider({ children }) {
   const signInWithDiscord = useCallback(async () => {
     setAuthError("");
     try {
-      let { data: { session: current }, error } = await supabase.auth.getSession();
+      const { data: { session: current }, error } = await supabase.auth.getSession();
       if (error) throw error;
-
-      if (!current) {
-        const anonymous = await supabase.auth.signInAnonymously();
-        if (anonymous.error) throw anonymous.error;
-        current = anonymous.data.session;
-        setSession(current);
-      }
-
-      if (!current?.access_token) throw new Error("A secure player session could not be created.");
 
       const response = await fetch("/api/discord-start", {
         method: "POST",
-        headers: { Authorization: `Bearer ${current.access_token}` },
+        headers: current?.access_token ? { Authorization: `Bearer ${current.access_token}` } : {},
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.url) throw new Error(payload.error ?? "Discord login could not be started.");
@@ -135,3 +142,4 @@ export function useAuth() {
   if (!context) throw new Error("useAuth must be used inside AuthProvider");
   return context;
 }
+

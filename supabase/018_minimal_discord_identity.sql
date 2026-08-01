@@ -53,6 +53,8 @@ begin
 end;
 $$;
 
+revoke execute on function public.create_profile() from public, anon, authenticated;
+
 create or replace function public.is_discord_user()
 returns boolean
 language sql
@@ -66,6 +68,7 @@ as $$
   );
 $$;
 
+revoke execute on function public.is_discord_user() from public, anon;
 grant execute on function public.is_discord_user() to authenticated;
 
 alter table public.cards enable row level security;
@@ -83,7 +86,10 @@ security definer
 set search_path = public
 as $$
 begin
-  if auth.role() = 'authenticated' and not public.is_admin() then
+  if session_user <> 'postgres'
+     and coalesce(auth.jwt() ->> 'role', '') <> 'service_role'
+     and not public.is_admin() then
+    new.id := old.id;
     new.username := old.username;
     new.discord_id := old.discord_id;
     new.discord_connected_at := old.discord_connected_at;
@@ -99,7 +105,21 @@ begin
 end;
 $$;
 
+revoke execute on function public.protect_player_profile_fields() from public, anon, authenticated;
+
 drop trigger if exists protect_player_profile_fields on public.profiles;
 create trigger protect_player_profile_fields
 before update on public.profiles
 for each row execute function public.protect_player_profile_fields();
+
+drop policy if exists "Players update their own profile" on public.profiles;
+create policy "Players update their own profile"
+on public.profiles for update to authenticated
+using ((select auth.uid()) = id)
+with check ((select auth.uid()) = id);
+
+drop policy if exists "Profiles are visible to signed-in players" on public.profiles;
+create policy "Profiles are visible to verified players"
+on public.profiles for select to authenticated
+using ((select auth.uid()) = id or public.is_discord_user() or public.is_admin());
+

@@ -9,6 +9,9 @@
     },
     "api/discord-callback.js": {
       "maxDuration": 10
+    },
+    "api/discord-session.js": {
+      "maxDuration": 10
     }
   },
   "rewrites": [
