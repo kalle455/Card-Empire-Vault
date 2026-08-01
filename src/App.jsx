@@ -1,16 +1,21 @@
 import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
-import { Component, useEffect, useState } from "react";
+import { Component, Suspense, lazy, useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
-import Marketplace from "./components/Marketplace";
-import AccountPanel from "./components/AccountPanel";
-import AdminDashboard from "./components/AdminDashboard";
-import NotificationsPanel from "./components/NotificationsPanel";
 import BanlistGallery from "./components/BanlistGallery";
-import TradeHub from "./components/TradeHub";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";
-import { addFeedback, getEvents, getPotmPlayers, getPublishedFeedback, registerForEvent, subscribeToFeedbackChanges, subscribeToLiveChanges } from "./services/communityApi";
+import { getEvents, getPotmPlayers, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
+import "./enhancements.css";
+
+const Marketplace = lazy(() => import("./components/Marketplace"));
+const AccountPanel = lazy(() => import("./components/AccountPanel"));
+const AdminDashboard = lazy(() => import("./components/AdminDashboard"));
+const NotificationsPanel = lazy(() => import("./components/NotificationsPanel"));
+const TradeHub = lazy(() => import("./components/TradeHub"));
+const Partners = lazy(() => import("./components/Partners"));
+const Community = lazy(() => import("./components/Community"));
+const Rules = lazy(() => import("./components/Rules"));
 
 const eventFormats = {
   five_way_ffa: { label: "5-WAY FFA", teams: "5 players", capacity: 5 },
@@ -149,7 +154,7 @@ function Home() {
               </span>
             </button>
           ))}
-          {!spotlightCards.length && <div className="spotlight-vault-empty"><span>THE VAULT IS PREPARING</span><p>Cards will appear here as soon as Kalenski™ adds them.</p></div>}
+          {!spotlightCards.length && <div className="spotlight-vault-empty"><span>CARDSTOCK IS PREPARING</span><p>Cards will appear here as soon as Kalenski™ adds them.</p></div>}
         </div>
         <button type="button" className="home-section-cta vault-section-cta" onClick={() => enterEmpire("/marketplace")}><span>Enter Card Market</span><b>↗</b></button>
       </section>
@@ -165,7 +170,7 @@ function Home() {
         <div className="home-section-copy trade-portal-copy">
           <p className="home-eyebrow">THE PRIVATE EXCHANGE · PLAYER TO PLAYER</p>
           <h2>Make the<br /><em>right trade.</em></h2>
-          <p>Choose a card from the Vault. Present your offer. Kalenski™ accepts, declines or enters a private live negotiation.</p>
+          <p>Choose a card from Cardstock. Present your offer. Kalenski™ accepts, declines or enters a private live negotiation.</p>
           <button type="button" className="trade-portal-cta" onClick={() => enterEmpire("/trade-hub")}><span>Enter Trade Hub</span><b>↗</b></button>
         </div>
         <p className="trade-portal-mark">01 SELECT<br />02 OFFER<br /><b>03 NEGOTIATE</b></p>
@@ -189,13 +194,22 @@ function Home() {
 
 
 
-      <section className="home-feedback-zone">
+      <section className="home-feedback-zone home-community-zone">
         <div className="feedback-orbit" aria-hidden="true"><i /><i /><i /><b>✦</b></div>
         <div className="home-section-copy feedback-copy">
-          <p className="home-eyebrow">THE EMPIRE REMEMBERS</p>
-          <h2>Leave your<br /><em>mark.</em></h2>
-          <p>Every deal, event and conversation leaves a trace. Tell the Empire how it felt.</p>
-          <button type="button" className="feedback-cta" onClick={() => enterEmpire("/feedback")}><span>Share feedback</span><b>↗</b></button>
+          <p className="home-eyebrow">THE COMMUNITY BUILDS</p>
+          <h2>Shape what<br /><em>comes next.</em></h2>
+          <p>Suggest features, vote in live polls, publish reviews and speak directly with the Card Empire team.</p>
+          <button type="button" className="feedback-cta" onClick={() => enterEmpire("/community")}><span>Enter Community</span><b>↗</b></button>
+        </div>
+      </section>
+
+      <section className="home-preview-teasers">
+        <header><p className="home-eyebrow">CLASSIFIED · NEXT INSIDE THE EMPIRE</p><h2>A glimpse.<br /><em>Nothing more.</em></h2></header>
+        <div className="preview-teaser-grid">
+          <article className="preview-teaser teaser-cardstock"><span>01</span><div className="teaser-blur-card" /><p>CARDSTOCK PROTOCOL</p><h3>Something rare is being prepared.</h3></article>
+          <article className="preview-teaser teaser-community"><span>02</span><div className="teaser-signal"><i /><i /><i /></div><p>COMMUNITY SIGNAL</p><h3>Your vote will unlock the next transmission.</h3></article>
+          <article className="preview-teaser teaser-duel"><span>03</span><div className="teaser-duel-line" /><p>DUEL SYSTEM</p><h3>The arena is recording more than wins.</h3></article>
         </div>
       </section>
 
@@ -203,7 +217,7 @@ function Home() {
         <p className="home-eyebrow">ABOUT KALENSKI™</p>
         <div>
           <h2>I’m not a card seller<br />like everyone else.<br /><em>I’m the one who makes<br />the card matter.</em></h2>
-          <p>Every card has a history. Every trade deserves trust. Kalenski™ Card Empire® is a private vault for collectors who expect more than a listing.</p>
+          <p>Every card has a history. Every trade deserves trust. Kalenski™ Card Empire® is a private Cardstock for collectors who expect more than a listing.</p>
         </div>
         <strong aria-hidden="true">K</strong>
       </section>
@@ -322,73 +336,6 @@ function Events() {
   );
 }
 
-function Feedback() {
-  const { session } = useAuth();
-  const [text, setText] = useState("");
-  const [message, setMessage] = useState("");
-  const [entries, setEntries] = useState([]);
-
-  useEffect(() => {
-    let active = true;
-    const loadFeedback = () => getPublishedFeedback().then((data) => { if (active) setEntries(data); }).catch(() => { if (active) setEntries([]); });
-    loadFeedback();
-    const channel = subscribeToFeedbackChanges(loadFeedback);
-    return () => { active = false; channel.unsubscribe(); };
-  }, []);
-
-  async function submit(event) {
-    event.preventDefault();
-    if (!session) return setMessage("Please sign in to leave feedback.");
-    try {
-      await addFeedback(session.user.id, text.trim());
-      setText("");
-      setMessage("Transmission received — it is now visible in the Empire.");
-    } catch (error) {
-      setMessage(error.message);
-    }
-  }
-
-  return (
-    <div className="empire-page feedback-world">
-      <section className="feedback-stage">
-        <div className="feedback-stage-lines" aria-hidden="true" />
-        <div className="feedback-stage-seal" aria-hidden="true"><i /><i /><i /><b>✦</b></div>
-        <div className="feedback-stage-copy">
-          <p className="stage-kicker"><span>✦</span> PRIVATE EMPIRE TRANSMISSION</p>
-          <h1>Make it<br /><em>count.</em></h1>
-          <p>Every experience matters. Tell the Empire what should stay, improve or become legendary.</p>
-        </div>
-        <p className="feedback-stage-mark">VOICE<br />OF THE<br /><b>PLAYER</b></p>
-      </section>
-      <section className="feedback-console-wrap">
-        <form className="feedback-form feedback-console" onSubmit={submit}>
-          <header><div><p>PLAYER TRANSMISSION</p><h2>Leave your mark.</h2></div><span><i />Secure line</span></header>
-          <label htmlFor="empire-feedback">Your message</label>
-          <textarea id="empire-feedback" required value={text} onChange={(event) => setText(event.target.value)} placeholder="How did the Empire feel?" />
-          <footer><small>Your feedback is saved and displayed directly in the Empire.</small><button className="feedback-submit-button"><span>Send transmission</span><b>↗</b></button></footer>
-          {message && <p className="notice feedback-notice">{message}</p>}
-        </form>
-        <aside className="feedback-pledge">
-          <span>01</span><p>NO NOISE</p><h3>Clear deals.<br />Direct answers.</h3>
-          <span>02</span><p>REAL PEOPLE</p><h3>Every message<br />gets read.</h3>
-          <span>03</span><p>BETTER EMPIRE</p><h3>Your feedback<br />shapes the vault.</h3>
-        </aside>
-      </section>
-      <section className="feedback-wall">
-        <header><div><p className="stage-kicker"><span>✦</span> LIVE EMPIRE RECORD</p><h2>Voices from<br /><em>the vault.</em></h2></div><span>{entries.length ? String(entries.length).padStart(2, "0") + " latest transmissions" : "Awaiting the first transmission"}</span></header>
-        <div className="feedback-wall-grid">
-          {entries.map((entry, index) => <article key={entry.id} className={"feedback-entry entry-" + (index % 3)}>
-            <span>0{index + 1}</span>
-            <p>“{entry.message}”</p>
-            <small>EMPIRE PLAYER · {new Date(entry.created_at).toLocaleDateString()}</small>
-          </article>)}
-          {!entries.length && <article className="feedback-wall-empty"><p>The first player transmission will appear here.</p></article>}
-        </div>
-      </section>
-    </div>
-  );
-}
-
 function About() {
   return (
     <div className="empire-page about-world">
@@ -399,7 +346,7 @@ function About() {
           <p className="stage-kicker"><span>✦</span> THE OWNER · THE COLLECTION · THE EMPIRE</p>
           <h1>I’m not a card seller<br />like everyone else.</h1>
           <p className="about-lead">I’m the one who knows that a card is never just a card.</p>
-          <p>Every piece in this vault is chosen, listed and traded by Kalenski™ himself. No random inventory. No empty promises. Just a private collection, managed with standards.</p>
+          <p>Every piece in Cardstock is chosen, listed and traded by Kalenski™ himself. No random inventory. No empty promises. Just a private collection, managed with standards.</p>
         </div>
         <div className="about-stage-stamp"><small>EST.</small><b>K</b><small>CARD EMPIRE®</small></div>
       </section>
@@ -427,7 +374,7 @@ function EmpireFooter() {
       <div className="empire-footer-top">
         <section className="footer-brand-column">
           <Link to="/" className="footer-brand"><span>Kalenski™</span><strong>Card Empire®</strong></Link>
-          <p>Private cards. Direct deals. A vault built for players who collect with intention.</p>
+          <p>Private cards. Direct deals. Cardstock built for players who collect with intention.</p>
           <span className="footer-signal"><i /> Empire system online</span>
         </section>
         <nav className="footer-column" aria-label="Explore the Empire">
@@ -435,7 +382,8 @@ function EmpireFooter() {
           <Link to="/marketplace">Card Market <b>↗</b></Link>
           <Link to="/trade-hub">Trade Hub <b>↗</b></Link>
           <Link to="/events">Events <b>↗</b></Link>
-          <Link to="/feedback">Feedback <b>↗</b></Link>
+          <Link to="/community">Community <b>↗</b></Link>
+          <Link to="/partners">Partners <b>↗</b></Link>
           <Link to="/about">About Kalenski <b>↗</b></Link>
         </nav>
         <nav className="footer-column" aria-label="Player links">
@@ -444,17 +392,18 @@ function EmpireFooter() {
           <Link to="/messages">Notifications <b>↗</b></Link>
           <Link to="/chats">Live trade chat <b>↗</b></Link>
           <Link to="/admin">Empire Admin <b>↗</b></Link>
+          <Link to="/rules">Rights &amp; Policies <b>↗</b></Link>
         </nav>
         <section className="footer-column footer-standard">
           <p>THE STANDARD</p>
-          <span><i>01</i> Live vault updates</span>
+          <span><i>01</i> Live Cardstock updates</span>
           <span><i>02</i> 25% V.I.P advantage</span>
           <span><i>03</i> Private collector cases</span>
           <span><i>04</i> Official event banlists</span>
         </section>
       </div>
       <div className="empire-footer-bottom">
-        <p>© 2026 Kalenski™ Card Empire®. All original Empire branding, website design and original content are protected.</p>
+        <p>© 2026 Kalenski™ Card Empire®. All original Empire branding, website design and original content are protected. <Link to="/rules">Rights &amp; Policies</Link></p>
         <button type="button" className="footer-archive-button" onClick={() => setArchiveOpen(true)}><span>✦</span> Holdings archive</button>
         <p className="footer-fan-note">Unofficial fan experience. Yu-Gi-Oh! and related names belong to their respective owners.</p>
       </div>
@@ -464,7 +413,7 @@ function EmpireFooter() {
           <p>CLASSIFIED FILE · K-01</p>
           <h2>Parent company<br /><em>confirmed.</em></h2>
           <strong>KALENSKI HOLDINGS → KAIBACORP</strong>
-          <span>In the fictional Empire universe, Kalenski Holdings quietly owns the Kaiba Company. Every Duel Disc report ends up in the same vault.</span>
+          <span>In the fictional Empire universe, Kalenski Holdings quietly owns the Kaiba Company. Every Duel Disc report ends up in Cardstock.</span>
           <div className="archive-integrity-note"><b>INTEGRITY PROTOCOL</b><span>SCAM DETECTED. The Soul Archive has awakened. Your access has been handed to the Hunters.</span></div>
           <small>Fictional fan-lore easter egg. No official affiliation or endorsement.</small>
           <button type="button" className="archive-seal" onClick={() => setArchiveOpen(false)}>Seal archive</button>
@@ -475,11 +424,14 @@ function EmpireFooter() {
 }
 
 export default function App() {
-  return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
+  return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Suspense fallback={<section className="route-loading"><i /><span>Opening Card Empire…</span></section>}><Routes>
     <Route path="/" element={<Home />} /><Route path="/marketplace" element={<DiscordGuard><Marketplace /></DiscordGuard>} />
-    <Route path="/trade-hub" element={<TradeHub />} />
+    <Route path="/trade-hub" element={<DiscordGuard><TradeHub /></DiscordGuard>} />
     <Route path="/events" element={<Events />} />
-<Route path="/feedback" element={<Feedback />} />
+    <Route path="/community" element={<DiscordGuard><Community /></DiscordGuard>} />
+    <Route path="/feedback" element={<DiscordGuard><Community /></DiscordGuard>} />
+    <Route path="/partners" element={<Partners />} />
+    <Route path="/rules" element={<Rules />} />
     <Route path="/about" element={<About />} /><Route path="/profile" element={<Profile />} /><Route path="/messages" element={<NotificationsPanel />} /><Route path="/chats" element={<NotificationsPanel chatOnly />} /><Route path="/admin" element={<Admin />} />
-  </Routes></main><EmpireFooter /></div></BrowserRouter>;
+  </Routes></Suspense></main><EmpireFooter /></div></BrowserRouter>;
 }

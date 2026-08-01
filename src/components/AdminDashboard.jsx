@@ -24,7 +24,7 @@ const normaliseCardName = (value) => String(value ?? "").toLowerCase().replace(/
 export default function AdminDashboard() {
   const { profile } = useAuth();
   const [tab, setTab] = useState("cards");
-  const [data, setData] = useState({ cards: [], events: [], offers: [], trades: [], feedback: [], players: [], purchases: [], banlists: [] });
+  const [data, setData] = useState({ cards: [], events: [], offers: [], trades: [], players: [], purchases: [], banlists: [] });
   const [card, setCard] = useState(blankCard);
   const [event, setEvent] = useState(blankEvent);
   const [banlist, setBanlist] = useState(blankBanlist);
@@ -36,12 +36,11 @@ export default function AdminDashboard() {
   const [editingCard, setEditingCard] = useState(null);
 
   async function load() {
-    const [cards, events, offers, trades, feedback, players, purchases, banlists] = await Promise.all([
+    const [cards, events, offers, trades, players, purchases, banlists] = await Promise.all([
       supabase.from("cards").select("*").order("created_at", { ascending: false }),
       supabase.from("events").select("*, banlist:banlists(name, card_names, banned_cards, limited_cards), registrations:event_registrations(player_id, player:profiles(id, username))").order("starts_at"),
       supabase.from("offers").select("*, player:profiles(username)").order("created_at", { ascending: false }),
       supabase.from("trade_offers").select("*, player:profiles(username), card:cards(name)").order("created_at", { ascending: false }),
-      supabase.from("feedback").select("*, player:profiles(username)").order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").order("username"),
       supabase.from("purchases").select("*, player:profiles(username), card:cards(name)").order("created_at", { ascending: false }),
       supabase.from("banlists").select("*").order("created_at", { ascending: false }),
@@ -51,7 +50,6 @@ export default function AdminDashboard() {
       events: events.data ?? [],
       offers: offers.data ?? [],
       trades: trades.data ?? [],
-      feedback: feedback.data ?? [],
       players: players.data ?? [],
       purchases: purchases.data ?? [],
       banlists: banlists.data ?? [],
@@ -112,7 +110,7 @@ export default function AdminDashboard() {
     });
 
     if (error) return setNotice(error.message);
-    setNotice(selectedCatalogCard.name + " was added to the Vault · " + selectedCatalogCard.gameRarity + " rarity.");
+    setNotice(selectedCatalogCard.name + " was added to Cardstock · " + selectedCatalogCard.gameRarity + " rarity.");
     setCard(blankCard);
     setSelectedCatalogCard(null);
     load();
@@ -238,12 +236,6 @@ export default function AdminDashboard() {
     if (chatId) window.setTimeout(() => window.location.assign("/chats"), 450);
   }
 
-  async function approveFeedback(id, approved) {
-    const { error } = await supabase.from("feedback").update({ approved }).eq("id", id);
-    setNotice(error ? error.message : approved ? "Feedback approved." : "Feedback hidden.");
-    load();
-  }
-
   async function setRole(id, role) {
     const { error } = await supabase.from("profiles").update({ role }).eq("id", id);
     setNotice(error ? error.message : "Player role updated.");
@@ -260,7 +252,7 @@ export default function AdminDashboard() {
     <main className="admin-shell">
       <header><div><p className="vault-overline">KALENSKI™ CONTROL ROOM</p><h1>Empire Admin</h1></div><span>Live system</span></header>
       <nav className="admin-tabs">
-        {[["cards", "Cards"], ["events", "Events & Banlists"], ["offers", "Offers"], ["trades", "Trade Hub"], ["books", "Bücher"], ["feedback", "Feedback"], ["players", "Players"]].map(([item, label]) => (
+        {[["cards", "Cards"], ["events", "Events & Banlists"], ["offers", "Offers"], ["trades", "Trade Hub"], ["books", "Bücher"], ["community", "Community"], ["players", "Players"]].map(([item, label]) => (
           <button key={item} className={tab === item ? "active" : ""} onClick={() => setTab(item)}>{label}</button>
         ))}
       </nav>
@@ -268,7 +260,7 @@ export default function AdminDashboard() {
 
       {tab === "cards" && <section className="admin-grid">
         <form className="admin-panel" onSubmit={addCard}>
-          <h2>Add a card</h2><p>Only cards from the official DMO catalogue can enter the Vault. Their type and rarity are locked to the game list.</p>
+          <h2>Add a card</h2><p>Only cards from the official DMO catalogue can enter Cardstock. Their type and rarity are locked to the game list.</p>
           <div className="card-name-field">
             <input required autoComplete="off" placeholder="Search the official card catalogue (e.g. PO)" value={card.name} onChange={(e) => { setCard({ ...card, name: e.target.value }); setSelectedCatalogCard(null); }} />
             {suggestions.length > 0 && <div className="card-suggestions">{suggestions.map((item) => (
@@ -279,9 +271,9 @@ export default function AdminDashboard() {
           </div>
           <div className="admin-row"><input required type="number" min="0" placeholder="Price in Gold" value={card.price} onChange={(e) => setCard({ ...card, price: e.target.value })} /><input required type="number" min="0" placeholder="Quantity" value={card.quantity} onChange={(e) => setCard({ ...card, quantity: e.target.value })} /></div>
           <div className="admin-row"><input readOnly value={selectedCatalogCard ? selectedCatalogCard.category.toUpperCase() + " · official type" : "Official type"} /><input readOnly value={selectedCatalogCard ? selectedCatalogCard.gameRarity + " · official rarity" : "Official rarity"} /></div>
-          <button className="vault-submit" disabled={!selectedCatalogCard}>{selectedCatalogCard ? "Add to vault" : "Choose official card"}</button>
+          <button className="vault-submit" disabled={!selectedCatalogCard}>{selectedCatalogCard ? "Add to Cardstock" : "Choose official card"}</button>
         </form>
-        <section className="admin-panel"><h2>Vault stock</h2><div className="admin-list">
+        <section className="admin-panel"><h2>Cardstock inventory</h2><div className="admin-list">
           {data.cards.map((item) => editingCard?.id === item.id ? (
             <form key={item.id} className="admin-card-edit" onSubmit={saveCard}>
               <strong>{item.name}</strong>
@@ -357,8 +349,8 @@ export default function AdminDashboard() {
         {!data.offers.length && <p>No offers yet.</p>}
       </div></section>}
 
-      {tab === "trades" && <section className="admin-panel"><h2>Trade Hub</h2><p>Players choose a Vault card and propose what they offer in return. Accepting or negotiating opens the private live chat.</p><div className="admin-list">
-        {data.trades.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> wants <strong>{item.card?.name ?? "Vault card"}</strong><br /><small>Offers: {item.offered_cards}</small>{item.message && <small>Message: {item.message}</small>}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToTrade(item.id, "accepted")}>Accept + chat</button><button onClick={() => respondToTrade(item.id, "negotiating")}>Negotiate + chat</button><button onClick={() => respondToTrade(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <aside><button onClick={() => window.location.assign("/chats")}>Open chat</button></aside>}</div>)}
+      {tab === "trades" && <section className="admin-panel"><h2>Trade Hub</h2><p>Players choose a Cardstock card and propose what they offer in return. Accepting or negotiating opens the private live chat.</p><div className="admin-list">
+        {data.trades.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> wants <strong>{item.card?.name ?? "Cardstock card"}</strong><br /><small>Offers: {item.offered_cards}</small>{item.message && <small>Message: {item.message}</small>}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToTrade(item.id, "accepted")}>Accept + chat</button><button onClick={() => respondToTrade(item.id, "negotiating")}>Negotiate + chat</button><button onClick={() => respondToTrade(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <aside><button onClick={() => window.location.assign("/chats")}>Open chat</button></aside>}</div>)}
         {!data.trades.length && <p>No Trade Hub offers yet.</p>}
       </div></section>}
 
@@ -370,10 +362,7 @@ export default function AdminDashboard() {
         </div></section>
       </section>}
 
-      {tab === "feedback" && <section className="admin-panel"><h2>Feedback moderation</h2><div className="admin-list">
-        {data.feedback.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b><br />{item.message}</span><em>{item.approved ? "Visible" : "Pending"}</em><aside><button onClick={() => approveFeedback(item.id, !item.approved)}>{item.approved ? "Hide" : "Approve"}</button></aside></div>)}
-        {!data.feedback.length && <p>No feedback yet.</p>}
-      </div></section>}
+      {tab === "community" && <section className="admin-panel"><h2>Community command</h2><p>Publish announcements and polls, reply to players and move suggestions through Planned, In Development, Released or Rejected.</p><button className="admin-save" type="button" onClick={() => window.location.assign("/community")}>Open Community console</button></section>}
 
       {tab === "players" && <section className="admin-panel"><h2>Player roles</h2><p>Delete removes the player profile and their Empire data. Administrator profiles are protected.</p><div className="admin-list">
         {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.dmo_name || "DMO name missing"}</b><small>Discord @{item.username} · {item.wins}W / {item.losses}L</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select>{item.id !== profile.id && item.role !== "admin" && <button className="admin-delete-player" onClick={() => deletePlayer(item.id, item.dmo_name || item.username)}>Delete player</button>}</div>)}

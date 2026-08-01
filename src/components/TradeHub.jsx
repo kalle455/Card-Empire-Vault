@@ -47,7 +47,7 @@ export default function TradeHub() {
   async function submitTrade(event) {
     event.preventDefault();
     if (!session) return setNotice("Please sign in before creating a Trade Hub offer.");
-    if (!selectedCard) return setNotice("Choose a card from the Card Vault first.");
+    if (!selectedCard) return setNotice("Choose a card from Cardstock first.");
     const { error } = await supabase.rpc("create_trade_offer", {
       p_card_id: selectedCard.id,
       p_offered_cards: offeredCards,
@@ -67,7 +67,7 @@ export default function TradeHub() {
         <div className="trade-hub-orbit orbit-two" aria-hidden="true" />
         <p className="trade-kicker">KALENSKI™ PRIVATE EXCHANGE</p>
         <h1>Trade <em>Hub.</em></h1>
-        <p>Choose a card from the Vault. Tell Kalenski™ what you offer in return. Every exchange stays direct.</p>
+        <p>Choose a card from Cardstock. Tell Kalenski™ what you offer in return. Every exchange stays direct.</p>
         <div className="trade-steps"><span><b>01</b> Choose a card</span><span><b>02</b> Make your offer</span><span><b>03</b> Negotiate live</span></div>
       </section>
 
@@ -78,7 +78,7 @@ export default function TradeHub() {
             <span className="trade-pick-art">{cardImage(card) && <img src={cardImage(card)} alt="" loading="lazy" />}</span>
             <span><small>{card.rarity} · {card.category}</small><b>{card.name}</b><em>{Number(card.price).toLocaleString()} G</em></span>
           </button>)}
-          {!cards.length && <p className="trade-empty">The Vault has no tradeable cards right now.</p>}
+          {!cards.length && <p className="trade-empty">Cardstock has no tradeable cards right now.</p>}
         </div>
       </section>
 
@@ -97,7 +97,7 @@ export default function TradeHub() {
         <header><div><p className="trade-kicker">YOUR EXCHANGE RECORD</p><h2>Trade <em>status.</em></h2></div><span>{trades.length} offers</span></header>
         <div className="trade-history-list">
           {trades.map((trade) => <article key={trade.id} className={"trade-history-row status-" + trade.status}>
-            <span><small>WANTED</small><b>{trade.card?.name ?? "Vault card"}</b></span>
+            <span><small>WANTED</small><b>{trade.card?.name ?? "Cardstock card"}</b></span>
             <span><small>YOU OFFERED</small><b>{trade.offered_cards}</b></span>
             <em>{statusLabels[trade.status] ?? trade.status}</em>
             {trade.chat_id && <Link to="/chats">Open chat ↗</Link>}

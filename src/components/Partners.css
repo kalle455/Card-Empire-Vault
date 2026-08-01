@@ -1,0 +1,38 @@
+@keyframes partnerPulse{0%,100%{transform:scale(.86);opacity:.25}50%{transform:scale(1.15);opacity:.75}}
+@keyframes magazineFloat{0%,100%{transform:perspective(900px) rotateY(-4deg) translateY(0)}50%{transform:perspective(900px) rotateY(2deg) translateY(-9px)}}
+.partners-page{min-height:100vh;color:#eff4ef;background:#050706;overflow:hidden}
+.partners-hero{position:relative;isolation:isolate;min-height:84vh;padding:clamp(120px,15vw,210px) clamp(24px,9vw,150px) 100px;display:grid;align-content:center;justify-items:start;background:radial-gradient(circle at 76% 38%,rgba(157,0,255,.23),transparent 28%),radial-gradient(circle at 70% 66%,rgba(100,225,129,.13),transparent 32%),linear-gradient(120deg,#050706 35%,#0b0710)}
+.partners-hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(rgba(145,211,154,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(145,211,154,.035) 1px,transparent 1px);background-size:46px 46px;mask-image:linear-gradient(to right,transparent,#000)}
+.partners-hero>img{width:min(620px,72vw);height:auto;filter:drop-shadow(0 0 32px rgba(172,0,255,.35));margin:22px 0}
+.partners-hero h1{font-size:clamp(3.5rem,8vw,8.5rem);line-height:.82;letter-spacing:-.055em;margin:0;max-width:920px}
+.partners-hero h1 em{color:#97e5a5;font-style:normal}
+.partners-hero>p:not(.vault-overline){max-width:650px;color:#aab5ac;font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.75}
+.partners-hero>button,.magazine-issue>div button{margin-top:22px;padding:15px 20px;border:1px solid #a2e8ad;background:transparent;color:#c8f5d0;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:.35s}
+.partners-hero>button:hover,.magazine-issue>div button:hover{background:#a4edb2;color:#071008;box-shadow:0 0 35px rgba(139,234,158,.25);transform:translateY(-3px)}
+.partner-signal{position:absolute;right:12vw;top:36%;width:220px;aspect-ratio:1;border:1px solid rgba(192,99,255,.18);border-radius:50%}
+.partner-signal i{position:absolute;inset:20%;border:1px solid rgba(181,70,255,.38);border-radius:50%;animation:partnerPulse 3s infinite}
+.partner-signal i:nth-child(2){inset:34%;animation-delay:.7s}.partner-signal i:nth-child(3){inset:47%;animation-delay:1.4s}
+.partner-editorial{padding:clamp(80px,10vw,150px) clamp(22px,7vw,110px);background:linear-gradient(180deg,#080b09,#070708)}
+.partner-editorial>header{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:55px}
+.partner-editorial h2{font-size:clamp(2.8rem,6vw,6.5rem);line-height:.9;margin:12px 0}.partner-editorial h2 em{color:#b56cff;font-style:normal}
+.magazine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(30px,5vw,80px)}
+.magazine-issue{display:grid;grid-template-columns:minmax(230px,.9fr) 1fr;align-items:center;gap:clamp(25px,4vw,55px);min-width:0}
+.magazine-cover{position:relative;isolation:isolate;min-height:480px;padding:38px 28px 28px;overflow:hidden;border:1px solid rgba(255,255,255,.18);background:linear-gradient(145deg,#160220,#650099 48%,#b200ff);color:#fff;text-align:left;box-shadow:-13px 18px 35px #000;animation:magazineFloat 6s ease-in-out infinite;transform-style:preserve-3d}
+.magazine-cover::after{content:"";position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(120deg,transparent 0 17px,rgba(255,255,255,.055) 18px 19px)}
+.magazine-issue.emerald .magazine-cover{background:linear-gradient(145deg,#07110b,#125b31 52%,#75df8b);animation-delay:-3s}
+.magazine-spine{position:absolute;left:8px;top:24px;bottom:24px;writing-mode:vertical-rl;font-size:.6rem;letter-spacing:.25em;opacity:.75}
+.magazine-cover small{display:block;margin-left:24px;font-weight:900;letter-spacing:.12em}
+.magazine-cover strong{display:block;margin:80px 0 0 25px;font-size:clamp(4rem,6vw,7rem);line-height:.76;letter-spacing:-.08em}
+.magazine-cover em{position:absolute;right:24px;bottom:25px;font-style:normal;font-size:.68rem;letter-spacing:.16em}
+.magazine-pulse{position:absolute;right:-70px;top:70px;width:260px;height:260px;border:1px solid rgba(255,255,255,.23);border-radius:50%}
+.magazine-pulse i{position:absolute;inset:18%;border:1px solid rgba(255,255,255,.2);border-radius:50%}.magazine-pulse i:nth-child(2){inset:34%}.magazine-pulse i:nth-child(3){inset:47%;background:#fff;box-shadow:0 0 35px #fff}
+.magazine-issue>div span{color:#8fdf9d;font-size:.63rem;font-weight:900;letter-spacing:.16em}.magazine-issue>div h3{font-size:clamp(1.7rem,2.4vw,2.8rem);margin:10px 0}.magazine-issue>div p{color:#97a39a;line-height:1.7}
+.partner-capabilities{padding:0 clamp(22px,7vw,110px) 130px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px}
+.partner-capabilities article{padding:38px;border:1px solid rgba(150,229,164,.15);background:#0b0f0c;transition:.35s}.partner-capabilities article:hover{transform:translateY(-8px);border-color:rgba(170,238,181,.55);background:#101912}
+.partner-capabilities span{color:#a268f5;font-weight:900}.partner-capabilities h3{font-size:1.8rem;margin:28px 0 10px}.partner-capabilities p{color:#8e9b91;line-height:1.65}
+.magazine-reader-overlay{position:fixed;inset:0;z-index:3000;display:grid;grid-template-rows:64px 1fr;background:#020302;animation:pageEnter .35s both}
+.magazine-reader-overlay header{display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid rgba(255,255,255,.14);background:#080a09}
+.magazine-reader-overlay header>div{display:flex;align-items:center;gap:16px}.magazine-reader-overlay header img{width:180px;max-height:42px;object-fit:contain}.magazine-reader-overlay header span{color:#b4c0b6;font-size:.75rem}
+.magazine-reader-overlay header button{width:42px;height:42px;border:1px solid rgba(255,255,255,.15);background:#111;color:#fff;font-size:1.7rem}.magazine-reader-overlay iframe{width:100%;height:100%;border:0;background:#111}
+@media(max-width:1100px){.magazine-grid{grid-template-columns:1fr}.magazine-issue{grid-template-columns:minmax(220px,340px) 1fr}.partner-signal{opacity:.45}}
+@media(max-width:700px){.partners-hero{min-height:75vh}.partner-signal{display:none}.partner-editorial>header{align-items:start;flex-direction:column}.magazine-issue{grid-template-columns:1fr}.magazine-cover{width:min(100%,370px);justify-self:center}.partner-capabilities{grid-template-columns:1fr}.magazine-reader-overlay header span{display:none}.magazine-reader-overlay header img{width:140px}}

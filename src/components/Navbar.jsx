@@ -9,7 +9,7 @@ const links = [
   ["/marketplace", "Card Market"],
   ["/trade-hub", "Trade Hub"],
   ["/events", "Events"],
-  ["/feedback", "Feedback"],
+  ["/community", "Community"],
   ["/about", "About Kalenski"],
 ];
 
@@ -66,7 +66,10 @@ export default function Navbar() {
 
   return (
     <header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "")}>
-      <NavLink to="/" className="empire-brand"><span>Kalenski™</span><strong>Card Empire®</strong></NavLink>
+      <div className="brand-partner-cluster">
+        <NavLink to="/" className="empire-brand"><span>Kalenski™</span><strong>Card Empire®</strong></NavLink>
+        <NavLink to="/partners" className="partners-nav-link"><small>+</small><span>Partners</span></NavLink>
+      </div>
       <nav>{links.map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}</nav>
       <div className="nav-account">
         {hasVipPrice && <span className="nav-vip">VIP −25%</span>}

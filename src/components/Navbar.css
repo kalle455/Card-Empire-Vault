@@ -4,6 +4,7 @@
   border-bottom: 1px solid rgba(213, 174, 59, .22); backdrop-filter: blur(18px);
 }
 .empire-brand { display: grid; line-height: 1; min-width: 142px; }
+.brand-partner-cluster{display:flex;align-items:center;gap:12px;flex:0 0 auto}.brand-partner-cluster .empire-brand{min-width:142px}.partners-nav-link{position:relative;display:inline-flex!important;align-items:center;gap:6px;min-height:31px;padding:0 10px;border:1px solid rgba(151,232,168,.22);border-radius:99px;background:rgba(27,71,39,.12);color:#b6d8bc!important;font-size:.61rem!important;font-weight:900;letter-spacing:.09em;text-transform:uppercase;transition:transform .25s ease,border-color .25s ease,background .25s ease!important}.partners-nav-link small{color:#83ed98;font-size:.85rem;transition:transform .35s ease}.partners-nav-link:hover,.partners-nav-link.active{border-color:rgba(151,232,168,.7);background:rgba(72,153,89,.2);transform:translateY(-2px)}.partners-nav-link:hover small{transform:rotate(180deg)}
 .empire-brand span { color: #f6db81; font-family: Georgia, serif; font-size: 1.05rem; }
 .empire-brand strong { color: #fff; font-size: .8rem; letter-spacing: .17em; text-transform: uppercase; margin-top: 6px; }
 .empire-nav nav { display: flex; gap: 18px; flex: 1; justify-content: center; }
@@ -57,6 +58,7 @@
   .nav-account { display: flex; flex: 0 0 auto; margin-left: 0; gap: 8px; }
   .nav-account > :not(.notification-bell):not(.chat-bubble) { display: none; }
   .notification-count { top: -5px; right: -5px; }
+  .partners-nav-link{display:none!important}
 }
 
 

@@ -10,9 +10,9 @@
 8. Run `008_live_updates.sql` seventh. This enables instant live updates for cards, chats and notification badges.
 9. Run `009_banlist_categories.sql` eighth. This separates Banned and Limited cards in every banlist.
 10. Run `010_king_of_1_banlist.sql` ninth. This adds the official **KING OF 1** banlist.
-11. Run `011_keep_sales_history_when_removing_cards.sql` tenth. This lets you remove cards from the Vault without deleting their completed sales from the Bücher.
+11. Run `011_keep_sales_history_when_removing_cards.sql` tenth. This lets you remove cards from Cardstock without deleting their completed sales from the Bücher.
 12. Run `012_public_card_market.sql` next. This makes cards visible in the Card Market even when a visitor is not signed in.
-13. Run `013_auto_publish_feedback.sql` next. This automatically approves feedback and shows it live on the Feedback page.
+13. Run `013_auto_publish_feedback.sql` next. This keeps legacy feedback records available while the new Community system replaces the old Feedback page.
 14. In **Authentication → Providers → Email**, enable email/password login and turn off email confirmation.
 15. Create your account through the website. Then, in the SQL Editor, make Kalenski the administrator:
 
@@ -65,3 +65,15 @@ update public.profiles
 set role = 'admin'
 where dmo_name = 'YOUR_DMO_NAME';
 ```
+
+## Cardstock profile, wishlist and Community
+
+29. Run `021_cardstock_community.sql`. This adds profile XP/ranks, order-history support, wishlists, the new Community system, polls, reviews, comments and live wishlist events. Existing cards, purchases and profiles are preserved.
+30. The Edge Function `wishlist-discord` must be deployed from `supabase/functions/wishlist-discord/index.ts`.
+31. For direct Discord wishlist messages, create a Discord bot in the same application and add its token only under **Supabase → Edge Functions → Secrets**:
+
+```text
+DISCORD_BOT_TOKEN = your private Discord bot token
+```
+
+Never put the bot token in Vercel, GitHub or frontend variables. Without the token, in-site wishlist notifications continue to work and Discord deliveries wait safely in the queue.
