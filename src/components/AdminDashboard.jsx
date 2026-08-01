@@ -225,6 +225,8 @@ export default function AdminDashboard() {
     e.preventDefault();
     const { error } = await supabase.from("cards").update({
       price: Number(editingCard.price),
+      external_market_price: editingCard.external_market_price === "" || editingCard.external_market_price == null ? null : Number(editingCard.external_market_price),
+      external_market_checked_at: editingCard.external_market_price === "" || editingCard.external_market_price == null ? editingCard.external_market_checked_at : new Date().toISOString(),
       quantity: Number(editingCard.quantity),
       category: editingCard.category,
       rarity: editingCard.rarity,
@@ -290,9 +292,9 @@ export default function AdminDashboard() {
       <nav className="admin-tabs">
         {[
           ["cards", "Cards", data.cards.length + " in stock"],
-          ["books", "Orders", data.purchases.length + " sales"],
+          ["books", "Buy Orders", data.purchases.length + " recorded"],
           ["offers", "Offers", data.offers.filter((entry) => entry.status === "pending").length + " pending"],
-          ["trades", "Trade Hub", data.trades.filter((entry) => entry.status === "pending").length + " pending"],
+          ["trades", "Trade Orders", data.trades.filter((entry) => entry.status === "pending").length + " pending"],
           ["events", "Events & Banlists", data.events.length + " events"],
           ["community", "Community", "Team channel"],
           ["players", "Players", data.players.length + " profiles"],
@@ -321,7 +323,8 @@ export default function AdminDashboard() {
           {data.cards.map((item) => editingCard?.id === item.id ? (
             <form key={item.id} className="admin-card-edit" onSubmit={saveCard}>
               <strong>{item.name}</strong>
-              <div className="admin-row"><label>Price<input type="number" min="0" value={editingCard.price} onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })} /></label><label>Stock<input type="number" min="0" value={editingCard.quantity} onChange={(e) => setEditingCard({ ...editingCard, quantity: e.target.value })} /></label></div>
+              <div className="admin-row"><label>My price<input type="number" min="0" value={editingCard.price} onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })} /></label><label>Stock<input type="number" min="0" value={editingCard.quantity} onChange={(e) => setEditingCard({ ...editingCard, quantity: e.target.value })} /></label></div>
+              <div className="admin-row"><label>Other seller price<input type="number" min="0" placeholder="No exact listing" value={editingCard.external_market_price ?? ""} onChange={(e) => setEditingCard({ ...editingCard, external_market_price: e.target.value })} /></label><a className="admin-market-source" href="https://dmo-market.onrender.com/" target="_blank" rel="noreferrer">Check DMO Market ↗</a></div>
               <div className="admin-row"><select value={editingCard.category} onChange={(e) => setEditingCard({ ...editingCard, category: e.target.value })}><option value="monster">Monster</option><option value="spell">Spell</option><option value="trap">Trap</option></select><select value={editingCard.rarity} onChange={(e) => setEditingCard({ ...editingCard, rarity: e.target.value })}><option value="common">Common</option><option value="rare">Rare</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="rainbow">Rainbow</option></select></div>
               <aside><button type="submit">Save</button><button type="button" onClick={() => setEditingCard(null)}>Cancel</button></aside>
             </form>
@@ -393,14 +396,14 @@ export default function AdminDashboard() {
         {!data.offers.length && <p>No offers yet.</p>}
       </div></section>}
 
-      {tab === "trades" && <section className="admin-panel"><h2>Trade Hub</h2><p>Players choose a Cardstock card and propose what they offer in return. Accepting or negotiating opens the private live chat.</p><div className="admin-list">
-        {data.trades.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> wants <strong>{item.card?.name ?? "Cardstock card"}</strong><br /><small>Offers: {item.offered_cards}</small>{item.message && <small>Message: {item.message}</small>}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToTrade(item.id, "accepted")}>Accept + chat</button><button onClick={() => respondToTrade(item.id, "negotiating")}>Negotiate + chat</button><button onClick={() => respondToTrade(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <aside><button onClick={() => window.location.assign("/chats")}>Open chat</button></aside>}</div>)}
+      {tab === "trades" && <section className="admin-panel admin-order-panel"><header className="admin-order-heading"><div><p className="vault-overline">EXCHANGE DESK</p><h2>Trade Orders</h2></div><span>{data.trades.filter((entry) => entry.status === "pending").length} awaiting action</span></header><p>Players choose a Cardstock card and propose what they offer in return. Accepting or negotiating opens the private live chat.</p><div className="admin-list">
+        {data.trades.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> wants <strong>{item.card?.name ?? item.card_name_snapshot ?? "Removed Cardstock card"}</strong><br /><small>Offers: {item.offered_cards}</small>{item.message && <small>Message: {item.message}</small>}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToTrade(item.id, "accepted")}>Accept + chat</button><button onClick={() => respondToTrade(item.id, "negotiating")}>Negotiate + chat</button><button onClick={() => respondToTrade(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <aside><button onClick={() => window.location.assign("/chats")}>Open chat</button></aside>}</div>)}
         {!data.trades.length && <p>No Trade Hub offers yet.</p>}
       </div></section>}
 
-      {tab === "books" && <section className="admin-books">
+      {tab === "books" && <section className="admin-books admin-order-panel">
         <div className="sales-summary"><article><small>Total Gold</small><strong>{totalGold.toLocaleString()} G</strong></article><article><small>Cards sold</small><strong>{cardsSold}</strong></article><article><small>Purchases</small><strong>{data.purchases.length}</strong></article></div>
-        <section className="admin-panel"><h2>Sales book</h2><p>Every completed purchase is saved here with buyer, card, price and time.</p><div className="admin-list">
+        <section className="admin-panel"><header className="admin-order-heading"><div><p className="vault-overline">SALES LEDGER</p><h2>Buy Orders</h2></div><span>{data.purchases.length} recorded</span></header><p>Every completed purchase is saved here with buyer, card, price and time.</p><div className="admin-list">
           {data.purchases.map((item) => <div key={item.id} className="admin-sale"><span><b>{item.card?.name ?? item.card_name ?? "Removed card"}</b><small>Buyer: {item.player?.username ?? "Player"} · {item.quantity} copy/copies</small></span><span><b>{Number(item.paid_gold).toLocaleString()} G</b><small>{new Date(item.created_at).toLocaleString()}</small></span></div>)}
           {!data.purchases.length && <p>No purchases have been recorded yet.</p>}
         </div></section>

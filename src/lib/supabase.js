@@ -12,3 +12,4 @@ export const supabase = createClient(url, anonKey, {
     detectSessionInUrl: false,
   },
 });
+

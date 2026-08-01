@@ -12,11 +12,11 @@
 .partner-signal{position:absolute;right:12vw;top:36%;width:220px;aspect-ratio:1;border:1px solid rgba(192,99,255,.18);border-radius:50%}
 .partner-signal i{position:absolute;inset:20%;border:1px solid rgba(181,70,255,.38);border-radius:50%;animation:partnerPulse 3s infinite}
 .partner-signal i:nth-child(2){inset:34%;animation-delay:.7s}.partner-signal i:nth-child(3){inset:47%;animation-delay:1.4s}
-.partner-editorial{padding:clamp(80px,10vw,150px) clamp(22px,7vw,110px);background:linear-gradient(180deg,#080b09,#070708)}
+.partner-editorial{padding:clamp(58px,7vw,96px) clamp(22px,7vw,110px) clamp(46px,6vw,78px);background:linear-gradient(180deg,#080b09,#070708)}
 .partner-editorial>header{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:55px}
 .partner-editorial h2{font-size:clamp(2.8rem,6vw,6.5rem);line-height:.9;margin:12px 0}.partner-editorial h2 em{color:#b56cff;font-style:normal}
-.magazine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(30px,5vw,80px)}
-.magazine-issue{display:grid;grid-template-columns:minmax(230px,.9fr) 1fr;align-items:center;gap:clamp(25px,4vw,55px);min-width:0}
+.magazine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,4vw,58px);max-width:1180px;margin:0 auto}
+.magazine-issue{display:grid;grid-template-columns:minmax(170px,240px) 1fr;align-items:center;gap:clamp(22px,3vw,42px);min-width:0}
 .magazine-cover{position:relative;isolation:isolate;width:100%;aspect-ratio:458/644;min-height:0;padding:0;overflow:hidden;border:1px solid rgba(255,255,255,.18);background:#09070b;color:#fff;text-align:left;box-shadow:-13px 18px 35px #000;animation:magazineFloat 6s ease-in-out infinite;transform-style:preserve-3d}
 .magazine-issue.emerald .magazine-cover{animation-delay:-3s}
 .magazine-cover-art{display:block;width:100%;height:100%;object-fit:cover;transition:transform .65s cubic-bezier(.2,.8,.2,1),filter .4s ease}
@@ -29,9 +29,9 @@
 .partner-capabilities{padding:0 clamp(22px,7vw,110px) 130px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px}
 .partner-capabilities article{padding:38px;border:1px solid rgba(150,229,164,.15);background:#0b0f0c;transition:.35s}.partner-capabilities article:hover{transform:translateY(-8px);border-color:rgba(170,238,181,.55);background:#101912}
 .partner-capabilities span{color:#a268f5;font-weight:900}.partner-capabilities h3{font-size:1.8rem;margin:28px 0 10px}.partner-capabilities p{color:#8e9b91;line-height:1.65}
-.magazine-reader-overlay{position:fixed;inset:0;z-index:3000;display:grid;grid-template-rows:64px 1fr;background:#020302;animation:pageEnter .35s both}
-.magazine-reader-overlay header{display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid rgba(255,255,255,.14);background:#080a09}
+.magazine-reader-overlay{position:fixed;inset:0;z-index:3000;display:grid;grid-template-rows:56px minmax(0,1fr);justify-items:center;padding:14px 18px 18px;background:rgba(2,3,2,.96);animation:pageEnter .35s both}
+.magazine-reader-overlay header{width:min(100%,1040px);display:flex;align-items:center;justify-content:space-between;padding:0 16px;border:1px solid rgba(255,255,255,.14);border-bottom:0;background:#080a09}
 .magazine-reader-overlay header>div{display:flex;align-items:center;gap:16px}.magazine-reader-overlay header img{width:180px;max-height:42px;object-fit:contain}.magazine-reader-overlay header span{color:#b4c0b6;font-size:.75rem}
-.magazine-reader-overlay header button{width:42px;height:42px;border:1px solid rgba(255,255,255,.15);background:#111;color:#fff;font-size:1.7rem}.magazine-reader-overlay iframe{width:100%;height:100%;border:0;background:#111}
+.magazine-reader-overlay header button{width:38px;height:38px;border:1px solid rgba(255,255,255,.15);background:#111;color:#fff;font-size:1.5rem}.magazine-reader-overlay iframe{width:min(100%,1040px);height:min(760px,calc(100dvh - 88px));border:1px solid rgba(255,255,255,.14);background:#111}
 @media(max-width:1100px){.magazine-grid{grid-template-columns:1fr}.magazine-issue{grid-template-columns:minmax(220px,340px) 1fr}.partner-signal{opacity:.45}.soul-hunter-partner{grid-template-columns:minmax(280px,.8fr) minmax(330px,1.2fr)}}
 @media(max-width:700px){.partners-hero{min-height:75vh}.partner-signal{display:none}.partner-editorial>header{align-items:start;flex-direction:column}.magazine-issue{grid-template-columns:1fr}.magazine-cover{width:min(100%,370px);min-height:0!important;padding:0!important;justify-self:center}.soul-hunter-partner{grid-template-columns:1fr}.soul-hunter-seal{width:min(100%,440px)}.partner-capabilities{grid-template-columns:1fr}.magazine-reader-overlay header span{display:none}.magazine-reader-overlay header img{width:140px}}

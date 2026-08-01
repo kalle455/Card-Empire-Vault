@@ -7,6 +7,51 @@ import "./Marketplace.css";
 const categories = ["All cards", "Monster", "Spell", "Trap"];
 const rarities = ["All rarities", "Common", "Rare", "Silver", "Gold", "Rainbow"];
 
+function PriceHistoryPanel({ history, loading }) {
+  if (loading) return <section className="price-memory is-loading"><span /><span /><span /></section>;
+
+  const entries = history
+    .map((entry) => ({ ...entry, price: Number(entry.price) }))
+    .filter((entry) => Number.isFinite(entry.price));
+
+  if (!entries.length) {
+    return <section className="price-memory is-empty"><p>PRICE MEMORY</p><b>Tracking starts with the next price update.</b></section>;
+  }
+
+  const width = 440;
+  const height = 132;
+  const padding = 10;
+  const values = entries.map((entry) => entry.price);
+  const low = Math.min(...values);
+  const high = Math.max(...values);
+  const spread = high - low || Math.max(high * .03, 1);
+  const points = entries.map((entry, index) => {
+    const x = entries.length === 1 ? width / 2 : padding + index * ((width - padding * 2) / (entries.length - 1));
+    const y = height - padding - ((entry.price - low) / spread) * (height - padding * 2);
+    return { ...entry, x, y };
+  });
+  const line = points.map((point) => `${point.x},${point.y}`).join(" ");
+  const area = `M ${points[0].x} ${height - padding} L ${points.map((point) => `${point.x} ${point.y}`).join(" L ")} L ${points.at(-1).x} ${height - padding} Z`;
+  const first = entries[0].price;
+  const current = entries.at(-1).price;
+  const change = current - first;
+  const date = (value) => new Intl.DateTimeFormat("en", { day: "2-digit", month: "short", year: "2-digit" }).format(new Date(value));
+
+  return <section className="price-memory">
+    <header><div><p>PRICE MEMORY</p><h3>{entries.length === 1 ? "Tracking initiated" : `${entries.length} recorded prices`}</h3></div><strong className={change > 0 ? "is-up" : change < 0 ? "is-down" : ""}>{change > 0 ? "+" : ""}{change.toLocaleString()} G</strong></header>
+    <div className="price-memory-chart">
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`Price history from ${low.toLocaleString()} to ${high.toLocaleString()} Gold`}>
+        <defs><linearGradient id="price-memory-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#8ff0a1" stopOpacity=".32" /><stop offset="1" stopColor="#8ff0a1" stopOpacity="0" /></linearGradient></defs>
+        <path d={area} fill="url(#price-memory-fill)" />
+        <polyline points={line} fill="none" stroke="#9cf0aa" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" />
+        {points.map((point) => <circle key={point.id} cx={point.x} cy={point.y} r={point === points.at(-1) ? 5 : 3} fill={point === points.at(-1) ? "#f0d06c" : "#d9f8df"}><title>{date(point.changed_at)} · {point.price.toLocaleString()} G</title></circle>)}
+      </svg>
+      <div><span>{date(entries[0].changed_at)}</span><span>{date(entries.at(-1).changed_at)}</span></div>
+    </div>
+    <footer><span><small>LOW</small><b>{low.toLocaleString()} G</b></span><span><small>HIGH</small><b>{high.toLocaleString()} G</b></span><span><small>CURRENT</small><b>{current.toLocaleString()} G</b></span></footer>
+  </section>;
+}
+
 export default function Marketplace() {
   const { profile, session, refreshProfile } = useAuth();
   const [cards, setCards] = useState([]);
@@ -24,6 +69,8 @@ export default function Marketplace() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [redeemLoyalty, setRedeemLoyalty] = useState(false);
   const [wishlistIds, setWishlistIds] = useState([]);
+  const [priceHistory, setPriceHistory] = useState([]);
+  const [priceHistoryLoading, setPriceHistoryLoading] = useState(false);
   const vaultPageRef = useRef(null);
   const cardSizeFrameRef = useRef(0);
   const initialCardSizeRef = useRef(Math.min(100, Math.max(0, Number(window.localStorage?.getItem("cardstock-card-size") ?? 32))));
@@ -123,6 +170,42 @@ export default function Marketplace() {
     return () => channel.unsubscribe();
   }, [session?.user?.id]);
 
+  useEffect(() => {
+    if (!selectedCard?.id) {
+      setPriceHistory([]);
+      return undefined;
+    }
+
+    let active = true;
+    const loadPriceHistory = async () => {
+      setPriceHistoryLoading(true);
+      const { data } = await supabase
+        .from("card_price_history")
+        .select("id, price, changed_at")
+        .eq("card_id", selectedCard.id)
+        .order("changed_at", { ascending: true });
+      if (active) {
+        setPriceHistory(data ?? []);
+        setPriceHistoryLoading(false);
+      }
+    };
+
+    loadPriceHistory();
+    const channel = supabase.channel(`card-price-${selectedCard.id}`)
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "card_price_history", filter: `card_id=eq.${selectedCard.id}` }, loadPriceHistory)
+      .subscribe();
+    return () => {
+      active = false;
+      channel.unsubscribe();
+    };
+  }, [selectedCard?.id]);
+
+  useEffect(() => {
+    if (!selectedCard) return;
+    const latest = cards.find((card) => card.id === selectedCard.id);
+    if (latest && (latest.price !== selectedCard.price || latest.quantity !== selectedCard.quantity)) setSelectedCard(latest);
+  }, [cards, selectedCard]);
+
   const shownCards = useMemo(() => cards
     .filter((card) => card.name.toLowerCase().includes(query.toLowerCase()))
     .filter((card) => category === "All cards" || (card.category ?? "").toLowerCase().includes(category.toLowerCase()))
@@ -197,7 +280,30 @@ export default function Marketplace() {
     <section className="vault-tools"><label className="vault-search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Cardstock" /></label><div className="filter-line">{categories.map((item) => <button key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div><div className="filter-line">{rarities.map((item) => <button key={item} className={rarity === item ? "is-active" : ""} onClick={() => setRarity(item)}>{item}</button>)}</div><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="featured">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select><label className="card-size-control"><small>Card size</small><span>−</span><input type="range" min="0" max="100" defaultValue={initialCardSize} onInput={resizeCards} aria-label="Adjust card size" /><b>+</b></label></section>
     <div className="vault-meta"><span>{shownCards.length} cards available</span><span className={"market-role-chip role-" + roleKey}>{isVip ? "VIP PRICE ACTIVE · −25%" : roleLabel}</span>{session && <span className="loyalty-market-chip">✦ {Number(profile?.loyalty_points ?? 0)} Empire Points · {loyaltyCredits} Cardstock Pass{loyaltyCredits === 1 ? "" : "es"}</span>}</div>{notice && <p className="vault-notice">{notice}</p>}
     <section className="vault-grid case-only-grid">{shownCards.length === 0 && <div className="vault-empty"><p className="vault-overline">CARDSTOCK IS READY</p><h2>No cards listed yet.</h2><p>Kalenski™ will add the first cards from the Admin Dashboard.</p></div>}{shownCards.map((card) => <article className={"vault-card case-only-card " + (card.rarity || "common").toLowerCase()} key={card.id}><button className="vault-image" aria-label={"View details for " + card.name} onPointerMove={tiltCase} onPointerLeave={resetCaseTilt} onClick={() => setSelectedCard(card)}><span className="collector-case"><span className="case-label"><span className="case-name"><b>{card.name}</b><small>© KALENSKI™ CARD EMPIRE</small></span><span className="case-grade"><small>CONDITION</small><b>MINT 10</b></span></span><span className="vault-card-art">{cardImage(card) && <img src={cardImage(card)} alt={card.name} decoding="async" loading="lazy" />}</span><span className="case-glass" aria-hidden="true" /><span className="case-plaque">KALENSKI™ CARD EMPIRE</span></span><span className={"case-price-chip" + (isVip ? " is-vip" : "")}><small>{isVip ? "VIP PRICE · 25% OFF" : "MARKET PRICE"}</small><b>{(isVip ? discountedPrice(card) : Number(card.price)).toLocaleString()} G</b>{isVip && <del>{Number(card.price).toLocaleString()} G</del>}</span></button></article>)}</section>
-    {selectedCard && <div className="vault-overlay"><article className={"card-detail-modal " + (selectedCard.rarity || "common").toLowerCase()}><button className="detail-close" onClick={() => setSelectedCard(null)}>×</button><div className="detail-image">{selectedCard.image_url && <div className="detail-collector-case"><span className="detail-case-label"><span className="detail-case-name"><b>{selectedCard.name}</b><small>© KALENSKI™ CARD EMPIRE</small></span><span className="detail-case-grade"><small>CONDITION</small><b>MINT 10</b></span></span><span className="detail-card-art"><img src={cardImage(selectedCard)} alt={selectedCard.name} decoding="async" /></span><span className="detail-case-glass" aria-hidden="true" /><span className="detail-case-plaque">KALENSKI™ CARD EMPIRE</span></div>}</div><div className="detail-copy"><p className="vault-overline">{selectedCard.category} · {selectedCard.rarity}</p><h2>{selectedCard.name}</h2><p>{selectedCard.description || "A card from Kalenski™’s private Cardstock."}</p><dl><div><dt>{isVip ? "VIP price" : "Price"}</dt><dd className={isVip ? "detail-vip-price" : ""}>{isVip ? <><b>{discountedPrice(selectedCard).toLocaleString()} G</b><del>{Number(selectedCard.price).toLocaleString()} G</del></> : <>{Number(selectedCard.price).toLocaleString()} G</>}</dd></div><div><dt>Stock</dt><dd>{selectedCard.quantity} available</dd></div></dl><button className="wishlist-button" type="button" onClick={() => toggleWishlist(selectedCard)}><span>{wishlistIds.includes(selectedCard.id) ? "♥" : "♡"}</span>{wishlistIds.includes(selectedCard.id) ? "Saved to wishlist" : "Add to wishlist"}</button><button className="vault-submit" disabled={quantityInCart(selectedCard.id) >= selectedCard.quantity} onClick={() => addToCart(selectedCard)}>{quantityInCart(selectedCard.id) >= selectedCard.quantity ? "Maximum in cart" : "Add to cart"}</button><button className="detail-offer" onClick={() => { setOfferCard(selectedCard); setSelectedCard(null); }}>Make offer</button></div></article></div>}
+    {selectedCard && <div className="vault-overlay">
+      <article className={"card-detail-modal " + (selectedCard.rarity || "common").toLowerCase()}>
+        <button className="detail-close" onClick={() => setSelectedCard(null)}>×</button>
+        <div className="detail-image">{selectedCard.image_url && <div className="detail-collector-case">
+          <span className="detail-case-label"><span className="detail-case-name"><b>{selectedCard.name}</b><small>© KALENSKI™ CARD EMPIRE</small></span><span className="detail-case-grade"><small>CONDITION</small><b>MINT 10</b></span></span>
+          <span className="detail-card-art"><img src={cardImage(selectedCard)} alt={selectedCard.name} decoding="async" /></span>
+          <span className="detail-case-glass" aria-hidden="true" /><span className="detail-case-plaque">KALENSKI™ CARD EMPIRE</span>
+        </div>}</div>
+        <div className="detail-copy">
+          <p className="vault-overline">{selectedCard.category} · {selectedCard.rarity}</p>
+          <h2>{selectedCard.name}</h2>
+          <p>{selectedCard.description || "A card from Kalenski™’s private Cardstock."}</p>
+          <dl>
+            <div><dt>{isVip ? "My VIP price" : "My price"}</dt><dd className={isVip ? "detail-vip-price" : ""}>{isVip ? <><b>{discountedPrice(selectedCard).toLocaleString()} G</b><del>{Number(selectedCard.price).toLocaleString()} G</del></> : <>{Number(selectedCard.price).toLocaleString()} G</>}</dd></div>
+            <div><dt>Stock</dt><dd>{selectedCard.quantity} available</dd></div>
+            <div className="external-market-compare"><dt>Other seller price</dt><dd>{selectedCard.external_market_price == null ? "No exact listing" : `${Number(selectedCard.external_market_price).toLocaleString()} G`}</dd><a href={selectedCard.external_market_source || "https://dmo-market.onrender.com/"} target="_blank" rel="noreferrer">DMO MARKET · {selectedCard.external_market_checked_at ? `checked ${new Intl.DateTimeFormat("en", { day: "2-digit", month: "short" }).format(new Date(selectedCard.external_market_checked_at))}` : "open source"} ↗</a></div>
+          </dl>
+          <PriceHistoryPanel history={priceHistory} loading={priceHistoryLoading} />
+          <button className="wishlist-button" type="button" onClick={() => toggleWishlist(selectedCard)}><span>{wishlistIds.includes(selectedCard.id) ? "♥" : "♡"}</span>{wishlistIds.includes(selectedCard.id) ? "Saved to wishlist" : "Add to wishlist"}</button>
+          <button className="vault-submit" disabled={quantityInCart(selectedCard.id) >= selectedCard.quantity} onClick={() => addToCart(selectedCard)}>{quantityInCart(selectedCard.id) >= selectedCard.quantity ? "Maximum in cart" : "Add to cart"}</button>
+          <button className="detail-offer" onClick={() => { setOfferCard(selectedCard); setSelectedCard(null); }}>Make offer</button>
+        </div>
+      </article>
+    </div>}
     {offerCard && <div className="vault-overlay"><form className="vault-modal" onSubmit={submitOffer}><p className="vault-overline">MAKE AN OFFER</p><h2>{offerCard.name}</h2><label>Your offer in Gold<input required value={offer} onChange={(event) => setOffer(event.target.value)} inputMode="numeric" placeholder="e.g. 45000" /></label><textarea placeholder="Message for Kalenski™ (optional)" /><button className="vault-submit">Send offer</button><button type="button" className="vault-cancel" onClick={() => setOfferCard(null)}>Cancel</button></form></div>}
     {cartOpen && <div className="vault-overlay"><aside className="vault-cart-panel"><div className="cart-panel-head"><h2>Your cart</h2><button onClick={() => setCartOpen(false)}>×</button></div><div className="cart-items">{cart.length ? cart.map((card, index) => <div className="cart-line" key={card.id + index}><span>{card.name}</span><strong className={isVip || card.id === loyaltyFreeCardId ? "cart-line-vip" : ""}>{card.id === loyaltyFreeCardId ? <><b>FREE · Cardstock Pass</b><del>{(isVip ? discountedPrice(card) : Number(card.price)).toLocaleString()} G</del></> : isVip ? <><b>{discountedPrice(card).toLocaleString()} G</b><del>{Number(card.price).toLocaleString()} G</del></> : <>{Number(card.price).toLocaleString()} G</>}</strong><button onClick={() => setCart((current) => current.filter((_, i) => i !== index))}>Remove</button></div>) : <p className="cart-empty">Your Cardstock cart is empty.</p>}</div><div className="cart-summary"><span>Subtotal <b>{subtotal.toLocaleString()} G</b></span>{isVip && <span className="cart-vip">VIP discount <b>−{discount.toLocaleString()} G</b></span>}{loyaltyFreeCardId && <span className="cart-vip">Cardstock Pass <b>−{loyaltyCardValue.toLocaleString()} G</b></span>}<strong>Total <b>{total.toLocaleString()} G</b></strong></div>{loyaltyCredits > 0 && loyaltyEligibleCard && <label className="cart-loyalty-toggle"><input type="checkbox" checked={redeemLoyalty} onChange={(event) => setRedeemLoyalty(event.target.checked)} /> Use a Cardstock Pass · {loyaltyEligibleCard.name} is free</label>}<button className="vault-submit" disabled={!cart.length} onClick={purchase}>Request purchase</button><p className="cart-note">In-game Gold only. No real payments.</p></aside></div>}
     {activeChat && <PurchaseChat chat={activeChat} onClose={() => setActiveChat(null)} />}

@@ -29,11 +29,31 @@ function ScrollToTop() {
   useLayoutEffect(() => {
     const root = document.documentElement;
     const previousBehavior = root.style.scrollBehavior;
-    root.style.scrollBehavior = "auto";
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    root.scrollTop = 0;
-    document.body.scrollTop = 0;
-    window.requestAnimationFrame(() => { root.style.scrollBehavior = previousBehavior; });
+    let secondFrame;
+    const reset = () => {
+      root.style.scrollBehavior = "auto";
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      root.scrollTop = 0;
+      document.body.scrollTop = 0;
+      const content = document.querySelector(".main-content");
+      if (content) content.scrollTop = 0;
+    };
+
+    reset();
+    const firstFrame = window.requestAnimationFrame(() => {
+      reset();
+      secondFrame = window.requestAnimationFrame(reset);
+    });
+    const settleTimer = window.setTimeout(reset, 160);
+    const restoreTimer = window.setTimeout(() => { root.style.scrollBehavior = previousBehavior; }, 230);
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      if (secondFrame) window.cancelAnimationFrame(secondFrame);
+      window.clearTimeout(settleTimer);
+      window.clearTimeout(restoreTimer);
+      root.style.scrollBehavior = previousBehavior;
+    };
   }, [pathname, search]);
 
   return null;
@@ -100,7 +120,14 @@ function DiscordGuard({ children }) {
 function Home() {
   const navigate = useNavigate();
   const [transitioning, setTransitioning] = useState(false);
-  const [spotlightCards, setSpotlightCards] = useState([]);
+  const fixedSpotlight = [
+    { name: "Blue-Eyes White Dragon", ygo_card_id: 89631139, rarity: "Legend" },
+    { name: "Dark Magician", ygo_card_id: 46986414, rarity: "Legend" },
+    { name: "Pot of Greed", ygo_card_id: 55144522, rarity: "Spell" },
+    { name: "Harpie's Feather Duster", ygo_card_id: 18144506, rarity: "Spell" },
+    { name: "Mirror Force", ygo_card_id: 44095762, rarity: "Trap" },
+  ];
+  const [spotlightCards, setSpotlightCards] = useState(fixedSpotlight);
 
   useEffect(() => {
     let active = true;
@@ -108,10 +135,11 @@ function Home() {
       const { data } = await supabase
         .from("cards")
         .select("id, name, image_url, ygo_card_id, price, rarity, category")
-        .gt("quantity", 0)
-        .order("price", { ascending: false })
-        .limit(5);
-      if (active) setSpotlightCards(data ?? []);
+        .in("name", fixedSpotlight.map((card) => card.name));
+      if (active) {
+        const current = new Map((data ?? []).map((card) => [card.name.toLowerCase(), card]));
+        setSpotlightCards(fixedSpotlight.map((card) => ({ ...card, ...(current.get(card.name.toLowerCase()) ?? {}) })));
+      }
     }
     loadSpotlight();
     const channel = supabase
@@ -176,7 +204,6 @@ function Home() {
               </span>
             </button>
           ))}
-          {!spotlightCards.length && <div className="spotlight-vault-empty"><span>CARDSTOCK IS PREPARING</span><p>Cards will appear here as soon as Kalenski™ adds them.</p></div>}
         </div>
         <button type="button" className="home-section-cta vault-section-cta" onClick={() => enterEmpire("/marketplace")}><span>Enter Card Market</span><b>↗</b></button>
       </section>
@@ -389,8 +416,6 @@ function Profile() { return <div className="empire-page"><AccountPanel /></div>;
 function Admin() { return <AdminDashboard />; }
 
 function EmpireFooter() {
-  const [archiveOpen, setArchiveOpen] = useState(false);
-
   return (
     <footer className="empire-footer">
       <div className="empire-footer-top">
@@ -425,21 +450,8 @@ function EmpireFooter() {
       </div>
       <div className="empire-footer-bottom">
         <p>© 2026 Kalenski™ Card Empire®. All original Empire branding, website design and original content are protected. <Link to="/rules">Rights &amp; Policies</Link></p>
-        <button type="button" className="footer-archive-button" onClick={() => setArchiveOpen(true)}><span>✦</span> Holdings archive</button>
         <p className="footer-fan-note">Unofficial fan experience. Yu-Gi-Oh! and related names belong to their respective owners.</p>
       </div>
-      {archiveOpen && <div className="archive-overlay" role="dialog" aria-modal="true" aria-label="Classified Empire archive" onClick={() => setArchiveOpen(false)}>
-        <article className="archive-card" onClick={(event) => event.stopPropagation()}>
-          <button type="button" className="archive-close" onClick={() => setArchiveOpen(false)} aria-label="Close archive">×</button>
-          <p>CLASSIFIED FILE · K-01</p>
-          <h2>Parent company<br /><em>confirmed.</em></h2>
-          <strong>KALENSKI HOLDINGS → KAIBACORP</strong>
-          <span>In the fictional Empire universe, Kalenski Holdings quietly owns the Kaiba Company. Every Duel Disc report ends up in Cardstock.</span>
-          <div className="archive-integrity-note"><b>INTEGRITY PROTOCOL</b><span>SCAM DETECTED. The Soul Archive has awakened. Your access has been handed to the Hunters.</span></div>
-          <small>Fictional fan-lore easter egg. No official affiliation or endorsement.</small>
-          <button type="button" className="archive-seal" onClick={() => setArchiveOpen(false)}>Seal archive</button>
-        </article>
-      </div>}
     </footer>
   );
 }

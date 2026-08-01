@@ -275,6 +275,7 @@
 .case-only-card .vault-image .case-price-chip.is-vip b{color:#fff4bd}
 .detail-copy .detail-vip-price{display:flex;flex-wrap:wrap;gap:7px;align-items:baseline;color:#fff0a5}
 .detail-copy .detail-vip-price del{color:#78847c;font-size:.72rem;text-decoration-thickness:1px}
+.detail-copy dl .external-market-compare{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;align-items:end;gap:3px 14px;border-color:rgba(151,232,168,.18);background:linear-gradient(115deg,rgba(23,59,31,.24),rgba(9,13,10,.94))}.external-market-compare dt,.external-market-compare dd{grid-column:auto}.external-market-compare dd{color:#b8efc1;text-align:right}.external-market-compare a{grid-column:1/-1;width:max-content;margin-top:4px;color:#718d78;font-size:.52rem;font-weight:900;letter-spacing:.11em;text-decoration:none}.external-market-compare a:hover{color:#9cf0aa}
 .cart-line .cart-line-vip{display:flex;align-items:baseline;gap:6px;color:#fff1a7}
 .cart-line .cart-line-vip del{color:#79847d;font-size:.68rem;font-weight:500;text-decoration-thickness:1px}
 @media(max-width:600px){.vault-meta{gap:10px;align-items:flex-start}.market-role-chip{max-width:190px;text-align:right;justify-content:center;line-height:1.25}.case-only-card .vault-image .case-price-chip{bottom:7px;min-width:102px;padding:5px 7px}.case-only-card .vault-image .case-price-chip b{font-size:.67rem}}
@@ -346,9 +347,10 @@
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background-position:50% 0;animation:none;
 }
 .vault-card.silver .vault-card-art::after,.card-detail-modal.silver .detail-card-art::after{
-  opacity:.42;mix-blend-mode:screen;
+  opacity:.7;mix-blend-mode:screen;
   background:repeating-linear-gradient(108deg,transparent 0 17%,rgba(191,213,219,.08) 22%,rgba(255,255,255,.56) 27%,rgba(151,180,188,.12) 33%,transparent 41%);
   background-size:260% 100%;
+  animation:cardstock-silver 4.1s ease-in-out infinite;
 }
 .vault-card.gold .vault-card-art::after,.card-detail-modal.gold .detail-card-art::after{
   opacity:.46;mix-blend-mode:screen;
@@ -387,3 +389,20 @@
 
 /* Player wishlist control inside the inspected collector case. */
 .wishlist-button{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:42px;margin:0 0 10px;border:1px solid rgba(147,230,163,.28);border-radius:3px;background:rgba(24,68,36,.18);color:#c8e8ce;font:800 .67rem/1 var(--font-sans);letter-spacing:.09em;text-transform:uppercase;cursor:pointer;transition:transform .22s ease,border-color .22s ease,background .22s ease,color .22s ease}.wishlist-button span{color:#8cf0a0;font-size:1.25rem;line-height:1}.wishlist-button:hover{transform:translateY(-2px);border-color:#8cf0a0;background:rgba(61,139,78,.25);color:#fff}
+
+/* Immutable Cardstock price memory, recorded by Supabase whenever Admin changes a price. */
+.price-memory{position:relative;overflow:hidden;padding:15px 16px 13px;border:1px solid rgba(151,232,168,.2);background:linear-gradient(145deg,rgba(12,25,16,.96),rgba(7,11,9,.97));box-shadow:inset 0 1px rgba(255,255,255,.03)}
+.price-memory::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(133,232,151,.035),transparent);transform:translateX(-100%);animation:price-memory-scan 6.5s ease-in-out infinite}
+.price-memory header{position:relative;z-index:1;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.price-memory header p{margin:0 0 4px;color:#83e496;font-size:.55rem;font-weight:900;letter-spacing:.19em}
+.price-memory h3{margin:0;color:#eaf5ec;font-size:.92rem;letter-spacing:-.01em}
+.price-memory header>strong{padding:5px 8px;border:1px solid rgba(255,255,255,.09);color:#a5b2aa;font-size:.7rem;white-space:nowrap}
+.price-memory header>strong.is-up{border-color:rgba(240,208,108,.3);color:#f0d06c}.price-memory header>strong.is-down{border-color:rgba(143,240,161,.3);color:#8ff0a1}
+.price-memory-chart{position:relative;z-index:1;margin:11px -3px 6px}.price-memory-chart svg{display:block;width:100%;height:112px;overflow:visible}.price-memory-chart>div{display:flex;justify-content:space-between;margin-top:-2px;color:#607168;font-size:.52rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.price-memory footer{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding-top:9px;border-top:1px solid rgba(255,255,255,.07)}
+.price-memory footer span{display:grid;gap:3px}.price-memory footer small{color:#617269;font-size:.49rem;font-weight:900;letter-spacing:.15em}.price-memory footer b{color:#dce9df;font-size:.68rem}
+.price-memory.is-empty{display:grid;gap:5px;min-height:78px;align-content:center}.price-memory.is-empty p{margin:0;color:#83e496;font-size:.55rem;font-weight:900;letter-spacing:.19em}.price-memory.is-empty b{color:#9cac9f;font-size:.72rem;font-weight:600}
+.price-memory.is-loading{display:grid;gap:8px;min-height:166px;align-content:center}.price-memory.is-loading span{height:13px;border-radius:2px;background:linear-gradient(90deg,rgba(130,159,137,.08),rgba(146,225,160,.18),rgba(130,159,137,.08));background-size:220% 100%;animation:price-memory-loading 1.6s linear infinite}.price-memory.is-loading span:nth-child(2){height:72px}.price-memory.is-loading span:nth-child(3){width:68%}
+@keyframes price-memory-scan{0%,66%{transform:translateX(-100%)}100%{transform:translateX(100%)}}@keyframes price-memory-loading{to{background-position:-220% 0}}
+@media(max-width:680px){.price-memory{padding:13px}.price-memory-chart svg{height:96px}.price-memory footer b{font-size:.62rem}}
+@media(prefers-reduced-motion:reduce){.price-memory::before,.price-memory.is-loading span{animation:none}}

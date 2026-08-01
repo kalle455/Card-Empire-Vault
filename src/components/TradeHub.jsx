@@ -1,20 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import "./TradeHub.css";
 
-const statusLabels = {
-  pending: "Awaiting Kalenski™",
-  accepted: "Accepted · Chat ready",
-  negotiating: "Negotiation open · Chat ready",
-  declined: "Declined",
-};
-
 export default function TradeHub() {
   const { session } = useAuth();
   const [cards, setCards] = useState([]);
-  const [trades, setTrades] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [offeredCards, setOfferedCards] = useState("");
   const [message, setMessage] = useState("");
@@ -30,16 +21,9 @@ export default function TradeHub() {
       const { data } = await supabase.from("cards").select("id, name, image_url, ygo_card_id, rarity, category, price").gt("quantity", 0).order("price", { ascending: false });
       if (active) setCards(data ?? []);
     };
-    const loadTrades = async () => {
-      if (!session) return setTrades([]);
-      const { data } = await supabase.from("trade_offers").select("id, offered_cards, message, status, chat_id, created_at, card:cards(name)").order("created_at", { ascending: false });
-      if (active) setTrades(data ?? []);
-    };
     loadCards();
-    loadTrades();
     const channel = supabase.channel("trade-hub-live")
       .on("postgres_changes", { event: "*", schema: "public", table: "cards" }, loadCards)
-      .on("postgres_changes", { event: "*", schema: "public", table: "trade_offers", filter: session ? "player_id=eq." + session.user.id : undefined }, loadTrades)
       .subscribe();
     return () => { active = false; channel.unsubscribe(); };
   }, [session]);
@@ -93,18 +77,6 @@ export default function TradeHub() {
         </form>
       </section>
 
-      {session && <section className="trade-history">
-        <header><div><p className="trade-kicker">YOUR EXCHANGE RECORD</p><h2>Trade <em>status.</em></h2></div><span>{trades.length} offers</span></header>
-        <div className="trade-history-list">
-          {trades.map((trade) => <article key={trade.id} className={"trade-history-row status-" + trade.status}>
-            <span><small>WANTED</small><b>{trade.card?.name ?? "Cardstock card"}</b></span>
-            <span><small>YOU OFFERED</small><b>{trade.offered_cards}</b></span>
-            <em>{statusLabels[trade.status] ?? trade.status}</em>
-            {trade.chat_id && <Link to="/chats">Open chat ↗</Link>}
-          </article>)}
-          {!trades.length && <p className="trade-empty">Your trade offers will appear here.</p>}
-        </div>
-      </section>}
     </main>
   );
 }
