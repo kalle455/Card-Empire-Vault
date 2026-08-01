@@ -24,6 +24,42 @@ function getEventFormat(format) {
   return eventFormats[format] ?? eventFormats.open;
 }
 
+function DiscordGuard({ children }) {
+  const { configured, loading, session, discordConnected, signInWithDiscord } = useAuth();
+  const [message, setMessage] = useState("");
+  const [connecting, setConnecting] = useState(false);
+
+  async function connect() {
+    setMessage("");
+    setConnecting(true);
+    const { error } = await signInWithDiscord();
+    if (error) {
+      setMessage(error.message);
+      setConnecting(false);
+    }
+  }
+
+  if (!configured || loading) {
+    return <main className="discord-market-gate"><p className="vault-overline">VERIFIED MARKET ACCESS</p><h1>Checking Discord…</h1></main>;
+  }
+
+  if (!session || !discordConnected) {
+    return <main className="discord-market-gate">
+      <div className="discord-gate-orbit" aria-hidden="true"><i /><i /><b>✦</b></div>
+      <p className="vault-overline">KALENSKI™ VERIFIED MARKET ACCESS</p>
+      <h1>Discord<br /><em>required.</em></h1>
+      <p>Connect your Discord account before entering the Card Market. This protects trades, chats and player identities.</p>
+      <button type="button" onClick={connect} disabled={connecting}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 5.3A16 16 0 0 0 15 4l-.5 1.1a14 14 0 0 0-5 0L9 4a16 16 0 0 0-3.9 1.3C2.6 9 1.9 12.5 2.2 16a16 16 0 0 0 4.9 2.5l1.2-1.6a10 10 0 0 1-1.9-.9l.5-.4c3.7 1.7 7.7 1.7 11.3 0l.6.4c-.6.4-1.3.7-1.9.9l1.2 1.6A16 16 0 0 0 23 16c.4-4.1-.7-7.5-4.1-10.7ZM8.7 14.2c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.6 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z" /></svg>
+        <span>{connecting ? "Connecting…" : "Continue with Discord"}</span>
+      </button>
+      {message && <p className="discord-gate-error">{message}</p>}
+    </main>;
+  }
+
+  return children;
+}
+
 function Home() {
   const navigate = useNavigate();
   const [transitioning, setTransitioning] = useState(false);
@@ -430,7 +466,7 @@ function EmpireFooter() {
 
 export default function App() {
   return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Routes>
-    <Route path="/" element={<Home />} /><Route path="/marketplace" element={<Marketplace />} />
+    <Route path="/" element={<Home />} /><Route path="/marketplace" element={<DiscordGuard><Marketplace /></DiscordGuard>} />
     <Route path="/trade-hub" element={<TradeHub />} />
     <Route path="/events" element={<Events />} />
 <Route path="/feedback" element={<Feedback />} />
