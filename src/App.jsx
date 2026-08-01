@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
-import { Component, Suspense, lazy, useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
+import { Component, Suspense, lazy, useEffect, useLayoutEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import BanlistGallery from "./components/BanlistGallery";
 import { useAuth } from "./context/AuthContext";
@@ -18,6 +18,26 @@ const TradeHub = lazy(() => import("./components/TradeHub"));
 const Partners = lazy(() => import("./components/Partners"));
 const Community = lazy(() => import("./components/Community"));
 const Rules = lazy(() => import("./components/Rules"));
+
+function ScrollToTop() {
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+  }, []);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    root.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.requestAnimationFrame(() => { root.style.scrollBehavior = previousBehavior; });
+  }, [pathname, search]);
+
+  return null;
+}
 
 const eventFormats = {
   five_way_ffa: { label: "5-WAY FFA", teams: "5 players", capacity: 5 },
@@ -425,7 +445,7 @@ function EmpireFooter() {
 }
 
 export default function App() {
-  return <BrowserRouter><div className="app-layout"><Navbar /><main className="main-content"><Suspense fallback={<section className="route-loading"><i /><span>Opening Card Empire…</span></section>}><Routes>
+  return <BrowserRouter><ScrollToTop /><div className="app-layout"><Navbar /><main className="main-content"><Suspense fallback={<section className="route-loading"><i /><span>Opening Card Empire…</span></section>}><Routes>
     <Route path="/" element={<Home />} /><Route path="/marketplace" element={<DiscordGuard><Marketplace /></DiscordGuard>} />
     <Route path="/trade-hub" element={<DiscordGuard><TradeHub /></DiscordGuard>} />
     <Route path="/events" element={<Events />} />
