@@ -12,7 +12,7 @@ const statuses = {
 
 function Stars({ value = 0, onChange, label = "rating" }) {
   return <span className="community-stars" aria-label={label}>
-    {[1, 2, 3, 4, 5].map((star) => <button key={star} type="button" className={star <= value ? "is-active" : ""} onClick={() => onChange?.(star)} disabled={!onChange} aria-label={star + " stars"}>★</button>)}
+    {[1, 2, 3, 4, 5].map((star) => <button key={star} type="button" className={star <= value ? "is-active" : ""} onClick={() => onChange?.(star)} disabled={!onChange} aria-label={star + " stars"}>â˜…</button>)}
   </span>;
 }
 
@@ -22,6 +22,7 @@ export default function Community() {
   const [reviews, setReviews] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [polls, setPolls] = useState([]);
+  const [availability, setAvailability] = useState([]);
   const [notice, setNotice] = useState("");
   const [suggestionForm, setSuggestionForm] = useState({ title: "", body: "" });
   const [reviewForm, setReviewForm] = useState({ rating: 5, body: "" });
@@ -30,18 +31,20 @@ export default function Community() {
 
   async function load() {
     if (!session || !discordConnected) return;
-    const [suggestionResult, reviewResult, announcementResult, pollResult] = await Promise.all([
+    const [suggestionResult, reviewResult, announcementResult, pollResult, availabilityResult] = await Promise.all([
       supabase.from("community_suggestions").select("*, player:profiles!community_suggestions_player_id_fkey(username,dmo_name), votes:community_suggestion_votes(rating,player_id), comments:community_comments(id,body,created_at,player_id,player:profiles!community_comments_player_id_fkey(username,dmo_name))").order("created_at", { ascending: false }),
       supabase.from("community_reviews").select("*, player:profiles!community_reviews_player_id_fkey(username,dmo_name)").order("created_at", { ascending: false }).limit(30),
       supabase.from("community_announcements").select("*").order("created_at", { ascending: false }),
       supabase.from("community_polls").select("*, options:community_poll_options(*), votes:community_poll_votes(option_id,player_id)").eq("active", true).order("created_at", { ascending: false }),
+      supabase.from("empire_availability").select("*").order("starts_at", { ascending: true }),
     ]);
-    const firstError = suggestionResult.error || reviewResult.error || announcementResult.error || pollResult.error;
+    const firstError = suggestionResult.error || reviewResult.error || announcementResult.error || pollResult.error || availabilityResult.error;
     if (firstError) setNotice(firstError.message);
     setSuggestions(suggestionResult.data ?? []);
     setReviews(reviewResult.data ?? []);
     setAnnouncements(announcementResult.data ?? []);
     setPolls(pollResult.data ?? []);
+    setAvailability(availabilityResult.data ?? []);
   }
 
   useEffect(() => {
@@ -53,7 +56,10 @@ export default function Community() {
       .on("postgres_changes", { event: "*", schema: "public", table: "community_comments" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "community_reviews" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "community_announcements" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "community_polls" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "community_poll_options" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "community_poll_votes" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "empire_availability" }, load)
       .subscribe();
     return () => channel.unsubscribe();
   }, [session?.user?.id, discordConnected]);
@@ -71,8 +77,13 @@ export default function Community() {
   }
 
   async function rateSuggestion(suggestionId, rating) {
+    const before = suggestions;
+    setSuggestions((current) => current.map((item) => item.id !== suggestionId ? item : {
+      ...item,
+      votes: [...(item.votes ?? []).filter((vote) => vote.player_id !== session.user.id), { player_id: session.user.id, rating }],
+    }));
     const { error } = await supabase.from("community_suggestion_votes").upsert({ suggestion_id: suggestionId, player_id: session.user.id, rating }, { onConflict: "suggestion_id,player_id" });
-    if (error) setNotice(error.message); else load();
+    if (error) { setSuggestions(before); setNotice(error.message); } else load();
   }
 
   async function submitComment(suggestionId) {
@@ -94,8 +105,13 @@ export default function Community() {
   }
 
   async function votePoll(pollId, optionId) {
+    const before = polls;
+    setPolls((current) => current.map((poll) => poll.id !== pollId ? poll : {
+      ...poll,
+      votes: [...(poll.votes ?? []).filter((vote) => vote.player_id !== session.user.id), { player_id: session.user.id, option_id: optionId }],
+    }));
     const { error } = await supabase.from("community_poll_votes").upsert({ poll_id: pollId, option_id: optionId, player_id: session.user.id }, { onConflict: "poll_id,player_id" });
-    if (error) setNotice(error.message); else load();
+    if (error) { setPolls(before); setNotice(error.message); } else load();
   }
 
   async function updateStatus(id, status) {
@@ -107,14 +123,37 @@ export default function Community() {
 
   return <main className="community-page">
     <section className="community-hero">
-      <div className="community-radar" aria-hidden="true"><i /><i /><i /></div>
-      <p className="vault-overline">CARD EMPIRE · COMMUNITY COMMAND</p>
+      <div className="community-orbit-art" aria-hidden="true">
+        <span className="orbit-sun" />
+        <i className="orbit-ring orbit-ring-one"><b /></i>
+        <i className="orbit-ring orbit-ring-two"><b /></i>
+        <i className="orbit-ring orbit-ring-three"><b /></i>
+        <i className="orbit-ring orbit-ring-four"><b /></i>
+        <i className="orbit-ring orbit-ring-five"><b /></i>
+      </div>
+      <p className="vault-overline">CARD EMPIRE Â· COMMUNITY COMMAND</p>
       <h1>Your voice.<br /><em>Moves the Empire.</em></h1>
       <p>Suggestions, reviews, polls and direct signals between the Card Empire team and every verified player.</p>
-      <div className="community-score"><Stars value={Math.round(averageReview)} /><strong>{averageReview ? averageReview.toFixed(1) : "—"}</strong><span>{reviews.length} written reviews</span></div>
+      <div className="community-score"><Stars value={Math.round(averageReview)} /><strong>{averageReview ? averageReview.toFixed(1) : "â€”"}</strong><span>{reviews.length} written reviews</span></div>
     </section>
 
     {notice && <p className="community-notice">{notice}</p>}
+
+    <section className="community-availability">
+      <header><div><p className="vault-overline">KALENSKI PICKUP READINESS</p><h2>Online.<br /><em>Ready for collection.</em></h2></div><span><i /> Live calendar</span></header>
+      <div className="availability-track">
+        {availability.filter((slot) => new Date(slot.ends_at).getTime() > Date.now()).slice(0, 8).map((slot) => {
+          const starts = new Date(slot.starts_at);
+          const ends = new Date(slot.ends_at);
+          const active = starts.getTime() <= Date.now() && ends.getTime() > Date.now();
+          return <article className={active ? "is-online" : ""} key={slot.id}>
+            <div className="availability-date"><b>{starts.toLocaleDateString("de-DE", { day: "2-digit" })}</b><span>{starts.toLocaleDateString("de-DE", { month: "short" }).replace(".", "")}</span></div>
+            <div><small>{active ? "ONLINE NOW" : starts.toLocaleDateString("de-DE", { weekday: "long" })}</small><h3>{slot.title}</h3><p>{starts.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} â€“ {ends.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} Â· {slot.location}</p>{slot.note && <em>{slot.note}</em>}</div>
+          </article>;
+        })}
+        {!availability.some((slot) => new Date(slot.ends_at).getTime() > Date.now()) && <article className="availability-empty"><div><small>NEXT WINDOW</small><h3>No pickup time announced yet.</h3><p>Kalenski's next online window will appear here live.</p></div></article>}
+      </div>
+    </section>
 
     <section className="community-announcements">
       <header><p className="vault-overline">EMPIRE TRANSMISSIONS</p><h2>Announcements</h2></header>
@@ -126,13 +165,13 @@ export default function Community() {
         <p className="vault-overline">FEATURE SUGGESTIONS</p><h2>Send an idea.</h2>
         <label>Title<input required minLength="3" maxLength="90" value={suggestionForm.title} onChange={(event) => setSuggestionForm({ ...suggestionForm, title: event.target.value })} placeholder="What should Card Empire build?" /></label>
         <label>Suggestion<textarea required minLength="8" maxLength="1600" value={suggestionForm.body} onChange={(event) => setSuggestionForm({ ...suggestionForm, body: event.target.value })} placeholder="Explain the feature and why it matters." /></label>
-        <button>Transmit suggestion <span>↗</span></button>
+        <button>Transmit suggestion <span>â†—</span></button>
       </form>
       <form className="community-form review-form" onSubmit={submitReview}>
         <p className="vault-overline">WRITTEN REVIEWS</p><h2>Rate the Empire.</h2>
         <Stars value={reviewForm.rating} onChange={(rating) => setReviewForm({ ...reviewForm, rating })} />
         <label>Your review<textarea required minLength="3" maxLength="1200" value={reviewForm.body} onChange={(event) => setReviewForm({ ...reviewForm, body: event.target.value })} placeholder="What should other players know?" /></label>
-        <button>Publish review <span>↗</span></button>
+        <button>Publish review <span>â†—</span></button>
       </form>
     </section>
 
@@ -147,10 +186,10 @@ export default function Community() {
             <header><span className={"suggestion-status status-" + item.status}>{statuses[item.status]}</span><small>{new Date(item.created_at).toLocaleDateString()}</small></header>
             <h3>{item.title}</h3><p>{item.body}</p>
             <div className="suggestion-author">BY {item.player?.dmo_name ?? item.player?.username ?? "PLAYER"}</div>
-            <div className="suggestion-rating"><Stars value={myVote} onChange={(rating) => rateSuggestion(item.id, rating)} /><span>{average ? average.toFixed(1) : "Not rated"} · {votes.length} ratings</span></div>
+            <div className="suggestion-rating"><Stars value={myVote} onChange={(rating) => rateSuggestion(item.id, rating)} /><span>{average ? average.toFixed(1) : "Not rated"} Â· {votes.length} ratings</span></div>
             {isAdmin && <select value={item.status} onChange={(event) => updateStatus(item.id, event.target.value)}>{Object.entries(statuses).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>}
             <div className="suggestion-comments">{(item.comments ?? []).map((comment) => <p key={comment.id}><b>{comment.player?.dmo_name ?? comment.player?.username ?? "Player"}</b>{comment.body}</p>)}</div>
-            <div className="comment-entry"><input value={comments[item.id] ?? ""} onChange={(event) => setComments((current) => ({ ...current, [item.id]: event.target.value }))} maxLength="900" placeholder="Comment on this suggestion…" /><button type="button" onClick={() => submitComment(item.id)}>Send</button></div>
+            <div className="comment-entry"><input value={comments[item.id] ?? ""} onChange={(event) => setComments((current) => ({ ...current, [item.id]: event.target.value }))} maxLength="900" placeholder="Comment on this suggestionâ€¦" /><button type="button" onClick={() => submitComment(item.id)}>Send</button></div>
           </article>;
         })}
       </div>
@@ -171,7 +210,7 @@ export default function Community() {
 
     <section className="community-review-wall">
       <header><p className="vault-overline">PLAYER REVIEWS</p><h2>Written by the community.</h2></header>
-      <div>{reviews.map((review) => <article key={review.id}><Stars value={review.rating} /><p>“{review.body}”</p><span>{review.player?.dmo_name ?? review.player?.username ?? "Verified player"}</span></article>)}</div>
+      <div>{reviews.map((review) => <article key={review.id}><Stars value={review.rating} /><p>â€œ{review.body}â€</p><span>{review.player?.dmo_name ?? review.player?.username ?? "Verified player"}</span></article>)}</div>
     </section>
 
   </main>;

@@ -1,0 +1,48 @@
+/* Live pickup calendar controls */
+.admin-availability-panel label {
+  display: grid;
+  gap: 6px;
+  color: #8d9b91;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.admin-availability-list > div {
+  display: grid;
+  gap: 7px;
+  max-height: 390px;
+  overflow: auto;
+}
+
+.admin-availability-list article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 12px;
+  border: 1px solid rgba(145,211,154,.14);
+  border-radius: 4px;
+  background: #0a0e0c;
+}
+
+.admin-availability-list article span { display: grid; gap: 5px; }
+.admin-availability-list article b { color: #e5eee7; font-size: .78rem; }
+.admin-availability-list article small { color: #849087; font-size: .64rem; line-height: 1.45; }
+.admin-availability-list article button {
+  padding: 7px 9px;
+  border: 1px solid rgba(226,112,112,.3);
+  border-radius: 3px;
+  background: rgba(145,37,37,.11);
+  color: #e5a0a0;
+  font-size: .61rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.admin-availability-list article button:hover { border-color: #e79090; background: rgba(170,46,46,.2); }
+
+@media (max-width: 700px) {
+  .admin-availability-panel .admin-row { grid-template-columns: 1fr; }
+  .admin-availability-list article { align-items: flex-start; flex-direction: column; }
+}
