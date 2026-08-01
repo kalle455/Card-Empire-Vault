@@ -7,6 +7,7 @@ import { supabase } from "./lib/supabase";
 import { getEvents, getPotmPlayers, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
 import "./index.css";
 import "./enhancements.css";
+import "./mobile.css";
 
 const Marketplace = lazy(() => import("./components/Marketplace"));
 const AccountPanel = lazy(() => import("./components/AccountPanel"));

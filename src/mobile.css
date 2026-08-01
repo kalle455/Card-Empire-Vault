@@ -1,0 +1,177 @@
+/* Phone-only presentation. Desktop styles remain untouched above 720px. */
+@media (max-width:720px){
+  :root{--mobile-gutter:18px}
+  html{overflow-x:hidden;scroll-padding-top:64px}
+  body,#root,.app-layout,.main-content{width:100%;max-width:100%;overflow-x:hidden}
+  body{font-size:15px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  *,*::before,*::after{max-width:100%;box-sizing:border-box}
+  img,video,iframe{height:auto}
+  button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
+  button,a{touch-action:manipulation}
+  input,select,textarea{font-size:16px!important}
+  h1,h2,h3,p{overflow-wrap:anywhere}
+  .main-content{min-height:calc(100dvh - 64px)}
+
+  /* Home: cinematic but readable on a narrow screen. */
+  .cinematic-home .vanguard-hero{height:auto;min-height:68svh!important;background:#050707}
+  .cinematic-home .hero-rooftop-art{position:relative!important;inset:auto!important;display:block;width:100%;height:auto!important;min-height:0;object-fit:contain!important;object-position:center!important;opacity:1!important;filter:saturate(.95) contrast(1.04) brightness(.84)}
+  .hero-film-shade{background:linear-gradient(0deg,rgba(3,6,5,.9),transparent 42%,rgba(3,6,5,.2))!important}
+  .hero-cloud{transform:scale(.7);opacity:.4}
+  .home-vault-passage,.home-trade-portal,.home-arena,.home-feedback-zone,.home-manifesto,.home-preview-teasers{padding-left:var(--mobile-gutter)!important;padding-right:var(--mobile-gutter)!important}
+  .home-vault-passage{padding-top:72px!important;padding-bottom:72px!important;gap:24px}
+  .home-section-copy h2,.trade-portal-copy h2,.arena-copy h2,.feedback-copy h2{font-size:clamp(3rem,17vw,5rem)!important;line-height:.82!important}
+  .home-eyebrow{font-size:.55rem!important;line-height:1.55;letter-spacing:.14em!important}
+  .vault-spotlight-stage{width:calc(100% + 4px)!important;min-height:280px!important;margin-left:-2px;overflow:hidden}
+  .vault-spotlight-card{width:104px!important}
+  .card-position-0{transform:translate(-192%,-50%) rotate(-21deg)!important}
+  .card-position-1{transform:translate(-121%,-52%) rotate(-10deg)!important}
+  .card-position-2{transform:translate(-50%,-54%)!important}
+  .card-position-3{transform:translate(21%,-52%) rotate(10deg)!important}
+  .card-position-4{transform:translate(92%,-50%) rotate(21deg)!important}
+  .home-section-cta,.trade-portal-cta,.arena-cta,.feedback-cta{width:100%;min-width:0!important;min-height:50px;justify-content:space-between}
+  .home-trade-portal{min-height:0!important;padding-top:78px!important;padding-bottom:72px!important}
+  .trade-card-stack{width:100%!important;height:255px!important}
+  .trade-swap-card{width:min(43vw,150px)!important}
+  .trade-swap-core{width:54px;height:54px}
+  .home-arena{min-height:560px!important;padding-top:82px!important;padding-bottom:82px!important}
+  .arena-duelist{opacity:.35!important}
+  .home-feedback-zone{min-height:520px!important;padding-top:80px!important;padding-bottom:80px!important}
+  .feedback-orbit{right:-48%!important;width:300px!important;opacity:.35!important}
+  .home-preview-teasers{padding-top:76px!important;padding-bottom:76px!important}
+  .home-preview-teasers h2{font-size:clamp(3rem,15vw,4.5rem)!important;line-height:.82}
+  .preview-teaser-grid{gap:10px}
+  .preview-teaser{min-height:285px!important;padding:22px}
+  .preview-teaser h3{font-size:clamp(1.65rem,9vw,2.4rem)!important}
+  .home-manifesto{min-height:560px!important;padding-top:82px!important;padding-bottom:82px!important}
+
+  /* Card Market: one premium case per row and bottom-sheet dialogs. */
+  .vault-page{padding:32px var(--mobile-gutter) 72px!important}
+  .vault-header{gap:22px!important;padding-bottom:22px!important}
+  .vault-header h1{font-size:clamp(3rem,15vw,4.6rem)!important}
+  .vault-header-actions{display:grid!important;grid-template-columns:1fr 1fr;width:100%}
+  .vault-refresh,.vault-cart{width:100%;min-height:44px}
+  .vault-tools{display:grid!important;grid-template-columns:1fr!important;gap:9px!important;padding:18px 0!important}
+  .vault-search{height:48px!important}
+  .filter-line{width:calc(100vw - (var(--mobile-gutter) * 2));overflow-x:auto!important;padding-bottom:3px}
+  .filter-line button{flex:0 0 auto;min-height:40px;padding:0 13px!important}
+  .vault-tools select{width:100%;height:46px!important}
+  .card-size-control{display:none!important}
+  .vault-meta{display:grid!important;gap:8px;justify-content:stretch!important;padding-bottom:14px!important}
+  .vault-meta>span{width:max-content;max-width:100%}
+  .vault-grid.case-only-grid{grid-template-columns:1fr!important;gap:18px!important;width:min(100%,390px)!important;margin:0 auto}
+  .case-only-card{padding:12px!important}
+  .case-only-card .vault-image{height:auto!important;min-height:0;aspect-ratio:.72;background:#070908}
+  .collector-case{width:min(100%,330px)!important}
+  .case-label{min-height:46px!important;padding:7px 9px!important}
+  .case-name b{font-size:.68rem!important}.case-name small{font-size:.39rem!important}
+  .case-grade small{font-size:.38rem!important}.case-grade b{font-size:.71rem!important}
+  .case-price-chip{min-width:132px!important;padding:8px 12px!important}
+  .vault-overlay{align-items:end!important;padding:0;background:rgba(0,0,0,.76)}
+  .vault-modal,.vault-cart-panel,.card-detail-modal{width:100%!important;max-width:none!important;max-height:calc(100dvh - 20px)!important;margin:0;border-radius:14px 14px 0 0!important;border-left:0!important;border-right:0!important;border-bottom:0!important}
+  .vault-modal,.vault-cart-panel{padding:22px var(--mobile-gutter) max(22px,env(safe-area-inset-bottom))!important}
+  .card-detail-modal{display:block!important;overflow-y:auto!important}
+  .detail-image{min-height:0!important;padding:54px 24px 24px!important}
+  .detail-collector-case{width:min(100%,290px)!important;margin:auto}
+  .detail-copy{padding:25px var(--mobile-gutter) max(28px,env(safe-area-inset-bottom))!important;gap:13px!important}
+  .detail-copy h2{font-size:clamp(2.25rem,12vw,3.2rem)!important}
+  .detail-copy dl{grid-template-columns:1fr 1fr!important}
+  .detail-close{position:fixed!important;top:auto!important;right:14px!important;bottom:calc(100dvh - 48px);width:42px!important;height:42px!important;border-radius:50%!important}
+  .cart-items{max-height:42dvh}
+  .cart-line{grid-template-columns:minmax(0,1fr) auto!important}
+
+  /* Events and information pages. */
+  .event-world,.about-world{width:100%!important}
+  .event-stage-hero,.about-stage{min-height:580px!important;padding:78px var(--mobile-gutter) 110px!important}
+  .event-stage-copy h1,.about-stage-copy h1{font-size:clamp(3.8rem,18vw,5.7rem)!important}
+  .event-stage-stats{left:var(--mobile-gutter)!important;right:var(--mobile-gutter);bottom:22px!important;gap:26px!important}
+  .event-schedule{padding:72px var(--mobile-gutter) 28px!important}
+  .event-command-panel{padding:28px var(--mobile-gutter)!important}
+  .event-register-button{width:100%!important;justify-content:space-between;padding:14px 16px!important;border:1px solid rgba(169,242,182,.4)!important}
+  .event-banlist-toggle{min-height:43px}
+  .banlist-gallery{max-height:none!important}
+  .about-principles,.about-closing{padding-left:var(--mobile-gutter)!important;padding-right:var(--mobile-gutter)!important}
+
+  /* Trade Hub. */
+  .trade-hub-hero{min-height:420px!important;padding:92px var(--mobile-gutter) 62px!important}
+  .trade-hub-hero h1{font-size:clamp(4rem,20vw,6rem)!important}
+  .trade-hub-console,.trade-history,.trade-proposal-zone{padding-left:var(--mobile-gutter)!important;padding-right:var(--mobile-gutter)!important}
+  .trade-card-picker{grid-template-columns:1fr 1fr!important;gap:9px!important;max-height:none!important}
+  .trade-pick-art{height:178px!important}
+  .trade-proposal-zone{padding-top:68px!important;padding-bottom:68px!important}
+  .trade-proposal-form{padding:20px!important}
+  .trade-send-button{min-height:50px}
+
+  /* Partners and Community. */
+  .partners-hero,.community-hero{min-height:620px!important;padding:102px var(--mobile-gutter) 72px!important}
+  .partners-hero>img{width:100%!important;margin:20px 0!important}
+  .partners-hero h1,.community-hero h1{font-size:clamp(3.5rem,17vw,5.4rem)!important}
+  .partners-hero>button{width:100%;min-height:48px}
+  .partner-editorial,.partner-capabilities,.community-announcements,.suggestion-board,.community-polls,.community-review-wall,.community-team-console{padding-left:var(--mobile-gutter)!important;padding-right:var(--mobile-gutter)!important}
+  .magazine-grid,.magazine-issue,.partner-capabilities,.community-announcements>div,.suggestion-list,.community-polls>div,.community-team-console{grid-template-columns:1fr!important}
+  .magazine-cover{width:100%!important;min-height:430px!important}
+  .partner-editorial>header,.community-announcements>header,.suggestion-board>header,.community-polls>header,.community-review-wall>header,.community-team-console>header{align-items:flex-start!important;flex-direction:column!important}
+  .magazine-reader-overlay{grid-template-rows:58px 1fr}
+  .magazine-reader-overlay header{padding:0 10px!important}.magazine-reader-overlay header img{width:120px!important}
+  .community-radar{right:-34%!important;top:34%!important;width:280px!important;opacity:.42}
+  .community-score{align-items:flex-start;flex-direction:column}
+  .community-command-grid{grid-template-columns:1fr!important;padding:0!important}
+  .community-form{padding:38px var(--mobile-gutter)!important}
+  .suggestion-card{padding:21px!important}
+  .suggestion-card>header,.suggestion-rating{align-items:flex-start!important;flex-direction:column!important;gap:10px!important}
+  .comment-entry{grid-template-columns:1fr!important;gap:7px}.comment-entry button{min-height:43px}
+  .community-polls article>button{grid-template-columns:1fr 72px 35px!important;gap:8px!important}
+  .community-review-wall>div{columns:1!important}
+  .community-team-console>header{grid-column:auto!important}
+
+  /* Profile, notifications, admin and chat. */
+  .profile-command{width:100%!important;margin:0!important}
+  .profile-command-hero{min-height:0!important;padding:74px var(--mobile-gutter) 34px!important}
+  .profile-command-hero h1{font-size:clamp(3.2rem,17vw,5rem)!important}
+  .profile-command-hero>aside{display:grid!important;grid-template-columns:1fr 1fr;width:100%}
+  .profile-command-hero>aside>span{min-width:0!important;padding:15px!important}
+  .profile-tabs{position:sticky;z-index:12;top:64px;background:#0c110e!important}
+  .profile-tabs button{min-height:48px!important;padding:0 18px!important}
+  .profile-record-list>header{padding:22px var(--mobile-gutter)!important}
+  .profile-record-list>article{grid-template-columns:46px minmax(0,1fr)!important;gap:13px!important;padding:15px var(--mobile-gutter)!important}
+  .profile-record-list article>strong,.profile-record-list article>button{grid-column:2!important;justify-self:start}
+  .notifications-page{width:100%!important;padding:38px var(--mobile-gutter) 72px!important}
+  .notification-header-actions{display:grid!important;grid-template-columns:1fr 1fr;width:100%}.notification-header-actions button{width:100%}
+  .notification-list article{grid-template-columns:34px minmax(0,1fr)!important;gap:10px!important}
+  .notification-actions{grid-column:2;grid-row:auto;justify-self:end;flex-direction:row!important}
+  .purchase-chat-list .chat-inbox-row{grid-template-columns:minmax(0,1fr)!important}
+  .chat-inbox-row>b{grid-column:1!important;grid-row:auto!important;justify-items:start!important}
+  .chat-inbox-row>em{grid-column:1!important;max-width:100%!important}
+  .purchase-chat{left:0!important;right:0!important;bottom:0!important;width:100%!important;max-width:none!important;border-radius:14px 14px 0 0!important;border-left:0!important;border-right:0!important;border-bottom:0!important;padding-bottom:env(safe-area-inset-bottom)}
+  .purchase-chat main{height:min(42dvh,320px)!important}
+  .admin-shell{padding:28px var(--mobile-gutter) 70px!important}
+  .admin-shell header{align-items:flex-start!important;flex-direction:column!important;gap:12px}
+  .admin-row,.sales-summary{grid-template-columns:1fr!important}
+  .admin-panel{padding:18px!important}
+
+  /* Footer and legal overlays. */
+  .empire-footer{padding:46px var(--mobile-gutter) 0!important}
+  .empire-footer-top{grid-template-columns:1fr!important;gap:34px!important}
+  .footer-brand-column,.footer-standard{grid-column:auto!important}
+  .footer-column a{min-height:40px;align-items:center}
+  .empire-footer-bottom{grid-template-columns:1fr!important;padding-bottom:max(24px,env(safe-area-inset-bottom))!important}
+  .archive-overlay{align-items:end!important;padding:0!important}
+  .archive-card{width:100%!important;max-height:calc(100dvh - 18px);overflow:auto;margin:0!important;border-radius:14px 14px 0 0!important;padding:28px var(--mobile-gutter)!important}
+  .rules-page{width:100%}
+}
+
+@media (max-width:420px){
+  :root{--mobile-gutter:14px}
+  .trade-card-picker{grid-template-columns:1fr!important}
+  .trade-pick-art{height:260px!important}
+  .profile-command-hero>aside{grid-template-columns:1fr!important}
+  .notification-header-actions{grid-template-columns:1fr!important}
+  .detail-copy dl{grid-template-columns:1fr!important}
+  .home-preview-teasers h2{font-size:3.15rem!important}
+  .magazine-cover{min-height:390px!important;padding:30px 20px!important}
+  .magazine-cover strong{margin-left:18px!important;font-size:3.7rem!important}
+}
+
+@media (hover:none) and (pointer:coarse){
+  .vault-card:hover,.preview-teaser:hover,.suggestion-card:hover,.magazine-issue:hover,.trade-pick-card:hover{transform:none!important}
+  .vault-card.silver .vault-card-art::after,.vault-card.gold .vault-card-art::after,.vault-card.rainbow .vault-card-art::after{animation-duration:7s}
+}

@@ -18,6 +18,7 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const [unread, setUnread] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const timedVip = Boolean(profile?.vip_until && new Date(profile.vip_until).getTime() > Date.now());
   const hasVipPrice = profile?.role === "vip" || timedVip;
 
@@ -26,6 +27,10 @@ export default function Navbar() {
     updateScrollState();
     window.addEventListener("scroll", updateScrollState, { passive: true });
     return () => window.removeEventListener("scroll", updateScrollState);
+  }, [pathname]);
+
+  useEffect(() => {
+    setMobileOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -65,12 +70,19 @@ export default function Navbar() {
   }, [session]);
 
   return (
-    <header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "")}>
+    <header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "") + (mobileOpen ? " mobile-open" : "")}>
       <div className="brand-partner-cluster">
         <NavLink to="/" className="empire-brand"><span>Kalenski™</span><strong>Card Empire®</strong></NavLink>
         <NavLink to="/partners" className="partners-nav-link"><small>+</small><span>Partners</span></NavLink>
       </div>
-      <nav>{links.map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}</nav>
+      <nav id="empire-primary-navigation" aria-label="Primary navigation">
+        {links.map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}
+        <NavLink to="/partners" className="mobile-partners-link">Partners</NavLink>
+        <div className="mobile-menu-account">
+          <NavLink to="/profile">{discordConnected ? profile?.username ?? "Discord Player" : "Discord Login"}</NavLink>
+          {profile?.role === "admin" && <NavLink to="/admin">Admin Control</NavLink>}
+        </div>
+      </nav>
       <div className="nav-account">
         {hasVipPrice && <span className="nav-vip">VIP −25%</span>}
         {discordConnected && <NavLink className="notification-bell" to="/messages" aria-label={unread ? `${unread} unread notifications` : "Notifications"}>
@@ -83,6 +95,17 @@ export default function Navbar() {
         <NavLink to="/profile">{discordConnected ? profile?.username ?? "Discord Player" : "Discord Login"}</NavLink>
         {profile?.role === "admin" && <NavLink to="/admin">Admin</NavLink>}
       </div>
+      <button
+        type="button"
+        className="mobile-menu-toggle"
+        aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+        aria-controls="empire-primary-navigation"
+        aria-expanded={mobileOpen}
+        onClick={() => setMobileOpen((open) => !open)}
+      >
+        <span />
+        <span />
+      </button>
     </header>
   );
 }
