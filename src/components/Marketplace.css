@@ -47,4 +47,364 @@
 .vault-card.gold .vault-card-art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.26;mix-blend-mode:screen;background:linear-gradient(112deg,transparent 28%,rgba(255,244,185,.12) 40%,rgba(255,203,65,.48) 49%,rgba(255,248,207,.13) 56%,transparent 67%);background-size:240% 100%;animation:gold-foil 7s ease-in-out infinite}
 .vault-card.gold:hover .vault-card-art::after{opacity:.48;animation-duration:3.3s}
 .card-detail-modal.gold .detail-card-art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.31;mix-blend-mode:screen;background:linear-gradient(112deg,transparent 28%,rgba(255,244,185,.12) 40%,rgba(255,203,65,.48) 49%,rgba(255,248,207,.13) 56%,transparent 67%);background-size:240% 100%;animation:gold-foil 7s ease-in-out infinite}
-@keyframes rainbow-label{0%,100%{color:#ffb3dd;text-shadow:0 0 7px #f363ae,0 0 12px rgba(207,112,255,.52)}33%{color:#baëo7¶‰žËkºwµçuÙ¥Í¥‰¥±¥Ñäé¡¥‘‘•¸ì(€ÑÉ…¹Í™½É´éÑÉ…¹Í±…Ñ•h À¤ì)ô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ…Éµ…ÉÐ¥µì(€½¹Ñ•¹ÐµÙ¥Í¥‰¥±¥Ñäé…ÕÑ¼ì)ô(((¼¨I½±•Ì…¹Y%@ÁÉ¥•ÌƒŠPÁÉ•µ¥Õ´‰ÕÐ‘•±¥‰•É…Ñ•±ä±¥¡Ð•¹½Õ Ñ¼­••ÀÍÉ½±±¥¹œÍµ½½Ñ ¸€¨¼(¹µ…É­•ÐµÉ½±”µ¡¥Áí‘¥ÍÁ±…äé¥¹±¥¹”µ™±•àí…±¥¸µ¥Ñ•µÌé•¹Ñ•Èíµ¥¸µ¡•¥¡ÐèÈÙÁàíÁ…‘‘¥¹œèÀ€ÄÁÁàí‰½É‘•ÈèÅÁàÍ½±¥É‰„ ÄÌÜ°ÄØÄ°ÄÐÔ°¸ÈÜ¤í‰½É‘•ÈµÉ…‘¥ÕÌèääåÁàí½±½Èè…•ˆåˆÈí‰…­É½Õ¹éÉ‰„ ÄØ°ÈÈ°Ää°¸ÜØ¤í™½¹ÐµÍ¥é”è¸ØÑÉ•´í™½¹ÐµÝ•¥¡ÐèàÀÀí±•ÑÑ•ÈµÍÁ…¥¹œè¸Àá•´íÑ•áÐµÑÉ…¹Í™½É´éÕÁÁ•É…Í•ô(¹µ…É­•ÐµÉ½±”µ¡¥À¹É½±”µÙ¥Áí‰½É‘•Èµ½±½ÈéÉ‰„ ÈÄÐ°ÄÜà°àÀ°¸ÜÈ¤í½±½Èè™™˜Á…˜í‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÄÕ‘•œ±É‰„ ÄÀØ°àÀ°Äà°¸ÐÈ¤±É‰„ ÄÜ°ÐÈ°Èà°¸ÜÈ¤¤í‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€À€À€ÅÁàÉ‰„ ÈÔÔ°ÈÐÔ°ÄäÀ°¸ÀÜ¥ô(¹µ…É­•ÐµÉ½±”µ¡¥À¹É½±”µÁ½Ñ´°¹µ…É­•ÐµÉ½±”µ¡¥À¹É½±”µÁ±…å•É}½™}Ñ¡•}Ñ½ÕÉ¹…µ•¹Ñí‰½É‘•Èµ½±½ÈéÉ‰„ ÄàÐ°ÄÌÔ°ÈÔÔ°¸Ø¤í½±½Èè‘ŒÍ™˜í‰…­É½Õ¹éÉ‰„ àÀ°ÐÜ°ÄÄØ°¸ÈÐ¥ô(¹µ…É­•ÐµÉ½±”µ¡¥À¹É½±”µÉ•Õ±…É}ÕÍÑ½µ•È°¹µ…É­•ÐµÉ½±”µ¡¥À¹É½±”µÉ•Õ±…Éí‰½É‘•Èµ½±½ÈéÉ‰„ ÄÀÐ°ÈÀÀ°ÄÌÈ°¸Ô¤í½±½ÈèˆÉ˜ÍŒÀí‰…­É½Õ¹éÉ‰„ Ìà°ÄÀÀ°ÔØ°¸È¥ô(¹µ…É­•ÐµÉ½±”µ¡¥À¹É½±”µ…‘µ¥¹í‰½É‘•Èµ½±½ÈéÉ‰„ ÄÄÔ°ÈÀä°ÄØÄ°¸ÔÔ¤í½±½Èè‰…˜ÕÄí‰…­É½Õ¹éÉ‰„ ÌÄ°äÄ°ØÔ°¸ÈÔ¥ô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥ÁíÁ½Í¥Ñ¥½¸é…‰Í½±ÕÑ”íèµ¥¹‘•àèÄÐíÑ½Àé…ÕÑ¼í‰½ÑÑ½´èÄÁÁàí±•™ÐèÔÀ”íÝ¥‘Ñ é…ÕÑ¼íµ¥¸µÝ¥‘Ñ èÄÄáÁàíÑÉ…¹Í™½É´éÑÉ…¹Í±…Ñ•` ´ÔÀ”¤í‘¥ÍÁ±…äéÉ¥í©ÕÍÑ¥™äµ¥Ñ•µÌé•¹Ñ•Èí…ÀèÅÁàíÁ…‘‘¥¹œèÙÁà€åÁà€ÕÁàí‰½É‘•ÈèÅÁàÍ½±¥É‰„ ÈÈÄ°ÈÌà°ÈÈÔ°¸ÈÔ¤í‰½É‘•ÈµÉ…‘¥ÕÌèÑÁàí‰…­É½Õ¹éÉ‰„ Ô°à°Ü°¸àÜ¤í‰½àµÍ¡…‘½ÜèÀ€ÝÁà€ÄáÁàÉ‰„ À°À°À°¸Ð¤í½±½Èè˜Å˜Ù˜ÈíÁ½¥¹Ñ•Èµ•Ù•¹ÑÌé¹½¹”í±¥¹”µ¡•¥¡ÐèÅô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥ÀÍµ…±±íÁ½Í¥Ñ¥½¸éÍÑ…Ñ¥ŒíÁ…‘‘¥¹œèÀí‰½É‘•ÈèÀí‰…­É½Õ¹é¹½¹”í½±½ÈèŒå„å„Äí™½¹ÐµÍ¥é”è¸ÕÉ•´í±•ÑÑ•ÈµÍÁ…¥¹œè¸ÄÍ•´í±¥¹”µ¡•¥¡ÐèÄ¸Éô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥À‰íÁ½Í¥Ñ¥½¸éÍÑ…Ñ¥Œí½±½Èè˜Å˜Ý˜Ìí™½¹ÐµÍ¥é”è¸ÜÙÉ•´í±•ÑÑ•ÈµÍÁ…¥¹œè¸ÀÅ•µô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥À‘•±íÁ½Í¥Ñ¥½¸éÍÑ…Ñ¥Œí½±½ÈèŒàÐäÀààí™½¹ÐµÍ¥é”è¸ÔÙÉ•´í±¥¹”µ¡•¥¡ÐèÄ¸ÄíÑ•áÐµ‘•½É…Ñ¥½¸µÑ¡¥­¹•ÍÌèÅÁáô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥À¹¥ÌµÙ¥Áí‰½É‘•Èµ½±½ÈéÉ‰„ ÈÈÄ°ÄàØ°ÜÜ°¸ÜÈ¤í‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÐÁ‘•œ±É‰„ àÌ°ÔÜ°ä°¸äÐ¤±É‰„ ÄÈ°ÌÀ°ÈÀ°¸äÔ¤¤í‰½àµÍ¡…‘½ÜèÀ€áÁà€ÈÑÁàÉ‰„ À°À°À°¸ÐØ¤±¥¹Í•Ð€À€À€ÄÉÁàÉ‰„ ÈÔÔ°ÈÄä°ÄÄÀ°¸ÄÄ¥ô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥À¹¥ÌµÙ¥ÀÍµ…±±í½±½Èè™™”Ôå…ô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥À¹¥ÌµÙ¥À‰í½±½Èè™™˜Ñ‰‘ô(¹‘•Ñ…¥°µ½Áä€¹‘•Ñ…¥°µÙ¥ÀµÁÉ¥•í‘¥ÍÁ±…äé™±•àí™±•àµÝÉ…ÀéÝÉ…Àí…ÀèÝÁàí…±¥¸µ¥Ñ•µÌé‰…Í•±¥¹”í½±½Èè™™˜Á„Õô(¹‘•Ñ…¥°µ½Áä€¹‘•Ñ…¥°µÙ¥ÀµÁÉ¥”‘•±í½±½ÈèŒÜààÐÝŒí™½¹ÐµÍ¥é”è¸ÜÉÉ•´íÑ•áÐµ‘•½É…Ñ¥½¸µÑ¡¥­¹•ÍÌèÅÁáô(¹‘•Ñ…¥°µ½Áä‘°€¹•áÑ•É¹…°µµ…É­•Ðµ½µÁ…É•íÉ¥µ½±Õµ¸èÄ¼´Äí‘¥ÍÁ±…äéÉ¥íÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÅ™È…ÕÑ¼í…±¥¸µ¥Ñ•µÌé•¹í…ÀèÍÁà€ÄÑÁàí‰½É‘•Èµ½±½ÈéÉ‰„ ÄÔÄ°ÈÌÈ°ÄØà°¸Äà¤í‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÄÕ‘•œ±É‰„ ÈÌ°Ôä°ÌÄ°¸ÈÐ¤±É‰„ ä°ÄÌ°ÄÀ°¸äÐ¤¥ô¹•áÑ•É¹…°µµ…É­•Ðµ½µÁ…É”‘Ð°¹•áÑ•É¹…°µµ…É­•Ðµ½µÁ…É”‘‘íÉ¥µ½±Õµ¸é…ÕÑ½ô¹•áÑ•É¹…°µµ…É­•Ðµ½µÁ…É”‘‘í½±½Èèˆá•™ŒÄíÑ•áÐµ…±¥¸éÉ¥¡Ñô¹•áÑ•É¹…°µµ…É­•Ðµ½µÁ…É”…íÉ¥µ½±Õµ¸èÄ¼´ÄíÝ¥‘Ñ éµ…àµ½¹Ñ•¹Ðíµ…É¥¸µÑ½ÀèÑÁàí½±½ÈèŒÜÄáÜàí™½¹ÐµÍ¥é”è¸ÔÉÉ•´í™½¹ÐµÝ•¥¡ÐèäÀÀí±•ÑÑ•ÈµÍÁ…¥¹œè¸ÄÅ•´íÑ•áÐµ‘•½É…Ñ¥½¸é¹½¹•ô¹•áÑ•É¹…°µµ…É­•Ðµ½µÁ…É”„é¡½Ù•Éí½±½ÈèŒå˜Á……ô(¹…ÉÐµ±¥¹”€¹…ÉÐµ±¥¹”µÙ¥Áí‘¥ÍÁ±…äé™±•àí…±¥¸µ¥Ñ•µÌé‰…Í•±¥¹”í…ÀèÙÁàí½±½Èè™™˜Å„Ýô(¹…ÉÐµ±¥¹”€¹…ÉÐµ±¥¹”µÙ¥À‘•±í½±½ÈèŒÜäàÐÝí™½¹ÐµÍ¥é”è¸ØáÉ•´í™½¹ÐµÝ•¥¡ÐèÔÀÀíÑ•áÐµ‘•½É…Ñ¥½¸µÑ¡¥­¹•ÍÌèÅÁáô)µ•‘¥„¡µ…àµÝ¥‘Ñ èØÀÁÁà¥ì¹Ù…Õ±Ðµµ•Ñ…í…ÀèÄÁÁàí…±¥¸µ¥Ñ•µÌé™±•àµÍÑ…ÉÑô¹µ…É­•ÐµÉ½±”µ¡¥Áíµ…àµÝ¥‘Ñ èÄäÁÁàíÑ•áÐµ…±¥¸éÉ¥¡Ðí©ÕÍÑ¥™äµ½¹Ñ•¹Ðé•¹Ñ•Èí±¥¹”µ¡•¥¡ÐèÄ¸ÈÕô¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥Áí‰½ÑÑ½´èÝÁàíµ¥¸µÝ¥‘Ñ èÄÀÉÁàíÁ…‘‘¥¹œèÕÁà€ÝÁáô¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”€¹…Í”µÁÉ¥”µ¡¥À‰í™½¹ÐµÍ¥é”è¸ØÝÉ•µõô(((¼¨µÁ¥É”1½å…±Ñä¥¸Ñ¡”…ÉY…Õ±Ð€¨¼(¹±½å…±Ñäµµ…É­•Ðµ¡¥Áí‘¥ÍÁ±…äé¥¹±¥¹”µ™±•àí…±¥¸µ¥Ñ•µÌé•¹Ñ•Èí…ÀèÙÁàíÁ…‘‘¥¹œèÝÁà€ÄÁÁàí‰½É‘•ÈèÅÁàÍ½±¥É‰„ ÈÌÈ°Äää°ÄÀÌ°¸ÌÐ¤í‰½É‘•ÈµÉ…‘¥ÕÌèääåÁàí‰…­É½Õ¹éÉ‰„ äÌ°ÜÀ°ÄÜ°¸È¤í½±½Èè•™ÈÝí™½¹ÐµÍ¥é”è¸ØÅÉ•´í™½¹ÐµÝ•¥¡ÐèäÀÀí±•ÑÑ•ÈµÍÁ…¥¹œè¸Àá•´íÑ•áÐµÑÉ…¹Í™½É´éÕÁÁ•É…Í•ô¹…ÉÐµ±½å…±ÑäµÑ½±•í‘¥ÍÁ±…äé™±•àí…±¥¸µ¥Ñ•µÌé•¹Ñ•Èí…ÀèåÁàíµ…É¥¸èÄÑÁà€À€ÉÁàíÁ…‘‘¥¹œèÄÅÁà€ÄÉÁàí‰½É‘•ÈèÅÁàÍ½±¥É‰„ ÈÌÈ°Äää°ÄÀÌ°¸ÌÄ¤í‰…­É½Õ¹éÉ‰„ ää°ÜÐ°ÄØ°¸ÄÌ¤í½±½Èè˜ÁÔàÜí™½¹ÐµÍ¥é”è¸ØáÉ•´í™½¹ÐµÝ•¥¡ÐèàÀÀí±¥¹”µ¡•¥¡ÐèÄ¸Ñô¹…ÉÐµ±½å…±ÑäµÑ½±”¥¹ÁÕÑí…•¹Ðµ½±½Èè”áŒÜØÝõµ•‘¥„¡µ…àµÝ¥‘Ñ èØàÁÁà¥ì¹±½å…±Ñäµµ…É­•Ðµ¡¥ÁíÝ¥‘Ñ èÄÀÀ”í©ÕÍÑ¥™äµ½¹Ñ•¹Ðé•¹Ñ•Éõô(((¼¨-••ÀÑ¡”…ÉY…Õ±Ð„Ù•ÉÑ¥…°…±±•Éäè¹¼Á…”µÝ¥‘”Í¥‘•Ý…åÌ‘É…œ‰…ÉÌ¸€¨¼(¹Ù…Õ±ÐµÁ…•ì(€Ý¥‘Ñ èÄÀÀ”ì(€µ…àµÝ¥‘Ñ èÄÀÀ”ì(€‰½àµÍ¥é¥¹œé‰½É‘•Èµ‰½àì(€½Ù•É™±½Üµàé¡¥‘‘•¸ì(€½Ù•É™±½Üµàé±¥Àì)ô(¹Ù…Õ±Ðµ¡•…‘•È°(¹Ù…Õ±ÐµÑ½½±Ì°(¹Ù…Õ±ÐµÉ¥‘íµ¥¸µÝ¥‘Ñ èÀíµ…àµÝ¥‘Ñ èÄÀÀ•ô(¹…Í”µ½¹±äµÉ¥‘íÝ¥‘Ñ èÄÀÀ•ô(¹™¥±Ñ•Èµ±¥¹•ì(€µ¥¸µÝ¥‘Ñ èÀì(€½Ù•ÉÍÉ½±°µ‰•¡…Ù¥½Èµàé½¹Ñ…¥¸ì(€ÍÉ½±±‰…ÈµÝ¥‘Ñ é¹½¹”ì)ô(¹™¥±Ñ•Èµ±¥¹”èèµÝ•‰­¥ÐµÍÉ½±±‰…Éí‘¥ÍÁ±…äé¹½¹•ô((¼¨Q¡”¹…Ù¥…Ñ¥½¸¡…Ð±åÁ ÍÑ…åÌÉ¥ÍÀ…‰½Ù”¥ÑÌ‘•½É…Ñ¥Ù”¡…±¼¸€¨¼(¹•µÁ¥É”µ¹…Ø€¹¡…Ðµ‰Õ‰‰±•í¥Í½±…Ñ¥½¸é¥Í½±…Ñ•ô(¹•µÁ¥É”µ¹…Ø€¹¡…Ðµ‰Õ‰‰±”ÍÙíÁ½Í¥Ñ¥½¸éÉ•±…Ñ¥Ù”íèµ¥¹‘•àèÄí‘¥ÍÁ±…äé‰±½­ô(((¼¨M¥±Ù•È½±±•Ñ½È™½¥°€¨¼(¹Ù…Õ±Ðµ…É¹Í¥±Ù•Éí‰½É‘•Èµ½±½ÈéÉ‰„ ÈÀÌ°ÈÄÔ°ÈÄà°¸ÐÈ¤í‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€À€À€ÅÁàÉ‰„ ÈÐÀ°ÈÐà°ÈÔÀ°¸Àà¤°À€À€ÈÉÁàÉ‰„ ÄØä°ÄäØ°ÈÀÈ°¸Àà¥ô(¹Ù…Õ±Ðµ…É¹Í¥±Ù•È€¹½±±•Ñ½Èµ…Í•í‰½É‘•Èµ½±½ÈéÉ‰„ ÈÈÄ°ÈÌÈ°ÈÌÔ°¸Üà¤í‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÄÉ‘•œ±É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°¸ÈÐ¤±É‰„ ÄàÔ°ÈÀÐ°ÈÀä°¸ÀÔÔ¤€ÈÈ”±É‰„ ÔÐ°ØÜ°ÜÀ°¸ÄÔ¤€Ôä”±É‰„ ÈÌÔ°ÈÐÐ°ÈÐØ°¸ÄÔ¤¤±±¥¹•…ÈµÉ…‘¥•¹Ð ÄØÁ‘•œ±É‰„ ÐÀ°Ðà°Ðä°¸äà¤±É‰„ à°ÄÄ°ÄÄ°¸äÐ¤¥ô(¹Ù…Õ±Ðµ…É¹Í¥±Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°(¹…Éµ‘•Ñ…¥°µµ½‘…°¹Í¥±Ù•È€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éí½¹Ñ•¹ÐèˆˆíÁ½Í¥Ñ¥½¸é…‰Í½±ÕÑ”í¥¹Í•ÐèÀíèµ¥¹‘•àèÈíÁ½¥¹Ñ•Èµ•Ù•¹ÑÌé¹½¹”í½Á…¥Ñäè¸ÌÐíµ¥àµ‰±•¹µµ½‘”éÍÉ••¸í‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÄÉ‘•œ±ÑÉ…¹ÍÁ…É•¹Ð€ÈÐ”±É‰„ ÈÄÄ°ÈÈØ°ÈÌÄ°¸Àà¤€ÌØ”±É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°¸Øà¤€Ðà”±É‰„ ÄØÈ°ÄäÀ°Ääà°¸ÈÈ¤€ÔÜ”±ÑÉ…¹ÍÁ…É•¹Ð€ÜÀ”¤í‰…­É½Õ¹µÍ¥é”èÈØÀ”€ÄÀÀ”í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸èÔÀ”€Áô(¹Ù…Õ±Ðµ…É¹Í¥±Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÑí‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€À€À€ÅÁàÉ‰„ ÈÈÔ°ÈÌà°ÈÐÄ°¸ÌØ¤°À€À€ÄÝÁàÉ‰„ ÄäÈ°ÈÄØ°ÈÈÄ°¸ÄÔ¥ô(¹Ù…Õ±Ðµ…É¹Í¥±Ù•Èé¡½Ù•Éí‰½É‘•Èµ½±½ÈéÉ‰„ ÈÌä°ÈÐä°ÈÔÄ°¸àÈ¤í‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€À€À€ÅÁàÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°¸ÄÐ¤°À€ÈÑÁà€ÔÁÁà€ŒÀÀÀà°À€À€ÌÁÁàÉ‰„ ÄäÀ°ÈÄà°ÈÈÐ°¸ÄØ¥ô(¹Ù…Õ±Ðµ…É¹Í¥±Ù•Èé¡½Ù•È€¹½±±•Ñ½Èµ…Í•í‰½É‘•Èµ½±½Èè˜Í™‰™ô(¹Ù…Õ±Ðµ…É¹Í¥±Ù•Èé¡½Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•Éí½Á…¥Ñäè¸ØÈí…¹¥µ…Ñ¥½¸éÍ¥±Ù•Èµ™½¥°€È¸åÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ•ô(¹…Éµ‘•Ñ…¥°µµ½‘…°¹Í¥±Ù•È€¹‘•Ñ…¥°µ½±±•Ñ½Èµ…Í•í‰½É‘•Èµ½±½ÈéÉ‰„ ÈÈÈ°ÈÌÐ°ÈÌÜ°¸Üà¤í‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÈÁ‘•œ±É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°¸Äà¤±É‰„ ÄÜÌ°ÄäÜ°ÈÀÌ°¸ÀØ¤€ÌÈ”±É‰„ ÔÈ°ØØ°Øä°¸ÄØ¤€Øà”¤±±¥¹•…ÈµÉ…‘¥•¹Ð ÄØÁ‘•œ°ŒÉÌÔÌØ°ŒÀäÁŒÁŒ¥ô(¹…Éµ‘•Ñ…¥°µµ½‘…°¹Í¥±Ù•È€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éí½Á…¥Ñäè¸Ðàí…¹¥µ…Ñ¥½¸éÍ¥±Ù•Èµ™½¥°€Ð¸ÑÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ•ô(¹É…É¥ÑäµÑ…œ¹É…É¥ÑäµÍ¥±Ù•Éí‰½É‘•Èµ½±½ÈéÉ‰„ ÈÈÔ°ÈÌà°ÈÐÄ°¸ÜÔ¤í½±½Èè•˜Ý˜äíÑ•áÐµÍ¡…‘½ÜèÀ€À€ÝÁàÉ‰„ ÈÀÔ°ÈÈä°ÈÌÐ°¸ÔÔ¥ô)­•å™É…µ•ÌÍ¥±Ù•Èµ™½¥±ìÀ”°ÄÀÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸èÄÈÔ”€ÁôÔÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸è´ÈÔ”€Áõô)µ•‘¥„¡ÁÉ•™•ÉÌµÉ•‘Õ•µµ½Ñ¥½¸éÉ•‘Õ”¥ì¹Ù…Õ±Ðµ…É¹Í¥±Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°¹…Éµ‘•Ñ…¥°µµ½‘…°¹Í¥±Ù•È€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éí…¹¥µ…Ñ¥½¸é¹½¹•õô((¼¨…É‘ÍÑ½¬™¥¹…°Á…ÍÌè½¹”±¥¡ÑÝ•¥¡Ð™½¥°±…¹Õ…”°±¥ÁÁ•Ñ¼Ñ¡”…É…ÉÐ¸€¨¼(¹…ÉµÍ¥é”µ½¹ÑÉ½±ì(€‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€À€À€ÅÁàÉ‰„ ÄØÐ°ÈÈØ°ÄÜØ°¸ÀÌÔ¤ì(€ÑÉ…¹Í¥Ñ¥½¸é‰½É‘•Èµ½±½È€¸ÉÌ•…Í”±‰…­É½Õ¹€¸ÉÌ•…Í”ì)ô(¹…ÉµÍ¥é”µ½¹ÑÉ½°é¡½Ù•È°¹…ÉµÍ¥é”µ½¹ÑÉ½°é™½ÕÌµÝ¥Ñ¡¥¹í‰½É‘•Èµ½±½ÈéÉ‰„ ÄÐÔ°ÈÄÄ°ÄÔÐ°¸ÔØ¤í‰…­É½Õ¹èŒÄÈÅ„ÄÙô(¹…ÉµÍ¥é”µ½¹ÑÉ½°¥¹ÁÕÑmÑåÁ”ô‰É…¹”‰uí¡•¥¡ÐèÑÁàí…ÁÁ•…É…¹”é¹½¹”í‰½É‘•ÈèÀ…¥µÁ½ÉÑ…¹Ðí‰½É‘•ÈµÉ…‘¥ÕÌèääåÁà…¥µÁ½ÉÑ…¹Ðí‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð äÁ‘•œ±É‰„ ÄÐÔ°ÈÄÄ°ÄÔÐ°¸äÈ¤±É‰„ ÄÐÔ°ÈÄÄ°ÄÔÐ°¸ÈÈ¤¤…¥µÁ½ÉÑ…¹Ðí½ÕÑ±¥¹”èÁô(¹…ÉµÍ¥é”µ½¹ÑÉ½°¥¹ÁÕÑmÑåÁ”ô‰É…¹”‰tèèµÝ•‰­¥ÐµÍ±¥‘•ÈµÑ¡Õµ‰íÝ¥‘Ñ èÄÕÁàí¡•¥¡ÐèÄÕÁàí…ÁÁ•…É…¹”é¹½¹”í‰½É‘•ÈèÉÁàÍ½±¥€‘™˜Ý”Ìí‰½É‘•ÈµÉ…‘¥ÕÌèÔÀ”í‰…­É½Õ¹èŒÜå˜ààí‰½àµÍ¡…‘½ÜèÀ€À€À€ÑÁàÉ‰„ ÄÈÄ°ÈÀÜ°ÄÌØ°¸ÄÈ¤íÕÉÍ½Èé•ÜµÉ•Í¥é•ô(¹…ÉµÍ¥é”µ½¹ÑÉ½°¥¹ÁÕÑmÑåÁ”ô‰É…¹”‰tèèµµ½èµÉ…¹”µÑ¡Õµ‰íÝ¥‘Ñ èÄÍÁàí¡•¥¡ÐèÄÍÁàí‰½É‘•ÈèÉÁàÍ½±¥€‘™˜Ý”Ìí‰½É‘•ÈµÉ…‘¥ÕÌèÔÀ”í‰…­É½Õ¹èŒÜå˜ààí‰½àµÍ¡…‘½ÜèÀ€À€À€ÑÁàÉ‰„ ÄÈÄ°ÈÀÜ°ÄÌØ°¸ÄÈ¤íÕÉÍ½Èé•ÜµÉ•Í¥é•ô((¹…Í”µ½¹±äµÉ¥‘í…±¥¸µ¥Ñ•µÌéÍÑ…ÉÐíÑÉ…¹Í¥Ñ¥½¸é¹½¹•ô(¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…•íÑÉ…¹Í¥Ñ¥½¸é¡•¥¡Ð€¸ÄÑÌ•…Í”µ½ÕÑô(¹…Í”µ½¹±äµ…É€¹½±±•Ñ½Èµ…Í•íÑÉ…¹Í¥Ñ¥½¸éÑÉ…¹Í™½É´€¸ÄÙÌ•…Í”µ½ÕÐ±‰½É‘•Èµ½±½È€¸ÈÉÌ•…Í”±‰½àµÍ¡…‘½Ü€¸ÈÉÌ•…Í•ô((¹Ù…Õ±Ðµ…É¹Í¥±Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°(¹Ù…Õ±Ðµ…É¹½±€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°(¹Ù…Õ±Ðµ…É¹É…¥¹‰½Ü€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°(¹…Éµ‘•Ñ…¥°µµ½‘…°¹Í¥±Ù•È€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•È°(¹…Éµ‘•Ñ…¥°µµ½‘…°¹½±€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•È°(¹…Éµ‘•Ñ…¥°µµ½‘…°¹É…¥¹‰½Ü€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éì(€½¹Ñ•¹ÐèˆˆíÁ½Í¥Ñ¥½¸é…‰Í½±ÕÑ”í¥¹Í•ÐèÀíèµ¥¹‘•àèÈíÁ½¥¹Ñ•Èµ•Ù•¹ÑÌé¹½¹”í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸èÔÀ”€Àí…¹¥µ…Ñ¥½¸é¹½¹”ì)ô(¹Ù…Õ±Ðµ…É¹Í¥±Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°¹…Éµ‘•Ñ…¥°µµ½‘…°¹Í¥±Ù•È€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éì(€½Á…¥Ñäè¸Üíµ¥àµ‰±•¹µµ½‘”éÍÉ••¸ì(€‰…­É½Õ¹éÉ•Á•…Ñ¥¹œµ±¥¹•…ÈµÉ…‘¥•¹Ð ÄÀá‘•œ±ÑÉ…¹ÍÁ…É•¹Ð€À€ÄÜ”±É‰„ ÄäÄ°ÈÄÌ°ÈÄä°¸Àà¤€ÈÈ”±É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°¸ÔØ¤€ÈÜ”±É‰„ ÄÔÄ°ÄàÀ°Äàà°¸ÄÈ¤€ÌÌ”±ÑÉ…¹ÍÁ…É•¹Ð€ÐÄ”¤ì(€‰…­É½Õ¹µÍ¥é”èÈØÀ”€ÄÀÀ”ì(€…¹¥µ…Ñ¥½¸é…É‘ÍÑ½¬µÍ¥±Ù•È€Ð¸ÅÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ”ì)ô(¹Ù…Õ±Ðµ…É¹½±€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°¹…Éµ‘•Ñ…¥°µµ½‘…°¹½±€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éì(€½Á…¥Ñäè¸ÔÐíµ¥àµ‰±•¹µµ½‘”éÍÉ••¸ì(€‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÄÉ‘•œ±ÑÉ…¹ÍÁ…É•¹Ð€ÄÜ”±É‰„ ÈÔÔ°ÈÈÈ°ÄÄØ°¸Ä¤€ÌÀ”±É‰„ ÈÔÔ°ÈÐà°ÈÀÜ°¸Øà¤€ÐÌ”±É‰„ ÈÈÈ°ÄÔÄ°ÌÄ°¸È¤€ÔÄ”±É‰„ ÈÔÔ°ÈÌÔ°ÄÔÐ°¸Ðà¤€Ôä”±ÑÉ…¹ÍÁ…É•¹Ð€ÜÌ”¤ì(€‰…­É½Õ¹µÍ¥é”èÈàÀ”€ÄÀÀ”ì(€…¹¥µ…Ñ¥½¸é…É‘ÍÑ½¬µ½±€Ð¸áÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ”ì)ô(¹Ù…Õ±Ðµ…É¹É…¥¹‰½Ü€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°¹…Éµ‘•Ñ…¥°µµ½‘…°¹É…¥¹‰½Ü€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éì(€½Á…¥Ñäè¸ÌÐíµ¥àµ‰±•¹µµ½‘”éÍÉ••¸ì(€‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÄá‘•œ±ÑÉ…¹ÍÁ…É•¹Ð€ÄÔ”±É‰„ ÈÔÔ°ÄÄÈ°ÄàÌ°¸È¤€Èà”±É‰„ ÄÄÌ°ÈÄà°ÈÔÔ°¸ÈÜ¤€ÐÄ”±É‰„ ÈÔÔ°ÈÌä°ÄÌä°¸ÈÐ¤€ÔÌ”±É‰„ ÄØØ°ÄÌÀ°ÈÔÔ°¸ÈÜ¤€ØÔ”±É‰„ ÄÌÄ°ÈÐÐ°ÄàÔ°¸Ää¤€ÜÌ”±ÑÉ…¹ÍÁ…É•¹Ð€àÔ”¤ì(€‰…­É½Õ¹µÍ¥é”èÌÈÀ”€ÄÔÀ”ì(€…¹¥µ…Ñ¥½¸é…É‘ÍÑ½¬µÉ…¥¹‰½Ü€Ü¸ÙÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ”ì)ô(¹Ù…Õ±Ðµ…É¹Í¥±Ù•È€¹½±±•Ñ½Èµ…Í•í‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€À€À€ÉÁàÉ‰„ À°À°À°¸ÔÈ¤±¥¹Í•Ð€À€À€ÈÁÁàÉ‰„ ÈÌÈ°ÈÐà°ÈÔÄ°¸Ä¤°À€ÈÉÁà€ÌÁÁàÉ‰„ À°À°À°¸ØÈ¥ô(¹Ù…Õ±Ðµ…É¹½±€¹½±±•Ñ½Èµ…Í•í‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€À€À€ÉÁàÉ‰„ ÐÀ°ÈÔ°À°¸Ü¤±¥¹Í•Ð€À€À€ÈÉÁàÉ‰„ ÈÔÔ°ÈÈÀ°ÄÄÄ°¸ÄÈ¤°À€ÈÉÁà€ÌÁÁàÉ‰„ À°À°À°¸ØÈ¥ô(¹Ù…Õ±Ðµ…É¹É…¥¹‰½Ü€¹½±±•Ñ½Èµ…Í•í‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€À€À€ÉÁàÉ‰„ ÄØ°Ü°Èà°¸ÜÈ¤±¥¹Í•Ð€À€À€ÈÍÁàÉ‰„ ÄÜà°ÄÌÜ°ÈÔÔ°¸ÄÈ¤°À€ÈÉÁà€ÌÁÁàÉ‰„ À°À°À°¸ØÈ¥ô()µ•‘¥„¡¡½Ù•Èé¡½Ù•È¤…¹€¡Á½¥¹Ñ•Èé™¥¹”¥ì(€€¹Ù…Õ±Ðµ…É¹Í¥±Ù•Èé¡½Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•Éí½Á…¥Ñäè¸Üí…¹¥µ…Ñ¥½¸é…É‘ÍÑ½¬µÍ¥±Ù•È€È¸ÌÕÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ•ô(€€¹Ù…Õ±Ðµ…É¹½±é¡½Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•Éí½Á…¥Ñäè¸ØØí…¹¥µ…Ñ¥½¸µ‘ÕÉ…Ñ¥½¸èÌ¸ÅÍô(€€¹Ù…Õ±Ðµ…É¹É…¥¹‰½Üé¡½Ù•È€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•Éí½Á…¥Ñäè¸ÐÌí…¹¥µ…Ñ¥½¸µ‘ÕÉ…Ñ¥½¸èØ¸ÅÍô)ô(¹…Éµ‘•Ñ…¥°µµ½‘…°¹Í¥±Ù•È€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éí½Á…¥Ñäè¸Øí…¹¥µ…Ñ¥½¸é…É‘ÍÑ½¬µÍ¥±Ù•È€Ð¸áÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ•ô(¹…Éµ‘•Ñ…¥°µµ½‘…°¹½±€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éí½Á…¥Ñäè¸ØÐí…¹¥µ…Ñ¥½¸é…É‘ÍÑ½¬µ½±€Ô¸ÉÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ•ô(¹…Éµ‘•Ñ…¥°µµ½‘…°¹É…¥¹‰½Ü€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éí½Á…¥Ñäè¸Ðí…¹¥µ…Ñ¥½¸é…É‘ÍÑ½¬µÉ…¥¹‰½Ü€Ü¸ÉÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ•ô)­•å™É…µ•Ì…É‘ÍÑ½¬µÍ¥±Ù•ÉìÀ”°ÄÀÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸èÄÌÔ”€ÁôÔÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸è´ÌÔ”€Áõô)­•å™É…µ•Ì…É‘ÍÑ½¬µ½±‘ìÀ”°ÄÀÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸èÄÌÔ”€ÁôÔÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸è´ÌÔ”€Áõô)­•å™É…µ•Ì…É‘ÍÑ½¬µÉ…¥¹‰½ÝìÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸èÄÈÀ”€ÈÀ•ôÔÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸è´ÈÀ”€àÀ•ôÄÀÀ•í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸èÄÈÀ”€ÈÀ•õô()µ•‘¥„¡µ…àµÝ¥‘Ñ èØÀÁÁà¥ì(€€¹…Í”µ½¹±äµ…É€¹½±±•Ñ½Èµ…Í•íÝ¥±°µ¡…¹”é…ÕÑ½ô(€€¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…•íÑÉ…¹Í¥Ñ¥½¸é¹½¹•ô)ô)µ•‘¥„¡ÁÉ•™•ÉÌµÉ•‘Õ•µµ½Ñ¥½¸éÉ•‘Õ”¥ì(€€¹…Í”µ½¹±äµ…É€¹Ù…Õ±Ðµ¥µ…”°¹…Í”µ½¹±äµ…É€¹½±±•Ñ½Èµ…Í•íÑÉ…¹Í¥Ñ¥½¸é¹½¹”…¥µÁ½ÉÑ…¹Ñô(€€¹Ù…Õ±Ðµ…É€¹Ù…Õ±Ðµ…Éµ…ÉÐèé…™Ñ•È°¹…Éµ‘•Ñ…¥°µµ½‘…°€¹‘•Ñ…¥°µ…Éµ…ÉÐèé…™Ñ•Éí…¹¥µ…Ñ¥½¸é¹½¹”…¥µÁ½ÉÑ…¹Ñô)ô((¼¨A±…å•ÈÝ¥Í¡±¥ÍÐ½¹ÑÉ½°¥¹Í¥‘”Ñ¡”¥¹ÍÁ•Ñ•½±±•Ñ½È…Í”¸€¨¼(¹Ý¥Í¡±¥ÍÐµ‰ÕÑÑ½¹í‘¥ÍÁ±…äé™±•àí…±¥¸µ¥Ñ•µÌé•¹Ñ•Èí©ÕÍÑ¥™äµ½¹Ñ•¹Ðé•¹Ñ•Èí…ÀèåÁàíÝ¥‘Ñ èÄÀÀ”íµ¥¸µ¡•¥¡ÐèÐÉÁàíµ…É¥¸èÀ€À€ÄÁÁàí‰½É‘•ÈèÅÁàÍ½±¥É‰„ ÄÐÜ°ÈÌÀ°ÄØÌ°¸Èà¤í‰½É‘•ÈµÉ…‘¥ÕÌèÍÁàí‰…­É½Õ¹éÉ‰„ ÈÐ°Øà°ÌØ°¸Äà¤í½±½ÈèŒá”á”í™½¹ÐèàÀÀ€¸ØÝÉ•´¼ÄÙ…È ´µ™½¹ÐµÍ…¹Ì¤í±•ÑÑ•ÈµÍÁ…¥¹œè¸Àå•´íÑ•áÐµÑÉ…¹Í™½É´éÕÁÁ•É…Í”íÕÉÍ½ÈéÁ½¥¹Ñ•ÈíÑÉ…¹Í¥Ñ¥½¸éÑÉ…¹Í™½É´€¸ÈÉÌ•…Í”±‰½É‘•Èµ½±½È€¸ÈÉÌ•…Í”±‰…­É½Õ¹€¸ÈÉÌ•…Í”±½±½È€¸ÈÉÌ•…Í•ô¹Ý¥Í¡±¥ÍÐµ‰ÕÑÑ½¸ÍÁ…¹í½±½ÈèŒá˜Á„Àí™½¹ÐµÍ¥é”èÄ¸ÈÕÉ•´í±¥¹”µ¡•¥¡ÐèÅô¹Ý¥Í¡±¥ÍÐµ‰ÕÑÑ½¸é¡½Ù•ÉíÑÉ…¹Í™½É´éÑÉ…¹Í±…Ñ•d ´ÉÁà¤í‰½É‘•Èµ½±½ÈèŒá˜Á„Àí‰…­É½Õ¹éÉ‰„ ØÄ°ÄÌä°Üà°¸ÈÔ¤í½±½Èè™™™ô((¼¨%µµÕÑ…‰±”…É‘ÍÑ½¬ÁÉ¥”µ•µ½Éä°É•½É‘•‰äMÕÁ…‰…Í”Ý¡•¹•Ù•È‘µ¥¸¡…¹•Ì„ÁÉ¥”¸€¨¼(¹ÁÉ¥”µµ•µ½ÉåíÁ½Í¥Ñ¥½¸éÉ•±…Ñ¥Ù”í½Ù•É™±½Üé¡¥‘‘•¸íÁ…‘‘¥¹œèÄÕÁà€ÄÙÁà€ÄÍÁàí‰½É‘•ÈèÅÁàÍ½±¥É‰„ ÄÔÄ°ÈÌÈ°ÄØà°¸È¤í‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð ÄÐÕ‘•œ±É‰„ ÄÈ°ÈÔ°ÄØ°¸äØ¤±É‰„ Ü°ÄÄ°ä°¸äÜ¤¤í‰½àµÍ¡…‘½Üé¥¹Í•Ð€À€ÅÁàÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°¸ÀÌ¥ô(¹ÁÉ¥”µµ•µ½Éäèé‰•™½É•í½¹Ñ•¹ÐèˆˆíÁ½Í¥Ñ¥½¸é…‰Í½±ÕÑ”í¥¹Í•ÐèÀíÁ½¥¹Ñ•Èµ•Ù•¹ÑÌé¹½¹”í‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð äÁ‘•œ±ÑÉ…¹ÍÁ…É•¹Ð±É‰„ ÄÌÌ°ÈÌÈ°ÄÔÄ°¸ÀÌÔ¤±ÑÉ…¹ÍÁ…É•¹Ð¤íÑÉ…¹Í™½É´éÑÉ…¹Í±…Ñ•` ´ÄÀÀ”¤í…¹¥µ…Ñ¥½¸éÁÉ¥”µµ•µ½ÉäµÍ…¸€Ø¸ÕÌ•…Í”µ¥¸µ½ÕÐ¥¹™¥¹¥Ñ•ô(¹ÁÉ¥”µµ•µ½Éä¡•…‘•ÉíÁ½Í¥Ñ¥½¸éÉ•±…Ñ¥Ù”íèµ¥¹‘•àèÄí‘¥ÍÁ±…äé™±•àí©ÕÍÑ¥™äµ½¹Ñ•¹ÐéÍÁ…”µ‰•ÑÝ••¸í…ÀèÄÙÁàí…±¥¸µ¥Ñ•µÌé™±•àµÍÑ…ÉÑô(¹ÁÉ¥”µµ•µ½Éä¡•…‘•ÈÁíµ…É¥¸èÀ€À€ÑÁàí½±½ÈèŒàÍ”ÐäØí™½¹ÐµÍ¥é”è¸ÔÕÉ•´í™½¹ÐµÝ•¥¡ÐèäÀÀí±•ÑÑ•ÈµÍÁ…¥¹œè¸Äå•µô(¹ÁÉ¥”µµ•µ½Éä Ííµ…É¥¸èÀí½±½Èè•…˜Õ•Œí™½¹ÐµÍ¥é”è¸äÉÉ•´í±•ÑÑ•ÈµÍÁ…¥¹œè´¸ÀÅ•µô(¹ÁÉ¥”µµ•µ½Éä¡•…‘•ÈùÍÑÉ½¹íÁ…‘‘¥¹œèÕÁà€áÁàí‰½É‘•ÈèÅÁàÍ½±¥É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°¸Àä¤í½±½Èè„ÕˆÉ…„í™½¹ÐµÍ¥é”è¸ÝÉ•´íÝ¡¥Ñ”µÍÁ…”é¹½ÝÉ…Áô(¹ÁÉ¥”µµ•µ½Éä¡•…‘•ÈùÍÑÉ½¹œ¹¥ÌµÕÁí‰½É‘•Èµ½±½ÈéÉ‰„ ÈÐÀ°ÈÀà°ÄÀà°¸Ì¤í½±½Èè˜ÁÀÙô¹ÁÉ¥”µµ•µ½Éä¡•…‘•ÈùÍÑÉ½¹œ¹¥Ìµ‘½Ý¹í‰½É‘•Èµ½±½ÈéÉ‰„ ÄÐÌ°ÈÐÀ°ÄØÄ°¸Ì¤í½±½ÈèŒá™˜Á„Åô(¹ÁÉ¥”µµ•µ½Éäµ¡…ÉÑíÁ½Í¥Ñ¥½¸éÉ•±…Ñ¥Ù”íèµ¥¹‘•àèÄíµ…É¥¸èÄÅÁà€´ÍÁà€ÙÁáô¹ÁÉ¥”µµ•µ½Éäµ¡…ÉÐÍÙí‘¥ÍÁ±…äé‰±½¬íÝ¥‘Ñ èÄÀÀ”í¡•¥¡ÐèÄÄÉÁàí½Ù•É™±½ÜéÙ¥Í¥‰±•ô¹ÁÉ¥”µµ•µ½Éäµ¡…ÉÐù‘¥Ùí‘¥ÍÁ±…äé™±•àí©ÕÍÑ¥™äµ½¹Ñ•¹ÐéÍÁ…”µ‰•ÑÝ••¸íµ…É¥¸µÑ½Àè´ÉÁàí½±½ÈèŒØÀÜÄØàí™½¹ÐµÍ¥é”è¸ÔÉÉ•´í™½¹ÐµÝ•¥¡ÐèàÀÀí±•ÑÑ•ÈµÍÁ…¥¹œè¸Àá•´íÑ•áÐµÑÉ…¹Í™½É´éÕÁÁ•É…Í•ô(¹ÁÉ¥”µµ•µ½Éä™½½Ñ•ÉíÁ½Í¥Ñ¥½¸éÉ•±…Ñ¥Ù”íèµ¥¹‘•àèÄí‘¥ÍÁ±…äéÉ¥íÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌéÉ•Á•…Ð Ì°Å™È¤í…ÀèÙÁàíÁ…‘‘¥¹œµÑ½ÀèåÁàí‰½É‘•ÈµÑ½ÀèÅÁàÍ½±¥É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°¸ÀÜ¥ô(¹ÁÉ¥”µµ•µ½Éä™½½Ñ•ÈÍÁ…¹í‘¥ÍÁ±…äéÉ¥í…ÀèÍÁáô¹ÁÉ¥”µµ•µ½Éä™½½Ñ•ÈÍµ…±±í½±½ÈèŒØÄÜÈØäí™½¹ÐµÍ¥é”è¸ÐåÉ•´í™½¹ÐµÝ•¥¡ÐèäÀÀí±•ÑÑ•ÈµÍÁ…¥¹œè¸ÄÕ•µô¹ÁÉ¥”µµ•µ½Éä™½½Ñ•È‰í½±½Èè‘”å‘˜í™½¹ÐµÍ¥é”è¸ØáÉ•µô(¹ÁÉ¥”µµ•µ½Éä¹¥Ìµ•µÁÑåí‘¥ÍÁ±…äéÉ¥í…ÀèÕÁàíµ¥¸µ¡•¥¡ÐèÜáÁàí…±¥¸µ½¹Ñ•¹Ðé•¹Ñ•Éô¹ÁÉ¥”µµ•µ½Éä¹¥Ìµ•µÁÑäÁíµ…É¥¸èÀí½±½ÈèŒàÍ”ÐäØí™½¹ÐµÍ¥é”è¸ÔÕÉ•´í™½¹ÐµÝ•¥¡ÐèäÀÀí±•ÑÑ•ÈµÍÁ…¥¹œè¸Äå•µô¹ÁÉ¥”µµ•µ½Éä¹¥Ìµ•µÁÑä‰í½±½ÈèŒå…Œå˜í™½¹ÐµÍ¥é”è¸ÜÉÉ•´í™½¹ÐµÝ•¥¡ÐèØÀÁô(¹ÁÉ¥”µµ•µ½Éä¹¥Ìµ±½…‘¥¹í‘¥ÍÁ±…äéÉ¥í…ÀèáÁàíµ¥¸µ¡•¥¡ÐèÄØÙÁàí…±¥¸µ½¹Ñ•¹Ðé•¹Ñ•Éô¹ÁÉ¥”µµ•µ½Éä¹¥Ìµ±½…‘¥¹œÍÁ…¹í¡•¥¡ÐèÄÍÁàí‰½É‘•ÈµÉ…‘¥ÕÌèÉÁàí‰…­É½Õ¹é±¥¹•…ÈµÉ…‘¥•¹Ð äÁ‘•œ±É‰„ ÄÌÀ°ÄÔä°ÄÌÜ°¸Àà¤±É‰„ ÄÐØ°ÈÈÔ°ÄØÀ°¸Äà¤±É‰„ ÄÌÀ°ÄÔä°ÄÌÜ°¸Àà¤¤í‰…­É½Õ¹µÍ¥é”èÈÈÀ”€ÄÀÀ”í…¹¥µ…Ñ¥½¸éÁÉ¥”µµ•µ½Éäµ±½…‘¥¹œ€Ä¸ÙÌ±¥¹•…È¥¹™¥¹¥Ñ•ô¹ÁÉ¥”µµ•µ½Éä¹¥Ìµ±½…‘¥¹œÍÁ…¸é¹Ñ µ¡¥± È¥í¡•¥¡ÐèÜÉÁáô¹ÁÉ¥”µµ•µ½Éä¹¥Ìµ±½…‘¥¹œÍÁ…¸é¹Ñ µ¡¥± Ì¥íÝ¥‘Ñ èØà•ô)­•å™É…µ•ÌÁÉ¥”µµ•µ½ÉäµÍ…¹ìÀ”°ØØ•íÑÉ…¹Í™½É´éÑÉ…¹Í±…Ñ•` ´ÄÀÀ”¥ôÄÀÀ•íÑÉ…¹Í™½É´éÑÉ…¹Í±…Ñ•` ÄÀÀ”¥õõ­•å™É…µ•ÌÁÉ¥”µµ•µ½Éäµ±½…‘¥¹íÑ½í‰…­É½Õ¹µÁ½Í¥Ñ¥½¸è´ÈÈÀ”€Áõô)µ•‘¥„¡µ…àµÝ¥‘Ñ èØàÁÁà¥ì¹ÁÉ¥”µµ•µ½ÉåíÁ…‘‘¥¹œèÄÍÁáô¹ÁÉ¥”µµ•µ½Éäµ¡…ÉÐÍÙí¡•¥¡ÐèäÙÁáô¹ÁÉ¥”µµ•µ½Éä™½½Ñ•È‰í™½¹ÐµÍ¥é”è¸ØÉÉ•µõô)µ•‘¥„¡ÁÉ•™•ÉÌµÉ•‘Õ•µµ½Ñ¥½¸éÉ•‘Õ”¥ì¹ÁÉ¥”µµ•µ½Éäèé‰•™½É”°¹ÁÉ¥”µµ•µ½Éä¹¥Ìµ±½…‘¥¹œÍÁ…¹í…¹¥µ…Ñ¥½¸é¹½¹•õô(
+@keyframes rainbow-label{0%,100%{color:#ffb3dd;text-shadow:0 0 7px #f363ae,0 0 12px rgba(207,112,255,.52)}33%{color:#baf6ff;text-shadow:0 0 7px #71e2ff,0 0 12px rgba(84,221,255,.52)}66%{color:#fff1ae;text-shadow:0 0 7px #ffe36c,0 0 12px rgba(255,205,95,.52)}}@keyframes rainbow-label-sheen{0%,100%{background-position:0 0}50%{background-position:100% 0}}@keyframes gold-foil{0%,100%{background-position:120% 0}48%,52%{background-position:-20% 0}}
+@media(prefers-reduced-motion:reduce){.rarity-tag.rarity-rainbow,.rarity-tag.rarity-rainbow::after,.vault-card.gold .vault-card-art::after,.card-detail-modal.gold .detail-card-art::after{animation:none}}
+
+
+/* Overlay performance: opening Cart or Make Offer must remain instant. */
+.vault-overlay{background:rgba(3,8,7,.92);backdrop-filter:none}
+.vault-card{contain:layout paint style}
+.vault-card.rainbow .vault-card-art::after,
+.rarity-tag.rarity-rainbow,
+.rarity-tag.rarity-rainbow::after,
+.vault-card.gold .vault-card-art::after{animation:none}
+.vault-card.rainbow:hover .vault-card-art::after{animation:rainbow-holo 2.5s linear infinite}
+.vault-card:hover .rarity-tag.rarity-rainbow{animation:rainbow-label 3.2s linear infinite}
+.vault-card:hover .rarity-tag.rarity-rainbow::after{animation:rainbow-label-sheen 3.2s linear infinite}
+.vault-card.gold:hover .vault-card-art::after{animation:gold-foil 3.3s ease-in-out infinite}
+
+
+/* When a panel is open, do not paint the entire image grid beneath it. */
+.vault-page.is-overlay-open>.vault-header,
+.vault-page.is-overlay-open>.vault-tools,
+.vault-page.is-overlay-open>.vault-meta,
+.vault-page.is-overlay-open>.vault-notice,
+.vault-page.is-overlay-open>.vault-grid{display:none}
+
+/* Calm foil at rest; the moving highlight is reserved for intentional hover. */
+.vault-card.rainbow .vault-card-art::after{background-position:50% 50%;opacity:.58}
+.vault-card.gold .vault-card-art::after{background-position:50% 0;opacity:.38}
+.rarity-tag.rarity-rainbow::after{background-position:50% 0}
+.vault-card.rainbow .vault-card-art{box-shadow:inset 0 0 0 1px rgba(215,155,255,.32),0 0 16px rgba(108,216,255,.16)}
+.vault-card.gold .vault-card-art{box-shadow:inset 0 0 0 1px rgba(255,225,136,.38),0 0 15px rgba(233,181,57,.16)}
+
+/* Keep the purchase panels on their own lightweight rendering layer. */
+.vault-overlay{isolation:isolate}
+
+
+/* Collector cases: physical-looking display cases built entirely in the UI. */
+.vault-image{perspective:900px}
+.vault-image>.collector-case{position:relative;z-index:1;top:auto;left:auto;display:grid;place-items:center;width:min(84%,220px);height:92%;padding:44px 14px 28px;border:2px solid rgba(207,220,213,.64);border-radius:3px;background:linear-gradient(112deg,rgba(255,255,255,.2),rgba(255,255,255,.025) 18%,rgba(0,0,0,.08) 57%,rgba(255,255,255,.1)),linear-gradient(160deg,rgba(37,45,44,.97),rgba(7,10,10,.94));box-shadow:inset 0 0 0 2px rgba(0,0,0,.55),inset 0 0 0 5px rgba(234,243,237,.05),inset 0 0 18px rgba(255,255,255,.07),0 16px 22px rgba(0,0,0,.52);transform:rotateX(var(--case-tilt-x,0deg)) rotateY(var(--case-tilt-y,0deg)) translateZ(0);transform-style:preserve-3d;transition:transform .22s ease-out,border-color .32s ease,box-shadow .32s ease;isolation:isolate}
+.collector-case .vault-card-art{position:relative;z-index:1;top:auto;left:auto;display:grid;place-items:center;width:100%;height:100%;max-width:none;padding:0;background:#070909;border:1px solid rgba(255,255,255,.1);border-radius:1px;line-height:0;overflow:hidden;box-shadow:inset 0 0 0 3px rgba(0,0,0,.38)}
+.collector-case .vault-card-art img{display:block;position:relative;z-index:1;width:100%;height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 15px 11px rgba(0,0,0,.58))}
+.collector-case .case-label{position:absolute;z-index:4;left:11px;right:11px;top:10px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center;min-height:25px;padding:4px 6px;border:1px solid #7d8880;background:linear-gradient(180deg,#eef2ed,#bac3ba);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 1px 2px rgba(0,0,0,.55);color:#111714;text-align:left}
+.collector-case .case-label b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:Georgia,serif;font-size:.57rem;letter-spacing:.02em;line-height:1.1}.collector-case .case-label small{position:static;padding:0;border:0;border-radius:0;background:none;color:#25312a;font-size:.39rem;font-weight:900;letter-spacing:.06em;line-height:1.1;text-align:right}
+.collector-case .case-plaque{position:absolute;z-index:4;left:13px;bottom:9px;padding:0;border:0;background:none;color:rgba(225,234,229,.76);font-size:.43rem;font-weight:800;line-height:1;letter-spacing:.13em;text-transform:uppercase}
+.collector-case .case-glass{position:absolute;z-index:3;inset:0;top:auto;left:auto;padding:0;border:0;border-radius:3px;background:linear-gradient(124deg,rgba(255,255,255,.17),transparent 16%,transparent 54%,rgba(255,255,255,.08) 67%,transparent 78%);opacity:.64;pointer-events:none}
+.vault-card:hover .collector-case{transform:rotateX(var(--case-tilt-x,2deg)) rotateY(var(--case-tilt-y,-3deg)) translateY(-4px) translateZ(0);border-color:rgba(193,238,204,.8);box-shadow:inset 0 0 0 2px rgba(0,0,0,.4),inset 0 0 24px rgba(255,255,255,.1),0 22px 30px rgba(0,0,0,.55)}
+.vault-card.gold .collector-case{border-color:rgba(244,204,102,.62);background:linear-gradient(112deg,rgba(255,237,175,.18),rgba(255,255,255,.025) 18%,rgba(75,49,10,.13) 57%,rgba(255,223,120,.12)),linear-gradient(160deg,rgba(49,39,19,.96),rgba(13,12,8,.9))}
+.vault-card.rainbow .collector-case{border-color:rgba(191,145,255,.7);background:linear-gradient(112deg,rgba(255,190,247,.16),rgba(110,234,255,.08) 25%,rgba(37,16,62,.14) 58%,rgba(253,228,127,.1)),linear-gradient(160deg,rgba(24,22,45,.96),rgba(9,11,16,.9))}
+.vault-card.gold:hover .collector-case{border-color:#ffe396}.vault-card.rainbow:hover .collector-case{border-color:#f0b4ff}
+
+/* The opened card receives the same acrylic display treatment. */
+.detail-collector-case{position:relative;z-index:1;display:grid;place-items:center;width:min(100%,340px);max-height:470px;padding:54px 20px 39px;border:2px solid rgba(216,230,223,.7);border-radius:4px;background:linear-gradient(120deg,rgba(255,255,255,.14),transparent 22%,rgba(0,0,0,.1) 68%),linear-gradient(160deg,#252c2b,#0a0e0d);box-shadow:inset 0 0 0 2px rgba(0,0,0,.42),inset 0 0 24px rgba(255,255,255,.05),0 22px 36px rgba(0,0,0,.52);transform:rotateX(2deg) rotateY(-4deg);transform-style:preserve-3d;isolation:isolate}
+.detail-collector-case .detail-card-art{position:relative;z-index:1;display:grid;place-items:center;width:100%;height:100%;max-width:none;line-height:0;overflow:hidden;background:#070909;border:1px solid rgba(255,255,255,.13);box-shadow:inset 0 0 0 3px rgba(0,0,0,.4)}
+.detail-collector-case .detail-card-art img{display:block;position:relative;z-index:1;width:100%;max-width:100%;max-height:390px;object-fit:contain;filter:drop-shadow(0 20px 15px rgba(0,0,0,.6))}
+.detail-case-label{position:absolute;z-index:4;top:13px;left:17px;right:17px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;min-height:31px;padding:5px 8px;border:1px solid #7d8880;background:linear-gradient(180deg,#eef2ed,#bac3ba);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 1px 2px rgba(0,0,0,.55);color:#111714}.detail-case-label b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:Georgia,serif;font-size:.73rem}.detail-case-label small{color:#25312a;font-size:.48rem;font-weight:900;letter-spacing:.08em;text-align:right}.detail-case-plaque{position:absolute;z-index:4;left:17px;bottom:14px;color:#d2dcd6;font-size:.5rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.detail-case-glass{position:absolute;z-index:3;inset:0;pointer-events:none;background:linear-gradient(124deg,rgba(255,255,255,.18),transparent 18%,transparent 54%,rgba(255,255,255,.08) 68%,transparent 81%);opacity:.62}
+.card-detail-modal.gold .detail-collector-case{border-color:rgba(246,207,105,.72);background:linear-gradient(120deg,rgba(255,238,182,.15),transparent 22%,rgba(87,57,13,.14) 68%),linear-gradient(160deg,#393019,#0e0d08)}.card-detail-modal.rainbow .detail-collector-case{border-color:rgba(204,157,255,.76);background:linear-gradient(120deg,rgba(255,190,246,.13),rgba(105,226,255,.06) 32%,rgba(66,34,95,.17) 68%),linear-gradient(160deg,#252043,#090b13)}
+@media(max-width:600px){.vault-image>.collector-case{width:min(88%,170px);padding:18px 10px 23px}.collector-case .case-label{left:8px;right:8px;top:8px}.collector-case .case-label small{font-size:.34rem}.collector-case .case-plaque{left:10px;bottom:8px}.detail-collector-case{width:min(100%,290px);padding:26px 16px 33px}.detail-collector-case .detail-card-art img{max-height:265px}}
+
+.collector-case::before{content:"";position:absolute;z-index:-1;inset:4px -6px -7px 5px;border:2px solid rgba(4,7,7,.9);border-radius:4px;background:linear-gradient(135deg,rgba(111,128,121,.45),rgba(0,0,0,.8));box-shadow:0 9px 14px rgba(0,0,0,.5);transform:translateZ(-12px)}
+.collector-case .vault-card-art{transform:translateZ(10px)}.collector-case .case-label,.collector-case .case-plaque{transform:translateZ(18px)}.collector-case .case-glass{transform:translateZ(22px)}
+.detail-collector-case::before{content:"";position:absolute;z-index:-1;inset:5px -7px -8px 6px;border:2px solid rgba(4,7,7,.9);border-radius:5px;background:linear-gradient(135deg,rgba(111,128,121,.44),rgba(0,0,0,.8));box-shadow:0 11px 16px rgba(0,0,0,.5);transform:translateZ(-14px)}.detail-collector-case .detail-card-art{transform:translateZ(10px)}.detail-collector-case .detail-case-label,.detail-collector-case .detail-case-plaque{transform:translateZ(18px)}.detail-collector-case .detail-case-glass{transform:translateZ(22px)}
+@media(hover:none){.vault-card:hover .collector-case{transform:none}.detail-collector-case{transform:none}}
+
+
+/* Card Market gallery: cases only. Details and purchase actions open on click. */
+.case-only-grid{grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:26px}
+.case-only-card{padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;overflow:visible}
+.case-only-card:hover{transform:none;border-color:transparent;box-shadow:none}
+.case-only-card .vault-image{height:455px;border-radius:8px;background:radial-gradient(ellipse at 50% 75%,rgba(145,211,154,.08),transparent 54%),linear-gradient(160deg,#0f1413,#070909)}
+.case-only-card .vault-image::after{bottom:9px;width:60%;opacity:.72}
+.case-only-card .collector-case{height:95%;width:min(90%,270px)}
+.case-only-card .vault-image:focus-visible{outline:2px solid #baf7c3;outline-offset:5px}
+@media(max-width:600px){.case-only-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.case-only-card .vault-image{height:330px}.case-only-card .collector-case{width:min(94%,190px);height:94%}}
+
+
+/* Kalenski collector-grade label */
+.collector-case .case-label{gap:7px;padding:4px 7px}
+.collector-case .case-name,.collector-case .case-grade,.detail-case-name,.detail-case-grade{display:grid;min-width:0;gap:1px}
+.collector-case .case-name{align-content:center}
+.collector-case .case-name b{font-family:Georgia,serif;font-size:.56rem;letter-spacing:.015em;text-align:left}
+.collector-case .case-name small{color:#334138;font-size:.31rem;font-weight:800;letter-spacing:.055em;line-height:1.05;text-align:left}
+.collector-case .case-grade{align-content:center;justify-items:end;padding-left:7px;border-left:1px solid rgba(32,46,38,.38)}
+.collector-case .case-grade small{color:#35453b;font-size:.30rem;font-weight:900;letter-spacing:.11em;line-height:1;text-align:right}
+.collector-case .case-grade b{color:#15231a;font-family:Arial,sans-serif;font-size:.56rem;font-weight:1000;letter-spacing:.055em;line-height:1;white-space:nowrap;text-align:right}
+.detail-case-name{align-content:center}
+.detail-case-name b{font-family:Georgia,serif;font-size:.71rem;letter-spacing:.015em;text-align:left}
+.detail-case-name small{color:#334138;font-size:.41rem;font-weight:800;letter-spacing:.065em;line-height:1.1;text-align:left}
+.detail-case-grade{align-content:center;justify-items:end;padding-left:9px;border-left:1px solid rgba(32,46,38,.38)}
+.detail-case-grade small{color:#35453b;font-size:.42rem;font-weight:900;letter-spacing:.12em;line-height:1;text-align:right}
+.detail-case-grade b{color:#15231a;font-family:Arial,sans-serif;font-size:.73rem;font-weight:1000;letter-spacing:.06em;line-height:1;white-space:nowrap;text-align:right}
+@media(max-width:600px){
+  .collector-case .case-name b{font-size:.46rem}
+  .collector-case .case-name small{font-size:.27rem}
+  .collector-case .case-grade small{font-size:.25rem}
+  .collector-case .case-grade b{font-size:.45rem}
+  .detail-case-name b{font-size:.61rem}
+  .detail-case-name small{font-size:.35rem}
+  .detail-case-grade small{font-size:.34rem}
+  .detail-case-grade b{font-size:.62rem}
+}
+
+/* Keep the compact grading strip cleanly above the card art. */
+.case-only-card .collector-case{padding-top:58px}
+.case-only-card .case-label{
+  top:9px;left:9px;right:9px;min-height:34px;padding:5px 7px;
+  display:grid!important;overflow:hidden;isolation:isolate;
+  background:linear-gradient(180deg,#f8fbf7,#bec8bd)!important;
+  border-color:#7d8880!important;color:#111714!important;
+}
+.case-only-card .case-label > *{position:static!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.case-only-card .case-name b{font-size:.62rem}
+.case-only-card .case-name small{font-size:.34rem}
+.case-only-card .case-grade small{font-size:.33rem}
+.case-only-card .case-grade b{font-size:.62rem}
+@media(max-width:600px){
+  .case-only-card .collector-case{padding-top:52px}
+  .case-only-card .case-label{min-height:30px;padding:4px 5px}
+  .case-only-card .case-name b{font-size:.49rem}
+  .case-only-card .case-name small{font-size:.27rem}
+  .case-only-card .case-grade small{font-size:.25rem}
+  .case-only-card .case-grade b{font-size:.49rem}
+}
+
+/* Always keep the compact certificate ink readable, regardless of card rarity. */
+.case-only-card .case-label .case-name b,
+.case-only-card .case-label .case-name small,
+.case-only-card .case-label .case-grade small,
+.case-only-card .case-label .case-grade b{
+  color:#142019!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+.case-only-card .case-label .case-name small{color:#324238!important}
+
+
+/* Deeper collector-slab construction: rear shell, elevated art and a floating acrylic face. */
+.vault-image{perspective:720px;perspective-origin:50% 44%}
+.case-only-card .collector-case{
+  transform:rotateX(var(--case-tilt-x,1.5deg)) rotateY(var(--case-tilt-y,-2deg)) translateZ(0);
+  box-shadow:inset 0 0 0 2px rgba(0,0,0,.6),inset 0 0 0 5px rgba(234,243,237,.07),inset 0 0 22px rgba(255,255,255,.09),0 22px 30px rgba(0,0,0,.62);
+}
+.case-only-card .collector-case::before{inset:5px -9px -11px 7px;transform:translate3d(7px,11px,-28px);box-shadow:0 16px 24px rgba(0,0,0,.62)}
+.case-only-card .collector-case::after{
+  content:"";position:absolute;z-index:5;inset:3px;pointer-events:none;border:1px solid rgba(241,255,248,.34);border-radius:2px;
+  background:linear-gradient(116deg,rgba(255,255,255,.16),transparent 14%,transparent 61%,rgba(255,255,255,.07) 78%,transparent 89%);
+  box-shadow:inset 5px 0 8px rgba(255,255,255,.05),inset -7px -8px 12px rgba(0,0,0,.28);
+  transform:translateZ(42px);
+}
+.case-only-card .vault-card-art{transform:translateZ(18px)}
+.case-only-card .case-label{transform:translateZ(32px)}
+.case-only-card .case-plaque{transform:translateZ(30px)}
+.case-only-card .case-glass{transform:translateZ(48px)}
+.detail-collector-case{transform:rotateX(4deg) rotateY(-6deg) translateZ(0);box-shadow:inset 0 0 0 2px rgba(0,0,0,.55),inset 0 0 30px rgba(255,255,255,.07),0 30px 45px rgba(0,0,0,.62)}
+.detail-collector-case::before{inset:6px -10px -13px 8px;transform:translate3d(8px,12px,-30px);box-shadow:0 18px 27px rgba(0,0,0,.64)}
+.detail-collector-case::after{
+  content:"";position:absolute;z-index:5;inset:4px;pointer-events:none;border:1px solid rgba(241,255,248,.3);border-radius:3px;
+  background:linear-gradient(116deg,rgba(255,255,255,.14),transparent 15%,transparent 62%,rgba(255,255,255,.07) 79%,transparent 90%);
+  box-shadow:inset 6px 0 10px rgba(255,255,255,.05),inset -8px -9px 14px rgba(0,0,0,.28);
+  transform:translateZ(48px);
+}
+.detail-collector-case .detail-card-art{transform:translateZ(18px)}
+.detail-collector-case .detail-case-label{transform:translateZ(34px)}
+.detail-collector-case .detail-case-plaque{transform:translateZ(32px)}
+.detail-collector-case .detail-case-glass{transform:translateZ(52px)}
+@media(hover:hover) and (pointer:fine){
+  .case-only-card .vault-image:hover .collector-case{
+    transform:rotateX(var(--case-tilt-x,3deg)) rotateY(var(--case-tilt-y,-5deg)) translateY(-7px) translateZ(12px);
+    box-shadow:inset 0 0 0 2px rgba(0,0,0,.55),inset 0 0 26px rgba(255,255,255,.11),0 32px 39px rgba(0,0,0,.66);
+  }
+}
+@media(hover:none){.case-only-card .collector-case{transform:rotateX(1.5deg) rotateY(-2deg)}}
+
+/* High-resolution source and crisp rendering for every card inside its collector case. */
+.vault-card-art img,
+.detail-card-art img,
+.spotlight-card-front img {
+  image-rendering:-webkit-optimize-contrast;
+  filter:contrast(1.035) saturate(1.045);
+  transform:translateZ(0);
+  backface-visibility:hidden;
+}
+
+
+/* Player-controlled Market card size. */
+.vault-page{--vault-card-min:255px;--vault-card-height:455px;--vault-case-width:270px}
+.vault-tools{grid-template-columns:1.7fr auto auto auto auto}
+.card-size-control{height:42px;display:grid;grid-template-columns:auto auto minmax(74px,104px) auto;align-items:center;gap:7px;padding:0 10px;border:1px solid rgba(145,211,154,.22);background:#101514;color:#aebbb3;border-radius:4px;white-space:nowrap}
+.card-size-control small{color:#b6dcb9;font-size:.56rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.card-size-control>span,.card-size-control>b{color:#a5ecae;font-size:.9rem;font-weight:800;line-height:1}
+.card-size-control input{width:100%;margin:0;accent-color:#91d39a;cursor:pointer}
+.case-only-grid{grid-template-columns:repeat(auto-fill,minmax(var(--vault-card-min),1fr))}
+.case-only-card .vault-image{height:var(--vault-card-height)}
+.case-only-card .collector-case{width:min(90%,var(--vault-case-width))}
+@media(max-width:1100px){.vault-tools{grid-template-columns:1fr auto}.card-size-control{grid-column:2}}
+@media(max-width:600px){.card-size-control{grid-column:auto;width:100%;grid-template-columns:auto auto minmax(100px,1fr) auto}.case-only-card .vault-image{height:var(--vault-card-height)}}
+
+
+/* Marketplace scroll performance: defer image work and skip off-screen card painting. */
+.case-only-card{
+  content-visibility:auto;
+  contain-intrinsic-size:auto var(--vault-card-height,455px);
+}
+.case-only-card .vault-image,
+.case-only-card .collector-case,
+.case-only-card .vault-card-art img{
+  backface-visibility:hidden;
+  transform:translateZ(0);
+}
+.case-only-card .vault-card-art img{
+  content-visibility:auto;
+}
+
+
+/* Roles and VIP prices â€” premium but deliberately light enough to keep scrolling smooth. */
+.market-role-chip{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border:1px solid rgba(137,161,145,.27);border-radius:999px;color:#aeb9b2;background:rgba(16,22,19,.76);font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.market-role-chip.role-vip{border-color:rgba(214,178,80,.72);color:#fff0af;background:linear-gradient(115deg,rgba(106,80,18,.42),rgba(17,42,28,.72));box-shadow:inset 0 0 0 1px rgba(255,245,190,.07)}
+.market-role-chip.role-potm,.market-role-chip.role-player_of_the_tournament{border-color:rgba(184,135,255,.6);color:#dcc3ff;background:rgba(80,47,116,.24)}
+.market-role-chip.role-regular_customer,.market-role-chip.role-regular{border-color:rgba(104,200,132,.5);color:#b2f3c0;background:rgba(38,100,56,.2)}
+.market-role-chip.role-admin{border-color:rgba(115,209,161,.55);color:#baf5d1;background:rgba(31,91,65,.25)}
+.case-only-card .vault-image .case-price-chip{position:absolute;z-index:14;top:auto;bottom:10px;left:50%;width:auto;min-width:118px;transform:translateX(-50%);display:grid;justify-items:center;gap:1px;padding:6px 9px 5px;border:1px solid rgba(221,238,225,.25);border-radius:4px;background:rgba(5,8,7,.87);box-shadow:0 7px 18px rgba(0,0,0,.4);color:#f1f6f2;pointer-events:none;line-height:1}
+.case-only-card .vault-image .case-price-chip small{position:static;padding:0;border:0;background:none;color:#9ca9a1;font-size:.5rem;letter-spacing:.13em;line-height:1.2}
+.case-only-card .vault-image .case-price-chip b{position:static;color:#f1f7f3;font-size:.76rem;letter-spacing:.01em}
+.case-only-card .vault-image .case-price-chip del{position:static;color:#849088;font-size:.56rem;line-height:1.1;text-decoration-thickness:1px}
+.case-only-card .vault-image .case-price-chip.is-vip{border-color:rgba(221,186,77,.72);background:linear-gradient(140deg,rgba(83,57,9,.94),rgba(12,30,20,.95));box-shadow:0 8px 24px rgba(0,0,0,.46),inset 0 0 12px rgba(255,219,110,.11)}
+.case-only-card .vault-image .case-price-chip.is-vip small{color:#ffe59a}
+.case-only-card .vault-image .case-price-chip.is-vip b{color:#fff4bd}
+.detail-copy .detail-vip-price{display:flex;flex-wrap:wrap;gap:7px;align-items:baseline;color:#fff0a5}
+.detail-copy .detail-vip-price del{color:#78847c;font-size:.72rem;text-decoration-thickness:1px}
+.detail-copy dl .external-market-compare{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;align-items:end;gap:3px 14px;border-color:rgba(151,232,168,.18);background:linear-gradient(115deg,rgba(23,59,31,.24),rgba(9,13,10,.94))}.external-market-compare dt,.external-market-compare dd{grid-column:auto}.external-market-compare dd{color:#b8efc1;text-align:right}.external-market-compare a{grid-column:1/-1;width:max-content;margin-top:4px;color:#718d78;font-size:.52rem;font-weight:900;letter-spacing:.11em;text-decoration:none}.external-market-compare a:hover{color:#9cf0aa}
+.cart-line .cart-line-vip{display:flex;align-items:baseline;gap:6px;color:#fff1a7}
+.cart-line .cart-line-vip del{color:#79847d;font-size:.68rem;font-weight:500;text-decoration-thickness:1px}
+@media(max-width:600px){.vault-meta{gap:10px;align-items:flex-start}.market-role-chip{max-width:190px;text-align:right;justify-content:center;line-height:1.25}.case-only-card .vault-image .case-price-chip{bottom:7px;min-width:102px;padding:5px 7px}.case-only-card .vault-image .case-price-chip b{font-size:.67rem}}
+
+
+/* Empire Loyalty in the Card Vault */
+.loyalty-market-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid rgba(232,199,103,.34);border-radius:999px;background:rgba(93,70,17,.2);color:#efd27d;font-size:.61rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.cart-loyalty-toggle{display:flex;align-items:center;gap:9px;margin:14px 0 2px;padding:11px 12px;border:1px solid rgba(232,199,103,.31);background:rgba(99,74,16,.13);color:#f0d587;font-size:.68rem;font-weight:800;line-height:1.4}.cart-loyalty-toggle input{accent-color:#e8c767}@media(max-width:680px){.loyalty-market-chip{width:100%;justify-content:center}}
+
+
+/* Keep the Card Vault a vertical gallery: no page-wide sideways drag bars. */
+.vault-page{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow-x:hidden;
+  overflow-x:clip;
+}
+.vault-header,
+.vault-tools,
+.vault-grid{min-width:0;max-width:100%}
+.case-only-grid{width:100%}
+.filter-line{
+  min-width:0;
+  overscroll-behavior-x:contain;
+  scrollbar-width:none;
+}
+.filter-line::-webkit-scrollbar{display:none}
+
+/* The navigation chat glyph stays crisp above its decorative halo. */
+.empire-nav .chat-bubble{isolation:isolate}
+.empire-nav .chat-bubble svg{position:relative;z-index:1;display:block}
+
+
+/* Silver collector foil */
+.vault-card.silver{border-color:rgba(203,215,218,.42);box-shadow:inset 0 0 0 1px rgba(240,248,250,.08),0 0 22px rgba(169,196,202,.08)}
+.vault-card.silver .collector-case{border-color:rgba(221,232,235,.78);background:linear-gradient(112deg,rgba(255,255,255,.24),rgba(185,204,209,.055) 22%,rgba(54,67,70,.15) 59%,rgba(235,244,246,.15)),linear-gradient(160deg,rgba(40,48,49,.98),rgba(8,11,11,.94))}
+.vault-card.silver .vault-card-art::after,
+.card-detail-modal.silver .detail-card-art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.34;mix-blend-mode:screen;background:linear-gradient(112deg,transparent 24%,rgba(211,226,231,.08) 36%,rgba(255,255,255,.68) 48%,rgba(162,190,198,.22) 57%,transparent 70%);background-size:260% 100%;background-position:50% 0}
+.vault-card.silver .vault-card-art{box-shadow:inset 0 0 0 1px rgba(225,238,241,.36),0 0 17px rgba(192,216,221,.15)}
+.vault-card.silver:hover{border-color:rgba(239,249,251,.82);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 24px 50px #0008,0 0 30px rgba(190,218,224,.16)}
+.vault-card.silver:hover .collector-case{border-color:#f3fbfc}
+.vault-card.silver:hover .vault-card-art::after{opacity:.62;animation:silver-foil 2.9s ease-in-out infinite}
+.card-detail-modal.silver .detail-collector-case{border-color:rgba(222,234,237,.78);background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(173,197,203,.06) 32%,rgba(52,66,69,.16) 68%),linear-gradient(160deg,#2d3536,#090c0c)}
+.card-detail-modal.silver .detail-card-art::after{opacity:.48;animation:silver-foil 4.4s ease-in-out infinite}
+.rarity-tag.rarity-silver{border-color:rgba(225,238,241,.75);color:#ecf7f9;text-shadow:0 0 7px rgba(205,229,234,.55)}
+@keyframes silver-foil{0%,100%{background-position:125% 0}50%{background-position:-25% 0}}
+@media(prefers-reduced-motion:reduce){.vault-card.silver .vault-card-art::after,.card-detail-modal.silver .detail-card-art::after{animation:none}}
+
+/* Cardstock final pass: one lightweight foil language, clipped to the card art. */
+.card-size-control{
+  box-shadow:inset 0 0 0 1px rgba(164,226,176,.035);
+  transition:border-color .2s ease,background .2s ease;
+}
+.card-size-control:hover,.card-size-control:focus-within{border-color:rgba(145,211,154,.56);background:#121a16}
+.card-size-control input[type="range"]{height:4px;appearance:none;border:0!important;border-radius:999px!important;background:linear-gradient(90deg,rgba(145,211,154,.92),rgba(145,211,154,.22))!important;outline:0}
+.card-size-control input[type="range"]::-webkit-slider-thumb{width:15px;height:15px;appearance:none;border:2px solid #dff7e3;border-radius:50%;background:#79cf88;box-shadow:0 0 0 4px rgba(121,207,136,.12);cursor:ew-resize}
+.card-size-control input[type="range"]::-moz-range-thumb{width:13px;height:13px;border:2px solid #dff7e3;border-radius:50%;background:#79cf88;box-shadow:0 0 0 4px rgba(121,207,136,.12);cursor:ew-resize}
+
+.case-only-grid{align-items:start;transition:none}
+.case-only-card .vault-image{transition:height .14s ease-out}
+.case-only-card .collector-case{transition:transform .16s ease-out,border-color .22s ease,box-shadow .22s ease}
+
+.vault-card.silver .vault-card-art::after,
+.vault-card.gold .vault-card-art::after,
+.vault-card.rainbow .vault-card-art::after,
+.card-detail-modal.silver .detail-card-art::after,
+.card-detail-modal.gold .detail-card-art::after,
+.card-detail-modal.rainbow .detail-card-art::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background-position:50% 0;animation:none;
+}
+.vault-card.silver .vault-card-art::after,.card-detail-modal.silver .detail-card-art::after{
+  opacity:.7;mix-blend-mode:screen;
+  background:repeating-linear-gradient(108deg,transparent 0 17%,rgba(191,213,219,.08) 22%,rgba(255,255,255,.56) 27%,rgba(151,180,188,.12) 33%,transparent 41%);
+  background-size:260% 100%;
+  animation:cardstock-silver 4.1s ease-in-out infinite;
+}
+.vault-card.gold .vault-card-art::after,.card-detail-modal.gold .detail-card-art::after{
+  opacity:.54;mix-blend-mode:screen;
+  background:linear-gradient(112deg,transparent 17%,rgba(255,222,116,.1) 30%,rgba(255,248,207,.68) 43%,rgba(222,151,31,.2) 51%,rgba(255,235,154,.48) 59%,transparent 73%);
+  background-size:280% 100%;
+  animation:cardstock-gold 4.8s ease-in-out infinite;
+}
+.vault-card.rainbow .vault-card-art::after,.card-detail-modal.rainbow .detail-card-art::after{
+  opacity:.34;mix-blend-mode:screen;
+  background:linear-gradient(118deg,transparent 15%,rgba(255,112,183,.2) 28%,rgba(113,218,255,.27) 41%,rgba(255,239,139,.24) 53%,rgba(166,130,255,.27) 65%,rgba(131,244,185,.19) 73%,transparent 85%);
+  background-size:320% 150%;
+  animation:cardstock-rainbow 7.6s ease-in-out infinite;
+}
+.vault-card.silver .collector-case{box-shadow:inset 0 0 0 2px rgba(0,0,0,.52),inset 0 0 20px rgba(232,248,251,.1),0 22px 30px rgba(0,0,0,.62)}
+.vault-card.gold .collector-case{box-shadow:inset 0 0 0 2px rgba(40,25,0,.7),inset 0 0 22px rgba(255,220,111,.12),0 22px 30px rgba(0,0,0,.62)}
+.vault-card.rainbow .collector-case{box-shadow:inset 0 0 0 2px rgba(16,7,28,.72),inset 0 0 23px rgba(178,137,255,.12),0 22px 30px rgba(0,0,0,.62)}
+
+@media(hover:hover) and (pointer:fine){
+  .vault-card.silver:hover .vault-card-art::after{opacity:.7;animation:cardstock-silver 2.35s ease-in-out infinite}
+  .vault-card.gold:hover .vault-card-art::after{opacity:.66;animation-duration:3.1s}
+  .vault-card.rainbow:hover .vault-card-art::after{opacity:.43;animation-duration:6.1s}
+}
+.card-detail-modal.silver .detail-card-art::after{opacity:.6;animation:cardstock-silver 4.8s ease-in-out infinite}
+.card-detail-modal.gold .detail-card-art::after{opacity:.64;animation:cardstock-gold 5.2s ease-in-out infinite}
+.card-detail-modal.rainbow .detail-card-art::after{opacity:.4;animation:cardstock-rainbow 7.2s ease-in-out infinite}
+@keyframes cardstock-silver{0%,100%{background-position:135% 0}50%{background-position:-35% 0}}
+@keyframes cardstock-gold{0%,100%{background-position:135% 0}50%{background-position:-35% 0}}
+@keyframes cardstock-rainbow{0%{background-position:120% 20%}50%{background-position:-20% 80%}100%{background-position:120% 20%}}
+
+@media(max-width:600px){
+  .case-only-card .collector-case{will-change:auto}
+  .case-only-card .vault-image{transition:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .case-only-card .vault-image,.case-only-card .collector-case{transition:none!important}
+  .vault-card .vault-card-art::after,.card-detail-modal .detail-card-art::after{animation:none!important}
+}
+
+/* Player wishlist control inside the inspected collector case. */
+.wishlist-button{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:42px;margin:0 0 10px;border:1px solid rgba(147,230,163,.28);border-radius:3px;background:rgba(24,68,36,.18);color:#c8e8ce;font:800 .67rem/1 var(--font-sans);letter-spacing:.09em;text-transform:uppercase;cursor:pointer;transition:transform .22s ease,border-color .22s ease,background .22s ease,color .22s ease}.wishlist-button span{color:#8cf0a0;font-size:1.25rem;line-height:1}.wishlist-button:hover{transform:translateY(-2px);border-color:#8cf0a0;background:rgba(61,139,78,.25);color:#fff}
+
+/* Immutable Cardstock price memory, recorded by Supabase whenever Admin changes a price. */
+.price-memory{position:relative;overflow:hidden;padding:15px 16px 13px;border:1px solid rgba(151,232,168,.2);background:linear-gradient(145deg,rgba(12,25,16,.96),rgba(7,11,9,.97));box-shadow:inset 0 1px rgba(255,255,255,.03)}
+.price-memory::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(133,232,151,.035),transparent);transform:translateX(-100%);animation:price-memory-scan 6.5s ease-in-out infinite}
+.price-memory header{position:relative;z-index:1;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.price-memory header p{margin:0 0 4px;color:#83e496;font-size:.55rem;font-weight:900;letter-spacing:.19em}
+.price-memory h3{margin:0;color:#eaf5ec;font-size:.92rem;letter-spacing:-.01em}
+.price-memory header>strong{padding:5px 8px;border:1px solid rgba(255,255,255,.09);color:#a5b2aa;font-size:.7rem;white-space:nowrap}
+.price-memory header>strong.is-up{border-color:rgba(240,208,108,.3);color:#f0d06c}.price-memory header>strong.is-down{border-color:rgba(143,240,161,.3);color:#8ff0a1}
+.price-memory-chart{position:relative;z-index:1;margin:11px -3px 6px}.price-memory-chart svg{display:block;width:100%;height:112px;overflow:visible}.price-memory-chart>div{display:flex;justify-content:space-between;margin-top:-2px;color:#607168;font-size:.52rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.price-memory footer{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding-top:9px;border-top:1px solid rgba(255,255,255,.07)}
+.price-memory footer span{display:grid;gap:3px}.price-memory footer small{color:#617269;font-size:.49rem;font-weight:900;letter-spacing:.15em}.price-memory footer b{color:#dce9df;font-size:.68rem}
+.price-memory.is-empty{display:grid;gap:5px;min-height:78px;align-content:center}.price-memory.is-empty p{margin:0;color:#83e496;font-size:.55rem;font-weight:900;letter-spacing:.19em}.price-memory.is-empty b{color:#9cac9f;font-size:.72rem;font-weight:600}
+.price-memory.is-loading{display:grid;gap:8px;min-height:166px;align-content:center}.price-memory.is-loading span{height:13px;border-radius:2px;background:linear-gradient(90deg,rgba(130,159,137,.08),rgba(146,225,160,.18),rgba(130,159,137,.08));background-size:220% 100%;animation:price-memory-loading 1.6s linear infinite}.price-memory.is-loading span:nth-child(2){height:72px}.price-memory.is-loading span:nth-child(3){width:68%}
+@keyframes price-memory-scan{0%,66%{transform:translateX(-100%)}100%{transform:translateX(100%)}}@keyframes price-memory-loading{to{background-position:-220% 0}}
+@media(max-width:680px){.price-memory{padding:13px}.price-memory-chart svg{height:96px}.price-memory footer b{font-size:.62rem}}
+@media(prefers-reduced-motion:reduce){.price-memory::before,.price-memory.is-loading span{animation:none}}
