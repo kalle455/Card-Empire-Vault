@@ -391,7 +391,6 @@ function EmpireFooter() {
           <Link to="/profile">Player profile <b>↗</b></Link>
           <Link to="/messages">Notifications <b>↗</b></Link>
           <Link to="/chats">Live trade chat <b>↗</b></Link>
-          <Link to="/admin">Empire Admin <b>↗</b></Link>
           <Link to="/rules">Rights &amp; Policies <b>↗</b></Link>
         </nav>
         <section className="footer-column footer-standard">
