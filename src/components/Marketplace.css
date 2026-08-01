@@ -306,3 +306,19 @@
 /* The navigation chat glyph stays crisp above its decorative halo. */
 .empire-nav .chat-bubble{isolation:isolate}
 .empire-nav .chat-bubble svg{position:relative;z-index:1;display:block}
+
+
+/* Silver collector foil */
+.vault-card.silver{border-color:rgba(203,215,218,.42);box-shadow:inset 0 0 0 1px rgba(240,248,250,.08),0 0 22px rgba(169,196,202,.08)}
+.vault-card.silver .collector-case{border-color:rgba(221,232,235,.78);background:linear-gradient(112deg,rgba(255,255,255,.24),rgba(185,204,209,.055) 22%,rgba(54,67,70,.15) 59%,rgba(235,244,246,.15)),linear-gradient(160deg,rgba(40,48,49,.98),rgba(8,11,11,.94))}
+.vault-card.silver .vault-card-art::after,
+.card-detail-modal.silver .detail-card-art::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.34;mix-blend-mode:screen;background:linear-gradient(112deg,transparent 24%,rgba(211,226,231,.08) 36%,rgba(255,255,255,.68) 48%,rgba(162,190,198,.22) 57%,transparent 70%);background-size:260% 100%;background-position:50% 0}
+.vault-card.silver .vault-card-art{box-shadow:inset 0 0 0 1px rgba(225,238,241,.36),0 0 17px rgba(192,216,221,.15)}
+.vault-card.silver:hover{border-color:rgba(239,249,251,.82);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 24px 50px #0008,0 0 30px rgba(190,218,224,.16)}
+.vault-card.silver:hover .collector-case{border-color:#f3fbfc}
+.vault-card.silver:hover .vault-card-art::after{opacity:.62;animation:silver-foil 2.9s ease-in-out infinite}
+.card-detail-modal.silver .detail-collector-case{border-color:rgba(222,234,237,.78);background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(173,197,203,.06) 32%,rgba(52,66,69,.16) 68%),linear-gradient(160deg,#2d3536,#090c0c)}
+.card-detail-modal.silver .detail-card-art::after{opacity:.48;animation:silver-foil 4.4s ease-in-out infinite}
+.rarity-tag.rarity-silver{border-color:rgba(225,238,241,.75);color:#ecf7f9;text-shadow:0 0 7px rgba(205,229,234,.55)}
+@keyframes silver-foil{0%,100%{background-position:125% 0}50%{background-position:-25% 0}}
+@media(prefers-reduced-motion:reduce){.vault-card.silver .vault-card-art::after,.card-detail-modal.silver .detail-card-art::after{animation:none}}
