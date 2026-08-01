@@ -14,7 +14,7 @@ const links = [
 ];
 
 export default function Navbar() {
-  const { profile, session } = useAuth();
+  const { profile, session, discordConnected } = useAuth();
   const { pathname } = useLocation();
   const [unread, setUnread] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -70,14 +70,14 @@ export default function Navbar() {
       <nav>{links.map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}</nav>
       <div className="nav-account">
         {hasVipPrice && <span className="nav-vip">VIP −25%</span>}
-        <NavLink className="notification-bell" to="/messages" aria-label={unread ? `${unread} unread notifications` : "Notifications"}>
+        {discordConnected && <NavLink className="notification-bell" to="/messages" aria-label={unread ? `${unread} unread notifications` : "Notifications"}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
           {unread > 0 && <span className="notification-count">{unread > 9 ? "9+" : unread}</span>}
-        </NavLink>
-        <NavLink className="chat-bubble" to="/chats" aria-label="Open live chats">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.48 8.7 8.7 0 0 1-3.58-.78L4 19.5l1.3-3.72A7.5 7.5 0 1 1 20 11.5Z" /><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01" /></svg>
-        </NavLink>
-        <NavLink to="/profile">{profile?.username ?? "Player Login"}</NavLink>
+        </NavLink>}
+        {discordConnected && <NavLink className="chat-bubble" to="/chats" aria-label="Open live chats">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 5.5h13a2.5 2.5 0 0 1 2.5 2.5v7a2.5 2.5 0 0 1-2.5 2.5H11l-5.5 3v-3a2.5 2.5 0 0 1-2.5-2.5V8a2.5 2.5 0 0 1 2.5-2.5Z" /><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01" /></svg>
+        </NavLink>}
+        <NavLink to="/profile">{discordConnected ? profile?.username ?? "Discord Player" : "Discord Login"}</NavLink>
         {profile?.role === "admin" && <NavLink to="/admin">Admin</NavLink>}
       </div>
     </header>
