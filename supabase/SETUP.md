@@ -37,9 +37,9 @@ https://ewpqnrhhrqvlywmdbral.supabase.co/auth/v1/callback
 
 20. In Supabase open **Authentication → Providers → Discord**, enable Discord and paste the Discord **Client ID** and **Client Secret**. The secret stays in Supabase and must never be added to GitHub.
 21. In Supabase open **Authentication → URL Configuration**:
-    - Site URL: `https://card-empire-vault.onrender.com`
-    - Redirect URL: `https://card-empire-vault.onrender.com/**`
-22. Deploy the newest `main` commit on Render.
+    - Site URL: `https://card-empire-vault.vercel.app`
+    - Redirect URL: `https://card-empire-vault.vercel.app/**`
+22. Deploy the newest `main` commit to **Production** on Vercel.
 23. Sign out of the old account and sign in through Discord. Then restore the admin role for the new Discord profile:
 
 ```sql
