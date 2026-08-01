@@ -1,0 +1,108 @@
+/* Refined Card Empire interface: quiet luxury, clean type and precise surfaces. */
+:root{
+  --empire-green:#91e8a1;
+  --empire-green-soft:#bdebc5;
+  --empire-gold:#c9aa5d;
+  --empire-ink:#050806;
+  --empire-panel:rgba(12,18,14,.88);
+  --empire-line:rgba(175,226,185,.16);
+  --empire-line-strong:rgba(175,226,185,.35);
+  --empire-muted:#91a097;
+}
+
+html{font-synthesis:none;text-rendering:optimizeLegibility}
+body{font-family:var(--font-body);font-style:normal;letter-spacing:.006em;-webkit-font-smoothing:antialiased}
+body,input,textarea,select,button{font-style:normal!important}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-heading)!important;font-weight:500!important;letter-spacing:-.035em}
+p,li,label,input,textarea,select{line-height:1.65}
+::selection{background:rgba(117,224,139,.28);color:#f5fff7}
+
+/* Navigation becomes a thin, calm command bar instead of a glowing game menu. */
+.empire-nav{
+  min-height:68px;
+  padding-top:12px;
+  padding-bottom:12px;
+  border-bottom-color:rgba(167,225,179,.17);
+  background:linear-gradient(90deg,rgba(4,8,6,.94),rgba(8,13,10,.9),rgba(4,8,6,.94));
+  box-shadow:0 14px 38px rgba(0,0,0,.25);
+}
+.empire-nav::before{background:linear-gradient(90deg,rgba(113,218,134,.035),transparent 35%,rgba(201,170,93,.035))}
+.empire-nav::after{height:1px;opacity:.5;box-shadow:none;animation-duration:12s}
+.empire-brand span{font-family:var(--font-heading)!important;font-size:1.25rem;font-weight:600!important;letter-spacing:-.02em}
+.empire-brand strong{font-family:var(--font-body);font-size:.62rem;font-weight:750;letter-spacing:.22em}
+.empire-nav nav a{font-family:var(--font-body);font-size:.66rem;font-weight:750;letter-spacing:.095em;color:#aab4ad}
+.empire-nav nav a:hover,.empire-nav nav a.active{color:#dff5e3;text-shadow:none}
+.empire-nav nav a::after{background:linear-gradient(90deg,transparent,#91e8a1,transparent);box-shadow:none}
+.partners-nav-link{border-radius:6px;background:rgba(116,211,134,.055)}
+.empire-nav .notification-bell,.empire-nav .chat-bubble,.mobile-menu-toggle{background:rgba(117,215,136,.045);border-color:rgba(157,228,171,.2);box-shadow:inset 0 1px rgba(255,255,255,.025)}
+.empire-nav .notification-bell:hover,.empire-nav .chat-bubble:hover{transform:translateY(-1px);background:rgba(117,215,136,.1);box-shadow:0 8px 22px rgba(0,0,0,.24)}
+
+/* Typography hierarchy. */
+.home-section-copy h2,.home-preview-teasers h2,.home-manifesto h2,.event-stage-copy h1,.about-stage-copy h1,.trade-hub-hero h1,.community-hero h1,.partners-hero h1,.vault-header h1,.profile-command-hero h1,.discord-market-gate h1{
+  font-family:var(--font-heading)!important;
+  font-weight:500!important;
+  letter-spacing:-.055em!important;
+  text-transform:none;
+}
+.home-section-copy h2 em,.home-preview-teasers h2 em,.home-manifesto h2 em{font-style:italic}
+.home-eyebrow,.eyebrow,.schedule-kicker,.stage-kicker,.vault-overline{
+  font-family:var(--font-body)!important;
+  font-style:normal!important;
+  font-weight:750!important;
+  letter-spacing:.18em!important;
+}
+
+/* Unified premium panels. */
+:is(.preview-teaser,.event-command-panel,.suggestion-card,.community-polls article,.magazine-issue,.profile-record-list,.profile-stat-deck,.xp-record,.loyalty-record,.admin-panel,.notification-list article,.trade-proposal-form){
+  border-color:var(--empire-line)!important;
+  background:linear-gradient(145deg,rgba(17,25,19,.9),rgba(7,11,8,.94))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.025),0 18px 46px rgba(0,0,0,.16);
+}
+:is(.preview-teaser,.event-command-panel,.suggestion-card,.magazine-issue,.notification-list article){border-radius:10px}
+@media (hover:hover) and (pointer:fine){
+  :is(.preview-teaser,.event-command-panel,.suggestion-card,.magazine-issue,.notification-list article):hover{
+    transform:translateY(-5px);
+    border-color:var(--empire-line-strong)!important;
+    box-shadow:0 22px 55px rgba(0,0,0,.3),0 0 0 1px rgba(145,232,161,.035);
+  }
+}
+
+/* Controls share one precise visual language. */
+:is(button,.button-primary,.button-secondary,.gold-button,.dark-button,.vault-refresh,.vault-cart,.event-register-button,.trade-send-button,.feedback-submit-button){border-radius:7px}
+:is(input,textarea,select){
+  border-radius:7px!important;
+  border-color:rgba(178,224,187,.18)!important;
+  background:rgba(4,8,6,.76)!important;
+  color:#edf5ef!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+  transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;
+}
+:is(input,textarea,select):focus{
+  outline:none;
+  border-color:rgba(145,232,161,.58)!important;
+  background:rgba(7,13,9,.92)!important;
+  box-shadow:0 0 0 3px rgba(104,218,127,.08),inset 0 1px rgba(255,255,255,.035);
+}
+:is(.home-section-cta,.trade-portal-cta,.arena-cta,.feedback-cta,.event-register-button,.trade-send-button,.feedback-submit-button){
+  border-radius:7px!important;
+  font-family:var(--font-body)!important;
+  font-style:normal!important;
+  font-weight:750!important;
+  letter-spacing:.11em!important;
+}
+
+.empire-footer{border-top-color:rgba(165,225,176,.15);background:linear-gradient(180deg,#07100a,#040705)}
+.footer-brand span{font-family:var(--font-heading)!important;font-weight:600!important}
+
+@media(max-width:720px){
+  .empire-nav{min-height:64px;padding-top:9px;padding-bottom:9px}
+  .empire-nav>nav{background:rgba(4,9,6,.985)}
+  .empire-nav>nav>a{font-size:.66rem;letter-spacing:.1em}
+  h1,h2,h3{letter-spacing:-.04em}
+  .home-section-copy h2,.home-preview-teasers h2,.home-manifesto h2{line-height:.88!important}
+  :is(.preview-teaser,.event-command-panel,.suggestion-card,.magazine-issue){border-radius:8px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}

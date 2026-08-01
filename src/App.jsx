@@ -8,6 +8,7 @@ import { getEvents, getPotmPlayers, registerForEvent, subscribeToLiveChanges } f
 import "./index.css";
 import "./enhancements.css";
 import "./mobile.css";
+import "./refined-ui.css";
 
 const Marketplace = lazy(() => import("./components/Marketplace"));
 const AccountPanel = lazy(() => import("./components/AccountPanel"));
