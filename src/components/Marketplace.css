@@ -21,7 +21,7 @@
 .detail-image{position:relative;overflow:hidden}.detail-image img{position:relative;z-index:1}
 
 
-/* Holo stays clipped to the actual card art â€” never the surrounding background. */
+/* Holo stays clipped to the actual card art — never the surrounding background. */
 .vault-card-art{position:relative;z-index:1;display:block;height:88%;max-width:78%;line-height:0;isolation:isolate}
 .vault-card-art img{display:block;height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 18px 16px #000)}
 .vault-image>span:not(.vault-card-art){position:absolute;z-index:3;top:10px;left:10px;color:#b7ebbd;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 7px;background:rgba(8,16,10,.88);border:1px solid rgba(146,217,156,.42);border-radius:3px}
@@ -91,7 +91,10 @@
 .collector-case .case-label b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:Georgia,serif;font-size:.57rem;letter-spacing:.02em;line-height:1.1}.collector-case .case-label small{position:static;padding:0;border:0;border-radius:0;background:none;color:#25312a;font-size:.39rem;font-weight:900;letter-spacing:.06em;line-height:1.1;text-align:right}
 .collector-case .case-plaque{position:absolute;z-index:4;left:13px;bottom:9px;padding:0;border:0;background:none;color:rgba(225,234,229,.76);font-size:.43rem;font-weight:800;line-height:1;letter-spacing:.13em;text-transform:uppercase}
 .collector-case .case-glass{position:absolute;z-index:3;inset:0;top:auto;left:auto;padding:0;border:0;border-radius:3px;background:linear-gradient(124deg,rgba(255,255,255,.17),transparent 16%,transparent 54%,rgba(255,255,255,.08) 67%,transparent 78%);opacity:.64;pointer-events:none}
-.vault-card:hover .collector-case{transform:rotateX(var(--case-tilt-x,2deg)) rotateY(var(--case-tilt-y,-3deg)) translateY(-4px) translateZ…192 tokens truncated…rder-color:#f0b4ff}
+.vault-card:hover .collector-case{transform:rotateX(var(--case-tilt-x,2deg)) rotateY(var(--case-tilt-y,-3deg)) translateY(-4px) translateZ(0);border-color:rgba(193,238,204,.8);box-shadow:inset 0 0 0 2px rgba(0,0,0,.4),inset 0 0 24px rgba(255,255,255,.1),0 22px 30px rgba(0,0,0,.55)}
+.vault-card.gold .collector-case{border-color:rgba(244,204,102,.62);background:linear-gradient(112deg,rgba(255,237,175,.18),rgba(255,255,255,.025) 18%,rgba(75,49,10,.13) 57%,rgba(255,223,120,.12)),linear-gradient(160deg,rgba(49,39,19,.96),rgba(13,12,8,.9))}
+.vault-card.rainbow .collector-case{border-color:rgba(191,145,255,.7);background:linear-gradient(112deg,rgba(255,190,247,.16),rgba(110,234,255,.08) 25%,rgba(37,16,62,.14) 58%,rgba(253,228,127,.1)),linear-gradient(160deg,rgba(24,22,45,.96),rgba(9,11,16,.9))}
+.vault-card.gold:hover .collector-case{border-color:#ffe396}.vault-card.rainbow:hover .collector-case{border-color:#f0b4ff}
 
 /* The opened card receives the same acrylic display treatment. */
 .detail-collector-case{position:relative;z-index:1;display:grid;place-items:center;width:min(100%,340px);max-height:470px;padding:54px 20px 39px;border:2px solid rgba(216,230,223,.7);border-radius:4px;background:linear-gradient(120deg,rgba(255,255,255,.14),transparent 22%,rgba(0,0,0,.1) 68%),linear-gradient(160deg,#252c2b,#0a0e0d);box-shadow:inset 0 0 0 2px rgba(0,0,0,.42),inset 0 0 24px rgba(255,255,255,.05),0 22px 36px rgba(0,0,0,.52);transform:rotateX(2deg) rotateY(-4deg);transform-style:preserve-3d;isolation:isolate}
@@ -257,7 +260,7 @@
 }
 
 
-/* Roles and VIP prices â€” premium but deliberately light enough to keep scrolling smooth. */
+/* Roles and VIP prices — premium but deliberately light enough to keep scrolling smooth. */
 .market-role-chip{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border:1px solid rgba(137,161,145,.27);border-radius:999px;color:#aeb9b2;background:rgba(16,22,19,.76);font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .market-role-chip.role-vip{border-color:rgba(214,178,80,.72);color:#fff0af;background:linear-gradient(115deg,rgba(106,80,18,.42),rgba(17,42,28,.72));box-shadow:inset 0 0 0 1px rgba(255,245,190,.07)}
 .market-role-chip.role-potm,.market-role-chip.role-player_of_the_tournament{border-color:rgba(184,135,255,.6);color:#dcc3ff;background:rgba(80,47,116,.24)}
@@ -320,6 +323,67 @@
 @keyframes silver-foil{0%,100%{background-position:125% 0}50%{background-position:-25% 0}}
 @media(prefers-reduced-motion:reduce){.vault-card.silver .vault-card-art::after,.card-detail-modal.silver .detail-card-art::after{animation:none}}
 
+/* Cardstock final pass: one lightweight foil language, clipped to the card art. */
+.card-size-control{
+  box-shadow:inset 0 0 0 1px rgba(164,226,176,.035);
+  transition:border-color .2s ease,background .2s ease;
+}
+.card-size-control:hover,.card-size-control:focus-within{border-color:rgba(145,211,154,.56);background:#121a16}
+.card-size-control input[type="range"]{height:4px;appearance:none;border:0!important;border-radius:999px!important;background:linear-gradient(90deg,rgba(145,211,154,.92),rgba(145,211,154,.22))!important;outline:0}
+.card-size-control input[type="range"]::-webkit-slider-thumb{width:15px;height:15px;appearance:none;border:2px solid #dff7e3;border-radius:50%;background:#79cf88;box-shadow:0 0 0 4px rgba(121,207,136,.12);cursor:ew-resize}
+.card-size-control input[type="range"]::-moz-range-thumb{width:13px;height:13px;border:2px solid #dff7e3;border-radius:50%;background:#79cf88;box-shadow:0 0 0 4px rgba(121,207,136,.12);cursor:ew-resize}
+
+.case-only-grid{align-items:start;transition:none}
+.case-only-card .vault-image{transition:height .14s ease-out}
+.case-only-card .collector-case{transition:transform .16s ease-out,border-color .22s ease,box-shadow .22s ease}
+
+.vault-card.silver .vault-card-art::after,
+.vault-card.gold .vault-card-art::after,
+.vault-card.rainbow .vault-card-art::after,
+.card-detail-modal.silver .detail-card-art::after,
+.card-detail-modal.gold .detail-card-art::after,
+.card-detail-modal.rainbow .detail-card-art::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background-position:50% 0;animation:none;
+}
+.vault-card.silver .vault-card-art::after,.card-detail-modal.silver .detail-card-art::after{
+  opacity:.42;mix-blend-mode:screen;
+  background:repeating-linear-gradient(108deg,transparent 0 17%,rgba(191,213,219,.08) 22%,rgba(255,255,255,.56) 27%,rgba(151,180,188,.12) 33%,transparent 41%);
+  background-size:260% 100%;
+}
+.vault-card.gold .vault-card-art::after,.card-detail-modal.gold .detail-card-art::after{
+  opacity:.46;mix-blend-mode:screen;
+  background:linear-gradient(112deg,transparent 17%,rgba(255,222,116,.1) 30%,rgba(255,248,207,.68) 43%,rgba(222,151,31,.2) 51%,rgba(255,235,154,.48) 59%,transparent 73%);
+  background-size:280% 100%;
+}
+.vault-card.rainbow .vault-card-art::after,.card-detail-modal.rainbow .detail-card-art::after{
+  opacity:.56;mix-blend-mode:color-dodge;
+  background:linear-gradient(118deg,transparent 14%,rgba(255,81,173,.34) 27%,rgba(92,218,255,.46) 40%,rgba(255,240,118,.42) 52%,rgba(144,102,255,.47) 64%,rgba(112,255,187,.33) 72%,transparent 86%);
+  background-size:300% 160%;
+}
+.vault-card.silver .collector-case{box-shadow:inset 0 0 0 2px rgba(0,0,0,.52),inset 0 0 20px rgba(232,248,251,.1),0 22px 30px rgba(0,0,0,.62)}
+.vault-card.gold .collector-case{box-shadow:inset 0 0 0 2px rgba(40,25,0,.7),inset 0 0 22px rgba(255,220,111,.12),0 22px 30px rgba(0,0,0,.62)}
+.vault-card.rainbow .collector-case{box-shadow:inset 0 0 0 2px rgba(16,7,28,.72),inset 0 0 23px rgba(178,137,255,.12),0 22px 30px rgba(0,0,0,.62)}
+
+@media(hover:hover) and (pointer:fine){
+  .vault-card.silver:hover .vault-card-art::after{opacity:.7;animation:cardstock-silver 2.35s ease-in-out infinite}
+  .vault-card.gold:hover .vault-card-art::after{opacity:.72;animation:cardstock-gold 2.7s ease-in-out infinite}
+  .vault-card.rainbow:hover .vault-card-art::after{opacity:.82;animation:cardstock-rainbow 3.1s linear infinite}
+}
+.card-detail-modal.silver .detail-card-art::after{opacity:.6;animation:cardstock-silver 4.8s ease-in-out infinite}
+.card-detail-modal.gold .detail-card-art::after{opacity:.64;animation:cardstock-gold 5.2s ease-in-out infinite}
+.card-detail-modal.rainbow .detail-card-art::after{opacity:.7;animation:cardstock-rainbow 5.5s linear infinite}
+@keyframes cardstock-silver{0%,100%{background-position:135% 0}50%{background-position:-35% 0}}
+@keyframes cardstock-gold{0%,100%{background-position:135% 0}50%{background-position:-35% 0}}
+@keyframes cardstock-rainbow{0%{background-position:120% 20%}50%{background-position:-20% 80%}100%{background-position:120% 20%}}
+
+@media(max-width:600px){
+  .case-only-card .collector-case{will-change:auto}
+  .case-only-card .vault-image{transition:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .case-only-card .vault-image,.case-only-card .collector-case{transition:none!important}
+  .vault-card .vault-card-art::after,.card-detail-modal .detail-card-art::after{animation:none!important}
+}
+
 /* Player wishlist control inside the inspected collector case. */
 .wishlist-button{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:42px;margin:0 0 10px;border:1px solid rgba(147,230,163,.28);border-radius:3px;background:rgba(24,68,36,.18);color:#c8e8ce;font:800 .67rem/1 var(--font-sans);letter-spacing:.09em;text-transform:uppercase;cursor:pointer;transition:transform .22s ease,border-color .22s ease,background .22s ease,color .22s ease}.wishlist-button span{color:#8cf0a0;font-size:1.25rem;line-height:1}.wishlist-button:hover{transform:translateY(-2px);border-color:#8cf0a0;background:rgba(61,139,78,.25);color:#fff}
-
