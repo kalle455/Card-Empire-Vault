@@ -359,8 +359,8 @@
   animation:cardstock-gold 4.8s ease-in-out infinite;
 }
 .vault-card.rainbow .vault-card-art::after,.card-detail-modal.rainbow .detail-card-art::after{
-  opacity:.48;mix-blend-mode:screen;
-  background:linear-gradient(118deg,transparent 13%,rgba(255,103,181,.28) 27%,rgba(102,218,255,.35) 40%,rgba(255,238,127,.31) 52%,rgba(158,118,255,.35) 64%,rgba(119,247,183,.27) 74%,transparent 87%);
+  opacity:.62;mix-blend-mode:screen;
+  background:linear-gradient(118deg,transparent 12%,rgba(255,87,176,.4) 27%,rgba(82,213,255,.48) 40%,rgba(255,235,103,.43) 52%,rgba(145,96,255,.49) 64%,rgba(98,246,170,.39) 74%,transparent 88%);
   background-size:310% 150%;
   animation:cardstock-rainbow 6.8s ease-in-out infinite;
 }
@@ -371,11 +371,11 @@
 @media(hover:hover) and (pointer:fine){
   .vault-card.silver:hover .vault-card-art::after{opacity:.7;animation:cardstock-silver 2.35s ease-in-out infinite}
   .vault-card.gold:hover .vault-card-art::after{opacity:.66;animation-duration:3.1s}
-  .vault-card.rainbow:hover .vault-card-art::after{opacity:.56;animation-duration:5.7s}
+  .vault-card.rainbow:hover .vault-card-art::after{opacity:.72;animation-duration:5.4s}
 }
 .card-detail-modal.silver .detail-card-art::after{opacity:.6;animation:cardstock-silver 4.8s ease-in-out infinite}
 .card-detail-modal.gold .detail-card-art::after{opacity:.64;animation:cardstock-gold 5.2s ease-in-out infinite}
-.card-detail-modal.rainbow .detail-card-art::after{opacity:.52;animation:cardstock-rainbow 6.5s ease-in-out infinite}
+.card-detail-modal.rainbow .detail-card-art::after{opacity:.66;animation:cardstock-rainbow 6.2s ease-in-out infinite}
 @keyframes cardstock-silver{0%,100%{background-position:135% 0}50%{background-position:-35% 0}}
 @keyframes cardstock-gold{0%,100%{background-position:135% 0}50%{background-position:-35% 0}}
 @keyframes cardstock-rainbow{0%{background-position:120% 20%}50%{background-position:-20% 80%}100%{background-position:120% 20%}}
