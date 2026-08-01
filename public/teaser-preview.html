@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Card Empire Teaser</title>
+  <style>
+    @font-face{font-family:Matrix;src:url('/fonts/Matrix Bold.ttf')}@font-face{font-family:Stone;src:url('/fonts/ITC Stone Serif Italic.otf')}
+    *{box-sizing:border-box}html,body{width:1080px;height:1350px;margin:0;overflow:hidden;background:#050806;color:#eff6f0}body{font-family:Arial,sans-serif}
+    .poster{position:relative;isolation:isolate;width:1080px;height:1350px;overflow:hidden;padding:72px;background:radial-gradient(circle at 74% 37%,rgba(77,200,100,.18),transparent 30%),linear-gradient(145deg,#0a110c,#040605 72%)}
+    .poster::before{content:"";position:absolute;z-index:-3;inset:0;background-image:linear-gradient(rgba(140,235,157,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(140,235,157,.065) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(180deg,#000,transparent 78%)}
+    .poster::after{content:"";position:absolute;z-index:-2;inset:18px;border:1px solid rgba(151,239,168,.22);pointer-events:none}
+    header{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:flex-start}.brand{display:grid;gap:7px}.brand b{font-family:Stone,Georgia,serif;color:#aff0ba;font-size:31px}.brand span,.file{font-size:12px;font-weight:900;letter-spacing:.24em}.file{color:#78917e;text-align:right;line-height:1.8}
+    .number{position:absolute;right:65px;top:165px;color:rgba(155,238,170,.08);font-family:Matrix,Arial,sans-serif;font-size:430px;line-height:.8}
+    .copy{position:absolute;z-index:5;left:72px;right:72px;bottom:106px}.kicker{margin:0 0 22px;color:#8eed9e;font-size:15px;font-weight:900;letter-spacing:.28em}.copy h1{max-width:880px;margin:0;color:#f2f7f3;font-family:Matrix,Arial,sans-serif;font-size:104px;line-height:.79;letter-spacing:-.035em;text-transform:uppercase}.copy h1 em{color:#a4efb2;font-style:normal}.copy>span{display:flex;align-items:center;gap:16px;margin-top:42px;color:#7f9184;font-size:13px;font-weight:900;letter-spacing:.2em}.copy>span::before{content:"";width:62px;height:1px;background:#e3bd5d;box-shadow:0 0 14px rgba(227,189,93,.6)}
+    .card-scene{position:absolute;left:50%;top:43%;width:650px;height:560px;transform:translate(-50%,-50%);perspective:1200px}.case{position:absolute;top:58px;left:50%;width:250px;height:350px;padding:13px;border:2px solid rgba(209,229,214,.52);background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(11,17,13,.55));box-shadow:0 45px 70px rgba(0,0,0,.65);transform-style:preserve-3d}.case::before{content:"CONDITION  •  CLASSIFIED";display:block;height:38px;padding:12px;background:#d8e4da;color:#0b130d;font-size:9px;font-weight:900;letter-spacing:.12em}.case::after{content:"K";display:grid;place-items:center;height:270px;background:radial-gradient(circle,#237440,#071009 58%);color:#b9f1c2;font-family:Matrix;font-size:120px;text-shadow:0 0 30px #72dd86}.case:nth-child(1){transform:translateX(-210px) rotateY(18deg) rotateZ(-11deg);opacity:.45}.case:nth-child(2){z-index:2;transform:translateX(-125px) translateY(-30px)}.case:nth-child(3){transform:translateX(-40px) rotateY(-18deg) rotateZ(11deg);opacity:.45}
+    .radar{position:absolute;left:50%;top:41%;width:560px;height:560px;transform:translate(-50%,-50%);border:1px solid rgba(145,237,161,.35);border-radius:50%;box-shadow:0 0 0 70px rgba(116,218,136,.025),0 0 0 145px rgba(116,218,136,.018),inset 0 0 110px rgba(49,149,69,.13)}.radar::before,.radar::after{content:"";position:absolute;inset:17%;border:1px dashed rgba(145,237,161,.32);border-radius:50%}.radar::after{inset:36%;border-style:solid}.radar i{position:absolute;width:14px;height:14px;border-radius:50%;background:#a6f2b4;box-shadow:0 0 28px 10px rgba(117,235,139,.55)}.radar i:first-child{left:27%;top:24%}.radar i:nth-child(2){right:18%;top:49%}.radar i:nth-child(3){left:48%;bottom:17%}.radar b{position:absolute;inset:0;display:grid;place-items:center;color:#d9f6de;font-family:Matrix;font-size:130px;text-shadow:0 0 42px #77e58c}
+    .duel{position:absolute;left:90px;right:90px;top:390px;height:330px}.duel::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:linear-gradient(90deg,transparent,#68db83,#f0cc68,#68db83,transparent);box-shadow:0 0 32px 8px rgba(117,229,139,.22)}.fighter{position:absolute;top:15px;width:270px;height:300px;border:1px solid rgba(153,235,168,.3);background:linear-gradient(145deg,#16281c,#060907);clip-path:polygon(22% 0,78% 0,100% 100%,0 100%)}.fighter::before{content:"";position:absolute;left:65px;top:34px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 50% 32%,#c6efd0 0 16%,#326b48 17% 44%,#090d0a 45%)}.fighter::after{content:"";position:absolute;left:25px;right:25px;bottom:25px;height:65px;border:1px solid rgba(179,247,192,.55);background:#09120c;box-shadow:0 0 28px rgba(126,239,148,.3);transform:skewX(-18deg)}.fighter.left{left:20px;transform:rotate(-7deg)}.fighter.right{right:20px;transform:scaleX(-1) rotate(-7deg);filter:hue-rotate(22deg)}.impact{position:absolute;left:50%;top:50%;display:grid;place-items:center;width:110px;height:110px;transform:translate(-50%,-50%);border:1px solid #e9d17f;border-radius:50%;background:#0a130d;box-shadow:0 0 45px 15px rgba(130,240,151,.3);color:#efffe9;font-family:Matrix;font-size:38px}
+    body[data-theme="community"] .poster{background:radial-gradient(circle at 50% 38%,rgba(66,193,90,.2),transparent 37%),linear-gradient(145deg,#0a110c,#040605 72%)}
+    body[data-theme="duel"] .poster{background:radial-gradient(circle at 50% 37%,rgba(223,180,62,.11),transparent 21%),radial-gradient(circle at 35% 45%,rgba(61,173,86,.17),transparent 32%),#050806}
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header><div class="brand"><b>Kalenski™</b><span>CARD EMPIRE®</span></div><div class="file">CLASSIFIED PREVIEW<br/>ACCESS 01—03</div></header>
+    <span class="number" id="number">01</span>
+    <div id="visual"></div>
+    <section class="copy"><p class="kicker" id="kicker"></p><h1 id="headline"></h1><span>COMING TO CARD EMPIRE</span></section>
+  </main>
+  <script>
+    const themes={
+      cardstock:{number:'01',kicker:'CARDSTOCK PROTOCOL',headline:'SOMETHING <em>RARE</em> IS BEING PREPARED.',visual:'<div class="card-scene"><i class="case"></i><i class="case"></i><i class="case"></i></div>'},
+      community:{number:'02',kicker:'COMMUNITY SIGNAL',headline:'YOUR VOICE WILL <em>SHAPE</em> THE EMPIRE.',visual:'<div class="radar"><i></i><i></i><i></i><b>✦</b></div>'},
+      duel:{number:'03',kicker:'DUEL SYSTEM',headline:'THE ARENA IS RECORDING <em>MORE THAN WINS.</em>',visual:'<div class="duel"><i class="fighter left"></i><i class="fighter right"></i><b class="impact">VS</b></div>'}
+    };
+    const theme=new URLSearchParams(location.search).get('theme')||'cardstock';const data=themes[theme]||themes.cardstock;document.body.dataset.theme=theme;number.textContent=data.number;kicker.textContent=data.kicker;headline.innerHTML=data.headline;visual.innerHTML=data.visual;
+  </script>
+</body>
+</html>
