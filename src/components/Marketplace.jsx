@@ -158,7 +158,7 @@ export default function Marketplace() {
       : await supabase.from("wishlists").insert({ player_id: session.user.id, card_id: card.id });
     if (result.error) return setNotice(result.error.message);
     setWishlistIds((current) => saved ? current.filter((id) => id !== card.id) : [...current, card.id]);
-    setNotice(saved ? `${card.name} removed from your wishlist.` : `${card.name} is now on your wishlist.`);
+    setNotice(saved ? `${card.name} removed from your wishlist.` : `${card.name} is on your wishlist. Discord availability alerts are armed.`);
   }
   async function purchase() {
     if (!session) return setNotice("Please sign in before requesting a purchase.");
