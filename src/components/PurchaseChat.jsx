@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
 import "./PurchaseChat.css";
+import "./PurchaseChatPinned.css";
 
 export default function PurchaseChat({ chat, onClose }) {
   const { profile, session } = useAuth();
@@ -98,7 +100,9 @@ export default function PurchaseChat({ chat, onClose }) {
     setNotice("");
   }
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <aside className={"purchase-chat" + (dealCompleted ? " is-closed-chat" : "")} aria-label={"Live chat with " + partnerName}>
       <header>
         <div>
@@ -131,7 +135,7 @@ export default function PurchaseChat({ chat, onClose }) {
           <button disabled={sending}>{sending ? "…" : "Send"}</button>
         </form>
       )}
-    </aside>
+    </aside>,
+    document.body,
   );
 }
-
