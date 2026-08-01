@@ -12,7 +12,7 @@ const statuses = {
 
 function Stars({ value = 0, onChange, label = "rating" }) {
   return <span className="community-stars" aria-label={label}>
-    {[1, 2, 3, 4, 5].map((star) => <button key={star} type="button" className={star <= value ? "is-active" : ""} onClick={() => onChange?.(star)} disabled={!onChange} aria-label={star + " stars"}>â˜…</button>)}
+    {[1, 2, 3, 4, 5].map((star) => <button key={star} type="button" className={star <= value ? "is-active" : ""} onClick={() => onChange?.(star)} disabled={!onChange} aria-label={star + " stars"}>★</button>)}
   </span>;
 }
 
@@ -131,10 +131,10 @@ export default function Community() {
         <i className="orbit-ring orbit-ring-four"><b /></i>
         <i className="orbit-ring orbit-ring-five"><b /></i>
       </div>
-      <p className="vault-overline">CARD EMPIRE Â· COMMUNITY COMMAND</p>
+      <p className="vault-overline">CARD EMPIRE · COMMUNITY COMMAND</p>
       <h1>Your voice.<br /><em>Moves the Empire.</em></h1>
       <p>Suggestions, reviews, polls and direct signals between the Card Empire team and every verified player.</p>
-      <div className="community-score"><Stars value={Math.round(averageReview)} /><strong>{averageReview ? averageReview.toFixed(1) : "â€”"}</strong><span>{reviews.length} written reviews</span></div>
+      <div className="community-score"><Stars value={Math.round(averageReview)} /><strong>{averageReview ? averageReview.toFixed(1) : "—"}</strong><span>{reviews.length} written reviews</span></div>
     </section>
 
     {notice && <p className="community-notice">{notice}</p>}
@@ -148,7 +148,7 @@ export default function Community() {
           const active = starts.getTime() <= Date.now() && ends.getTime() > Date.now();
           return <article className={active ? "is-online" : ""} key={slot.id}>
             <div className="availability-date"><b>{starts.toLocaleDateString("de-DE", { day: "2-digit" })}</b><span>{starts.toLocaleDateString("de-DE", { month: "short" }).replace(".", "")}</span></div>
-            <div><small>{active ? "ONLINE NOW" : starts.toLocaleDateString("de-DE", { weekday: "long" })}</small><h3>{slot.title}</h3><p>{starts.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} â€“ {ends.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} Â· {slot.location}</p>{slot.note && <em>{slot.note}</em>}</div>
+            <div><small>{active ? "ONLINE NOW" : starts.toLocaleDateString("de-DE", { weekday: "long" })}</small><h3>{slot.title}</h3><p>{starts.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} – {ends.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} · {slot.location}</p>{slot.note && <em>{slot.note}</em>}</div>
           </article>;
         })}
         {!availability.some((slot) => new Date(slot.ends_at).getTime() > Date.now()) && <article className="availability-empty"><div><small>NEXT WINDOW</small><h3>No pickup time announced yet.</h3><p>Kalenski's next online window will appear here live.</p></div></article>}
@@ -165,13 +165,13 @@ export default function Community() {
         <p className="vault-overline">FEATURE SUGGESTIONS</p><h2>Send an idea.</h2>
         <label>Title<input required minLength="3" maxLength="90" value={suggestionForm.title} onChange={(event) => setSuggestionForm({ ...suggestionForm, title: event.target.value })} placeholder="What should Card Empire build?" /></label>
         <label>Suggestion<textarea required minLength="8" maxLength="1600" value={suggestionForm.body} onChange={(event) => setSuggestionForm({ ...suggestionForm, body: event.target.value })} placeholder="Explain the feature and why it matters." /></label>
-        <button>Transmit suggestion <span>â†—</span></button>
+        <button>Transmit suggestion <span>↗</span></button>
       </form>
       <form className="community-form review-form" onSubmit={submitReview}>
         <p className="vault-overline">WRITTEN REVIEWS</p><h2>Rate the Empire.</h2>
         <Stars value={reviewForm.rating} onChange={(rating) => setReviewForm({ ...reviewForm, rating })} />
         <label>Your review<textarea required minLength="3" maxLength="1200" value={reviewForm.body} onChange={(event) => setReviewForm({ ...reviewForm, body: event.target.value })} placeholder="What should other players know?" /></label>
-        <button>Publish review <span>â†—</span></button>
+        <button>Publish review <span>↗</span></button>
       </form>
     </section>
 
@@ -186,10 +186,10 @@ export default function Community() {
             <header><span className={"suggestion-status status-" + item.status}>{statuses[item.status]}</span><small>{new Date(item.created_at).toLocaleDateString()}</small></header>
             <h3>{item.title}</h3><p>{item.body}</p>
             <div className="suggestion-author">BY {item.player?.dmo_name ?? item.player?.username ?? "PLAYER"}</div>
-            <div className="suggestion-rating"><Stars value={myVote} onChange={(rating) => rateSuggestion(item.id, rating)} /><span>{average ? average.toFixed(1) : "Not rated"} Â· {votes.length} ratings</span></div>
+            <div className="suggestion-rating"><Stars value={myVote} onChange={(rating) => rateSuggestion(item.id, rating)} /><span>{average ? average.toFixed(1) : "Not rated"} · {votes.length} ratings</span></div>
             {isAdmin && <select value={item.status} onChange={(event) => updateStatus(item.id, event.target.value)}>{Object.entries(statuses).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>}
             <div className="suggestion-comments">{(item.comments ?? []).map((comment) => <p key={comment.id}><b>{comment.player?.dmo_name ?? comment.player?.username ?? "Player"}</b>{comment.body}</p>)}</div>
-            <div className="comment-entry"><input value={comments[item.id] ?? ""} onChange={(event) => setComments((current) => ({ ...current, [item.id]: event.target.value }))} maxLength="900" placeholder="Comment on this suggestionâ€¦" /><button type="button" onClick={() => submitComment(item.id)}>Send</button></div>
+            <div className="comment-entry"><input value={comments[item.id] ?? ""} onChange={(event) => setComments((current) => ({ ...current, [item.id]: event.target.value }))} maxLength="900" placeholder="Comment on this suggestion…" /><button type="button" onClick={() => submitComment(item.id)}>Send</button></div>
           </article>;
         })}
       </div>
@@ -210,7 +210,7 @@ export default function Community() {
 
     <section className="community-review-wall">
       <header><p className="vault-overline">PLAYER REVIEWS</p><h2>Written by the community.</h2></header>
-      <div>{reviews.map((review) => <article key={review.id}><Stars value={review.rating} /><p>â€œ{review.body}â€</p><span>{review.player?.dmo_name ?? review.player?.username ?? "Verified player"}</span></article>)}</div>
+      <div>{reviews.map((review) => <article key={review.id}><Stars value={review.rating} /><p>“{review.body}”</p><span>{review.player?.dmo_name ?? review.player?.username ?? "Verified player"}</span></article>)}</div>
     </section>
 
   </main>;

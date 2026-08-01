@@ -97,8 +97,8 @@ function DuelDiscCursor() {
 const eventFormats = {
   five_way_ffa: { label: "5-WAY FFA", teams: "5 players", capacity: 5 },
   six_way_ffa: { label: "6-WAY FFA", teams: "6 players", capacity: 6 },
-  three_way_ffa: { label: "3-WAY FFA", teams: "2v2v2 Â· 6 players", capacity: 6 },
-  four_way_ffa: { label: "4-WAY FFA", teams: "2v2v2v2 Â· 8 players", capacity: 8 },
+  three_way_ffa: { label: "3-WAY FFA", teams: "2v2v2 · 6 players", capacity: 6 },
+  four_way_ffa: { label: "4-WAY FFA", teams: "2v2v2v2 · 8 players", capacity: 8 },
   open: { label: "OPEN FORMAT", teams: "No player limit", capacity: null },
 };
 
@@ -122,13 +122,13 @@ function DiscordGuard({ children }) {
   }
 
   if (!configured || loading) {
-    return <main className="discord-market-gate"><p className="vault-overline">VERIFIED MARKET ACCESS</p><h1>Checking Discordâ€¦</h1></main>;
+    return <main className="discord-market-gate"><p className="vault-overline">VERIFIED MARKET ACCESS</p><h1>Checking Discord…</h1></main>;
   }
 
   if (session && discordConnected && !profile?.dmo_name) {
     return <main className="discord-market-gate">
-      <div className="discord-gate-orbit" aria-hidden="true"><i /><i /><b>âœ¦</b></div>
-      <p className="vault-overline">DISCORD VERIFIED Â· DMO IDENTITY REQUIRED</p>
+      <div className="discord-gate-orbit" aria-hidden="true"><i /><i /><b>✦</b></div>
+      <p className="vault-overline">DISCORD VERIFIED · DMO IDENTITY REQUIRED</p>
       <h1>One last<br /><em>step.</em></h1>
       <p>Enter your exact DMO player name so Kalenski knows who is trading. The Card Market unlocks immediately afterward.</p>
       <button type="button" onClick={() => window.location.assign("/profile")}><span>Enter DMO name</span></button>
@@ -137,13 +137,13 @@ function DiscordGuard({ children }) {
 
   if (!session || !discordConnected) {
     return <main className="discord-market-gate">
-      <div className="discord-gate-orbit" aria-hidden="true"><i /><i /><b>âœ¦</b></div>
-      <p className="vault-overline">KALENSKIâ„¢ VERIFIED MARKET ACCESS</p>
+      <div className="discord-gate-orbit" aria-hidden="true"><i /><i /><b>✦</b></div>
+      <p className="vault-overline">KALENSKI™ VERIFIED MARKET ACCESS</p>
       <h1>Discord<br /><em>required.</em></h1>
-      <p>Connect Discord before entering the Card Market. Only your Discord ID and username are used â€” no personal email, messages, friends or servers.</p>
+      <p>Connect Discord before entering the Card Market. Only your Discord ID and username are used — no personal email, messages, friends or servers.</p>
       <button type="button" onClick={connect} disabled={connecting}>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 5.3A16 16 0 0 0 15 4l-.5 1.1a14 14 0 0 0-5 0L9 4a16 16 0 0 0-3.9 1.3C2.6 9 1.9 12.5 2.2 16a16 16 0 0 0 4.9 2.5l1.2-1.6a10 10 0 0 1-1.9-.9l.5-.4c3.7 1.7 7.7 1.7 11.3 0l.6.4c-.6.4-1.3.7-1.9.9l1.2 1.6A16 16 0 0 0 23 16c.4-4.1-.7-7.5-4.1-10.7ZM8.7 14.2c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.6 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z" /></svg>
-        <span>{connecting ? "Connectingâ€¦" : "Continue with Discord"}</span>
+        <span>{connecting ? "Connecting…" : "Continue with Discord"}</span>
       </button>
       {message && <p className="discord-gate-error">{message}</p>}
     </main>;
@@ -211,13 +211,13 @@ function Home() {
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-scanline" aria-hidden="true" />
         <div className="hero-particles" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
-        <div className="hero-index" aria-hidden="true"><span>01</span><i /><small>KALENSKIâ„¢<br />CARD EMPIREÂ®</small></div>
+        <div className="hero-index" aria-hidden="true"><span>01</span><i /><small>KALENSKI™<br />CARD EMPIRE®</small></div>
 
       </section>
 
       <section className="home-vault-passage">
         <div className="home-section-copy home-vault-copy">
-          <p className="home-eyebrow">THE PRIVATE SELECTION Â· 01â€”05</p>
+          <p className="home-eyebrow">THE PRIVATE SELECTION · 01—05</p>
           <h2>Turn over<br /><em>the impossible.</em></h2>
           <p>Maybe your next hand.</p>
         </div>
@@ -234,13 +234,13 @@ function Home() {
                 <span className="spotlight-card-back" aria-hidden="true"><i /><b>K</b></span>
                 <span className="spotlight-card-front">
                   {cardImage(card) && <img src={cardImage(card)} alt="" decoding="async" />}
-                  <span className="spotlight-card-info"><b>{card.name}</b><small>{Number(card.price).toLocaleString()} G Â· {card.rarity}</small></span>
+                  <span className="spotlight-card-info"><b>{card.name}</b><small>{Number(card.price).toLocaleString()} G · {card.rarity}</small></span>
                 </span>
               </span>
             </button>
           ))}
         </div>
-        <button type="button" className="home-section-cta vault-section-cta" onClick={() => enterEmpire("/marketplace")}><span>Enter Card Market</span><b>â†—</b></button>
+        <button type="button" className="home-section-cta vault-section-cta" onClick={() => enterEmpire("/marketplace")}><span>Enter Card Market</span><b>↗</b></button>
       </section>
 
       <section className="home-trade-portal">
@@ -249,13 +249,13 @@ function Home() {
         <div className="trade-card-stack" aria-hidden="true">
           <span className="trade-swap-card trade-swap-card-left"><b>OFFER</b></span>
           <span className="trade-swap-card trade-swap-card-right"><b>ACCEPT</b></span>
-          <span className="trade-swap-core">â‡„</span>
+          <span className="trade-swap-core">⇄</span>
         </div>
         <div className="home-section-copy trade-portal-copy">
-          <p className="home-eyebrow">THE PRIVATE EXCHANGE Â· PLAYER TO PLAYER</p>
+          <p className="home-eyebrow">THE PRIVATE EXCHANGE · PLAYER TO PLAYER</p>
           <h2>Make the<br /><em>right trade.</em></h2>
-          <p>Choose a card from Cardstock. Present your offer. Kalenskiâ„¢ accepts, declines or enters a private live negotiation.</p>
-          <button type="button" className="trade-portal-cta" onClick={() => enterEmpire("/trade-hub")}><span>Enter Trade Hub</span><b>â†—</b></button>
+          <p>Choose a card from Cardstock. Present your offer. Kalenski™ accepts, declines or enters a private live negotiation.</p>
+          <button type="button" className="trade-portal-cta" onClick={() => enterEmpire("/trade-hub")}><span>Enter Trade Hub</span><b>↗</b></button>
         </div>
         <p className="trade-portal-mark">01 SELECT<br />02 OFFER<br /><b>03 NEGOTIATE</b></p>
       </section>
@@ -268,10 +268,10 @@ function Home() {
         <div className="arena-duelist arena-duelist-right" aria-hidden="true"><i /></div>
         <div className="arena-impact" aria-hidden="true"><i /><i /><i /></div>
         <div className="home-section-copy arena-copy">
-          <p className="home-eyebrow">THE EMPIRE TOURNAMENTS Â· LIVE</p>
+          <p className="home-eyebrow">THE EMPIRE TOURNAMENTS · LIVE</p>
           <h2>Events<br /><em>start here.</em></h2>
           <p>Two players. One arena. Your next story is waiting for a seat across the table.</p>
-          <button type="button" className="arena-cta" onClick={() => enterEmpire("/events")}><span>Enter the arena</span><b>â†’</b></button>
+          <button type="button" className="arena-cta" onClick={() => enterEmpire("/events")}><span>Enter the arena</span><b>→</b></button>
         </div>
         <p className="arena-side-mark">DUEL<br />SYSTEM<br /><b>ACTIVE</b></p>
       </section>
@@ -286,12 +286,12 @@ function Home() {
           <p className="home-eyebrow">THE COMMUNITY BUILDS</p>
           <h2>Your voice.<br /><em>Our next move.</em></h2>
           <p>Suggest features, vote in live polls and help shape the next chapter of Card Empire.</p>
-          <button type="button" className="feedback-cta" onClick={() => enterEmpire("/community")}><span>Enter Community</span><b>â†—</b></button>
+          <button type="button" className="feedback-cta" onClick={() => enterEmpire("/community")}><span>Enter Community</span><b>↗</b></button>
         </div>
       </section>
 
       <section className="home-preview-teasers">
-        <header><p className="home-eyebrow">CLASSIFIED Â· NEXT INSIDE THE EMPIRE</p><h2>A glimpse.<br /><em>Nothing more.</em></h2></header>
+        <header><p className="home-eyebrow">CLASSIFIED · NEXT INSIDE THE EMPIRE</p><h2>A glimpse.<br /><em>Nothing more.</em></h2></header>
         <div className="preview-teaser-grid">
           <article className="preview-teaser teaser-cardstock"><span>01</span><div className="teaser-blur-card" /><p>CARDSTOCK PROTOCOL</p><h3>Something rare is being prepared.</h3></article>
           <article className="preview-teaser teaser-community"><span>02</span><div className="teaser-signal"><i /><i /><i /></div><p>COMMUNITY SIGNAL</p><h3>Your vote will unlock the next transmission.</h3></article>
@@ -300,10 +300,10 @@ function Home() {
       </section>
 
       <section className="home-manifesto">
-        <p className="home-eyebrow">ABOUT KALENSKIâ„¢</p>
+        <p className="home-eyebrow">ABOUT KALENSKI™</p>
         <div>
-          <h2>Iâ€™m not a card seller<br />like everyone else.<br /><em>Iâ€™m the one who makes<br />the card matter.</em></h2>
-          <p>Every card has a history. Every trade deserves trust. Kalenskiâ„¢ Card EmpireÂ® is a private Cardstock for collectors who expect more than a listing.</p>
+          <h2>I’m not a card seller<br />like everyone else.<br /><em>I’m the one who makes<br />the card matter.</em></h2>
+          <p>Every card has a history. Every trade deserves trust. Kalenski™ Card Empire® is a private Cardstock for collectors who expect more than a listing.</p>
         </div>
         <strong aria-hidden="true">K</strong>
       </section>
@@ -327,7 +327,7 @@ class VisualBanlistBoundary extends Component {
 
   render() {
     if (this.state.failed) {
-      return <div className="visual-banlist-fallback"><strong>Banlist could not load visually.</strong><span>Close and reopen it once â€” the event page stays available.</span></div>;
+      return <div className="visual-banlist-fallback"><strong>Banlist could not load visually.</strong><span>Close and reopen it once — the event page stays available.</span></div>;
     }
     return this.props.children;
   }
@@ -353,7 +353,7 @@ function Events() {
     if (!session) return setNotice("Please sign in before registering.");
     try {
       await registerForEvent(id);
-      setNotice("Registration confirmed â€” welcome to the event.");
+      setNotice("Registration confirmed — welcome to the event.");
     } catch (error) {
       setNotice(error.message);
     }
@@ -373,16 +373,16 @@ function Events() {
         <div className="event-stage-player stage-player-two" aria-hidden="true"><i /><b /></div>
         <div className="event-stage-core" aria-hidden="true"><i /><i /><i /></div>
         <div className="event-stage-copy">
-          <p className="stage-kicker"><span>âœ¦</span> KALENSKIâ„¢ TOURNAMENT SYSTEM</p>
+          <p className="stage-kicker"><span>✦</span> KALENSKI™ TOURNAMENT SYSTEM</p>
           <h1>Enter<br />the <em>arena.</em></h1>
           <p>Live registrations. Official banlists. No second chances once the duel begins.</p>
-          <button type="button" onClick={showSchedule}><span>View active events</span><b>â†“</b></button>
+          <button type="button" onClick={showSchedule}><span>View active events</span><b>↓</b></button>
         </div>
         <div className="event-stage-stats" aria-label="Event status"><span><b>LIVE</b><small>System status</small></span><span><b>{String(events.length).padStart(2, "0")}</b><small>Active events</small></span></div>
         <p className="event-stage-mark">DUEL<br />ARENA<br /><b>01</b></p>
       </section>
 
-      {potmPlayers.length > 0 && <section className="potm-event-banner event-potm-banner"><div><p className="eyebrow">PLAYER OF THE TOURNAMENT</p><strong>âœ¦ {potmPlayers.map((player) => player.username).join(" Â· ")}</strong></div><span>Recognized in the arena</span></section>}
+      {potmPlayers.length > 0 && <section className="potm-event-banner event-potm-banner"><div><p className="eyebrow">PLAYER OF THE TOURNAMENT</p><strong>✦ {potmPlayers.map((player) => player.username).join(" · ")}</strong></div><span>Recognized in the arena</span></section>}
       {notice && <p className="notice event-notice">{notice}</p>}
 
       <section className="event-schedule" id="event-schedule">
@@ -404,7 +404,7 @@ function Events() {
                 <p className="eyebrow">{banlist?.name ?? "Official Banlist"}</p>
                 <h2>{event.title}</h2>
                 <p>{event.description}</p>
-                <strong><i>â—·</i> {new Date(event.starts_at).toLocaleString()} Â· {format.label} Â· {format.teams}</strong>
+                <strong><i>◷</i> {new Date(event.starts_at).toLocaleString()} · {format.label} · {format.teams}</strong>
                 <p className="event-registration-status">{isCompleted ? "Event complete" : format.capacity === null ? "Open registration" : registrations + " / " + format.capacity + " players registered"}</p>
                 {hasBanlistCards && <section className="event-banlist">
                   <button type="button" className="event-banlist-toggle" onClick={() => setOpenBanlists((current) => ({ ...current, [event.id]: !current[event.id] }))}>
@@ -413,10 +413,10 @@ function Events() {
                   {openBanlists[event.id] && <VisualBanlistBoundary resetKey={event.id}><BanlistGallery banlist={banlist} /></VisualBanlistBoundary>}
                 </section>}
               </div>
-              <button className="event-register-button" disabled={isFull || isCompleted} onClick={() => join(event.id)}><span>{isCompleted ? "Complete" : isFull ? "Event full" : "Register"}</span><b>{isFull || isCompleted ? "â€”" : "â†—"}</b></button>
+              <button className="event-register-button" disabled={isFull || isCompleted} onClick={() => join(event.id)}><span>{isCompleted ? "Complete" : isFull ? "Event full" : "Register"}</span><b>{isFull || isCompleted ? "—" : "↗"}</b></button>
             </article>
           );
-        }) : <div className="empty-vault event-empty"><p className="vault-overline">NO EVENTS YET</p><h2>The arena is quiet.</h2><p>Kalenskiâ„¢ will publish the next tournament here.</p></div>}
+        }) : <div className="empty-vault event-empty"><p className="vault-overline">NO EVENTS YET</p><h2>The arena is quiet.</h2><p>Kalenski™ will publish the next tournament here.</p></div>}
       </div>
     </div>
   );
@@ -429,22 +429,22 @@ function About() {
         <div className="about-stage-grain" aria-hidden="true" />
         <div className="about-stage-monogram" aria-hidden="true">K</div>
         <div className="about-stage-copy">
-          <p className="stage-kicker"><span>âœ¦</span> THE OWNER Â· THE COLLECTION Â· THE EMPIRE</p>
-          <h1>Iâ€™m not a card seller<br />like everyone else.</h1>
-          <p className="about-lead">Iâ€™m the one who knows that a card is never just a card.</p>
-          <p>Every piece in Cardstock is chosen, listed and traded by Kalenskiâ„¢ himself. No random inventory. No empty promises. Just a private collection, managed with standards.</p>
+          <p className="stage-kicker"><span>✦</span> THE OWNER · THE COLLECTION · THE EMPIRE</p>
+          <h1>I’m not a card seller<br />like everyone else.</h1>
+          <p className="about-lead">I’m the one who knows that a card is never just a card.</p>
+          <p>Every piece in Cardstock is chosen, listed and traded by Kalenski™ himself. No random inventory. No empty promises. Just a private collection, managed with standards.</p>
         </div>
-        <div className="about-stage-stamp"><small>EST.</small><b>K</b><small>CARD EMPIREÂ®</small></div>
+        <div className="about-stage-stamp"><small>EST.</small><b>K</b><small>CARD EMPIRE®</small></div>
       </section>
       <section className="about-principles">
-        <p className="schedule-kicker">THE KALENSKIâ„¢ STANDARD</p>
+        <p className="schedule-kicker">THE KALENSKI™ STANDARD</p>
         <div className="about-principle-grid">
           <article><span>01</span><h2>Every card<br />has a story.</h2><p>Condition, history and character matter. The right card never feels ordinary.</p></article>
-          <article><span>02</span><h2>Every deal<br />has a name.</h2><p>You donâ€™t trade with a faceless platform. You trade directly with the Empire.</p></article>
+          <article><span>02</span><h2>Every deal<br />has a name.</h2><p>You don’t trade with a faceless platform. You trade directly with the Empire.</p></article>
           <article><span>03</span><h2>Every player<br />has a place.</h2><p>Collectors, customers and tournament players all enter through the same gate.</p></article>
         </div>
       </section>
-      <section className="about-closing"><p>THIS ISNâ€™T A STORE.</p><h2>This is<br /><em>the Empire.</em></h2><span>Kalenskiâ„¢ Card EmpireÂ®</span></section>
+      <section className="about-closing"><p>THIS ISN’T A STORE.</p><h2>This is<br /><em>the Empire.</em></h2><span>Kalenski™ Card Empire®</span></section>
     </div>
   );
 }
@@ -457,25 +457,25 @@ function EmpireFooter() {
     <footer className="empire-footer">
       <div className="empire-footer-top">
         <section className="footer-brand-column">
-          <Link to="/" className="footer-brand"><span>Kalenskiâ„¢</span><strong>Card EmpireÂ®</strong></Link>
+          <Link to="/" className="footer-brand"><span>Kalenski™</span><strong>Card Empire®</strong></Link>
           <p>Private cards. Direct deals. Cardstock built for players who collect with intention.</p>
           <span className="footer-signal"><i /> Empire system online</span>
         </section>
         <nav className="footer-column" aria-label="Explore the Empire">
           <p>EXPLORE</p>
-          <Link to="/marketplace">Card Market <b>â†—</b></Link>
-          <Link to="/trade-hub">Trade Hub <b>â†—</b></Link>
-          <Link to="/events">Events <b>â†—</b></Link>
-          <Link to="/community">Community <b>â†—</b></Link>
-          <Link to="/partners">Partners <b>â†—</b></Link>
-          <Link to="/about">About Kalenski <b>â†—</b></Link>
+          <Link to="/marketplace">Card Market <b>↗</b></Link>
+          <Link to="/trade-hub">Trade Hub <b>↗</b></Link>
+          <Link to="/events">Events <b>↗</b></Link>
+          <Link to="/community">Community <b>↗</b></Link>
+          <Link to="/partners">Partners <b>↗</b></Link>
+          <Link to="/about">About Kalenski <b>↗</b></Link>
         </nav>
         <nav className="footer-column" aria-label="Player links">
           <p>PLAYER ACCESS</p>
-          <Link to="/profile">Player profile <b>â†—</b></Link>
-          <Link to="/messages">Notifications <b>â†—</b></Link>
-          <Link to="/chats">Live trade chat <b>â†—</b></Link>
-          <Link to="/rules">Rights &amp; Policies <b>â†—</b></Link>
+          <Link to="/profile">Player profile <b>↗</b></Link>
+          <Link to="/messages">Notifications <b>↗</b></Link>
+          <Link to="/chats">Live trade chat <b>↗</b></Link>
+          <Link to="/rules">Rights &amp; Policies <b>↗</b></Link>
         </nav>
         <section className="footer-column footer-standard">
           <p>THE STANDARD</p>
@@ -486,7 +486,7 @@ function EmpireFooter() {
         </section>
       </div>
       <div className="empire-footer-bottom">
-        <p>Â© 2026 Kalenskiâ„¢ Card EmpireÂ®. All original Empire branding, website design and original content are protected. <Link to="/rules">Rights &amp; Policies</Link></p>
+        <p>© 2026 Kalenski™ Card Empire®. All original Empire branding, website design and original content are protected. <Link to="/rules">Rights &amp; Policies</Link></p>
         <p className="footer-fan-note">Unofficial fan experience. Yu-Gi-Oh! and related names belong to their respective owners.</p>
       </div>
     </footer>
@@ -494,7 +494,7 @@ function EmpireFooter() {
 }
 
 export default function App() {
-  return <BrowserRouter><ScrollToTop /><DuelDiscCursor /><div className="app-layout"><Navbar /><main className="main-content"><Suspense fallback={<section className="route-loading"><i /><span>Opening Card Empireâ€¦</span></section>}><Routes>
+  return <BrowserRouter><ScrollToTop /><DuelDiscCursor /><div className="app-layout"><Navbar /><main className="main-content"><Suspense fallback={<section className="route-loading"><i /><span>Opening Card Empire…</span></section>}><Routes>
     <Route path="/" element={<Home />} /><Route path="/marketplace" element={<DiscordGuard><Marketplace /></DiscordGuard>} />
     <Route path="/trade-hub" element={<DiscordGuard><TradeHub /></DiscordGuard>} />
     <Route path="/events" element={<Events />} />

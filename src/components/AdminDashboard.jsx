@@ -10,12 +10,12 @@ const blankEvent = { title: "", starts_at: "", description: "", banlist_id: "", 
 const blankBanlist = { name: "", banned: "", limited: "" };
 const blankAvailability = { title: "Card pickup", location: "DMO", starts_at: "", ends_at: "", note: "" };
 const roles = ["customer", "regular_customer", "vip", "potm", "admin"];
-const roleLabels = { customer: "Customer", regular_customer: "Regular Customer", vip: "V.I.P", potm: "POTM Â· Player of the Tournament", admin: "Kalenski Â· Admin" };
+const roleLabels = { customer: "Customer", regular_customer: "Regular Customer", vip: "V.I.P", potm: "POTM · Player of the Tournament", admin: "Kalenski · Admin" };
 const eventFormats = [
   { value: "five_way_ffa", label: "5-WAY FFA", detail: "5 players", capacity: 5 },
   { value: "six_way_ffa", label: "6-WAY FFA", detail: "6 players", capacity: 6 },
-  { value: "three_way_ffa", label: "3-WAY FFA", detail: "2v2v2 Â· 6 players", capacity: 6 },
-  { value: "four_way_ffa", label: "4-WAY FFA", detail: "2v2v2v2 Â· 8 players", capacity: 8 },
+  { value: "three_way_ffa", label: "3-WAY FFA", detail: "2v2v2 · 6 players", capacity: 6 },
+  { value: "four_way_ffa", label: "4-WAY FFA", detail: "2v2v2v2 · 8 players", capacity: 8 },
 ];
 const getEventFormat = (value) => eventFormats.find((format) => format.value === value) ?? { label: "OPEN FORMAT", detail: "No player limit", capacity: null };
 
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
   }, [card.name, selectedCatalogCard]);
 
   if (profile?.role !== "admin") {
-    return <section className="admin-shell"><p className="vault-overline">RESTRICTED AREA</p><h1>Admin access only.</h1><p>Sign in with Kalenskiâ€™s administrator account to manage the Empire.</p></section>;
+    return <section className="admin-shell"><p className="vault-overline">RESTRICTED AREA</p><h1>Admin access only.</h1><p>Sign in with Kalenski’s administrator account to manage the Empire.</p></section>;
   }
 
   const totalGold = data.purchases.reduce((sum, item) => sum + Number(item.paid_gold), 0);
@@ -113,7 +113,7 @@ export default function AdminDashboard() {
       return setNotice("Choose a card from the official DMO catalogue first.");
     }
 
-    setNotice("Getting the automatic card imageâ€¦");
+    setNotice("Getting the automatic card image…");
     const lookup = await fetch("https://db.ygoprodeck.com/api/v7/cardinfo.php?name=" + encodeURIComponent(selectedCatalogCard.name))
       .then((r) => r.ok ? r.json() : null)
       .catch(() => null);
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
     });
 
     if (error) return setNotice(error.message);
-    setNotice(selectedCatalogCard.name + " was added to Cardstock Â· " + selectedCatalogCard.gameRarity + " rarity.");
+    setNotice(selectedCatalogCard.name + " was added to Cardstock · " + selectedCatalogCard.gameRarity + " rarity.");
     setCard(blankCard);
     setSelectedCatalogCard(null);
     load();
@@ -209,7 +209,7 @@ export default function AdminDashboard() {
       created_by: profile.id,
     });
     if (error) return setNotice(error.message);
-    setNotice(banlist.name + " was saved: " + banned_cards.length + " Banned Â· " + limited_cards.length + " Limited.");
+    setNotice(banlist.name + " was saved: " + banned_cards.length + " Banned · " + limited_cards.length + " Limited.");
     setBanlist(blankBanlist);
     load();
   }
@@ -254,7 +254,7 @@ export default function AdminDashboard() {
       p_status: status,
     });
     if (error) return setNotice(error.message);
-    setNotice(status === "declined" ? "Trade offer declined." : "Trade chat opened. Taking you to the inboxâ€¦");
+    setNotice(status === "declined" ? "Trade offer declined." : "Trade chat opened. Taking you to the inbox…");
     load();
     if (chatId) window.setTimeout(() => window.location.assign("/chats"), 450);
   }
@@ -316,7 +316,7 @@ export default function AdminDashboard() {
 
   return (
     <main className="admin-shell">
-      <header><div><p className="vault-overline">KALENSKIâ„¢ CONTROL ROOM</p><h1>Empire Admin</h1></div><span>Live system</span></header>
+      <header><div><p className="vault-overline">KALENSKI™ CONTROL ROOM</p><h1>Empire Admin</h1></div><span>Live system</span></header>
       <nav className="admin-tabs">
         {[
           ["cards", "Cards", data.cards.length + " in stock"],
@@ -339,12 +339,12 @@ export default function AdminDashboard() {
             <input required autoComplete="off" placeholder="Search the official card catalogue (e.g. PO)" value={card.name} onChange={(e) => { setCard({ ...card, name: e.target.value }); setSelectedCatalogCard(null); }} />
             {suggestions.length > 0 && <div className="card-suggestions">{suggestions.map((item) => (
               <button type="button" key={item.name} onClick={() => { setCard({ ...card, name: item.name, category: item.category, rarity: item.rarity }); setSelectedCatalogCard(item); setSuggestions([]); }}>
-                <span>{item.name}<small>{item.category} Â· {item.gameRarity}</small></span><b>{item.gameRarity}</b>
+                <span>{item.name}<small>{item.category} · {item.gameRarity}</small></span><b>{item.gameRarity}</b>
               </button>
             ))}</div>}
           </div>
           <div className="admin-row"><input required type="number" min="0" placeholder="Price in Gold" value={card.price} onChange={(e) => setCard({ ...card, price: e.target.value })} /><input required type="number" min="0" placeholder="Quantity" value={card.quantity} onChange={(e) => setCard({ ...card, quantity: e.target.value })} /></div>
-          <div className="admin-row"><input readOnly value={selectedCatalogCard ? selectedCatalogCard.category.toUpperCase() + " Â· official type" : "Official type"} /><input readOnly value={selectedCatalogCard ? selectedCatalogCard.gameRarity + " Â· official rarity" : "Official rarity"} /></div>
+          <div className="admin-row"><input readOnly value={selectedCatalogCard ? selectedCatalogCard.category.toUpperCase() + " · official type" : "Official type"} /><input readOnly value={selectedCatalogCard ? selectedCatalogCard.gameRarity + " · official rarity" : "Official rarity"} /></div>
           <button className="vault-submit" disabled={!selectedCatalogCard}>{selectedCatalogCard ? "Add to Cardstock" : "Choose official card"}</button>
         </form>
         <section className="admin-panel"><h2>Cardstock inventory</h2><div className="admin-list">
@@ -352,12 +352,12 @@ export default function AdminDashboard() {
             <form key={item.id} className="admin-card-edit" onSubmit={saveCard}>
               <strong>{item.name}</strong>
               <div className="admin-row"><label>My price<input type="number" min="0" value={editingCard.price} onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })} /></label><label>Stock<input type="number" min="0" value={editingCard.quantity} onChange={(e) => setEditingCard({ ...editingCard, quantity: e.target.value })} /></label></div>
-              <div className="admin-row"><label>Other seller price<input type="number" min="0" placeholder="No exact listing" value={editingCard.external_market_price ?? ""} onChange={(e) => setEditingCard({ ...editingCard, external_market_price: e.target.value })} /></label><a className="admin-market-source" href="https://dmo-market.onrender.com/" target="_blank" rel="noreferrer">Check DMO Market â†—</a></div>
+              <div className="admin-row"><label>Other seller price<input type="number" min="0" placeholder="No exact listing" value={editingCard.external_market_price ?? ""} onChange={(e) => setEditingCard({ ...editingCard, external_market_price: e.target.value })} /></label><a className="admin-market-source" href="https://dmo-market.onrender.com/" target="_blank" rel="noreferrer">Check DMO Market ↗</a></div>
               <div className="admin-row"><select value={editingCard.category} onChange={(e) => setEditingCard({ ...editingCard, category: e.target.value })}><option value="monster">Monster</option><option value="spell">Spell</option><option value="trap">Trap</option></select><select value={editingCard.rarity} onChange={(e) => setEditingCard({ ...editingCard, rarity: e.target.value })}><option value="common">Common</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="rainbow">Rainbow</option></select></div>
               <aside><button type="submit">Save</button><button type="button" onClick={() => setEditingCard(null)}>Cancel</button></aside>
             </form>
           ) : (
-            <div key={item.id} className="admin-stock"><span>{item.name}</span><b>{item.quantity} Â· {Number(item.price).toLocaleString()} G</b><aside><button onClick={() => setEditingCard(item)}>Edit</button><button onClick={() => deleteCard(item.id, item.name)}>Remove</button></aside></div>
+            <div key={item.id} className="admin-stock"><span>{item.name}</span><b>{item.quantity} · {Number(item.price).toLocaleString()} G</b><aside><button onClick={() => setEditingCard(item)}>Edit</button><button onClick={() => deleteCard(item.id, item.name)}>Remove</button></aside></div>
           ))}
           {!data.cards.length && <p>No database cards yet.</p>}
         </div></section>
@@ -370,10 +370,10 @@ export default function AdminDashboard() {
             <input required placeholder="Event name" value={event.title} onChange={(e) => setEvent({ ...event, title: e.target.value })} />
             <input required type="datetime-local" value={event.starts_at} onChange={(e) => setEvent({ ...event, starts_at: e.target.value })} />
             <select value={event.event_format} onChange={(e) => setEvent({ ...event, event_format: e.target.value })}>
-              {eventFormats.map((format) => <option value={format.value} key={format.value}>{format.label} Â· {format.detail}</option>)}
+              {eventFormats.map((format) => <option value={format.value} key={format.value}>{format.label} · {format.detail}</option>)}
             </select>
             <select value={event.banlist_id} onChange={(e) => setEvent({ ...event, banlist_id: e.target.value })}><option value="">No banlist assigned</option>{data.banlists.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select>
-            <textarea placeholder="Rules, location, prizeâ€¦" value={event.description} onChange={(e) => setEvent({ ...event, description: e.target.value })} />
+            <textarea placeholder="Rules, location, prize…" value={event.description} onChange={(e) => setEvent({ ...event, description: e.target.value })} />
             <button className="vault-submit">{editingEventId ? "Save event" : "Publish event"}</button>
             {editingEventId && <button type="button" className="admin-secondary" onClick={() => { setEditingEventId(null); setEvent(blankEvent); }}>Cancel edit</button>}
           </form>
@@ -381,8 +381,8 @@ export default function AdminDashboard() {
           <form className="admin-panel" onSubmit={addBanlist}>
             <h2>Create banlist</h2><p>Paste one card per line, or separate cards with commas. Duplicate names are removed automatically.</p>
             <input required placeholder="Banlist name" value={banlist.name} onChange={(e) => setBanlist({ ...banlist, name: e.target.value })} />
-            <label className="banlist-field"><span>Banned cards</span><textarea placeholder={"Pot of Greed\nGraceful Charity\nâ€¦"} value={banlist.banned} onChange={(e) => setBanlist({ ...banlist, banned: e.target.value })} /></label>
-            <label className="banlist-field"><span>Limited cards</span><textarea placeholder={"Jinzo\nCaius the Shadow Monarch\nâ€¦"} value={banlist.limited} onChange={(e) => setBanlist({ ...banlist, limited: e.target.value })} /></label>
+            <label className="banlist-field"><span>Banned cards</span><textarea placeholder={"Pot of Greed\nGraceful Charity\n…"} value={banlist.banned} onChange={(e) => setBanlist({ ...banlist, banned: e.target.value })} /></label>
+            <label className="banlist-field"><span>Limited cards</span><textarea placeholder={"Jinzo\nCaius the Shadow Monarch\n…"} value={banlist.limited} onChange={(e) => setBanlist({ ...banlist, limited: e.target.value })} /></label>
             <button className="vault-submit">Save banlist</button>
           </form>
         </div>
@@ -397,8 +397,8 @@ export default function AdminDashboard() {
             return <div key={item.id} className="admin-event-row">
               <span>
                 <b>{item.title}</b>
-                <small>{new Date(item.starts_at).toLocaleString()} Â· {eventFormat.label} Â· {eventFormat.detail} Â· {registrations.length}{eventFormat.capacity ? " / " + eventFormat.capacity : ""} registered Â· {item.banlist?.name ?? "No banlist"}</small>
-                {winner && <em className="event-winner-badge">WINNER Â· {winner.username} Â· +1 WIN</em>}
+                <small>{new Date(item.starts_at).toLocaleString()} · {eventFormat.label} · {eventFormat.detail} · {registrations.length}{eventFormat.capacity ? " / " + eventFormat.capacity : ""} registered · {item.banlist?.name ?? "No banlist"}</small>
+                {winner && <em className="event-winner-badge">WINNER · {winner.username} · +1 WIN</em>}
               </span>
               {!winner && <div className="event-winner-controls">
                 <select value={selectedWinnerId} onChange={(event) => setWinnerSelections((current) => ({ ...current, [item.id]: event.target.value }))}>
@@ -414,7 +414,7 @@ export default function AdminDashboard() {
         </div></section>
 
         <section className="admin-panel"><h2>Banlist Library</h2><div className="admin-list">
-          {data.banlists.map((item) => { const banned = item.banned_cards ?? []; const limited = item.limited_cards ?? []; const allCards = [...banned, ...limited]; return <div key={item.id} className="admin-banlist-row"><span><b>{item.name}</b><small>{banned.length} Banned Â· {limited.length} Limited Â· {allCards.slice(0, 4).join(" Â· ")}{allCards.length > 4 ? " â€¦" : ""}</small></span><button onClick={() => deleteBanlist(item.id, item.name)}>Remove</button></div>; })}
+          {data.banlists.map((item) => { const banned = item.banned_cards ?? []; const limited = item.limited_cards ?? []; const allCards = [...banned, ...limited]; return <div key={item.id} className="admin-banlist-row"><span><b>{item.name}</b><small>{banned.length} Banned · {limited.length} Limited · {allCards.slice(0, 4).join(" · ")}{allCards.length > 4 ? " …" : ""}</small></span><button onClick={() => deleteBanlist(item.id, item.name)}>Remove</button></div>; })}
           {!data.banlists.length && <p>No banlists saved yet.</p>}
         </div></section>
       </section>}
@@ -432,23 +432,23 @@ export default function AdminDashboard() {
       {tab === "books" && <section className="admin-books admin-order-panel">
         <div className="sales-summary"><article><small>Total Gold</small><strong>{totalGold.toLocaleString()} G</strong></article><article><small>Cards sold</small><strong>{cardsSold}</strong></article><article><small>Purchases</small><strong>{data.purchases.length}</strong></article></div>
         <section className="admin-panel"><header className="admin-order-heading"><div><p className="vault-overline">SALES LEDGER</p><h2>Buy Orders</h2></div><span>{data.purchases.length} recorded</span></header><p>Every completed purchase is saved here with buyer, card, price and time.</p><div className="admin-list">
-          {data.purchases.map((item) => <div key={item.id} className="admin-sale"><span><b>{item.card?.name ?? item.card_name ?? "Removed card"}</b><small>Buyer: {item.player?.username ?? "Player"} Â· {item.quantity} copy/copies</small></span><span><b>{Number(item.paid_gold).toLocaleString()} G</b><small>{new Date(item.created_at).toLocaleString()}</small></span></div>)}
+          {data.purchases.map((item) => <div key={item.id} className="admin-sale"><span><b>{item.card?.name ?? item.card_name ?? "Removed card"}</b><small>Buyer: {item.player?.username ?? "Player"} · {item.quantity} copy/copies</small></span><span><b>{Number(item.paid_gold).toLocaleString()} G</b><small>{new Date(item.created_at).toLocaleString()}</small></span></div>)}
           {!data.purchases.length && <p>No purchases have been recorded yet.</p>}
         </div></section>
       </section>}
 
       {tab === "community" && <section className="admin-community-console">
-        <header><div><p className="vault-overline">CARD EMPIRE TEAM CHANNEL</p><h2>Speak directly to the community.</h2></div><button type="button" onClick={() => window.location.assign("/community")}>View public Community â†—</button></header>
+        <header><div><p className="vault-overline">CARD EMPIRE TEAM CHANNEL</p><h2>Speak directly to the community.</h2></div><button type="button" onClick={() => window.location.assign("/community")}>View public Community ↗</button></header>
         <div className="admin-grid">
           <form className="admin-panel" onSubmit={publishAnnouncement}><AdminIcon name="community" /><h3>New announcement</h3><p>Send an official message to every verified player.</p><input required value={adminAnnouncement.title} onChange={(e) => setAdminAnnouncement({ ...adminAnnouncement, title: e.target.value })} placeholder="Announcement title" /><textarea required value={adminAnnouncement.body} onChange={(e) => setAdminAnnouncement({ ...adminAnnouncement, body: e.target.value })} placeholder="Message to every player" /><button className="vault-submit">Publish announcement</button></form>
           <form className="admin-panel" onSubmit={publishPoll}><AdminIcon name="offers" /><h3>New community poll</h3><p>Separate each answer with a comma. Up to six options are supported.</p><input required value={adminPoll.question} onChange={(e) => setAdminPoll({ ...adminPoll, question: e.target.value })} placeholder="Community question" /><input required value={adminPoll.options} onChange={(e) => setAdminPoll({ ...adminPoll, options: e.target.value })} placeholder="Option one, Option two, Option three" /><button className="vault-submit">Open poll</button></form>
           <form className="admin-panel admin-availability-panel" onSubmit={publishAvailability}><AdminIcon name="events" /><h3>Pickup readiness</h3><p>Publish when you are online and when customers can collect their cards.</p><div className="admin-row"><input required value={availabilityForm.title} onChange={(e) => setAvailabilityForm({ ...availabilityForm, title: e.target.value })} placeholder="Card pickup" /><input required value={availabilityForm.location} onChange={(e) => setAvailabilityForm({ ...availabilityForm, location: e.target.value })} placeholder="Location / server" /></div><div className="admin-row"><label>Online from<input required type="datetime-local" value={availabilityForm.starts_at} onChange={(e) => setAvailabilityForm({ ...availabilityForm, starts_at: e.target.value })} /></label><label>Online until<input required type="datetime-local" value={availabilityForm.ends_at} onChange={(e) => setAvailabilityForm({ ...availabilityForm, ends_at: e.target.value })} /></label></div><textarea value={availabilityForm.note} maxLength="600" onChange={(e) => setAvailabilityForm({ ...availabilityForm, note: e.target.value })} placeholder="Optional pickup note" /><button className="vault-submit">Publish live window</button></form>
-          <section className="admin-panel admin-availability-list"><AdminIcon name="community" /><h3>Published windows</h3><p>These times update immediately for every verified player.</p><div>{data.availability.map((slot) => <article key={slot.id}><span><b>{slot.title}</b><small>{new Date(slot.starts_at).toLocaleString()} â€“ {new Date(slot.ends_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} Â· {slot.location}</small></span><button type="button" onClick={() => deleteAvailability(slot.id)}>Remove</button></article>)}{!data.availability.length && <small>No pickup windows published.</small>}</div></section>
+          <section className="admin-panel admin-availability-list"><AdminIcon name="community" /><h3>Published windows</h3><p>These times update immediately for every verified player.</p><div>{data.availability.map((slot) => <article key={slot.id}><span><b>{slot.title}</b><small>{new Date(slot.starts_at).toLocaleString()} – {new Date(slot.ends_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} · {slot.location}</small></span><button type="button" onClick={() => deleteAvailability(slot.id)}>Remove</button></article>)}{!data.availability.length && <small>No pickup windows published.</small>}</div></section>
         </div>
       </section>}
 
       {tab === "players" && <section className="admin-panel"><h2>Player roles</h2><p>Delete removes the player profile and their Empire data. Administrator profiles are protected.</p><div className="admin-list">
-        {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.dmo_name || "DMO name missing"}</b><small>Discord @{item.username} Â· {item.wins}W / {item.losses}L</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select>{item.id !== profile.id && item.role !== "admin" && <button className="admin-delete-player" onClick={() => deletePlayer(item.id, item.dmo_name || item.username)}>Delete player</button>}</div>)}
+        {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.dmo_name || "DMO name missing"}</b><small>Discord @{item.username} · {item.wins}W / {item.losses}L</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select>{item.id !== profile.id && item.role !== "admin" && <button className="admin-delete-player" onClick={() => deletePlayer(item.id, item.dmo_name || item.username)}>Delete player</button>}</div>)}
       </div></section>}
     </main>
   );
