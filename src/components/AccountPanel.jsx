@@ -19,56 +19,74 @@ const loyaltyLevel = (points) => {
   return { name: "Vault Initiate", next: 10, color: "initiate" };
 };
 
+function DiscordMark() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 5.3A16 16 0 0 0 15 4l-.5 1.1a14 14 0 0 0-5 0L9 4a16 16 0 0 0-3.9 1.3C2.6 9 1.9 12.5 2.2 16a16 16 0 0 0 4.9 2.5l1.2-1.6a10 10 0 0 1-1.9-.9l.5-.4c3.7 1.7 7.7 1.7 11.3 0l.6.4c-.6.4-1.3.7-1.9.9l1.2 1.6A16 16 0 0 0 23 16c.4-4.1-.7-7.5-4.1-10.7ZM8.7 14.2c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.6 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z" /></svg>;
+}
+
 export default function AccountPanel() {
-  const { configured, loading, session, profile, signIn, signUp, signOut } = useAuth();
-  const [mode, setMode] = useState("signin");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const { configured, loading, session, profile, signInWithDiscord, signOut, discordConnected } = useAuth();
   const [message, setMessage] = useState("");
+  const [connecting, setConnecting] = useState(false);
 
-  if (!configured) return <div className="account-card"><h2>Player account</h2><p>Player accounts will be available shortly.</p></div>;
-  if (loading) return <div className="account-card">Loading player account…</div>;
-  if (session) {
-    const activeRole = String(profile?.role ?? "customer").toLowerCase().replace(/\s+/g, "_");
-    const timedVip = Boolean(profile?.vip_until && new Date(profile.vip_until).getTime() > Date.now());
-    const loyaltyPoints = Number(profile?.loyalty_points ?? 0);
-    const loyaltyPurchases = Number(profile?.loyalty_purchases ?? 0);
-    const vaultPasses = Number(profile?.loyalty_free_card_credits ?? 0);
-    const loyalty = loyaltyLevel(loyaltyPoints);
-    const levelStart = loyaltyPoints >= 100 ? 100 : loyaltyPoints >= 50 ? 50 : loyaltyPoints >= 20 ? 20 : loyaltyPoints >= 10 ? 10 : 0;
-    const progress = loyalty.next ? Math.min(100, Math.round(((loyaltyPoints - levelStart) / (loyalty.next - levelStart)) * 100)) : 100;
-    const displayedRole = timedVip && activeRole !== "vip" ? "V.I.P PASS" : (roleLabels[activeRole] ?? "Customer");
-    return (
-      <section className="account-card player-identity-card">
-        <header className="player-profile-head">
-          <p className="overline">PLAYER PROFILE · VERIFIED</p>
-          <span className="player-profile-status"><i /> Online</span>
-        </header>
-        <div className="player-name-record">
-          <small>EMPIRE PLAYER</small>
-          <h2>{profile?.username ?? "Player"}</h2>
-        </div>
-        <div className="profile-record">
-          <div className="profile-score-record"><small>S / N</small><b>{profile?.wins ?? 0} <i>/</i> {profile?.losses ?? 0}</b></div>
-          <div className="profile-role-record"><small>ROLE</small><b className={"role-chip role-" + (timedVip ? "vip" : activeRole)}>{displayedRole}</b></div>
-        </div>
-        <section className={"loyalty-record loyalty-" + loyalty.color}>
-          <header><div><small>EMPIRE LOYALTY</small><b>{loyalty.name}</b></div><strong>LVL {loyaltyPoints} <small>· {loyaltyPoints} PTS</small></strong></header>
-          <div className="loyalty-progress"><i style={{ width: progress + "%" }} /></div>
-          <footer><span>{loyalty.next ? loyalty.next - loyaltyPoints + " pts to " + (loyalty.next === 10 ? "Regular Customer" : loyalty.next === 20 ? "Vault Pass" : loyalty.next === 50 ? "7-day V.I.P Pass" : "30-day V.I.P Pass") : "Maximum loyalty level reached"}</span><b>{loyaltyPurchases} purchases · {vaultPasses} Vault Pass{vaultPasses === 1 ? "" : "es"}</b></footer>
-          {timedVip && <p>V.I.P Pass active until {new Date(profile.vip_until).toLocaleDateString()} · −25% in the Card Vault</p>}
-        </section>
-        <button className="button-quiet player-signout" onClick={signOut}>Sign out</button>
-      </section>
-    );
-  }
-
-  async function submit(event) {
-    event.preventDefault();
+  async function connectDiscord() {
     setMessage("");
-    const { error } = mode === "signin" ? await signIn(username, password) : await signUp(username, password);
-    setMessage(error ? error.message : mode === "signin" ? "Signed in." : "Account created. You can sign in now.");
+    setConnecting(true);
+    if (session && !discordConnected) await signOut();
+    const { error } = await signInWithDiscord();
+    if (error) {
+      setMessage(error.message);
+      setConnecting(false);
+    }
   }
 
-  return <section className="account-card"><p className="overline">CARD EMPIRE PLAYER ACCESS</p><h2>{mode === "signin" ? "Welcome back" : "Create your player account"}</h2><p className="account-subtitle">Only your username is shown in the Empire.</p><form className="account-form" onSubmit={submit}><label>Username<input required minLength="3" maxLength="30" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Your DMO name" /></label><label>Password<input required minLength="6" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Choose a password" /></label><button className="button-primary" type="submit">{mode === "signin" ? "Sign in" : "Create account"}</button></form>{message && <p className="account-message">{message}</p>}<button className="button-quiet" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>{mode === "signin" ? "New here? Create account" : "I already have an account"}</button></section>;
+  if (!configured) return <div className="account-card"><h2>Discord access</h2><p>Player access will be available shortly.</p></div>;
+  if (loading) return <div className="account-card">Checking Discord connection…</div>;
+
+  if (!session || !discordConnected) {
+    return <section className="account-card discord-access-card">
+      <p className="overline">CARD EMPIRE · VERIFIED ACCESS</p>
+      <div className="discord-access-mark"><DiscordMark /></div>
+      <h2>Continue with Discord</h2>
+      <p className="account-subtitle">A connected Discord account is required to enter the Card Market, Trade Hub and private chats. No separate password is stored by Card Empire.</p>
+      <button className="discord-login-button" type="button" onClick={connectDiscord} disabled={connecting}>
+        <DiscordMark /><span>{connecting ? "Connecting…" : "Connect Discord account"}</span>
+      </button>
+      {session && !discordConnected && <p className="discord-migration-note">Your old player login is no longer accepted. Connect Discord to continue.</p>}
+      {message && <p className="account-message">{message}</p>}
+    </section>;
+  }
+
+  const activeRole = String(profile?.role ?? "customer").toLowerCase().replace(/\s+/g, "_");
+  const timedVip = Boolean(profile?.vip_until && new Date(profile.vip_until).getTime() > Date.now());
+  const loyaltyPoints = Number(profile?.loyalty_points ?? 0);
+  const loyaltyPurchases = Number(profile?.loyalty_purchases ?? 0);
+  const vaultPasses = Number(profile?.loyalty_free_card_credits ?? 0);
+  const loyalty = loyaltyLevel(loyaltyPoints);
+  const levelStart = loyaltyPoints >= 100 ? 100 : loyaltyPoints >= 50 ? 50 : loyaltyPoints >= 20 ? 20 : loyaltyPoints >= 10 ? 10 : 0;
+  const progress = loyalty.next ? Math.min(100, Math.round(((loyaltyPoints - levelStart) / (loyalty.next - levelStart)) * 100)) : 100;
+  const displayedRole = timedVip && activeRole !== "vip" ? "V.I.P PASS" : (roleLabels[activeRole] ?? "Customer");
+
+  return (
+    <section className="account-card player-identity-card">
+      <header className="player-profile-head">
+        <p className="overline">PLAYER PROFILE · DISCORD VERIFIED</p>
+        <span className="player-profile-status"><i /> Online</span>
+      </header>
+      <div className="player-name-record">
+        <small>DISCORD PLAYER</small>
+        <h2>{profile?.username ?? session.user.user_metadata?.name ?? "Player"}</h2>
+      </div>
+      <div className="profile-record">
+        <div className="profile-score-record"><small>S / N</small><b>{profile?.wins ?? 0} <i>/</i> {profile?.losses ?? 0}</b></div>
+        <div className="profile-role-record"><small>ROLE</small><b className={"role-chip role-" + (timedVip ? "vip" : activeRole)}>{displayedRole}</b></div>
+      </div>
+      <section className={"loyalty-record loyalty-" + loyalty.color}>
+        <header><div><small>EMPIRE LOYALTY</small><b>{loyalty.name}</b></div><strong>LVL {loyaltyPoints} <small>· {loyaltyPoints} PTS</small></strong></header>
+        <div className="loyalty-progress"><i style={{ width: progress + "%" }} /></div>
+        <footer><span>{loyalty.next ? loyalty.next - loyaltyPoints + " pts to " + (loyalty.next === 10 ? "Regular Customer" : loyalty.next === 20 ? "Vault Pass" : loyalty.next === 50 ? "7-day V.I.P Pass" : "30-day V.I.P Pass") : "Maximum loyalty level reached"}</span><b>{loyaltyPurchases} purchases · {vaultPasses} Vault Pass{vaultPasses === 1 ? "" : "es"}</b></footer>
+        {timedVip && <p>V.I.P Pass active until {new Date(profile.vip_until).toLocaleDateString()} · −25% in the Card Vault</p>}
+      </section>
+      <button className="button-quiet player-signout" onClick={signOut}>Sign out of Discord</button>
+    </section>
+  );
 }
