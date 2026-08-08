@@ -2,20 +2,26 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import "./TradeHub.css";
+import "./TradeHubPreview.css";
 
 export default function TradeHub() {
-  const { session } = useAuth();
+  const { session, profile } = useAuth();
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [offeredCards, setOfferedCards] = useState("");
   const [message, setMessage] = useState("");
   const [notice, setNotice] = useState("");
+  const isAdmin = profile?.role === "admin";
 
   const cardImage = (card) => card?.ygo_card_id
     ? "https://images.ygoprodeck.com/images/cards/" + card.ygo_card_id + ".jpg"
     : card?.image_url;
 
   useEffect(() => {
+    if (!isAdmin) {
+      setCards([]);
+      return undefined;
+    }
     let active = true;
     const loadCards = async () => {
       const { data } = await supabase.from("cards").select("id, name, image_url, ygo_card_id, rarity, category, price").gt("quantity", 0).order("price", { ascending: false });
@@ -26,10 +32,11 @@ export default function TradeHub() {
       .on("postgres_changes", { event: "*", schema: "public", table: "cards" }, loadCards)
       .subscribe();
     return () => { active = false; channel.unsubscribe(); };
-  }, [session]);
+  }, [isAdmin]);
 
   async function submitTrade(event) {
     event.preventDefault();
+    if (!isAdmin) return setNotice("Trade Hub is not open to players yet.");
     if (!session) return setNotice("Please sign in before creating a Trade Hub offer.");
     if (!selectedCard) return setNotice("Choose a card from Cardstock first.");
     const { error } = await supabase.rpc("create_trade_offer", {
@@ -42,6 +49,24 @@ export default function TradeHub() {
     setOfferedCards("");
     setMessage("");
     setSelectedCard(null);
+  }
+
+  if (!isAdmin) {
+    return <main className="trade-hub-page trade-hub-preview">
+      <section className="trade-hub-hero">
+        <div className="trade-hub-orbit orbit-one" aria-hidden="true" />
+        <div className="trade-hub-orbit orbit-two" aria-hidden="true" />
+        <p className="trade-kicker">KALENSKI™ PRIVATE EXCHANGE</p>
+        <h1>Trade <em>Hub.</em></h1>
+        <p>The exchange protocol is being prepared behind closed doors.</p>
+      </section>
+      <section className="trade-coming-soon" aria-labelledby="trade-preview-title">
+        <span>CLASSIFIED · ADMIN PREVIEW ACTIVE</span>
+        <h2 id="trade-preview-title">Coming<br /><em>soon…</em></h2>
+        <p>Card selection, proposals and private negotiations will unlock in a future Empire update.</p>
+        <i aria-hidden="true">⇄</i>
+      </section>
+    </main>;
   }
 
   return (

@@ -1,0 +1,40 @@
+.purchase-chat .chat-actions .fail-deal {
+  height: 29px;
+  padding: 0 8px;
+  border: 1px solid rgba(242, 112, 101, .45);
+  border-radius: 4px;
+  background: rgba(126, 35, 30, .12);
+  color: #ffaaa2;
+  font-size: .54rem;
+  font-weight: 950;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.purchase-chat .chat-actions .fail-deal:hover { background: #d9594e; color: #fff; }
+.purchase-chat .deal-status.failed { color: #ff8e85; }
+.purchase-chat.is-failed-chat {
+  border-color: rgba(230, 86, 75, .42);
+  box-shadow: 0 28px 90px #000d, inset 0 0 30px rgba(163, 42, 35, .06);
+}
+.purchase-chat.is-failed-chat .chat-closed {
+  border-top-color: rgba(235, 91, 80, .25);
+  background: linear-gradient(105deg, rgba(118, 29, 24, .19), rgba(13, 17, 15, .96)) !important;
+  color: #ffaaa2 !important;
+}
+.purchase-chat .system-message.order-welcome {
+  margin: 5px 0 10px;
+  padding: 18px;
+  border: 1px solid rgba(145, 211, 154, .32);
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(62, 130, 76, .18), rgba(10, 20, 13, .9));
+  text-align: left;
+}
+.purchase-chat .system-message.order-welcome p {
+  padding: 0;
+  background: transparent;
+  color: #d9eee0;
+  font-size: .93rem;
+  font-weight: 760;
+  line-height: 1.65;
+}

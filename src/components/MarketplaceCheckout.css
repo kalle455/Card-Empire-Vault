@@ -1,0 +1,61 @@
+.discount-code-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 7px;
+  margin-top: 14px;
+}
+.discount-code-row input,
+.bundle-proposal input {
+  min-width: 0;
+  height: 39px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, .13);
+  border-radius: 4px;
+  background: #080b09;
+  color: #eef5ef;
+  outline: 0;
+}
+.discount-code-row input:focus,
+.bundle-proposal input:focus { border-color: rgba(145, 211, 154, .66); }
+.discount-code-row button,
+.bundle-proposal button {
+  min-height: 39px;
+  padding: 0 11px;
+  border: 1px solid rgba(145, 211, 154, .35);
+  border-radius: 4px;
+  background: rgba(145, 211, 154, .1);
+  color: #bdf3c5;
+  font-size: .61rem;
+  font-weight: 900;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.discount-code-row .code-remove { width: 39px; padding: 0; border-color: rgba(255,255,255,.12); color: #9ca69f; }
+.discount-code-row button:disabled,
+.bundle-proposal button:disabled { opacity: .46; }
+.bundle-proposal {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+  padding: 13px;
+  border: 1px solid rgba(228, 194, 94, .25);
+  background: linear-gradient(125deg, rgba(111, 81, 15, .13), rgba(15, 27, 19, .88));
+}
+.bundle-proposal > small { color: #e5c665; font-size: .54rem; font-weight: 950; letter-spacing: .15em; }
+.bundle-proposal > strong { color: #dfe9e1; font-size: .76rem; }
+.bundle-proposal > div { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
+.bundle-proposal button { border-color: rgba(228, 194, 94, .38); color: #f1d77e; background: rgba(116, 82, 10, .14); }
+
+@media (max-width: 460px) {
+  .bundle-proposal > div { grid-template-columns: 1fr; }
+}
+
+.external-market-compare.market-status-available {
+  border-color: rgba(145, 211, 154, .3);
+  background: linear-gradient(115deg, rgba(51, 126, 68, .13), rgba(7, 12, 9, .92));
+}
+.external-market-compare.market-status-needs_review {
+  border-color: rgba(232, 201, 99, .3);
+  background: linear-gradient(115deg, rgba(119, 88, 14, .12), rgba(7, 12, 9, .92));
+}
+.external-market-compare.market-status-unavailable dd { color: #8c9990; }

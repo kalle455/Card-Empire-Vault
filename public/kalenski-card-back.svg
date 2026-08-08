@@ -1,38 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1440" role="img" aria-label="Orange vortex card back">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 980" role="img" aria-labelledby="title description">
+  <title id="title">Card Empire collector card back</title>
+  <desc id="description">Dark emerald Card Empire card back with the angular KE monogram.</desc>
   <defs>
-    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#6e3214"/><stop offset=".16" stop-color="#d77b2b"/><stop offset=".35" stop-color="#32140b"/><stop offset=".68" stop-color="#a9501b"/><stop offset="1" stop-color="#140806"/>
-    </linearGradient>
-    <radialGradient id="core" cx=".46" cy=".5" r=".72">
-      <stop offset="0" stop-color="#030302"/><stop offset=".27" stop-color="#0a0706"/><stop offset=".48" stop-color="#2d130b"/><stop offset=".72" stop-color="#5a2510"/><stop offset="1" stop-color="#110806"/>
-    </radialGradient>
-    <linearGradient id="fire" x1="0" y1=".5" x2="1" y2=".5">
-      <stop stop-color="#3d160c"/><stop offset=".28" stop-color="#f0a341"/><stop offset=".52" stop-color="#ffcb6b"/><stop offset=".73" stop-color="#b54e1c"/><stop offset="1" stop-color="#301008"/>
-    </linearGradient>
-    <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9ffe4"/><stop offset=".16" stop-color="#56f897"/><stop offset=".48" stop-color="#0c6d3c"/><stop offset=".72" stop-color="#94ffc0"/><stop offset="1" stop-color="#123d27"/></linearGradient>
+    <radialGradient id="field" cx="50%" cy="44%" r="69%"><stop stop-color="#183d27"/><stop offset=".42" stop-color="#0b1b12"/><stop offset="1" stop-color="#030806"/></radialGradient>
+    <linearGradient id="metal" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="#ecfff1"/><stop offset=".12" stop-color="#82ffb5"/><stop offset=".38" stop-color="#1fcb7a"/><stop offset=".63" stop-color="#075b32"/><stop offset=".83" stop-color="#70ffa9"/><stop offset="1" stop-color="#12351f"/></linearGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0V42" fill="none" stroke="#69f69b" stroke-opacity=".055"/><path d="M0 21H42M21 0V42" fill="none" stroke="#69f69b" stroke-opacity=".025"/></pattern>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="9" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
-  <rect width="1000" height="1440" rx="28" fill="#170a06"/>
-  <rect x="23" y="23" width="954" height="1394" rx="16" fill="url(#frame)" stroke="#e6a24e" stroke-width="7"/>
-  <rect x="49" y="49" width="902" height="1342" rx="8" fill="url(#core)" stroke="#130704" stroke-width="18"/>
-  <g fill="none" stroke="url(#fire)" stroke-linecap="round" filter="url(#glow)" opacity=".95">
-    <ellipse cx="500" cy="720" rx="418" ry="190" stroke-width="18" transform="rotate(-32 500 720)"/>
-    <ellipse cx="500" cy="720" rx="385" ry="174" stroke-width="13" transform="rotate(-22 500 720)" stroke-dasharray="940 140"/>
-    <ellipse cx="500" cy="720" rx="347" ry="158" stroke-width="20" transform="rotate(-41 500 720)" stroke-dasharray="760 150"/>
-    <ellipse cx="500" cy="720" rx="308" ry="140" stroke-width="12" transform="rotate(-9 500 720)" stroke-dasharray="620 110"/>
-    <ellipse cx="500" cy="720" rx="267" ry="119" stroke-width="19" transform="rotate(-55 500 720)" stroke-dasharray="480 88"/>
-    <ellipse cx="500" cy="720" rx="224" ry="99" stroke-width="12" transform="rotate(-18 500 720)" stroke-dasharray="355 66"/>
-    <ellipse cx="500" cy="720" rx="181" ry="80" stroke-width="17" transform="rotate(-47 500 720)" stroke-dasharray="260 50"/>
-    <ellipse cx="500" cy="720" rx="139" ry="62" stroke-width="11" transform="rotate(-11 500 720)" stroke-dasharray="190 37"/>
-    <ellipse cx="500" cy="720" rx="96" ry="43" stroke-width="14" transform="rotate(-39 500 720)" stroke-dasharray="122 26"/>
-  </g>
-  <g fill="none" stroke="#ffdc8a" opacity=".42">
-    <ellipse cx="500" cy="720" rx="404" ry="183" stroke-width="3" transform="rotate(-32 500 720)"/>
-    <ellipse cx="500" cy="720" rx="330" ry="150" stroke-width="3" transform="rotate(-41 500 720)"/>
-    <ellipse cx="500" cy="720" rx="244" ry="108" stroke-width="2" transform="rotate(-55 500 720)"/>
-  </g>
-  <ellipse cx="500" cy="720" rx="61" ry="30" fill="#020202" stroke="#713115" stroke-width="8"/>
-  <path d="M120 270C330 180 610 173 877 290M114 1159C363 1256 650 1241 889 1128" fill="none" stroke="#ffbd5c" stroke-width="4" opacity=".42"/>
-  <path d="M93 175L907 1285" stroke="#fff4cf" stroke-width="11" opacity=".1"/>
-  <text x="78" y="112" fill="#fff5d7" font-family="Georgia,serif" font-size="42" font-weight="700" letter-spacing="2">Kalenski™</text>
-  <text x="920" y="1340" fill="#fff5d7" font-family="Arial,sans-serif" font-size="56" font-weight="900" letter-spacing="5" text-anchor="end">DMO</text>
+  <rect x="8" y="8" width="684" height="964" rx="34" fill="#020604" stroke="#183c27" stroke-width="16"/>
+  <rect x="25" y="25" width="650" height="930" rx="24" fill="url(#field)" stroke="url(#edge)" stroke-width="3"/>
+  <rect x="42" y="42" width="616" height="896" rx="17" fill="url(#grid)" stroke="#8fffb6" stroke-opacity=".22"/>
+  <g fill="none" stroke="#66ffb2"><path d="M67 184V76h108M633 184V76H525M67 796v108h108M633 796v108H525" stroke-opacity=".48" stroke-width="3"/><path d="M93 142h74l28 28h84M607 142h-74l-28 28h-84M93 838h74l28-28h84M607 838h-74l-28-28h-84" stroke-opacity=".18"/><circle cx="350" cy="490" r="242" stroke-opacity=".11"/><circle cx="350" cy="490" r="203" stroke-opacity=".19"/><circle cx="350" cy="490" r="164" stroke-opacity=".1"/><path d="M108 490H592M350 248V732" stroke-opacity=".065"/></g>
+  <g transform="translate(350 490) rotate(-18)" fill="none"><ellipse rx="270" ry="112" stroke="#5ef09a" stroke-opacity=".23" stroke-width="2"/><ellipse rx="236" ry="90" stroke="#b1ffcb" stroke-opacity=".12"/><circle cx="-251" cy="-2" r="5" fill="#9affba"/><circle cx="218" cy="-37" r="3" fill="#f1d976"/></g>
+  <circle cx="350" cy="490" r="158" fill="#06110b" fill-opacity=".84" stroke="#76ffa7" stroke-opacity=".28" stroke-width="2"/><circle cx="350" cy="490" r="143" fill="none" stroke="#74ffa8" stroke-opacity=".12" stroke-width="12"/>
+  <g transform="translate(173 307)" filter="url(#glow)"><path d="M45 26h74v120l77-120h84l-91 136 93 148h-87l-76-125v125H45Z" fill="url(#metal)" stroke="#b8ffce" stroke-width="3"/><path d="M169 151h160l-25 43h-87l-13 20h83l-23 40h-85l-14 22h83l-24 42H91Z" fill="url(#metal)" stroke="#a8ffc5" stroke-width="3"/><path d="M289 94h84l-16 27h-84ZM271 126h84l-16 27h-84ZM254 158h67l-16 27h-67Z" fill="url(#metal)"/><path d="M65 45h31v238H65Z" fill="#eafff0" opacity=".12"/></g>
+  <g font-family="Arial,Helvetica,sans-serif" text-anchor="middle"><text x="350" y="790" fill="#dfffe8" font-size="31" font-weight="800" letter-spacing="10">CARD EMPIRE</text><path d="M197 814H503" stroke="#5af299" stroke-opacity=".42"/><text x="350" y="842" fill="#75e99b" font-size="11" font-weight="700" letter-spacing="6">THE ONE AND ONLY</text></g>
+  <text x="69" y="94" fill="#9ffbbb" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="800" letter-spacing="3">KALENSKI™</text><text x="631" y="913" fill="#86eda7" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="800" letter-spacing="3" text-anchor="end">CE // 01</text><path d="M54 50 646 930" stroke="#effff2" stroke-opacity=".035" stroke-width="18"/>
 </svg>

@@ -4,6 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import PurchaseChat from "./PurchaseChat";
 import "./Marketplace.css";
 import "./MarketplaceFoil.css";
+import "./MarketplaceVisibility.css";
+import "./MarketplaceCheckout.css";
 
 const categories = ["All cards", "Monster", "Spell", "Trap"];
 const rarities = ["All rarities", "Common", "Silver", "Gold", "Rainbow"];
@@ -72,6 +74,12 @@ export default function Marketplace() {
   const [wishlistIds, setWishlistIds] = useState([]);
   const [priceHistory, setPriceHistory] = useState([]);
   const [priceHistoryLoading, setPriceHistoryLoading] = useState(false);
+  const [discountCode, setDiscountCode] = useState("");
+  const [appliedDiscountCode, setAppliedDiscountCode] = useState("");
+  const [cartQuote, setCartQuote] = useState(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [bundleTotal, setBundleTotal] = useState("");
+  const [bundleSending, setBundleSending] = useState(false);
   const vaultPageRef = useRef(null);
   const cardSizeFrameRef = useRef(0);
   const initialCardSizeRef = useRef(Math.min(100, Math.max(0, Number(window.localStorage?.getItem("cardstock-card-size") ?? 32))));
@@ -219,13 +227,53 @@ export default function Marketplace() {
     setCart((current) => [...current, card]); setNotice("");
   };
   const subtotal = cart.reduce((sum, card) => sum + Number(card.price), 0);
-  const discount = isVip ? subtotal * .25 : 0;
   const loyaltyEligibleCard = cart.find((card) => Number(card.price) <= 5000);
   const loyaltyFreeCardId = redeemLoyalty && loyaltyCredits > 0 && loyaltyEligibleCard ? loyaltyEligibleCard.id : null;
   const loyaltyCardValue = loyaltyFreeCardId
     ? (isVip ? discountedPrice(loyaltyEligibleCard) : Number(loyaltyEligibleCard.price))
     : 0;
-  const total = subtotal - discount - loyaltyCardValue;
+  const cartItems = useMemo(() => {
+    const quantities = new Map();
+    for (const item of cart) quantities.set(item.id, (quantities.get(item.id) ?? 0) + 1);
+    return [...quantities].map(([card_id, quantity]) => ({ card_id, quantity }));
+  }, [cart]);
+  const fallbackDiscountPercent = isVip ? 25 : 0;
+  const fallbackTotal = (subtotal - (loyaltyFreeCardId ? Number(loyaltyEligibleCard.price) : 0)) * (100 - fallbackDiscountPercent) / 100;
+  const total = cartQuote ? Number(cartQuote.total) : fallbackTotal;
+  const effectiveFreeValue = cartQuote ? Number(cartQuote.free_value) : loyaltyCardValue;
+  const discountAmount = Math.max(0, subtotal - effectiveFreeValue - total);
+  const selectedMarketPriceStatus = selectedCard?.price_status ?? "unavailable";
+  const selectedMarketPrice = selectedMarketPriceStatus === "available" && selectedCard?.avg_price != null
+    ? Number(selectedCard.avg_price)
+    : null;
+
+  useEffect(() => {
+    if (!session || !cartItems.length) {
+      setCartQuote(null);
+      setQuoteLoading(false);
+      return undefined;
+    }
+
+    let active = true;
+    const timer = window.setTimeout(async () => {
+      setQuoteLoading(true);
+      const { data, error } = await supabase.rpc("quote_cart", {
+        p_items: cartItems,
+        p_code: appliedDiscountCode || null,
+        p_redeem_card_id: loyaltyFreeCardId,
+      });
+      if (!active) return;
+      setQuoteLoading(false);
+      if (error) {
+        setCartQuote(null);
+        setNotice(error.message);
+      } else {
+        setCartQuote(data);
+        if (appliedDiscountCode) setNotice(`Discount code ${appliedDiscountCode} applied.`);
+      }
+    }, 160);
+    return () => { active = false; window.clearTimeout(timer); };
+  }, [session?.user?.id, cartItems, appliedDiscountCode, loyaltyFreeCardId]);
 
   async function submitOffer(event) {
     event.preventDefault();
@@ -246,25 +294,31 @@ export default function Marketplace() {
   }
   async function purchase() {
     if (!session) return setNotice("Please sign in before requesting a purchase.");
-    const results = await Promise.all(cart.map((card) => {
-      const useCardstockPass = card.id === loyaltyFreeCardId;
-      return supabase.rpc("purchase_card", {
-        p_card_id: card.id,
-        p_quantity: 1,
-        p_paid_gold: useCardstockPass ? 0 : isVip ? Number(card.price) * .75 : Number(card.price),
-        p_redeem_loyalty: useCardstockPass,
-      });
-    }));
-    const failure = results.find((result) => result.error);
-    if (failure) return setNotice(failure.error.message);
+    if (!cartQuote || quoteLoading) return setNotice("Your secure cart quote is still updating.");
+    const { data: checkout, error } = await supabase.rpc("purchase_cart", {
+      p_items: cartItems,
+      p_code: appliedDiscountCode || null,
+      p_redeem_card_id: loyaltyFreeCardId,
+      p_expected_total: Number(cartQuote.total),
+    });
+    if (error) return setNotice(error.message);
     await refreshProfile?.();
-    const purchased = [...cart];
-    const cardSummary = purchased.map((card) => card.name).join(", ");
-    const { data: chatId, error: chatError } = await supabase.rpc("start_purchase_chat", { p_card_summary: cardSummary });
-    setCart([]); setCartOpen(false); setRedeemLoyalty(false); loadCards();
-    if (chatError) return setNotice("Purchase request received, but the live chat could not be created. Please tell Kalenski™.");
-    setActiveChat({ id: chatId, card_summary: cardSummary });
+    setCart([]); setCartOpen(false); setRedeemLoyalty(false); setAppliedDiscountCode(""); setDiscountCode(""); setCartQuote(null); loadCards();
+    setActiveChat({ id: checkout.chat_id, card_summary: checkout.card_summary });
     setNotice("");
+  }
+
+  async function submitBundleOffer() {
+    if (cart.length < 3) return;
+    const proposed = Number(bundleTotal);
+    if (!Number.isFinite(proposed) || proposed <= 0) return setNotice("Enter a valid bundle price.");
+    setBundleSending(true);
+    const { error } = await supabase.rpc("create_bundle_offer", { p_items: cartItems, p_proposed_total: proposed });
+    setBundleSending(false);
+    if (error) return setNotice(error.message);
+    setBundleTotal("");
+    setCartOpen(false);
+    setNotice("Your bundle proposal was sent to Kalenski™.");
   }
 
   const isOverlayOpen = Boolean(cartOpen || offerCard || selectedCard || activeChat);
@@ -296,7 +350,7 @@ export default function Marketplace() {
           <dl>
             <div><dt>{isVip ? "My VIP price" : "My price"}</dt><dd className={isVip ? "detail-vip-price" : ""}>{isVip ? <><b>{discountedPrice(selectedCard).toLocaleString()} G</b><del>{Number(selectedCard.price).toLocaleString()} G</del></> : <>{Number(selectedCard.price).toLocaleString()} G</>}</dd></div>
             <div><dt>Stock</dt><dd>{selectedCard.quantity} available</dd></div>
-            <div className="external-market-compare"><dt>Other seller price</dt><dd>{selectedCard.external_market_price == null ? "No exact listing" : `${Number(selectedCard.external_market_price).toLocaleString()} G`}</dd><a href={selectedCard.external_market_source || "https://dmo-market.onrender.com/"} target="_blank" rel="noreferrer">DMO MARKET · {selectedCard.external_market_checked_at ? `checked ${new Intl.DateTimeFormat("en", { day: "2-digit", month: "short" }).format(new Date(selectedCard.external_market_checked_at))}` : "open source"} ↗</a></div>
+            <div className={`external-market-compare market-status-${selectedMarketPriceStatus}`}><dt>AVG DMO market price</dt><dd>{selectedMarketPrice == null ? (selectedMarketPriceStatus === "needs_review" ? "Needs review" : "No market data") : `${selectedMarketPrice.toLocaleString()} G`}</dd><a href="https://dmo-market.onrender.com/" target="_blank" rel="noreferrer">{selectedCard.price_source || "DMO MARKET"} · {selectedCard.price_updated_at ? `checked ${new Intl.DateTimeFormat("en", { day: "2-digit", month: "short" }).format(new Date(selectedCard.price_updated_at))}` : "open source"} ↗</a></div>
           </dl>
           <PriceHistoryPanel history={priceHistory} loading={priceHistoryLoading} />
           <button className="wishlist-button" type="button" onClick={() => toggleWishlist(selectedCard)}><span>{wishlistIds.includes(selectedCard.id) ? "♥" : "♡"}</span>{wishlistIds.includes(selectedCard.id) ? "Saved to wishlist" : "Add to wishlist"}</button>
@@ -306,7 +360,7 @@ export default function Marketplace() {
       </article>
     </div>}
     {offerCard && <div className="vault-overlay"><form className="vault-modal" onSubmit={submitOffer}><p className="vault-overline">MAKE AN OFFER</p><h2>{offerCard.name}</h2><label>Your offer in Gold<input required value={offer} onChange={(event) => setOffer(event.target.value)} inputMode="numeric" placeholder="e.g. 45000" /></label><textarea placeholder="Message for Kalenski™ (optional)" /><button className="vault-submit">Send offer</button><button type="button" className="vault-cancel" onClick={() => setOfferCard(null)}>Cancel</button></form></div>}
-    {cartOpen && <div className="vault-overlay"><aside className="vault-cart-panel"><div className="cart-panel-head"><h2>Your cart</h2><button onClick={() => setCartOpen(false)}>×</button></div><div className="cart-items">{cart.length ? cart.map((card, index) => <div className="cart-line" key={card.id + index}><span>{card.name}</span><strong className={isVip || card.id === loyaltyFreeCardId ? "cart-line-vip" : ""}>{card.id === loyaltyFreeCardId ? <><b>FREE · Cardstock Pass</b><del>{(isVip ? discountedPrice(card) : Number(card.price)).toLocaleString()} G</del></> : isVip ? <><b>{discountedPrice(card).toLocaleString()} G</b><del>{Number(card.price).toLocaleString()} G</del></> : <>{Number(card.price).toLocaleString()} G</>}</strong><button onClick={() => setCart((current) => current.filter((_, i) => i !== index))}>Remove</button></div>) : <p className="cart-empty">Your Cardstock cart is empty.</p>}</div><div className="cart-summary"><span>Subtotal <b>{subtotal.toLocaleString()} G</b></span>{isVip && <span className="cart-vip">VIP discount <b>−{discount.toLocaleString()} G</b></span>}{loyaltyFreeCardId && <span className="cart-vip">Cardstock Pass <b>−{loyaltyCardValue.toLocaleString()} G</b></span>}<strong>Total <b>{total.toLocaleString()} G</b></strong></div>{loyaltyCredits > 0 && loyaltyEligibleCard && <label className="cart-loyalty-toggle"><input type="checkbox" checked={redeemLoyalty} onChange={(event) => setRedeemLoyalty(event.target.checked)} /> Use a Cardstock Pass · {loyaltyEligibleCard.name} is free</label>}<button className="vault-submit" disabled={!cart.length} onClick={purchase}>Request purchase</button><p className="cart-note">In-game Gold only. No real payments.</p></aside></div>}
+    {cartOpen && <div className="vault-overlay"><aside className="vault-cart-panel"><div className="cart-panel-head"><h2>Your cart</h2><button onClick={() => setCartOpen(false)}>×</button></div><div className="cart-items">{cart.length ? cart.map((card, index) => <div className="cart-line" key={card.id + index}><span>{card.name}</span><strong className={isVip || card.id === loyaltyFreeCardId ? "cart-line-vip" : ""}>{card.id === loyaltyFreeCardId ? <><b>FREE · Cardstock Pass</b><del>{(isVip ? discountedPrice(card) : Number(card.price)).toLocaleString()} G</del></> : isVip ? <><b>{discountedPrice(card).toLocaleString()} G</b><del>{Number(card.price).toLocaleString()} G</del></> : <>{Number(card.price).toLocaleString()} G</>}</strong><button onClick={() => setCart((current) => current.filter((_, i) => i !== index))}>Remove</button></div>) : <p className="cart-empty">Your Cardstock cart is empty.</p>}</div><div className="discount-code-row"><input value={discountCode} onChange={(event) => setDiscountCode(event.target.value.toUpperCase())} maxLength="32" placeholder="Discount code" /><button type="button" disabled={!discountCode.trim()} onClick={() => setAppliedDiscountCode(discountCode.trim())}>Apply</button>{appliedDiscountCode && <button type="button" className="code-remove" onClick={() => { setAppliedDiscountCode(""); setDiscountCode(""); }}>×</button>}</div><div className="cart-summary"><span>Subtotal <b>{subtotal.toLocaleString()} G</b></span>{discountAmount > 0 && <span className="cart-vip">{cartQuote?.discount_label ?? "Discount"} · {Number(cartQuote?.discount_percent ?? fallbackDiscountPercent)}% <b>−{discountAmount.toLocaleString()} G</b></span>}{loyaltyFreeCardId && <span className="cart-vip">Cardstock Pass <b>−{effectiveFreeValue.toLocaleString()} G</b></span>}<strong>Total <b>{quoteLoading ? "Updating…" : `${total.toLocaleString()} G`}</b></strong></div>{loyaltyCredits > 0 && loyaltyEligibleCard && <label className="cart-loyalty-toggle"><input type="checkbox" checked={redeemLoyalty} onChange={(event) => setRedeemLoyalty(event.target.checked)} /> Use a Cardstock Pass · {loyaltyEligibleCard.name} is free</label>}{cart.length >= 3 && <section className="bundle-proposal"><small>3+ CARD BUNDLE</small><strong>Propose one total for this hand.</strong><div><input type="number" min="1" value={bundleTotal} onChange={(event) => setBundleTotal(event.target.value)} placeholder="Your bundle total in G" /><button type="button" disabled={bundleSending} onClick={submitBundleOffer}>{bundleSending ? "Sending…" : "Send proposal"}</button></div></section>}<button className="vault-submit" disabled={!cart.length || quoteLoading || !cartQuote} onClick={purchase}>Request purchase</button><p className="cart-note">In-game Gold only. No real payments.</p></aside></div>}
     {activeChat && <PurchaseChat chat={activeChat} onClose={() => setActiveChat(null)} />}
   </main>;
 }

@@ -19,6 +19,7 @@ export default function Navbar() {
   const [unread, setUnread] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [presence, setPresence] = useState(null);
   const timedVip = Boolean(profile?.vip_until && new Date(profile.vip_until).getTime() > Date.now());
   const hasVipPrice = profile?.role === "vip" || timedVip;
 
@@ -69,10 +70,28 @@ export default function Navbar() {
     };
   }, [session]);
 
+  useEffect(() => {
+    let active = true;
+    async function loadPresence() {
+      const { data } = await supabase.from("empire_presence").select("is_online,status_note,updated_at").eq("singleton", true).maybeSingle();
+      if (active) setPresence(data?.is_online ? data : null);
+    }
+    loadPresence();
+    const channel = supabase.channel("nav-empire-presence")
+      .on("postgres_changes", { event: "*", schema: "public", table: "empire_presence" }, loadPresence)
+      .subscribe();
+    return () => {
+      active = false;
+      channel.unsubscribe();
+    };
+  }, []);
+
   return (
-    <header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "") + (mobileOpen ? " mobile-open" : "")}>
+    <><header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "") + (mobileOpen ? " mobile-open" : "")}>
       <div className="brand-partner-cluster">
-        <NavLink to="/" className="empire-brand"><span>Kalenski™</span><strong>Card Empire®</strong></NavLink>
+        <NavLink to="/" className="empire-brand" aria-label="Kalenski Card Empire home">
+          <img src="/card-empire-wordmark.svg" alt="Kalenski Card Empire" />
+        </NavLink>
         <NavLink to="/partners" className="partners-nav-link" aria-label="Partners"><small>Partners</small></NavLink>
       </div>
       <nav id="empire-primary-navigation" aria-label="Primary navigation">
@@ -106,6 +125,6 @@ export default function Navbar() {
         <span />
         <span />
       </button>
-    </header>
+    </header>{presence && <aside className="empire-presence-ticker" role="status" aria-label={`Kalenski is online. ${presence.status_note}`}><div className="empire-presence-track"><div className="empire-presence-copy"><span><i /> KALENSKI IS ONLINE</span><p>{presence.status_note}</p><NavLink to="/community">View pickup calendar <b>↗</b></NavLink></div><div className="empire-presence-copy" aria-hidden="true"><span><i /> KALENSKI IS ONLINE</span><p>{presence.status_note}</p><NavLink to="/community" tabIndex="-1">View pickup calendar <b>↗</b></NavLink></div></div></aside>}</>
   );
 }

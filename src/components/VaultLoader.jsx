@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import "./VaultLoader.css";
 
-const emptySlots = Array.from({ length: 5 }, (_, index) => ({ id: "slot-" + index }));
+const featuredCardNames = ["Blue-Eyes White Dragon", "Dark Magician", "Pot of Greed", "Harpie's Feather Duster", "Mirror Force"];
 
 export default function VaultLoader() {
   const sectionRef = useRef(null);
@@ -37,12 +37,11 @@ export default function VaultLoader() {
     async function loadVaultTreasures() {
       const { data } = await supabase
         .from("cards")
-        .select("id, name, image_url, price, rarity")
+        .select("id, name, image_url, ygo_card_id, price, rarity")
         .gt("quantity", 0)
-        .order("price", { ascending: false })
-        .limit(5);
+        .in("name", featuredCardNames);
 
-      if (active) setCards(data ?? []);
+      if (active) setCards((data ?? []).sort((a, b) => featuredCardNames.indexOf(a.name) - featuredCardNames.indexOf(b.name)));
     }
 
     loadVaultTreasures();
@@ -78,7 +77,7 @@ export default function VaultLoader() {
     window.setTimeout(() => navigate("/marketplace"), 1260);
   }
 
-  const treasures = cards.length ? cards : emptySlots;
+  const treasures = cards;
 
   return (
     <section className={"vault-loader-section " + (ready ? "is-ready " : "") + (opened ? "is-open " : "") + (transitioning ? "is-launching" : "")} ref={sectionRef}>
@@ -98,11 +97,11 @@ export default function VaultLoader() {
                   {treasures.map((card, index) => (
                     <span className={"vault-loader-card " + (card.rarity ?? "slot")} style={{ "--vault-card-index": index }} key={card.id}>
                       <span className="vault-loader-card-case">
-                        {card.image_url ? <img src={card.image_url} alt="" loading="lazy" /> : <span className="vault-loader-card-placeholder">✦</span>}
+                        {(card.ygo_card_id || card.image_url) && <img src={card.ygo_card_id ? `https://images.ygoprodeck.com/images/cards/${card.ygo_card_id}.jpg` : card.image_url} alt="" loading="lazy" />}
                       </span>
                       <span className="vault-loader-card-meta">
-                        <b>{card.name ?? "Vault treasure"}</b>
-                        <small>{card.price ? Number(card.price).toLocaleString() + " G" : "UNLOCKING"}</small>
+                        <b>{card.name}</b>
+                        <small>{Number(card.price).toLocaleString()} G</small>
                       </span>
                     </span>
                   ))}

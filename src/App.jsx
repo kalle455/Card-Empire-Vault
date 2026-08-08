@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
-import { Component, Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Navbar from "./components/Navbar";
-import BanlistGallery from "./components/BanlistGallery";
+import AvailabilityCalendar from "./components/AvailabilityCalendar";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";
 import { getEvents, getPotmPlayers, registerForEvent, subscribeToLiveChanges } from "./services/communityApi";
@@ -225,7 +225,7 @@ function Home() {
           {spotlightCards.map((card, index) => (
             <button
               className={"vault-spotlight-card card-position-" + index}
-              key={card.id}
+              key={card.id ?? card.name}
               type="button"
               onClick={() => enterEmpire("/marketplace")}
               aria-label={"Reveal " + card.name + " in Card Market"}
@@ -276,6 +276,8 @@ function Home() {
         <p className="arena-side-mark">DUEL<br />SYSTEM<br /><b>ACTIVE</b></p>
       </section>
 
+      <AvailabilityCalendar />
+
 
 
       <section className="home-feedback-zone home-community-zone">
@@ -311,33 +313,10 @@ function Home() {
   );
 }
 
-class VisualBanlistBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { failed: false };
-  }
-
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-
-  componentDidUpdate(previousProps) {
-    if (previousProps.resetKey !== this.props.resetKey && this.state.failed) this.setState({ failed: false });
-  }
-
-  render() {
-    if (this.state.failed) {
-      return <div className="visual-banlist-fallback"><strong>Banlist could not load visually.</strong><span>Close and reopen it once — the event page stays available.</span></div>;
-    }
-    return this.props.children;
-  }
-}
-
 function Events() {
   const { session } = useAuth();
   const [events, setEvents] = useState([]);
   const [potmPlayers, setPotmPlayers] = useState([]);
-  const [openBanlists, setOpenBanlists] = useState({});
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
@@ -391,8 +370,6 @@ function Events() {
       </section>
       <div className="event-list event-command-list">
         {events.length ? events.map((event, index) => {
-          const banlist = event.banlist;
-          const hasBanlistCards = (banlist?.banned_cards?.length ?? 0) + (banlist?.limited_cards?.length ?? 0) + ((!banlist?.banned_cards?.length && !banlist?.limited_cards?.length) ? (banlist?.card_names?.length ?? 0) : 0) > 0;
           const format = getEventFormat(event.event_format);
           const registrations = event.registrations?.[0]?.count ?? 0;
           const isFull = format.capacity !== null && registrations >= format.capacity;
@@ -401,17 +378,12 @@ function Events() {
             <article className="event-panel event-command-panel" key={event.id}>
               <span className="event-number">0{index + 1}</span>
               <div className="event-command-copy">
-                <p className="eyebrow">{banlist?.name ?? "Official Banlist"}</p>
+                <p className="eyebrow">CURRENT IN-GAME BANLIST</p>
                 <h2>{event.title}</h2>
                 <p>{event.description}</p>
                 <strong><i>◷</i> {new Date(event.starts_at).toLocaleString()} · {format.label} · {format.teams}</strong>
                 <p className="event-registration-status">{isCompleted ? "Event complete" : format.capacity === null ? "Open registration" : registrations + " / " + format.capacity + " players registered"}</p>
-                {hasBanlistCards && <section className="event-banlist">
-                  <button type="button" className="event-banlist-toggle" onClick={() => setOpenBanlists((current) => ({ ...current, [event.id]: !current[event.id] }))}>
-                    {openBanlists[event.id] ? "Close visual banlist" : "Inspect visual banlist"}
-                  </button>
-                  {openBanlists[event.id] && <VisualBanlistBoundary resetKey={event.id}><BanlistGallery banlist={banlist} /></VisualBanlistBoundary>}
-                </section>}
+                <p className="event-rule-note">The current in-game banlist applies unless this event description explicitly states otherwise.</p>
               </div>
               <button className="event-register-button" disabled={isFull || isCompleted} onClick={() => join(event.id)}><span>{isCompleted ? "Complete" : isFull ? "Event full" : "Register"}</span><b>{isFull || isCompleted ? "—" : "↗"}</b></button>
             </article>
@@ -457,7 +429,9 @@ function EmpireFooter() {
     <footer className="empire-footer">
       <div className="empire-footer-top">
         <section className="footer-brand-column">
-          <Link to="/" className="footer-brand"><span>Kalenski™</span><strong>Card Empire®</strong></Link>
+          <Link to="/" className="footer-brand" aria-label="Kalenski Card Empire home">
+            <img src="/card-empire-wordmark.svg" alt="Kalenski Card Empire" />
+          </Link>
           <p>Private cards. Direct deals. Cardstock built for players who collect with intention.</p>
           <span className="footer-signal"><i /> Empire system online</span>
         </section>
@@ -482,7 +456,7 @@ function EmpireFooter() {
           <span><i>01</i> Live Cardstock updates</span>
           <span><i>02</i> 25% V.I.P advantage</span>
           <span><i>03</i> Private collector cases</span>
-          <span><i>04</i> Official event banlists</span>
+          <span><i>04</i> Current in-game event rules</span>
         </section>
       </div>
       <div className="empire-footer-bottom">

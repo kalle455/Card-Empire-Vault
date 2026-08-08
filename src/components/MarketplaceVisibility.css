@@ -1,0 +1,24 @@
+/* Keep the collection crisp while scrolling. View-timeline transforms made cards look dim. */
+.main-content > .vault-page > section,
+.vault-page .vault-grid,
+.vault-page .vault-card,
+.vault-page .collector-case {
+  opacity: 1 !important;
+}
+
+.main-content > .vault-page > section {
+  animation: none !important;
+  transform: none !important;
+}
+
+.case-only-card .vault-card-art img {
+  filter: contrast(1.09) saturate(1.1) brightness(1.15);
+}
+
+.case-only-card .case-glass { opacity: .24; }
+.detail-collector-case .detail-card-art img { filter: contrast(1.07) saturate(1.08) brightness(1.12) drop-shadow(0 20px 15px rgba(0,0,0,.55)); }
+.detail-collector-case .detail-case-glass { opacity: .28; }
+
+@media (prefers-reduced-motion: reduce) {
+  .case-only-card .vault-card-art::after { animation: none !important; }
+}

@@ -1,0 +1,10 @@
+.trade-hub-preview .trade-hub-hero{min-height:52vh}
+.trade-coming-soon{position:relative;isolation:isolate;min-height:48vh;display:grid;align-content:center;justify-items:start;overflow:hidden;padding:clamp(58px,9vw,120px) clamp(25px,9vw,138px);border-top:1px solid rgba(143,231,158,.16);background:radial-gradient(circle at 76% 50%,rgba(72,185,94,.16),transparent 27%),linear-gradient(135deg,#07100b,#080c09 62%)}
+.trade-coming-soon::before,.trade-coming-soon::after{content:"";position:absolute;z-index:-1;right:12%;top:50%;width:min(40vw,470px);aspect-ratio:1;border:1px solid rgba(143,231,158,.18);border-radius:50%;transform:translateY(-50%)}
+.trade-coming-soon::after{right:18%;width:min(25vw,285px);border-color:rgba(232,199,103,.2)}
+.trade-coming-soon>span{color:#96eaa4;font-size:.66rem;font-weight:900;letter-spacing:.18em}
+.trade-coming-soon h2{margin:14px 0 22px;color:#edf5ee;font-size:clamp(4rem,9vw,8.6rem);line-height:.76;letter-spacing:-.085em}
+.trade-coming-soon h2 em{color:#e8c767;font-family:Georgia,serif;font-weight:500}
+.trade-coming-soon p{max-width:520px;margin:0;color:#9eada3;line-height:1.7}
+.trade-coming-soon>i{position:absolute;right:21%;top:50%;color:rgba(150,234,164,.22);font-size:clamp(5rem,11vw,10rem);font-style:normal;transform:translateY(-50%)}
+@media(max-width:760px){.trade-coming-soon>i{right:8%;opacity:.4}.trade-coming-soon::before{right:-35%;width:82vw}.trade-coming-soon::after{right:-3%;width:47vw}}

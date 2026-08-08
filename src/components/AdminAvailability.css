@@ -41,6 +41,7 @@
   text-transform: uppercase;
 }
 .admin-availability-list article button:hover { border-color: #e79090; background: rgba(170,46,46,.2); }
+.admin-presence-panel{position:relative;overflow:hidden}.admin-presence-panel::after{content:"OFFLINE";position:absolute;right:-8px;bottom:-14px;color:rgba(255,255,255,.025);font-size:4.8rem;font-weight:950;letter-spacing:-.06em;pointer-events:none}.admin-presence-panel.is-online{border-color:rgba(119,240,138,.42);box-shadow:inset 3px 0 #77f08a,0 0 35px rgba(119,240,138,.06)}.admin-presence-panel.is-online::after{content:"ONLINE";color:rgba(119,240,138,.045)}.admin-presence-panel>div{position:relative;z-index:1;display:flex;gap:8px}.admin-presence-panel .admin-secondary{min-height:42px;margin:0;padding:0 14px}.admin-presence-panel input{position:relative;z-index:1}
 
 @media (max-width: 700px) {
   .admin-availability-panel .admin-row { grid-template-columns: 1fr; }

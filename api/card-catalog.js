@@ -2,6 +2,7 @@ const SHEET_URL = "https://docs.google.com/spreadsheets/d/1dso-ihpm_0xl50_rLtb13
 const CACHE_MS = 10 * 60 * 1000;
 let cachedCatalog = null;
 let cachedAt = 0;
+const artworkCache = new Map();
 
 function normalise(value) {
   return String(value ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -11,7 +12,7 @@ function toRarity(value) {
   const rarity = normalise(value);
   if (rarity === "rainbow") return "rainbow";
   if (rarity === "gold") return "gold";
-  if (rarity === "silver") return "rare";
+  if (rarity === "silver" || rarity === "rare") return "silver";
   return "common";
 }
 
@@ -66,6 +67,38 @@ async function getCatalog() {
   return cachedCatalog;
 }
 
+async function addArtwork(cards) {
+  const missing = cards.filter((card) => !artworkCache.has(normalise(card.name)));
+
+  if (missing.length) {
+    const names = missing.map((card) => card.name).join("|");
+    const response = await fetch(
+      "https://db.ygoprodeck.com/api/v7/cardinfo.php?name=" + encodeURIComponent(names),
+      { headers: { Accept: "application/json" } },
+    );
+
+    if (response.ok) {
+      const payload = await response.json();
+      for (const card of payload.data ?? []) {
+        const image = card.card_images?.[0];
+        artworkCache.set(normalise(card.name), {
+          ygo_card_id: card.id ?? null,
+          image_url: image?.image_url ?? null,
+          image_url_small: image?.image_url_small ?? image?.image_url ?? null,
+          description: card.desc ?? "",
+        });
+      }
+    }
+
+    for (const card of missing) {
+      const key = normalise(card.name);
+      if (!artworkCache.has(key)) artworkCache.set(key, null);
+    }
+  }
+
+  return cards.map((card) => ({ ...card, ...(artworkCache.get(normalise(card.name)) ?? {}) }));
+}
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
@@ -88,8 +121,9 @@ export default async function handler(req, res) {
       if (unique.size === 8) break;
     }
 
+    const matches = await addArtwork([...unique.values()]);
     res.setHeader("Cache-Control", "s-maxage=600, stale-while-revalidate=3600");
-    return res.status(200).json({ cards: [...unique.values()], source: "DMO · All Cards" });
+    return res.status(200).json({ cards: matches, source: "DMO · All Cards" });
   } catch (error) {
     return res.status(502).json({ error: error.message ?? "The official card catalogue could not be loaded." });
   }
