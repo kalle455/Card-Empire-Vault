@@ -234,7 +234,7 @@ function Home() {
                 <span className="spotlight-card-back" aria-hidden="true"><i /><b>K</b></span>
                 <span className="spotlight-card-front">
                   {cardImage(card) && <img src={cardImage(card)} alt="" decoding="async" />}
-                  <span className="spotlight-card-info"><b>{card.name}</b><small>{Number(card.price).toLocaleString()} G · {card.rarity}</small></span>
+                  <span className="spotlight-card-info"><b>{card.name}</b><small>{Number.isFinite(Number(card.price)) ? `${Number(card.price).toLocaleString()} G` : "VIEW IN CARDSTOCK"} · {card.rarity}</small></span>
                 </span>
               </span>
             </button>
