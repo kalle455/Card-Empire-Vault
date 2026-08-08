@@ -289,15 +289,447 @@ export default function AdminDashboard() {
   }
 
   async function importScanCandidates() {
-    const approved = scanCandióÞô¶‰žËkºwµçM…”€˜˜€ñÍµ…±°ù5•ÍÍ…”èí¥Ñ•´¹µ•ÍÍ…•ôð½Íµ…±°ùôð½ÍÁ…¸øñ•´ùí¥Ñ•´¹ÍÑ…ÑÕÍôð½•´ùí¥Ñ•´¹ÍÑ…ÑÕÌ€ôôô€‰Á•¹‘¥¹œˆ€˜˜€ñ…Í¥‘”øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÉ•ÍÁ½¹‘Q½QÉ…‘”¡¥Ñ•´¹¥°€‰…•ÁÑ•ˆ¥ôù•ÁÐ€¬¡…Ðð½‰ÕÑÑ½¸øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÉ•ÍÁ½¹‘Q½QÉ…‘”¡¥Ñ•´¹¥°€‰¹•½Ñ¥…Ñ¥¹œˆ¥ôù9•½Ñ¥…Ñ”€¬¡…Ðð½‰ÕÑÑ½¸øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÉ•ÍÁ½¹‘Q½QÉ…‘”¡¥Ñ•´¹¥°€‰‘•±¥¹•ˆ¥ôù•±¥¹”ð½‰ÕÑÑ½¸øð½…Í¥‘”ùõí¥Ñ•´¹¡…Ñ}¥€˜˜€ñ…Í¥‘”øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÝ¥¹‘½Ü¹±½…Ñ¥½¸¹…ÍÍ¥¸ ˆ½¡…ÑÌˆ¥ôù=Á•¸¡…Ðð½‰ÕÑÑ½¸øð½…Í¥‘”ùôð½‘¥Øø¥ô(€€€€€€€ì…‘…Ñ„¹ÑÉ…‘•Ì¹±•¹Ñ €˜˜€ñÀù9¼QÉ…‘”!Õˆ½™™•ÉÌå•Ð¸ð½Àùô(€€€€€€ð½‘¥Øøð½Í•Ñ¥½¸ùô((€€€€€íÑ…ˆ€ôôô€‰ÁÉ¥¥¹œˆ€˜˜€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µÁÉ¥¥¹œµ½¹Í½±”ˆø(€€€€€€€€ñ¡•…‘•È±…ÍÍ9…µ”ô‰…‘µ¥¸µ½É‘•Èµ¡•…‘¥¹œˆøñ‘¥ØøñÀ±…ÍÍ9…µ”ô‰Ù…Õ±Ðµ½Ù•É±¥¹”ˆùAI%=9QI=0ð½Àøñ Èù¥Í½Õ¹ÑÌ€˜‰Õ¹‘±”½™™•ÉÌð½ Èøð½‘¥ØøñÍÁ…¸ùM•ÉÙ•ÈÙ•É¥™¥•ð½ÍÁ…¸øð½¡•…‘•Èø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ¥…‘µ¥¸µÁÉ¥¥¹œµ™½ÉµÌˆø(€€€€€€€€€€ñ™½É´±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°ˆ½¹MÕ‰µ¥ÐõíÉ•…Ñ•ÕÑ½µ…Ñ¥¥Í½Õ¹Ñôø(€€€€€€€€€€€€ñ‘µ¥¹%½¸¹…µ”ô‰ÁÉ¥¥¹œˆ€¼øñ ÌùÕÑ½µ…Ñ¥Œ‘¥Í½Õ¹Ðð½ ÌøñÀùÁÁ±¥•Ì…ÕÑ½µ…Ñ¥…±±äÝ¡•¸Ñ¡”…Ñ¥Ù”Ñ¥µ”…¹µ¥¹¥µÕ´½É‘•ÈÉÕ±•Ìµ…Ñ ¸ð½Àø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ½Üˆøñ¥¹ÁÕÐÉ•ÅÕ¥É•µ…á1•¹Ñ ôˆàÀˆÁ±…•¡½±‘•Èô‰…µÁ…¥¸¹…µ”ˆÙ…±Õ”õí‘¥Í½Õ¹Ñ½É´¹¹…µ•ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ¥Í½Õ¹Ñ½É´¡ì€¸¸¹‘¥Í½Õ¹Ñ½É´°¹…µ”è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øñ¥¹ÁÕÐÉ•ÅÕ¥É•ÑåÁ”ô‰¹Õµ‰•Èˆµ¥¸ôˆÀ¸ÀÄˆµ…àôˆäÀˆÍÑ•ÀôˆÀ¸ÀÄˆÁ±…•¡½±‘•Èô‰¥Í½Õ¹Ð€”ˆÙ…±Õ”õí‘¥Í½Õ¹Ñ½É´¹Á•É•¹Ñ…•ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ¥Í½Õ¹Ñ½É´¡ì€¸¸¹‘¥Í½Õ¹Ñ½É´°Á•É•¹Ñ…”è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ½Üˆøñ±…‰•°ùMÑ…ÉÑÌñ¥¹ÁÕÐÑåÁ”ô‰‘…Ñ•Ñ¥µ”µ±½…°ˆÙ…±Õ”õí‘¥Í½Õ¹Ñ½É´¹ÍÑ…ÉÑÍ}…Ñô½¹¡…¹”õì¡”¤€ôøÍ•Ñ¥Í½Õ¹Ñ½É´¡ì€¸¸¹‘¥Í½Õ¹Ñ½É´°ÍÑ…ÉÑÍ}…Ðè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½±…‰•°øñ±…‰•°ù¹‘Ìñ¥¹ÁÕÐÑåÁ”ô‰‘…Ñ•Ñ¥µ”µ±½…°ˆÙ…±Õ”õí‘¥Í½Õ¹Ñ½É´¹•¹‘Í}…Ñô½¹¡…¹”õì¡”¤€ôøÍ•Ñ¥Í½Õ¹Ñ½É´¡ì€¸¸¹‘¥Í½Õ¹Ñ½É´°•¹‘Í}…Ðè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½±…‰•°øð½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ½Üˆøñ¥¹ÁÕÐÑåÁ”ô‰¹Õµ‰•Èˆµ¥¸ôˆÀˆÁ±…•¡½±‘•Èô‰5¥¹¥µÕ´Ñ½Ñ…°ˆÙ…±Õ”õí‘¥Í½Õ¹Ñ½É´¹µ¥¹}Ñ½Ñ…±ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ¥Í½Õ¹Ñ½É´¡ì€¸¸¹‘¥Í½Õ¹Ñ½É´°µ¥¹}Ñ½Ñ…°è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øñ¥¹ÁÕÐÑåÁ”ô‰¹Õµ‰•Èˆµ¥¸ôˆÀˆÁ±…•¡½±‘•Èô‰5¥¹¥µÕ´…É½Õ¹ÐˆÙ…±Õ”õí‘¥Í½Õ¹Ñ½É´¹µ¥¹}…É‘}½Õ¹Ñô½¹¡…¹”õì¡”¤€ôøÍ•Ñ¥Í½Õ¹Ñ½É´¡ì€¸¸¹‘¥Í½Õ¹Ñ½É´°µ¥¹}…É‘}½Õ¹Ðè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½‘¥Øø(€€€€€€€€€€€€ñ‰ÕÑÑ½¸±…ÍÍ9…µ”ô‰Ù…Õ±ÐµÍÕ‰µ¥ÐˆùAÕ‰±¥Í …ÕÑ½µ…Ñ¥Œ‘¥Í½Õ¹Ðð½‰ÕÑÑ½¸ø(€€€€€€€€€€ð½™½É´ø(€€€€€€€€€€ñ™½É´±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°ˆ½¹MÕ‰µ¥ÐõíÉ•…Ñ•¥Í½Õ¹Ñ½‘•ôø(€€€€€€€€€€€€ñ‘µ¥¹%½¸¹…µ”ô‰½™™•ÉÌˆ€¼øñ Ìù¥Í½Õ¹Ð½‘”ð½ ÌøñÀùÉ•…Ñ”„ÁÉ¥Ù…Ñ”¡•­½ÕÐ½‘”Ý¥Ñ ¥ÑÌ½Ý¸±¥µ¥ÑÌ…¹…Ñ¥Ù”Á•É¥½¸ð½Àø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ½Üˆøñ¥¹ÁÕÐÉ•ÅÕ¥É•µ¥¹1•¹Ñ ôˆÌˆµ…á1•¹Ñ ôˆÌÈˆÁ±…•¡½±‘•Èô‰=ˆÙ…±Õ”õí½‘•½É´¹½‘•ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ½‘•½É´¡ì€¸¸¹½‘•½É´°½‘”è”¹Ñ…É•Ð¹Ù…±Õ”¹Ñ½UÁÁ•É…Í” ¤¹É•Á±…” ½myµhÀ´å|µt½œ°€ˆˆ¤ô¥ô€¼øñ¥¹ÁÕÐÉ•ÅÕ¥É•ÑåÁ”ô‰¹Õµ‰•Èˆµ¥¸ôˆÀ¸ÀÄˆµ…àôˆäÀˆÍÑ•ÀôˆÀ¸ÀÄˆÁ±…•¡½±‘•Èô‰¥Í½Õ¹Ð€”ˆÙ…±Õ”õí½‘•½É´¹Á•É•¹Ñ…•ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ½‘•½É´¡ì€¸¸¹½‘•½É´°Á•É•¹Ñ…”è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ½Üˆøñ±…‰•°ùMÑ…ÉÑÌñ¥¹ÁÕÐÑåÁ”ô‰‘…Ñ•Ñ¥µ”µ±½…°ˆÙ…±Õ”õí½‘•½É´¹ÍÑ…ÉÑÍ}…Ñô½¹¡…¹”õì¡”¤€ôøÍ•Ñ½‘•½É´¡ì€¸¸¹½‘•½É´°ÍÑ…ÉÑÍ}…Ðè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½±…‰•°øñ±…‰•°ù¹‘Ìñ¥¹ÁÕÐÑåÁ”ô‰‘…Ñ•Ñ¥µ”µ±½…°ˆÙ…±Õ”õí½‘•½É´¹•¹‘Í}…Ñô½¹¡…¹”õì¡”¤€ôøÍ•Ñ½‘•½É´¡ì€¸¸¹½‘•½É´°•¹‘Í}…Ðè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½±…‰•°øð½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ½Üˆøñ¥¹ÁÕÐÑåÁ”ô‰¹Õµ‰•Èˆµ¥¸ôˆÀˆÁ±…•¡½±‘•Èô‰5¥¹¥µÕ´Ñ½Ñ…°ˆÙ…±Õ”õí½‘•½É´¹µ¥¹}Ñ½Ñ…±ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ½‘•½É´¡ì€¸¸¹½‘•½É´°µ¥¹}Ñ½Ñ…°è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øñ¥¹ÁÕÐÑåÁ”ô‰¹Õµ‰•Èˆµ¥¸ôˆÀˆÁ±…•¡½±‘•Èô‰5¥¹¥µÕ´…É‘ÌˆÙ…±Õ”õí½‘•½É´¹µ¥¹}…É‘}½Õ¹Ñô½¹¡…¹”õì¡”¤€ôøÍ•Ñ½‘•½É´¡ì€¸¸¹½‘•½É´°µ¥¹}…É‘}½Õ¹Ðè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øñ¥¹ÁÕÐÑåÁ”ô‰¹Õµ‰•Èˆµ¥¸ôˆÄˆÁ±…•¡½±‘•Èô‰5…àÕÍ•ÌˆÙ…±Õ”õí½‘•½É´¹µ…á}ÕÍ•Íô½¹¡…¹”õì¡”¤€ôøÍ•Ñ½‘•½É´¡ì€¸¸¹½‘•½É´°µ…á}ÕÍ•Ìè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½‘¥Øø(€€€€€€€€€€€€ñ‰ÕÑÑ½¸±…ÍÍ9…µ”ô‰Ù…Õ±ÐµÍÕ‰µ¥ÐˆùÉ•…Ñ”‘¥Í½Õ¹Ð½‘”ð½‰ÕÑÑ½¸ø(€€€€€€€€€€ð½™½É´ø(€€€€€€€€ð½‘¥Øø((€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ¥…‘µ¥¸µÁÉ¥¥¹œµ±¥ÍÑÌˆø(€€€€€€€€€€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°ˆøñ ÌùÕÑ½µ…Ñ¥Œ…µÁ…¥¹Ìð½ Ìøñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µ±¥ÍÐˆø(€€€€€€€€€€€í‘…Ñ„¹…ÕÑ½µ…Ñ¥¥Í½Õ¹ÑÌ¹µ…À ¡¥Ñ•´¤€ôø€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÁÉ¥¥¹œµÉÕ±”ˆ­•äõí¥Ñ•´¹¥‘ôøñÍÁ…¸øñˆùí¥Ñ•´¹¹…µ•ôƒ
-Üí9Õµ‰•È¡¥Ñ•´¹Á•É•¹Ñ…”¥ô”ð½ˆøñÍµ…±°ùí¥Ñ•´¹µ¥¹}…É‘}½Õ¹Ð€ü€‘í¥Ñ•´¹µ¥¹}…É‘}½Õ¹Ñô¬…É‘Í€€è€‰¹ä…É½Õ¹Ð‰ôƒ
-Üí9Õµ‰•È¡¥Ñ•´¹µ¥¹}Ñ½Ñ…°¤¹Ñ½1½…±•MÑÉ¥¹œ ¥ôµ¥¹¥µÕ´ð½Íµ…±°øð½ÍÁ…¸øñ•´±…ÍÍ9…µ”õí¥Ñ•´¹…Ñ¥Ù”€ü€‰¥Ìµ…Ñ¥Ù”ˆ€è€‰¥ÌµÁ…ÕÍ•‰ôùí¥Ñ•´¹…Ñ¥Ù”€ü€‰Ñ¥Ù”ˆ€è€‰A…ÕÍ•‰ôð½•´øñ…Í¥‘”øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÑ½±•AÉ¥¥¹IÕ±” ‰…ÕÑ½µ…Ñ¥}‘¥Í½Õ¹ÑÌˆ°¥Ñ•´¹¥°€…¥Ñ•´¹…Ñ¥Ù”¥ôùí¥Ñ•´¹…Ñ¥Ù”€ü€‰A…ÕÍ”ˆ€è€‰Ñ¥Ù…Ñ”‰ôð½‰ÕÑÑ½¸øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÉ•µ½Ù•AÉ¥¥¹IÕ±” ‰…ÕÑ½µ…Ñ¥}‘¥Í½Õ¹ÑÌˆ°¥Ñ•´¹¥¥ôùI•µ½Ù”ð½‰ÕÑÑ½¸øð½…Í¥‘”øð½‘¥Øø¥ô(€€€€€€€€€€€ì…‘…Ñ„¹…ÕÑ½µ…Ñ¥¥Í½Õ¹ÑÌ¹±•¹Ñ €˜˜€ñÀù9¼…ÕÑ½µ…Ñ¥Œ‘¥Í½Õ¹ÑÌ½¹™¥ÕÉ•¸ð½Àùô(€€€€€€€€€€ð½‘¥Øøð½Í•Ñ¥½¸ø(€€€€€€€€€€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°ˆøñ Ìù¡•­½ÕÐ½‘•Ìð½ Ìøñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µ±¥ÍÐˆø(€€€€€€€€€€€í‘…Ñ„¹‘¥Í½Õ¹Ñ½‘•Ì¹µ…À ¡¥Ñ•´¤€ôø€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÁÉ¥¥¹œµÉÕ±”ˆ­•äõí¥Ñ•´¹¥‘ôøñÍÁ…¸øñˆùí¥Ñ•´¹½‘•ôƒ
-Üí9Õµ‰•È¡¥Ñ•´¹Á•É•¹Ñ…”¥ô”ð½ˆøñÍµ…±°ùí¥Ñ•´¹ÕÍ•}½Õ¹Ñõí¥Ñ•´¹µ…á}ÕÍ•Ì€ü€€¼€‘í¥Ñ•´¹µ…á}ÕÍ•Íõ€€è€ˆ‰ôÕÍ•Ìƒ
-Üí¥Ñ•´¹µ¥¹}…É‘}½Õ¹Ð€ü€‘í¥Ñ•´¹µ¥¹}…É‘}½Õ¹Ñô¬…É‘Í€€è€‰9¼…Éµ¥¹¥µÕ´‰ôð½Íµ…±°øð½ÍÁ…¸øñ•´±…ÍÍ9…µ”õí¥Ñ•´¹…Ñ¥Ù”€ü€‰¥Ìµ…Ñ¥Ù”ˆ€è€‰¥ÌµÁ…ÕÍ•‰ôùí¥Ñ•´¹…Ñ¥Ù”€ü€‰Ñ¥Ù”ˆ€è€‰A…ÕÍ•‰ôð½•´øñ…Í¥‘”øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÑ½±•AÉ¥¥¹IÕ±” ‰‘¥Í½Õ¹Ñ}½‘•Ìˆ°¥Ñ•´¹¥°€…¥Ñ•´¹…Ñ¥Ù”¥ôùí¥Ñ•´¹…Ñ¥Ù”€ü€‰A…ÕÍ”ˆ€è€‰Ñ¥Ù…Ñ”‰ôð½‰ÕÑÑ½¸øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÉ•µ½Ù•AÉ¥¥¹IÕ±” ‰‘¥Í½Õ¹Ñ}½‘•Ìˆ°¥Ñ•´¹¥¥ôùI•µ½Ù”ð½‰ÕÑÑ½¸øð½…Í¥‘”øð½‘¥Øø¥ô(€€€€€€€€€€€ì…‘…Ñ„¹‘¥Í½Õ¹Ñ½‘•Ì¹±•¹Ñ €˜˜€ñÀù9¼‘¥Í½Õ¹Ð½‘•Ì½¹™¥ÕÉ•¸ð½Àùô(€€€€€€€€€€ð½‘¥Øøð½Í•Ñ¥½¸ø(€€€€€€€€ð½‘¥Øø((€€€€€€€€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°…‘µ¥¸µ‰Õ¹‘±”µ½É‘•ÉÌˆøñ¡•…‘•È±…ÍÍ9…µ”ô‰…‘µ¥¸µ½É‘•Èµ¡•…‘¥¹œˆøñ‘¥ØøñÀ±…ÍÍ9…µ”ô‰Ù…Õ±Ðµ½Ù•É±¥¹”ˆøÌ¬I=IILð½Àøñ Ìù	Õ¹‘±”½™™•ÉÌð½ Ìøð½‘¥ØøñÍÁ…¸ùí‘…Ñ„¹‰Õ¹‘±•=™™•ÉÌ¹™¥±Ñ•È ¡•¹ÑÉä¤€ôø•¹ÑÉä¹ÍÑ…ÑÕÌ€ôôô€‰Á•¹‘¥¹œˆ¤¹±•¹Ñ¡ôÁ•¹‘¥¹œð½ÍÁ…¸øð½¡•…‘•Èøñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µ±¥ÍÐˆø(€€€€€€€€€í‘…Ñ„¹‰Õ¹‘±•=™™•ÉÌ¹µ…À ¡¥Ñ•´¤€ôø€ñ…ÉÑ¥±”±…ÍÍ9…µ”ô‰…‘µ¥¸µ‰Õ¹‘±”µ½™™•Èˆ­•äõí¥Ñ•´¹¥‘ôøñÍÁ…¸øñˆùí¥Ñ•´¹‰Õå•Èü¹‘µ½}¹…µ”ñð¥Ñ•´¹‰Õå•Èü¹ÕÍ•É¹…µ”ñð€‰A±…å•È‰ôð½ˆøñÍµ…±°ùí¥Ñ•´¹…É‘}ÍÕµµ…Éåôð½Íµ…±°øñÍµ…±°ù1¥ÍÑ•í9Õµ‰•È¡¥Ñ•´¹±¥ÍÑ•‘}Ñ½Ñ…°¤¹Ñ½1½…±•MÑÉ¥¹œ ¥ôƒ
-ÜÁÉ½Á½Í•Ì€ñÍÑÉ½¹œùí9Õµ‰•È¡¥Ñ•´¹ÁÉ½Á½Í•‘}Ñ½Ñ…°¤¹Ñ½1½…±•MÑÉ¥¹œ ¥ôð½ÍÑÉ½¹œùí¥Ñ•´¹½Õ¹Ñ•É}Ñ½Ñ…°€„ô¹Õ±°€ü€ƒ
-Ü½Õ¹Ñ•È€‘í9Õµ‰•È¡¥Ñ•´¹½Õ¹Ñ•É}Ñ½Ñ…°¤¹Ñ½1½…±•MÑÉ¥¹œ ¥ô€€è€ˆ‰ôð½Íµ…±°øð½ÍÁ…¸øñ•´±…ÍÍ9…µ”õí‰Õ¹‘±”µÍÑ…ÑÕÌÍÑ…ÑÕÌ´‘í¥Ñ•´¹ÍÑ…ÑÕÍõôùí¥Ñ•´¹ÍÑ…ÑÕÍôð½•´ùí¥Ñ•´¹ÍÑ…ÑÕÌ€ôôô€‰Á•¹‘¥¹œˆ€˜˜€ñ…Í¥‘”øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÉ•ÍÁ½¹‘Q½	Õ¹‘±”¡¥Ñ•´¹¥°€‰…•ÁÑ•ˆ¥ôù•ÁÐ€¬¡…Ðð½‰ÕÑÑ½¸øñ±…‰•°øñ¥¹ÁÕÐÑåÁ”ô‰¹Õµ‰•Èˆµ¥¸ôˆÀˆÁ±…•¡½±‘•Èô‰½Õ¹Ñ•ÈÑ½Ñ…°ˆÙ…±Õ”õí‰Õ¹‘±•½Õ¹Ñ•ÉÍm¥Ñ•´¹¥‘t€üü€ˆ‰ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ	Õ¹‘±•½Õ¹Ñ•ÉÌ ¡ÕÉÉ•¹Ð¤€ôø€¡ì€¸¸¹ÕÉÉ•¹Ð°m¥Ñ•´¹¥‘tè”¹Ñ…É•Ð¹Ù…±Õ”ô¤¥ô€¼øñ‰ÕÑÑ½¸‘¥Í…‰±•õì…‰Õ¹‘±•½Õ¹Ñ•ÉÍm¥Ñ•´¹¥‘uô½¹±¥¬õì ¤€ôøÉ•ÍÁ½¹‘Q½	Õ¹‘±”¡¥Ñ•´¹¥°€‰½Õ¹Ñ•É•ˆ¥ôù½Õ¹Ñ•È€¬¡…Ðð½‰ÕÑÑ½¸øð½±…‰•°øñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÉ•ÍÁ½¹‘Q½	Õ¹‘±”¡¥Ñ•´¹¥°€‰‘•±¥¹•ˆ¥ôù•±¥¹”ð½‰ÕÑÑ½¸øð½…Í¥‘”ùõí¥Ñ•´¹¡…Ñ}¥€˜˜€ñ‰ÕÑÑ½¸½¹±¥¬õì ¤€ôøÝ¥¹‘½Ü¹±½…Ñ¥½¸¹…ÍÍ¥¸ ˆ½¡…ÑÌˆ¥ôù=Á•¸¡…Ðð½‰ÕÑÑ½¸ùôð½…ÉÑ¥±”ø¥ô(€€€€€€€€€ì…‘…Ñ„¹‰Õ¹‘±•=™™•ÉÌ¹±•¹Ñ €˜˜€ñÀù9¼‰Õ¹‘±”ÁÉ½Á½Í…±Ìå•Ð¸ð½Àùô(€€€€€€€€ð½‘¥Øøð½Í•Ñ¥½¸ø(€€€€€€ð½Í•Ñ¥½¸ùô((€€€€€íÑ…ˆ€ôôô€‰‰½½­Ìˆ€˜˜€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µ‰½½­Ì…‘µ¥¸µ½É‘•ÈµÁ…¹•°ˆø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰Í…±•ÌµÍÕµµ…Éäˆøñ…ÉÑ¥±”øñÍµ…±°ùQ½Ñ…°½±ð½Íµ…±°øñÍÑÉ½¹œùíÑ½Ñ…±½±¹Ñ½1½…±•MÑÉ¥¹œ ¥ôð½ÍÑÉ½¹œøð½…ÉÑ¥±”øñ…ÉÑ¥±”øñÍµ…±°ù…É‘ÌÍ½±ð½Íµ…±°øñÍÑÉ½¹œùí…É‘ÍM½±‘ôð½ÍÑÉ½¹œøð½…ÉÑ¥±”øñ…ÉÑ¥±”øñÍµ…±°ùAÕÉ¡…Í•Ìð½Íµ…±°øñÍÑÉ½¹œùí‘…Ñ„¹ÁÕÉ¡…Í•Ì¹±•¹Ñ¡ôð½ÍÑÉ½¹œøð½…ÉÑ¥±”øð½‘¥Øø(€€€€€€€€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°ˆøñ¡•…‘•È±…ÍÍ9…µ”ô‰…‘µ¥¸µ½É‘•Èµ¡•…‘¥¹œˆøñ‘¥ØøñÀ±…ÍÍ9…µ”ô‰Ù…Õ±Ðµ½Ù•É±¥¹”ˆùM1L1Hð½Àøñ Èù	Õä=É‘•ÉÌð½ Èøð½‘¥ØøñÍÁ…¸ùí‘…Ñ„¹ÁÕÉ¡…Í•Ì¹±•¹Ñ¡ôÉ•½É‘•ð½ÍÁ…¸øð½¡•…‘•ÈøñÀùÙ•Éä½µÁ±•Ñ•ÁÕÉ¡…Í”¥ÌÍ…Ù•¡•É”Ý¥Ñ ‰Õå•È°…É°ÁÉ¥”…¹Ñ¥µ”¸ð½Àøñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µ±¥ÍÐˆø(€€€€€€€€€í‘…Ñ„¹ÁÕÉ¡…Í•Ì¹µ…À ¡¥Ñ•´¤€ôø€ñ‘¥Ø­•äõí¥Ñ•´¹¥‘ô±…ÍÍ9…µ”ô‰…‘µ¥¸µÍ…±”ˆøñÍÁ…¸øñˆùí¥Ñ•´¹…Éü¹¹…µ”€üü¥Ñ•´¹…É‘}¹…µ”€üü€‰I•µ½Ù•…É‰ôð½ˆøñÍµ…±°ù	Õå•Èèí¥Ñ•´¹Á±…å•Èü¹ÕÍ•É¹…µ”€üü€‰A±…å•È‰ôƒ
-Üí¥Ñ•´¹ÅÕ…¹Ñ¥Ñåô½Áä½½Á¥•Ìð½Íµ…±°øð½ÍÁ…¸øñÍÁ…¸øñˆùí9Õµ‰•È¡¥Ñ•´¹Á…¥‘}½±¤¹Ñ½1½…±•MÑÉ¥¹œ ¥ôð½ˆøñÍµ…±°ùí¹•Ü…Ñ”¡¥Ñ•´¹É•…Ñ•‘}…Ð¤¹Ñ½1½…±•MÑÉ¥¹œ ¥ôð½Íµ…±°øð½ÍÁ…¸øð½‘¥Øø¥ô(€€€€€€€€€ì…‘…Ñ„¹ÁÕÉ¡…Í•Ì¹±•¹Ñ €˜˜€ñÀù9¼ÁÕÉ¡…Í•Ì¡…Ù”‰••¸É•½É‘•å•Ð¸ð½Àùô(€€€€€€€€ð½‘¥Øøð½Í•Ñ¥½¸ø(€€€€€€ð½Í•Ñ¥½¸ùô((€€€€€íÑ…ˆ€ôôô€‰½µµÕ¹¥Ñäˆ€˜˜€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µ½µµÕ¹¥Ñäµ½¹Í½±”ˆø(€€€€€€€€ñ¡•…‘•Èøñ‘¥ØøñÀ±…ÍÍ9…µ”ô‰Ù…Õ±Ðµ½Ù•É±¥¹”ˆùI5A%IQ4!990ð½Àøñ ÈùMÁ•…¬‘¥É•Ñ±äÑ¼Ñ¡”½µµÕ¹¥Ñä¸ð½ Èøð½‘¥Øøñ‰ÕÑÑ½¸ÑåÁ”ô‰‰ÕÑÑ½¸ˆ½¹±¥¬õì ¤€ôøÝ¥¹‘½Ü¹±½…Ñ¥½¸¹…ÍÍ¥¸ ˆ½½µµÕ¹¥Ñäˆ¥ôùY¥•ÜÁÕ‰±¥Œ½µµÕ¹¥ÑäƒŠ\ð½‰ÕÑÑ½¸øð½¡•…‘•Èø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ¥ˆø(€€€€€€€€€€ñ™½É´±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°ˆ½¹MÕ‰µ¥ÐõíÁÕ‰±¥Í¡¹¹½Õ¹•µ•¹Ñôøñ‘µ¥¹%½¸¹…µ”ô‰½µµÕ¹¥Ñäˆ€¼øñ Ìù9•Ü…¹¹½Õ¹•µ•¹Ðð½ ÌøñÀùM•¹…¸½™™¥¥…°µ•ÍÍ…”Ñ¼•Ù•ÉäÙ•É¥™¥•Á±…å•È¸ð½Àøñ¥¹ÁÕÐÉ•ÅÕ¥É•Ù…±Õ”õí…‘µ¥¹¹¹½Õ¹•µ•¹Ð¹Ñ¥Ñ±•ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ‘µ¥¹¹¹½Õ¹•µ•¹Ð¡ì€¸¸¹…‘µ¥¹¹¹½Õ¹•µ•¹Ð°Ñ¥Ñ±”è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ôÁ±…•¡½±‘•Èô‰¹¹½Õ¹•µ•¹ÐÑ¥Ñ±”ˆ€¼øñÑ•áÑ…É•„É•ÅÕ¥É•Ù…±Õ”õí…‘µ¥¹¹¹½Õ¹•µ•¹Ð¹‰½‘åô½¹¡…¹”õì¡”¤€ôøÍ•Ñ‘µ¥¹¹¹½Õ¹•µ•¹Ð¡ì€¸¸¹…‘µ¥¹¹¹½Õ¹•µ•¹Ð°‰½‘äè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ôÁ±…•¡½±‘•Èô‰5•ÍÍ…”Ñ¼•Ù•ÉäÁ±…å•Èˆ€¼øñ‰ÕÑÑ½¸±…ÍÍ9…µ”ô‰Ù…Õ±ÐµÍÕ‰µ¥ÐˆùAÕ‰±¥Í …¹¹½Õ¹•µ•¹Ðð½‰ÕÑÑ½¸øð½™½É´ø(€€€€€€€€€€ñ™½É´±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°ˆ½¹MÕ‰µ¥ÐõíÁÕ‰±¥Í¡A½±±ôøñ‘µ¥¹%½¸¹…µ”ô‰½™™•ÉÌˆ€¼øñ Ìù9•Ü½µµÕ¹¥ÑäÁ½±°ð½ ÌøñÀùM•Á…É…Ñ”•… …¹ÍÝ•ÈÝ¥Ñ „½µµ„¸UÀÑ¼Í¥à½ÁÑ¥½¹Ì…É”ÍÕÁÁ½ÉÑ•¸ð½Àøñ¥¹ÁÕÐÉ•ÅÕ¥É•Ù…±Õ”õí…‘µ¥¹A½±°¹ÅÕ•ÍÑ¥½¹ô½¹¡…¹”õì¡”¤€ôøÍ•Ñ‘µ¥¹A½±°¡ì€¸¸¹…‘µ¥¹A½±°°ÅÕ•ÍÑ¥½¸è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ôÁ±…•¡½±‘•Èô‰½µµÕ¹¥ÑäÅÕ•ÍÑ¥½¸ˆ€¼øñ¥¹ÁÕÐÉ•ÅÕ¥É•Ù…±Õ”õí…‘µ¥¹A½±°¹½ÁÑ¥½¹Íô½¹¡…¹”õì¡”¤€ôøÍ•Ñ‘µ¥¹A½±°¡ì€¸¸¹…‘µ¥¹A½±°°½ÁÑ¥½¹Ìè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ôÁ±…•¡½±‘•Èô‰=ÁÑ¥½¸½¹”°=ÁÑ¥½¸ÑÝ¼°=ÁÑ¥½¸Ñ¡É•”ˆ€¼øñ‰ÕÑÑ½¸±…ÍÍ9…µ”ô‰Ù…Õ±ÐµÍÕ‰µ¥Ðˆù=Á•¸Á½±°ð½‰ÕÑÑ½¸øð½™½É´ø(€€€€€€€€€€ñ™½É´±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°…‘µ¥¸µ…Ù…¥±…‰¥±¥ÑäµÁ…¹•°ˆ½¹MÕ‰µ¥ÐõíÁÕ‰±¥Í¡Ù…¥±…‰¥±¥Ñåôøñ‘µ¥¹%½¸¹…µ”ô‰•Ù•¹ÑÌˆ€¼øñ ÌùA¥­ÕÀÉ•…‘¥¹•ÍÌð½ ÌøñÀùAÕ‰±¥Í Ý¡•¸å½Ô…É”½¹±¥¹”…¹Ý¡•¸ÕÍÑ½µ•ÉÌ…¸½±±•ÐÑ¡•¥È…É‘Ì¸ð½Àøñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ½Üˆøñ¥¹ÁÕÐÉ•ÅÕ¥É•Ù…±Õ”õí…Ù…¥±…‰¥±¥Ñå½É´¹Ñ¥Ñ±•ô½¹¡…¹”õì¡”¤€ôøÍ•ÑÙ…¥±…‰¥±¥Ñå½É´¡ì€¸¸¹…Ù…¥±…‰¥±¥Ñå½É´°Ñ¥Ñ±”è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ôÁ±…•¡½±‘•Èô‰…ÉÁ¥­ÕÀˆ€¼øñ¥¹ÁÕÐÉ•ÅÕ¥É•Ù…±Õ”õí…Ù…¥±…‰¥±¥Ñå½É´¹±½…Ñ¥½¹ô½¹¡…¹”õì¡”¤€ôøÍ•ÑÙ…¥±…‰¥±¥Ñå½É´¡ì€¸¸¹…Ù…¥±…‰¥±¥Ñå½É´°±½…Ñ¥½¸è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ôÁ±…•¡½±‘•Èô‰1½…Ñ¥½¸€¼Í•ÉÙ•Èˆ€¼øð½‘¥Øøñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µÉ½Üˆøñ±…‰•°ù=¹±¥¹”™É½´ñ¥¹ÁÕÐÉ•ÅÕ¥É•ÑåÁ”ô‰‘…Ñ•Ñ¥µ”µ±½…°ˆÙ…±Õ”õí…Ù…¥±…‰¥±¥Ñå½É´¹ÍÑ…ÉÑÍ}…Ñô½¹¡…¹”õì¡”¤€ôøÍ•ÑÙ…¥±…‰¥±¥Ñå½É´¡ì€¸¸¹…Ù…¥±…‰¥±¥Ñå½É´°ÍÑ…ÉÑÍ}…Ðè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½±…‰•°øñ±…‰•°ù=¹±¥¹”Õ¹Ñ¥°ñ¥¹ÁÕÐÉ•ÅÕ¥É•ÑåÁ”ô‰‘…Ñ•Ñ¥µ”µ±½…°ˆÙ…±Õ”õí…Ù…¥±…‰¥±¥Ñå½É´¹•¹‘Í}…Ñô½¹¡…¹”õì¡”¤€ôøÍ•ÑÙ…¥±…‰¥±¥Ñå½É´¡ì€¸¸¹…Ù…¥±…‰¥±¥Ñå½É´°•¹‘Í}…Ðè”¹Ñ…É•Ð¹Ù…±Õ”ô¥ô€¼øð½±…‰•°øð½‘¥ØøñÑ•áÑ…É•„Ù…±Õ”õí…Ù…¥±…‰¥±¥Ñå½É´¹¹½Ñ•ôµ…á1•¹Ñ ôˆØÀÀˆ½¹¡…¹”õì¡”¤€ôøÍ•ÑÙ…¥±…‰¥±¥Ñå½É´¡ì€¸¸¹…Ù…¥±…‰¥±¥Ñå½É´°¹½Ñ”è”¹Ñ…É•Ð¹Ù…±Õ”ô¥ôÁ±…•¡½±‘•Èô‰=ÁÑ¥½¹…°Á¥­ÕÀ¹½Ñ”ˆ€¼øñ‰ÕÑÑ½¸±…ÍÍ9…µ”ô‰Ù…Õ±ÐµÍÕ‰µ¥ÐˆùAÕ‰±¥Í ±¥Ù”Ý¥¹‘½Üð½‰ÕÑÑ½¸øð½™½É´ø(€€€€€€€€€€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°…‘µ¥¸µ…Ù…¥±…‰¥±¥Ñäµ±¥ÍÐˆøñ‘µ¥¹%½¸¹…µ”ô‰½µµÕ¹¥Ñäˆ€¼øñ ÌùAÕ‰±¥Í¡•Ý¥¹‘½ÝÌð½ ÌøñÀùQ¡•Í”Ñ¥µ•ÌÕÁ‘…Ñ”¥µµ•‘¥…Ñ•±ä™½È•Ù•ÉäÙ•É¥™¥•Á±…å•È¸ð½Àøñ‘¥Øùí‘…Ñ„¹…Ù…¥±…‰¥±¥Ñä¹µ…À ¡Í±½Ð¤€ôø€ñ…ÉÑ¥±”­•äõíÍ±½Ð¹¥‘ôøñÍÁ…¸øñˆùíÍ±½Ð¹Ñ¥Ñ±•ôð½ˆøñÍµ…±°ùí¹•Ü…Ñ”¡Í±½Ð¹ÍÑ…ÉÑÍ}…Ð¤¹Ñ½1½…±•MÑÉ¥¹œ ¥ôƒŠLí¹•Ü…Ñ”¡Í±½Ð¹•¹‘Í}…Ð¤¹Ñ½1½…±•Q¥µ•MÑÉ¥¹œ¡mt°ì¡½ÕÈè€ˆÈµ‘¥¥Ðˆ°µ¥¹ÕÑ”è€ˆÈµ‘¥¥Ðˆô¥ôƒ
-ÜíÍ±½Ð¹±½…Ñ¥½¹ôð½Íµ…±°øð½ÍÁ…¸øñ‰ÕÑÑ½¸ÑåÁ”ô‰‰ÕÑÑ½¸ˆ½¹±¥¬õì ¤€ôø‘•±•Ñ•Ù…¥±…‰¥±¥Ñä¡Í±½Ð¹¥¥ôùI•µ½Ù”ð½‰ÕÑÑ½¸øð½…ÉÑ¥±”ø¥õì…‘…Ñ„¹…Ù…¥±…‰¥±¥Ñä¹±•¹Ñ €˜˜€ñÍµ…±°ù9¼Á¥­ÕÀÝ¥¹‘½ÝÌÁÕ‰±¥Í¡•¸ð½Íµ…±°ùôð½‘¥Øøð½Í•Ñ¥½¸ø(€€€€€€€€€€ñÍ•Ñ¥½¸±…ÍÍ9…µ”õì‰…‘µ¥¸µÁ…¹•°…‘µ¥¸µÁÉ•Í•¹”µÁ…¹•°ˆ€¬€¡‘…Ñ„¹ÁÉ•Í•¹”ü¹¥Í}½¹±¥¹”€ü€ˆ¥Ìµ½¹±¥¹”ˆ€è€ˆˆ¥ôøñ‘µ¥¹%½¸¹…µ”ô‰½µµÕ¹¥Ñäˆ€¼øñÀ±…ÍÍ9…µ”ô‰Ù…Õ±Ðµ½Ù•É±¥¹”ˆù1%YAIM9ð½Àøñ Ìùí‘…Ñ„¹ÁÉ•Í•¹”ü¹¥Í}½¹±¥¹”€ü€‰-…±•¹Í­¤¥Ì½¹±¥¹”ˆ€è€‰-…±•¹Í­¤¥Ì½™™±¥¹”‰ôð½ ÌøñÀùQ¡”Ñ¥­•È‰•±½ÜÑ¡”¹…Ù¥…Ñ¥½¸…ÁÁ•…ÉÌ½¹±äÝ¡¥±”Ñ¡¥ÌÍÝ¥Ñ ¥Ì½¹±¥¹”¸ð½Àøñ¥¹ÁÕÐµ…á1•¹Ñ ôˆÄÈÀˆÙ…±Õ”õíÁÉ•Í•¹•9½Ñ•ô½¹¡…¹”õì¡”¤€ôøÍ•ÑAÉ•Í•¹•9½Ñ”¡”¹Ñ…É•Ð¹Ù…±Õ”¥ôÁ±…•¡½±‘•Èô‰M¡½ÉÐ±¥Ù”ÍÑ…ÑÕÌˆ€¼øñ‘¥Øøñ‰ÕÑÑ½¸ÑåÁ”ô‰‰ÕÑÑ½¸ˆ±…ÍÍ9…µ”ô‰Ù…Õ±ÐµÍÕ‰µ¥Ðˆ½¹±¥¬õì ¤€ôøÍ•ÑµÁ¥É•AÉ•Í•¹”¡ÑÉÕ”¥ôù¼½¹±¥¹”ð½‰ÕÑÑ½¸øñ‰ÕÑÑ½¸ÑåÁ”ô‰‰ÕÑÑ½¸ˆ±…ÍÍ9…µ”ô‰…‘µ¥¸µÍ•½¹‘…Éäˆ½¹±¥¬õì ¤€ôøÍ•ÑµÁ¥É•AÉ•Í•¹”¡™…±Í”¥ôù¼½™™±¥¹”ð½‰ÕÑÑ½¸øð½‘¥Øøð½Í•Ñ¥½¸ø(€€€€€€€€ð½‘¥Øø(€€€€€€€€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°…‘µ¥¸µ½µµÕ¹¥Ñäµµ½‘•É…Ñ¥½¸ˆøñ‘µ¥¹%½¸¹…µ”ô‰½µµÕ¹¥Ñäˆ€¼øñ Ìù½µµÕ¹¥Ñäµ½‘•É…Ñ¥½¸ð½ ÌøñÀùMÕ•ÍÑ¥½¹Ì°É•Ù¥•ÝÌ…¹±•…ä™••‘‰…¬…¸‰”É•µ½Ù•¡•É”¸Q¡¥Ì½¹ÑÉ½°¥ÌÁÉ½Ñ•Ñ•‰ä…‘µ¥¹¥ÍÑÉ…Ñ½ÈI1L¸ð½Àøñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µ±¥ÍÐˆø(€€€€€€€€€í‘…Ñ„¹½µµÕ¹¥ÑåMÕ•ÍÑ¥½¹Ì¹µ…À ¡¥Ñ•´¤€ôø€ñ‘¥Ø­•äõì‰ÍÕ•ÍÑ¥½¸´ˆ€¬¥Ñ•´¹¥‘ôøñÍÁ…¸øñˆùMÕ•ÍÑ¥½¸ƒ
-Üí¥Ñ•´¹Ñ¥Ñ±•ôð½ˆøñÍµ…±°ùí¥Ñ•´¹‰½‘åôð½Íµ…±°øð½ÍÁ…¸øñ‰ÕÑÑ½¸ÑåÁ”ô‰‰ÕÑÑ½¸ˆ½¹±¥¬õì ¤€ôø‘•±•Ñ•½µµÕ¹¥Ñå¹ÑÉä ‰½µµÕ¹¥Ñå}ÍÕ•ÍÑ¥½¹Ìˆ°¥Ñ•´¹¥°€‰MÕ•ÍÑ¥½¸ˆ¥ôùI•µ½Ù”ð½‰ÕÑÑ½¸øð½‘¥Øø¥ô(€€€€€€€€€í‘…Ñ„¹½µµÕ¹¥ÑåI•Ù¥•ÝÌ¹µ…À ¡¥Ñ•´¤€ôø€ñ‘¥Ø­•äõì‰É•Ù¥•Ü´ˆ€¬¥Ñ•´¹¥‘ôøñÍÁ…¸øñˆùI•Ù¥•Üƒ
-Üí¥Ñ•´¹É…Ñ¥¹ô¼Ôð½ˆøñÍµ…±°ùí¥Ñ•´¹‰½‘åôð½Íµ…±°øð½ÍÁ…¸øñ‰ÕÑÑ½¸ÑåÁ”ô‰‰ÕÑÑ½¸ˆ½¹±¥¬õì ¤€ôø‘•±•Ñ•½µµÕ¹¥Ñå¹ÑÉä ‰½µµÕ¹¥Ñå}É•Ù¥•ÝÌˆ°¥Ñ•´¹¥°€‰I•Ù¥•Üˆ¥ôùI•µ½Ù”ð½‰ÕÑÑ½¸øð½‘¥Øø¥ô(€€€€€€€€€í‘…Ñ„¹™••‘‰…¬¹µ…À ¡¥Ñ•´¤€ôø€ñ‘¥Ø­•äõì‰™••‘‰…¬´ˆ€¬¥Ñ•´¹¥‘ôøñÍÁ…¸øñˆù1•…ä™••‘‰…¬ð½ˆøñÍµ…±°ùí¥Ñ•´¹µ•ÍÍ…•ôð½Íµ…±°øð½ÍÁ…¸øñ‰ÕÑÑ½¸ÑåÁ”ô‰‰ÕÑÑ½¸ˆ½¹±¥¬õì ¤€ôø‘•±•Ñ•½µµÕ¹¥Ñå¹ÑÉä ‰™••‘‰…¬ˆ°¥Ñ•´¹¥°€‰••‘‰…¬ˆ¥ôùI•µ½Ù”ð½‰ÕÑÑ½¸øð½‘¥Øø¥ô(€€€€€€€€€ì…‘…Ñ„¹½µµÕ¹¥ÑåMÕ•ÍÑ¥½¹Ì¹±•¹Ñ €˜˜€…‘…Ñ„¹½µµÕ¹¥ÑåI•Ù¥•ÝÌ¹±•¹Ñ €˜˜€…‘…Ñ„¹™••‘‰…¬¹±•¹Ñ €˜˜€ñÀù9¼½µµÕ¹¥Ñä•¹ÑÉ¥•ÌÑ¼µ½‘•É…Ñ”¸ð½Àùô(€€€€€€€€ð½‘¥Øøð½Í•Ñ¥½¸ø(€€€€€€ð½Í•Ñ¥½¸ùô((€€€€€íÑ…ˆ€ôôô€‰Á±…å•ÉÌˆ€˜˜€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ…¹•°ˆøñ ÈùA±…å•ÈÉ½±•Ìð½ ÈøñÀù•±•Ñ”É•µ½Ù•ÌÑ¡”Á±…å•ÈÁÉ½™¥±”…¹Ñ¡•¥ÈµÁ¥É”‘…Ñ„¸‘µ¥¹¥ÍÑÉ…Ñ½ÈÁÉ½™¥±•Ì…É”ÁÉ½Ñ•Ñ•¸ð½Àøñ‘¥Ø±…ÍÍ9…µ”ô‰…‘µ¥¸µ±¥ÍÐˆø(€€€€€€€í‘…Ñ„¹Á±…å•ÉÌ¹µ…À ¡¥Ñ•´¤€ôø€ñ‘¥Ø­•äõí¥Ñ•´¹¥‘ô±…ÍÍ9…µ”ô‰…‘µ¥¸µÁ±…å•ÈˆøñÍÁ…¸øñˆùí¥Ñ•´¹‘µ½}¹…µ”ñð¥Ñ•´¹ÕÍ•É¹…µ•ôð½ˆøñÍµ…±°ùí¥Ñ•´¹‘µ½}¹…µ”€ü¥Í½É ‘í¥Ñ•´¹ÕÍ•É¹…µ•õ€€èÉ½±•1…‰•±Ím¥Ñ•´¹É½±•t€üü€‰A±…å•È‰õí9Õµ‰•È¡¥Ñ•´¹Ý¥¹Ì¤ñð9Õµ‰•È¡¥Ñ•´¹±½ÍÍ•Ì¤€ü€ƒ
-Ü€‘í¥Ñ•´¹Ý¥¹Íõ\€¼€‘í¥Ñ•´¹±½ÍÍ•Íõ1€€è€ˆ‰ôð½Íµ…±°øð½ÍÁ…¸øñÍ•±•ÐÙ…±Õ”õíÉ½±•Ì¹¥¹±Õ‘•Ì¡¥Ñ•´¹É½±”¤€ü¥Ñ•´¹É½±”€è€‰ÕÍÑ½µ•È‰ô½¹¡…¹”õì¡”¤€ôøÍ•ÑI½±”¡¥Ñ•´¹¥°”¹Ñ…É•Ð¹Ù…±Õ”¥ôùíÉ½±•Ì¹µ…À ¡É½±”¤€ôø€ñ½ÁÑ¥½¸­•äõíÉ½±•ôÙ…±Õ”õíÉ½±•ôùíÉ½±•1…‰•±ÍmÉ½±•uôð½½ÁÑ¥½¸ø¥ôð½Í•±•Ðùí¥Ñ•´¹¥€„ôôÁÉ½™¥±”¹¥€˜˜¥Ñ•´¹É½±”€„ôô€‰…‘µ¥¸ˆ€˜˜€ñ‰ÕÑÑ½¸±…ÍÍ9…µ”ô‰…‘µ¥¸µ‘•±•Ñ”µÁ±…å•Èˆ½¹±¥¬õì ¤€ôø‘•±•Ñ•A±…å•È¡¥Ñ•´¹¥°¥Ñ•´¹‘µ½}¹…µ”ñð¥Ñ•´¹ÕÍ•É¹…µ”¥ôù•±•Ñ”Á±…å•Èð½‰ÕÑÑ½¸ùôð½‘¥Øø¥ô(€€€€€€ð½‘¥Øøð½Í•Ñ¥½¸ùô(€€€€ð½µ…¥¸ø(€€¤ì)ô(
+    const approved = scanCandidates.filter((candidate) => candidate.selected && Number(candidate.quantity) > 0);
+    if (!approved.length) return setNotice("Approve at least one detected card first.");
+    if (approved.some((candidate) => !candidate.existingId && candidate.price === "")) return setNotice("Set your price for every new card before importing.");
+
+    setInventoryScan((current) => ({ ...current, state: "saving" }));
+    for (const candidate of approved) {
+      const quantity = Math.max(1, Math.floor(Number(candidate.quantity)));
+      const result = candidate.existingId
+        ? await supabase.from("cards").update({ quantity: Number(data.cards.find((item) => item.id === candidate.existingId)?.quantity ?? 0) + quantity, ...(candidate.price === "" ? {} : { price: Number(candidate.price) }) }).eq("id", candidate.existingId)
+        : await supabase.from("cards").insert({ name: candidate.name, price: Number(candidate.price), quantity, category: candidate.category, rarity: candidate.rarity, ygo_card_id: candidate.ygo_card_id ?? null, image_url: candidate.image_url ?? null, description: candidate.description ?? "" });
+      if (result.error) {
+        setInventoryScan((current) => ({ ...current, state: "review" }));
+        return setNotice(`${candidate.name} could not be imported: ${result.error.message}`);
+      }
+    }
+
+    setScanCandidates([]);
+    setInventoryScan((current) => ({ ...current, state: "done" }));
+    setNotice(`${approved.length} reviewed card entries were saved to Cardstock.`);
+    load();
+  }
+
+  async function submitEvent(e) {
+    e.preventDefault();
+    const payload = {
+      title: event.title,
+      starts_at: event.starts_at,
+      description: event.description,
+      banlist_id: null,
+      event_format: event.event_format,
+    };
+    const result = editingEventId
+      ? await supabase.from("events").update(payload).eq("id", editingEventId)
+      : await supabase.from("events").insert({ ...payload, created_by: profile.id });
+
+    if (result.error) return setNotice(result.error.message);
+    setNotice(editingEventId ? "Event updated and players were notified." : "Event created and players were notified.");
+    setEvent(blankEvent);
+    setEditingEventId(null);
+    load();
+  }
+
+  function editEvent(item) {
+    setEditingEventId(item.id);
+    setEvent({
+      title: item.title,
+      starts_at: toLocalDateTime(item.starts_at),
+      description: item.description ?? "",
+      event_format: eventFormats.some((format) => format.value === item.event_format) ? item.event_format : "five_way_ffa",
+    });
+    setNotice("Editing " + item.title + ".");
+  }
+
+  async function deleteEvent(id, title) {
+    const { error } = await supabase.from("events").delete().eq("id", id);
+    setNotice(error ? error.message : title + " was removed.");
+    load();
+  }
+
+  async function confirmWinner(eventId, eventTitle) {
+    const winnerId = winnerSelections[eventId];
+    if (!winnerId) return setNotice("Choose a registered player first.");
+
+    const winner = data.players.find((player) => player.id === winnerId);
+    const { error } = await supabase.rpc("set_event_winner", {
+      p_event_id: eventId,
+      p_winner_id: winnerId,
+    });
+
+    if (error) return setNotice(error.message);
+    setNotice((winner?.username ?? "The selected player") + " won " + eventTitle + " and received +1 win.");
+    setWinnerSelections((current) => {
+      const next = { ...current };
+      delete next[eventId];
+      return next;
+    });
+    load();
+  }
+
+  async function deleteCard(id, name) {
+    const { error } = await supabase.from("cards").update({ quantity: 0 }).eq("id", id);
+    setNotice(error ? error.message : name + " was archived safely. Existing orders and trades remain intact.");
+    load();
+  }
+
+  async function saveCard(e) {
+    e.preventDefault();
+    const { error } = await supabase.from("cards").update({
+      price: Number(editingCard.price),
+      avg_price: editingCard.avg_price === "" || editingCard.avg_price == null ? null : Number(editingCard.avg_price),
+      price_status: editingCard.price_status || "unavailable",
+      price_source: editingCard.price_status === "available" ? "DMO Marketplace" : null,
+      price_updated_at: editingCard.price_status === "available" ? new Date().toISOString() : editingCard.price_updated_at,
+      quantity: Number(editingCard.quantity),
+      category: editingCard.category,
+      rarity: editingCard.rarity,
+    }).eq("id", editingCard.id);
+    if (error) return setNotice(error.message);
+    setNotice(editingCard.name + " was updated.");
+    setEditingCard(null);
+    load();
+  }
+
+  async function setOffer(id, status) {
+    const { error } = await supabase.from("offers").update({ status }).eq("id", id);
+    setNotice(error ? error.message : "Offer " + status + ".");
+    load();
+  }
+
+  async function respondToTrade(id, status) {
+    const { data: chatId, error } = await supabase.rpc("respond_to_trade_offer", {
+      p_offer_id: id,
+      p_status: status,
+    });
+    if (error) return setNotice(error.message);
+    setNotice(status === "declined" ? "Trade offer declined." : "Trade chat opened. Taking you to the inboxâ€¦");
+    load();
+    if (chatId) window.setTimeout(() => window.location.assign("/chats"), 450);
+  }
+
+  async function setRole(id, role) {
+    const { error } = await supabase.from("profiles").update({ role }).eq("id", id);
+    setNotice(error ? error.message : "Player role updated.");
+    load();
+  }
+
+  async function deletePlayer(id, username) {
+    const { data, error } = await supabase.rpc("delete_player_profile", { p_player_id: id });
+    setNotice(error ? error.message : (data ?? username) + " was removed from Card Empire.");
+    load();
+  }
+
+  async function publishAnnouncement(e) {
+    e.preventDefault();
+    const { error } = await supabase.from("community_announcements").insert({ title: adminAnnouncement.title.trim(), body: adminAnnouncement.body.trim() });
+    if (error) return setNotice(error.message);
+    setAdminAnnouncement({ title: "", body: "" });
+    setNotice("Announcement published to the Community.");
+  }
+
+  async function publishPoll(e) {
+    e.preventDefault();
+    const labels = adminPoll.options.split(",").map((item) => item.trim()).filter(Boolean).slice(0, 6);
+    if (labels.length < 2) return setNotice("A poll needs at least two comma-separated options.");
+    const { data: poll, error } = await supabase.from("community_polls").insert({ question: adminPoll.question.trim() }).select().single();
+    if (error) return setNotice(error.message);
+    const optionResult = await supabase.from("community_poll_options").insert(labels.map((label, position) => ({ poll_id: poll.id, label, position })));
+    if (optionResult.error) return setNotice(optionResult.error.message);
+    setAdminPoll({ question: "", options: "" });
+    setNotice("Community poll opened.");
+  }
+
+  async function publishAvailability(e) {
+    e.preventDefault();
+    if (new Date(availabilityForm.ends_at) <= new Date(availabilityForm.starts_at)) return setNotice("The pickup window must end after it starts.");
+    const { error } = await supabase.from("empire_availability").insert({
+      title: availabilityForm.title.trim(),
+      location: availabilityForm.location.trim(),
+      starts_at: new Date(availabilityForm.starts_at).toISOString(),
+      ends_at: new Date(availabilityForm.ends_at).toISOString(),
+      note: availabilityForm.note.trim(),
+      created_by: profile.id,
+    });
+    if (error) return setNotice(error.message);
+    setAvailabilityForm(blankAvailability);
+    setNotice("Pickup readiness published live.");
+    load();
+  }
+
+  async function deleteAvailability(id) {
+    const { error } = await supabase.from("empire_availability").delete().eq("id", id);
+    setNotice(error ? error.message : "Pickup window removed live.");
+    load();
+  }
+
+  async function setEmpirePresence(isOnline) {
+    const { error } = await supabase.from("empire_presence").upsert({
+      singleton: true,
+      is_online: isOnline,
+      status_note: presenceNote.trim() || "Kalenski is online now.",
+      updated_by: profile.id,
+      updated_at: new Date().toISOString(),
+    });
+    setNotice(error ? error.message : isOnline ? "The live ticker is now visible." : "Kalenski is offline. The ticker is hidden.");
+    if (!error) load();
+  }
+
+  async function deleteCommunityEntry(table, id, label) {
+    const allowedTables = new Set(["community_suggestions", "community_reviews", "feedback"]);
+    if (!allowedTables.has(table)) return;
+    const { error } = await supabase.from(table).delete().eq("id", id);
+    setNotice(error ? error.message : label + " removed from the Community.");
+    if (!error) load();
+  }
+
+  const discountPayload = (form) => ({
+    percentage: Number(form.percentage),
+    starts_at: form.starts_at ? new Date(form.starts_at).toISOString() : null,
+    ends_at: form.ends_at ? new Date(form.ends_at).toISOString() : null,
+    min_total: Number(form.min_total || 0),
+    min_card_count: Number(form.min_card_count || 0),
+  });
+
+  async function createAutomaticDiscount(e) {
+    e.preventDefault();
+    const { error } = await supabase.from("automatic_discounts").insert({ name: discountForm.name.trim(), ...discountPayload(discountForm) });
+    if (error) return setNotice(error.message);
+    setDiscountForm({ name: "", percentage: "", starts_at: "", ends_at: "", min_total: "0", min_card_count: "0" });
+    setNotice("Automatic discount published.");
+    load();
+  }
+
+  async function createDiscountCode(e) {
+    e.preventDefault();
+    const { error } = await supabase.from("discount_codes").insert({ code: codeForm.code.trim().toUpperCase(), ...discountPayload(codeForm), max_uses: codeForm.max_uses ? Number(codeForm.max_uses) : null });
+    if (error) return setNotice(error.message);
+    setCodeForm({ code: "", percentage: "", starts_at: "", ends_at: "", min_total: "0", min_card_count: "0", max_uses: "" });
+    setNotice("Discount code created.");
+    load();
+  }
+
+  async function togglePricingRule(table, id, active) {
+    const { error } = await supabase.from(table).update({ active }).eq("id", id);
+    setNotice(error ? error.message : active ? "Discount activated." : "Discount paused.");
+    if (!error) load();
+  }
+
+  async function removePricingRule(table, id) {
+    const { error } = await supabase.from(table).delete().eq("id", id);
+    setNotice(error ? error.message : "Discount removed.");
+    if (!error) load();
+  }
+
+  async function respondToBundle(id, status) {
+    const counter = status === "countered" ? Number(bundleCounters[id]) : null;
+    const { data: chatId, error } = await supabase.rpc("respond_to_bundle_offer", { p_offer_id: id, p_status: status, p_counter_total: counter });
+    if (error) return setNotice(error.message);
+    setNotice(status === "declined" ? "Bundle offer declined." : "Bundle chat opened.");
+    load();
+    if (chatId) window.setTimeout(() => window.location.assign("/chats"), 400);
+  }
+
+  const manualScanMatches = scanManualQuery.trim().length < 2 ? [] : officialDmoCatalog
+    .filter((item) => normaliseCardName(item.name).includes(normaliseCardName(scanManualQuery)))
+    .slice(0, 6);
+
+  return (
+    <main className="admin-shell">
+      <header><div><p className="vault-overline">KALENSKIâ„¢ CONTROL ROOM</p><h1>Empire Admin</h1></div><span>Live system</span></header>
+      <nav className="admin-tabs" aria-label="Admin sections">
+        <div className="admin-sidebar-profile">
+          <AdminIcon name="players" />
+          <span><small>CONTROL ROOM</small><b>Hello, {profile?.dmo_name || profile?.username || "Kalenski"}</b></span>
+        </div>
+        {[
+          ["CARDSTOCK", [
+            ["cards", "Cards", data.cards.length + " in stock"],
+            ["pricing", "Pricing", data.bundleOffers.filter((entry) => entry.status === "pending").length + " bundles"],
+          ]],
+          ["ORDERS", [
+            ["books", "Buy Orders", data.purchases.length + " recorded"],
+            ["offers", "Offers", data.offers.filter((entry) => entry.status === "pending").length + " pending"],
+            ["trades", "Trade Orders", data.trades.filter((entry) => entry.status === "pending").length + " pending"],
+          ]],
+          ["EMPIRE", [
+            ["events", "Events", data.events.length + " events"],
+            ["community", "Community", "Team channel"],
+            ["players", "Players", data.players.length + " profiles"],
+          ]],
+        ].map(([group, items]) => (
+          <div className="admin-sidebar-group" key={group}>
+            <p>{group}</p>
+            {items.map(([item, label, detail]) => (
+              <button key={item} className={tab === item ? "active" : ""} aria-current={tab === item ? "page" : undefined} onClick={() => setTab(item)}>
+                <AdminIcon name={item} /><span><b>{label}</b><small>{detail}</small></span><i aria-hidden="true">â€º</i>
+              </button>
+            ))}
+          </div>
+        ))}
+      </nav>
+      {notice && <p className="admin-notice">{notice}</p>}
+
+      {tab === "cards" && <section className="admin-grid">
+        <form className="admin-panel" onSubmit={addCard}>
+          <h2>Add a card</h2><p>Only cards from the official DMO catalogue can enter Cardstock. Their type and rarity are locked to the game list.</p>
+          <div className="card-name-field">
+            <input required autoComplete="off" placeholder="Search the official card catalogue (e.g. PO)" value={card.name} onChange={(e) => { setCard({ ...card, name: e.target.value }); setSelectedCatalogCard(null); }} />
+            {(suggestions.length > 0 || catalogLoading) && <div className="card-suggestions">{catalogLoading && !suggestions.length && <p className="card-suggestion-loading">Finding official card artworkâ€¦</p>}{suggestions.map((item) => (
+              <button type="button" key={item.name} onClick={() => { setCard({ ...card, name: item.name, category: item.category, rarity: item.rarity }); setSelectedCatalogCard(item); setSuggestions([]); }}>
+                <img src={item.image_url_small || item.image_url || "/kalenski-card-back.svg"} alt="" loading="lazy" />
+                <span>{item.name}<small>{item.category} Â· {item.gameRarity}</small></span><b>{item.gameRarity}</b>
+              </button>
+            ))}</div>}
+          </div>
+          <div className="admin-row"><input required type="number" min="0" placeholder="Price in Gold" value={card.price} onChange={(e) => setCard({ ...card, price: e.target.value })} /><input required type="number" min="0" placeholder="Quantity" value={card.quantity} onChange={(e) => setCard({ ...card, quantity: e.target.value })} /></div>
+          <div className="admin-row"><input readOnly value={selectedCatalogCard ? selectedCatalogCard.category.toUpperCase() + " Â· official type" : "Official type"} /><input readOnly value={selectedCatalogCard ? selectedCatalogCard.gameRarity + " Â· official rarity" : "Official rarity"} /></div>
+          <button className="vault-submit" disabled={!selectedCatalogCard}>{selectedCatalogCard ? "Add to Cardstock" : "Choose official card"}</button>
+        </form>
+        <section className="admin-panel"><header className="admin-cardstock-heading"><div><h2>Cardstock inventory</h2><p>DMO averages are shown only when a verified source value exists.</p></div><label>Market data<select value={marketPriceFilter} onChange={(event) => setMarketPriceFilter(event.target.value)}><option value="all">All cards</option><option value="available">Available</option><option value="unavailable">No market data</option><option value="needs_review">Needs review</option></select></label></header><div className="admin-list">
+          {data.cards.filter((item) => marketPriceFilter === "all" || (item.price_status ?? "unavailable") === marketPriceFilter).map((item) => editingCard?.id === item.id ? (
+            <form key={item.id} className="admin-card-edit" onSubmit={saveCard}>
+              <strong>{item.name}</strong>
+              <div className="admin-row"><label>My price<input type="number" min="0" value={editingCard.price} onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })} /></label><label>Stock<input type="number" min="0" value={editingCard.quantity} onChange={(e) => setEditingCard({ ...editingCard, quantity: e.target.value })} /></label></div>
+              <div className="admin-row"><label>AVG DMO price<input type="number" min="0" placeholder="No market data" value={editingCard.avg_price ?? ""} onChange={(e) => setEditingCard({ ...editingCard, avg_price: e.target.value })} /></label><label>Data status<select value={editingCard.price_status ?? "unavailable"} onChange={(e) => setEditingCard({ ...editingCard, price_status: e.target.value })}><option value="available">Available</option><option value="unavailable">No market data</option><option value="needs_review">Needs review</option></select></label></div>
+              <a className="admin-market-source" href="https://dmo-market.onrender.com/" target="_blank" rel="noreferrer">Verify against DMO Market â†—</a>
+              <div className="admin-row"><select value={editingCard.category} onChange={(e) => setEditingCard({ ...editingCard, category: e.target.value })}><option value="monster">Monster</option><option value="spell">Spell</option><option value="trap">Trap</option></select><select value={editingCard.rarity} onChange={(e) => setEditingCard({ ...editingCard, rarity: e.target.value })}><option value="common">Common</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="rainbow">Rainbow</option></select></div>
+              <aside><button type="submit">Save</button><button type="button" onClick={() => setEditingCard(null)}>Cancel</button></aside>
+            </form>
+          ) : (
+            <div key={item.id} className="admin-stock"><span>{item.name}<small className={`market-data-state state-${item.price_status ?? "unavailable"}`}>{item.price_status === "available" && item.avg_price != null ? `AVG ${Number(item.avg_price).toLocaleString()} G` : item.price_status === "needs_review" ? "Market data needs review" : "No market data"}</small></span><b>{item.quantity} Â· {Number(item.price).toLocaleString()} G</b><aside><button onClick={() => setEditingCard(item)}>Edit</button><button onClick={() => deleteCard(item.id, item.name)}>Archive</button></aside></div>
+          ))}
+          {!data.cards.length && <p>No database cards yet.</p>}
+        </div></section>
+        <section className="admin-panel inventory-scanner">
+          <header className="inventory-scanner-heading"><div><AdminIcon name="cards" /><p className="vault-overline">SCREENSHOT INVENTORY</p><h2>Detect multiple cards.</h2><p>Upload one screenshot. Card Empire reads it locally, matches only the official DMO catalogue and waits for your approval before saving anything.</p></div><label className="inventory-upload"><input type="file" accept="image/png,image/jpeg,image/webp" onChange={scanInventoryScreenshot} /><span>{inventoryScan.state === "reading" ? `Readingâ€¦ ${inventoryScan.progress}%` : "Choose screenshot"}</span></label></header>
+          {inventoryScan.preview && <div className="inventory-scan-workspace"><figure><img src={inventoryScan.preview} alt="Inventory screenshot preview" /><figcaption>{inventoryScan.filename}</figcaption></figure><div className="inventory-review"><label className="inventory-manual-search">Add a missed card<input value={scanManualQuery} onChange={(event) => setScanManualQuery(event.target.value)} placeholder="Search official DMO catalogue" /></label>{manualScanMatches.length > 0 && <div className="inventory-manual-results">{manualScanMatches.map((match) => <button key={match.name} type="button" onClick={() => addManualScanCandidate(match)}>{match.name}<small>{match.gameRarity}</small></button>)}</div>}
+            <div className="inventory-candidate-list">{scanCandidates.map((candidate, index) => <article className={candidate.selected ? "is-approved" : "needs-review"} key={candidate.name}><label className="inventory-approve"><input type="checkbox" checked={candidate.selected} onChange={(event) => updateScanCandidate(index, { selected: event.target.checked })} /><span>{candidate.selected ? "Approved" : "Review"}</span></label><span className="inventory-candidate-art">{(candidate.image_url_small || candidate.image_url) && <img src={candidate.image_url_small || candidate.image_url} alt="" />}</span><div><strong>{candidate.name}</strong><small>{candidate.gameRarity} Â· {candidate.category}{candidate.existingId ? " Â· already in Cardstock" : ""}</small><em>{candidate.confidence == null ? "Added manually" : `${candidate.confidence}% OCR confidence`}</em></div><label>Qty<input type="number" min="1" value={candidate.quantity} onChange={(event) => updateScanCandidate(index, { quantity: event.target.value })} /></label><label>My price<input type="number" min="0" value={candidate.price} placeholder={candidate.existingId ? "Keep current" : "Required"} onChange={(event) => updateScanCandidate(index, { price: event.target.value })} /></label><button type="button" className="inventory-remove-candidate" onClick={() => setScanCandidates((current) => current.filter((_, itemIndex) => itemIndex !== index))}>Ã—</button></article>)}{inventoryScan.state === "review" && !scanCandidates.length && <p className="inventory-scan-empty">No automatic match. Use the official catalogue search above to build the review list manually.</p>}</div>
+            {scanCandidates.length > 0 && <footer><span>{scanCandidates.filter((candidate) => candidate.selected).length} approved Â· nothing is saved before confirmation</span><button type="button" className="vault-submit" disabled={inventoryScan.state === "saving"} onClick={importScanCandidates}>{inventoryScan.state === "saving" ? "Saving reviewed cardsâ€¦" : "Confirm reviewed inventory"}</button></footer>}
+          </div></div>}
+        </section>
+      </section>}
+
+      {tab === "events" && <section className="admin-events">
+        <div className="admin-grid">
+          <form className="admin-panel" onSubmit={submitEvent}>
+            <h2>{editingEventId ? "Edit event" : "Create event"}</h2>
+            <input required placeholder="Event name" value={event.title} onChange={(e) => setEvent({ ...event, title: e.target.value })} />
+            <input required type="datetime-local" value={event.starts_at} onChange={(e) => setEvent({ ...event, starts_at: e.target.value })} />
+            <select value={event.event_format} onChange={(e) => setEvent({ ...event, event_format: e.target.value })}>
+              {eventFormats.map((format) => <option value={format.value} key={format.value}>{format.label} Â· {format.detail}</option>)}
+            </select>
+            <p className="event-rule-note"><b>Official rule:</b> The current in-game banlist is always used unless the event description explicitly says otherwise.</p>
+            <textarea placeholder="Rules, location, prizeâ€¦" value={event.description} onChange={(e) => setEvent({ ...event, description: e.target.value })} />
+            <button className="vault-submit">{editingEventId ? "Save event" : "Publish event"}</button>
+            {editingEventId && <button type="button" className="admin-secondary" onClick={() => { setEditingEventId(null); setEvent(blankEvent); }}>Cancel edit</button>}
+          </form>
+
+          <section className="admin-panel admin-event-standard"><AdminIcon name="events" /><p className="vault-overline">GLOBAL EVENT STANDARD</p><h2>One current rule set.</h2><p>Every event follows the current in-game banlist by default. Put a clearly written exception into the event description only when an event truly needs one.</p></section>
+        </div>
+
+        <section className="admin-panel"><h2>Scheduled events</h2><div className="admin-list">
+          {data.events.map((item) => {
+            const registrations = item.registrations ?? [];
+            const eventFormat = getEventFormat(item.event_format);
+            const selectedWinnerId = winnerSelections[item.id] ?? "";
+            const winner = data.players.find((player) => player.id === item.winner_id);
+
+            return <div key={item.id} className="admin-event-row">
+              <span>
+                <b>{item.title}</b>
+                <small>{new Date(item.starts_at).toLocaleString()} Â· {eventFormat.label} Â· {eventFormat.detail} Â· {registrations.length}{eventFormat.capacity ? " / " + eventFormat.capacity : ""} registered Â· Current in-game banlist</small>
+                {winner && <em className="event-winner-badge">WINNER Â· {winner.username} Â· +1 WIN</em>}
+              </span>
+              {!winner && <div className="event-winner-controls">
+                <select value={selectedWinnerId} onChange={(event) => setWinnerSelections((current) => ({ ...current, [item.id]: event.target.value }))}>
+                  <option value="">Choose winner</option>
+                  {registrations.map((registration) => <option key={registration.player_id} value={registration.player_id}>{registration.player?.username ?? "Player"}</option>)}
+                </select>
+                <button disabled={!selectedWinnerId} onClick={() => confirmWinner(item.id, item.title)}>Confirm winner</button>
+              </div>}
+              <aside><button onClick={() => editEvent(item)}>Edit</button><button onClick={() => deleteEvent(item.id, item.title)}>Remove</button></aside>
+            </div>;
+          })}
+          {!data.events.length && <p>No events scheduled yet.</p>}
+        </div></section>
+      </section>}
+
+      {tab === "offers" && <section className="admin-panel"><h2>Offers</h2><div className="admin-list">
+        {data.offers.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> offered {Number(item.amount).toLocaleString()} G for {item.card_name}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => setOffer(item.id, "accepted")}>Accept</button><button onClick={() => setOffer(item.id, "rejected")}>Decline</button></aside>}</div>)}
+        {!data.offers.length && <p>No offers yet.</p>}
+      </div></section>}
+
+      {tab === "trades" && <section className="admin-panel admin-order-panel"><header className="admin-order-heading"><div><p className="vault-overline">EXCHANGE DESK</p><h2>Trade Orders</h2></div><span>{data.trades.filter((entry) => entry.status === "pending").length} awaiting action</span></header><p>Players choose a Cardstock card and propose what they offer in return. Accepting or negotiating opens the private live chat.</p><div className="admin-list">
+        {data.trades.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> wants <strong>{item.card?.name ?? item.card_name_snapshot ?? "Removed Cardstock card"}</strong><br /><small>Offers: {item.offered_cards}</small>{item.message && <small>Message: {item.message}</small>}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToTrade(item.id, "accepted")}>Accept + chat</button><button onClick={() => respondToTrade(item.id, "negotiating")}>Negotiate + chat</button><button onClick={() => respondToTrade(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <aside><button onClick={() => window.location.assign("/chats")}>Open chat</button></aside>}</div>)}
+        {!data.trades.length && <p>No Trade Hub offers yet.</p>}
+      </div></section>}
+
+      {tab === "pricing" && <section className="admin-pricing-console">
+        <header className="admin-order-heading"><div><p className="vault-overline">PRICE CONTROL</p><h2>Discounts & bundle offers</h2></div><span>Server verified</span></header>
+        <div className="admin-grid admin-pricing-forms">
+          <form className="admin-panel" onSubmit={createAutomaticDiscount}>
+            <AdminIcon name="pricing" /><h3>Automatic discount</h3><p>Applies automatically when the active time and minimum order rules match.</p>
+            <div className="admin-row"><input required maxLength="80" placeholder="Campaign name" value={discountForm.name} onChange={(e) => setDiscountForm({ ...discountForm, name: e.target.value })} /><input required type="number" min="0.01" max="90" step="0.01" placeholder="Discount %" value={discountForm.percentage} onChange={(e) => setDiscountForm({ ...discountForm, percentage: e.target.value })} /></div>
+            <div className="admin-row"><label>Starts<input type="datetime-local" value={discountForm.starts_at} onChange={(e) => setDiscountForm({ ...discountForm, starts_at: e.target.value })} /></label><label>Ends<input type="datetime-local" value={discountForm.ends_at} onChange={(e) => setDiscountForm({ ...discountForm, ends_at: e.target.value })} /></label></div>
+            <div className="admin-row"><input type="number" min="0" placeholder="Minimum total" value={discountForm.min_total} onChange={(e) => setDiscountForm({ ...discountForm, min_total: e.target.value })} /><input type="number" min="0" placeholder="Minimum card count" value={discountForm.min_card_count} onChange={(e) => setDiscountForm({ ...discountForm, min_card_count: e.target.value })} /></div>
+            <button className="vault-submit">Publish automatic discount</button>
+          </form>
+          <form className="admin-panel" onSubmit={createDiscountCode}>
+            <AdminIcon name="offers" /><h3>Discount code</h3><p>Create a private checkout code with its own limits and active period.</p>
+            <div className="admin-row"><input required minLength="3" maxLength="32" placeholder="CODE" value={codeForm.code} onChange={(e) => setCodeForm({ ...codeForm, code: e.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, "") })} /><input required type="number" min="0.01" max="90" step="0.01" placeholder="Discount %" value={codeForm.percentage} onChange={(e) => setCodeForm({ ...codeForm, percentage: e.target.value })} /></div>
+            <div className="admin-row"><label>Starts<input type="datetime-local" value={codeForm.starts_at} onChange={(e) => setCodeForm({ ...codeForm, starts_at: e.target.value })} /></label><label>Ends<input type="datetime-local" value={codeForm.ends_at} onChange={(e) => setCodeForm({ ...codeForm, ends_at: e.target.value })} /></label></div>
+            <div className="admin-row"><input type="number" min="0" placeholder="Minimum total" value={codeForm.min_total} onChange={(e) => setCodeForm({ ...codeForm, min_total: e.target.value })} /><input type="number" min="0" placeholder="Minimum cards" value={codeForm.min_card_count} onChange={(e) => setCodeForm({ ...codeForm, min_card_count: e.target.value })} /><input type="number" min="1" placeholder="Max uses" value={codeForm.max_uses} onChange={(e) => setCodeForm({ ...codeForm, max_uses: e.target.value })} /></div>
+            <button className="vault-submit">Create discount code</button>
+          </form>
+        </div>
+
+        <div className="admin-grid admin-pricing-lists">
+          <section className="admin-panel"><h3>Automatic campaigns</h3><div className="admin-list">
+            {data.automaticDiscounts.map((item) => <div className="admin-pricing-rule" key={item.id}><span><b>{item.name} Â· {Number(item.percentage)}%</b><small>{item.min_card_count ? `${item.min_card_count}+ cards` : "Any card count"} Â· {Number(item.min_total).toLocaleString()} G minimum</small></span><em className={item.active ? "is-active" : "is-paused"}>{item.active ? "Active" : "Paused"}</em><aside><button onClick={() => togglePricingRule("automatic_discounts", item.id, !item.active)}>{item.active ? "Pause" : "Activate"}</button><button onClick={() => removePricingRule("automatic_discounts", item.id)}>Remove</button></aside></div>)}
+            {!data.automaticDiscounts.length && <p>No automatic discounts configured.</p>}
+          </div></section>
+          <section className="admin-panel"><h3>Checkout codes</h3><div className="admin-list">
+            {data.discountCodes.map((item) => <div className="admin-pricing-rule" key={item.id}><span><b>{item.code} Â· {Number(item.percentage)}%</b><small>{item.use_count}{item.max_uses ? ` / ${item.max_uses}` : ""} uses Â· {item.min_card_count ? `${item.min_card_count}+ cards` : "No card minimum"}</small></span><em className={item.active ? "is-active" : "is-paused"}>{item.active ? "Active" : "Paused"}</em><aside><button onClick={() => togglePricingRule("discount_codes", item.id, !item.active)}>{item.active ? "Pause" : "Activate"}</button><button onClick={() => removePricingRule("discount_codes", item.id)}>Remove</button></aside></div>)}
+            {!data.discountCodes.length && <p>No discount codes configured.</p>}
+          </div></section>
+        </div>
+
+        <section className="admin-panel admin-bundle-orders"><header className="admin-order-heading"><div><p className="vault-overline">3+ CARD ORDERS</p><h3>Bundle offers</h3></div><span>{data.bundleOffers.filter((entry) => entry.status === "pending").length} pending</span></header><div className="admin-list">
+          {data.bundleOffers.map((item) => <article className="admin-bundle-offer" key={item.id}><span><b>{item.buyer?.dmo_name || item.buyer?.username || "Player"}</b><small>{item.card_summary}</small><small>Listed {Number(item.listed_total).toLocaleString()} G Â· proposes <strong>{Number(item.proposed_total).toLocaleString()} G</strong>{item.counter_total != null ? ` Â· counter ${Number(item.counter_total).toLocaleString()} G` : ""}</small></span><em className={`bundle-status status-${item.status}`}>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToBundle(item.id, "accepted")}>Accept + chat</button><label><input type="number" min="0" placeholder="Counter total" value={bundleCounters[item.id] ?? ""} onChange={(e) => setBundleCounters((current) => ({ ...current, [item.id]: e.target.value }))} /><button disabled={!bundleCounters[item.id]} onClick={() => respondToBundle(item.id, "countered")}>Counter + chat</button></label><button onClick={() => respondToBundle(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <button onClick={() => window.location.assign("/chats")}>Open chat</button>}</article>)}
+          {!data.bundleOffers.length && <p>No bundle proposals yet.</p>}
+        </div></section>
+      </section>}
+
+      {tab === "books" && <section className="admin-books admin-order-panel">
+        <div className="sales-summary"><article><small>Total Gold</small><strong>{totalGold.toLocaleString()} G</strong></article><article><small>Cards sold</small><strong>{cardsSold}</strong></article><article><small>Purchases</small><strong>{data.purchases.length}</strong></article></div>
+        <section className="admin-panel"><header className="admin-order-heading"><div><p className="vault-overline">SALES LEDGER</p><h2>Buy Orders</h2></div><span>{data.purchases.length} recorded</span></header><p>Every completed purchase is saved here with buyer, card, price and time.</p><div className="admin-list">
+          {data.purchases.map((item) => <div key={item.id} className="admin-sale"><span><b>{item.card?.name ?? item.card_name ?? "Removed card"}</b><small>Buyer: {item.player?.username ?? "Player"} Â· {item.quantity} copy/copies</small></span><span><b>{Number(item.paid_gold).toLocaleString()} G</b><small>{new Date(item.created_at).toLocaleString()}</small></span></div>)}
+          {!data.purchases.length && <p>No purchases have been recorded yet.</p>}
+        </div></section>
+      </section>}
+
+      {tab === "community" && <section className="admin-community-console">
+        <header><div><p className="vault-overline">CARD EMPIRE TEAM CHANNEL</p><h2>Speak directly to the community.</h2></div><button type="button" onClick={() => window.location.assign("/community")}>View public Community â†—</button></header>
+        <div className="admin-grid">
+          <form className="admin-panel" onSubmit={publishAnnouncement}><AdminIcon name="community" /><h3>New announcement</h3><p>Send an official message to every verified player.</p><input required value={adminAnnouncement.title} onChange={(e) => setAdminAnnouncement({ ...adminAnnouncement, title: e.target.value })} placeholder="Announcement title" /><textarea required value={adminAnnouncement.body} onChange={(e) => setAdminAnnouncement({ ...adminAnnouncement, body: e.target.value })} placeholder="Message to every player" /><button className="vault-submit">Publish announcement</button></form>
+          <form className="admin-panel" onSubmit={publishPoll}><AdminIcon name="offers" /><h3>New community poll</h3><p>Separate each answer with a comma. Up to six options are supported.</p><input required value={adminPoll.question} onChange={(e) => setAdminPoll({ ...adminPoll, question: e.target.value })} placeholder="Community question" /><input required value={adminPoll.options} onChange={(e) => setAdminPoll({ ...adminPoll, options: e.target.value })} placeholder="Option one, Option two, Option three" /><button className="vault-submit">Open poll</button></form>
+          <form className="admin-panel admin-availability-panel" onSubmit={publishAvailability}><AdminIcon name="events" /><h3>Pickup readiness</h3><p>Publish when you are online and when customers can collect their cards.</p><div className="admin-row"><input required value={availabilityForm.title} onChange={(e) => setAvailabilityForm({ ...availabilityForm, title: e.target.value })} placeholder="Card pickup" /><input required value={availabilityForm.location} onChange={(e) => setAvailabilityForm({ ...availabilityForm, location: e.target.value })} placeholder="Location / server" /></div><div className="admin-row"><label>Online from<input required type="datetime-local" value={availabilityForm.starts_at} onChange={(e) => setAvailabilityForm({ ...availabilityForm, starts_at: e.target.value })} /></label><label>Online until<input required type="datetime-local" value={availabilityForm.ends_at} onChange={(e) => setAvailabilityForm({ ...availabilityForm, ends_at: e.target.value })} /></label></div><textarea value={availabilityForm.note} maxLength="600" onChange={(e) => setAvailabilityForm({ ...availabilityForm, note: e.target.value })} placeholder="Optional pickup note" /><button className="vault-submit">Publish live window</button></form>
+          <section className="admin-panel admin-availability-list"><AdminIcon name="community" /><h3>Published windows</h3><p>These times update immediately for every verified player.</p><div>{data.availability.map((slot) => <article key={slot.id}><span><b>{slot.title}</b><small>{new Date(slot.starts_at).toLocaleString()} â€“ {new Date(slot.ends_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} Â· {slot.location}</small></span><button type="button" onClick={() => deleteAvailability(slot.id)}>Remove</button></article>)}{!data.availability.length && <small>No pickup windows published.</small>}</div></section>
+          <section className={"admin-panel admin-presence-panel" + (data.presence?.is_online ? " is-online" : "")}><AdminIcon name="community" /><p className="vault-overline">LIVE PRESENCE</p><h3>{data.presence?.is_online ? "Kalenski is online" : "Kalenski is offline"}</h3><p>The ticker below the navigation appears only while this switch is online.</p><input maxLength="120" value={presenceNote} onChange={(e) => setPresenceNote(e.target.value)} placeholder="Short live status" /><div><button type="button" className="vault-submit" onClick={() => setEmpirePresence(true)}>Go online</button><button type="button" className="admin-secondary" onClick={() => setEmpirePresence(false)}>Go offline</button></div></section>
+        </div>
+        <section className="admin-panel admin-community-moderation"><AdminIcon name="community" /><h3>Community moderation</h3><p>Suggestions, reviews and legacy feedback can be removed here. This control is protected by administrator RLS.</p><div className="admin-list">
+          {data.communitySuggestions.map((item) => <div key={"suggestion-" + item.id}><span><b>Suggestion Â· {item.title}</b><small>{item.body}</small></span><button type="button" onClick={() => deleteCommunityEntry("community_suggestions", item.id, "Suggestion")}>Remove</button></div>)}
+          {data.communityReviews.map((item) => <div key={"review-" + item.id}><span><b>Review Â· {item.rating}/5</b><small>{item.body}</small></span><button type="button" onClick={() => deleteCommunityEntry("community_reviews", item.id, "Review")}>Remove</button></div>)}
+          {data.feedback.map((item) => <div key={"feedback-" + item.id}><span><b>Legacy feedback</b><small>{item.message}</small></span><button type="button" onClick={() => deleteCommunityEntry("feedback", item.id, "Feedback")}>Remove</button></div>)}
+          {!data.communitySuggestions.length && !data.communityReviews.length && !data.feedback.length && <p>No Community entries to moderate.</p>}
+        </div></section>
+      </section>}
+
+      {tab === "players" && <section className="admin-panel"><h2>Player roles</h2><p>Delete removes the player profile and their Empire data. Administrator profiles are protected.</p><div className="admin-list">
+        {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.dmo_name || item.username}</b><small>{item.dmo_name ? `Discord @${item.username}` : roleLabels[item.role] ?? "Player"}{Number(item.wins) || Number(item.losses) ? ` Â· ${item.wins}W / ${item.losses}L` : ""}</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select>{item.id !== profile.id && item.role !== "admin" && <button className="admin-delete-player" onClick={() => deletePlayer(item.id, item.dmo_name || item.username)}>Delete player</button>}</div>)}
+      </div></section>}
+    </main>
+  );
+}
