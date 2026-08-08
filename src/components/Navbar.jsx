@@ -126,6 +126,6 @@ export default function Navbar() {
         <span />
         <span />
       </button>
-    </header>{presence && <aside className="empire-presence-ticker" role="status" aria-label={`Kalenski is online. ${presence.status_note}`}><div className="empire-presence-track"><div className="empire-presence-copy"><span><i /> KALENSKI IS ONLINE</span><p>{presence.status_note}</p><NavLink to="/community">View pickup calendar <b>↗</b></NavLink></div><div className="empire-presence-copy" aria-hidden="true"><span><i /> KALENSKI IS ONLINE</span><p>{presence.status_note}</p><NavLink to="/community" tabIndex="-1">View pickup calendar <b>↗</b></NavLink></div></div></aside>}</>
+    </header>{presence && <aside className="empire-presence-ticker" role="status" aria-label={`Kalenski is online. ${presence.status_note}`}><div className="empire-presence-track">{[false, true].map((duplicate) => <div className="empire-presence-copy" aria-hidden={duplicate || undefined} key={String(duplicate)}>{[0, 1, 2].map((index) => <div className="empire-presence-item" key={index}><span><i /> KALENSKI IS ONLINE</span><p>{presence.status_note}</p><NavLink to="/community" tabIndex={duplicate ? -1 : undefined}>View pickup calendar <b>↗</b></NavLink></div>)}</div>)}</div></aside>}</>
   );
 }

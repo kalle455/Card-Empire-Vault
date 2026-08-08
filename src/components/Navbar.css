@@ -124,8 +124,9 @@ html,body,#root,.app-layout{width:100%;max-width:100%;overflow-x:clip}
   box-shadow:0 8px 28px rgba(0,0,0,.25),inset 0 1px rgba(169,244,182,.05);
   font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
 }
-.empire-presence-track{display:flex;width:max-content;will-change:transform;animation:presence-marquee 28s linear infinite}
-.empire-presence-copy{display:flex;align-items:center;justify-content:center;gap:22px;min-width:100vw;padding:0 34px}
+.empire-presence-track{display:flex;width:max-content;will-change:transform;animation:presence-marquee 34s linear infinite}
+.empire-presence-copy{display:flex;align-items:center;gap:clamp(58px,6vw,110px);min-width:max(100vw,1500px);padding:0 clamp(32px,4vw,74px)}
+.empire-presence-item{display:flex;align-items:center;gap:22px;white-space:nowrap}
 .empire-presence-ticker span{display:flex;align-items:center;gap:8px;color:#8ff0a0;font-weight:950;letter-spacing:.14em;white-space:nowrap}
 .empire-presence-ticker span i{width:7px;height:7px;border-radius:50%;background:#77f08a;box-shadow:0 0 14px #77f08a;animation:presence-live-pulse 1.8s ease-in-out infinite}
 .empire-presence-ticker p{margin:0;color:#b5c7b9;text-transform:none;letter-spacing:.02em}
@@ -204,7 +205,8 @@ html,body,#root,.app-layout{width:100%;max-width:100%;overflow-x:clip}
   .mobile-open .mobile-menu-toggle span:first-child{top:18px;transform:rotate(45deg)}
   .mobile-open .mobile-menu-toggle span:last-child{top:18px;transform:rotate(-45deg)}
   .empire-presence-ticker{padding:7px 0;font-size:.52rem}
-  .empire-presence-copy{gap:16px;min-width:150vw;padding:0 18px}
+  .empire-presence-copy{gap:54px;min-width:680px;padding:0 24px}
+  .empire-presence-item{gap:16px}
   .empire-presence-ticker p{display:none}
 }
 
