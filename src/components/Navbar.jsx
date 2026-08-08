@@ -90,7 +90,8 @@ export default function Navbar() {
     <><header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "") + (mobileOpen ? " mobile-open" : "")}>
       <div className="brand-partner-cluster">
         <NavLink to="/" className="empire-brand" aria-label="Kalenski Card Empire home">
-          <img src="/card-empire-wordmark.svg" alt="Kalenski Card Empire" />
+          <img src="/card-empire-logo-384.png" alt="" />
+          <span className="empire-brand-copy"><strong>Card Empire</strong><small>The one and only</small></span>
         </NavLink>
         <NavLink to="/partners" className="partners-nav-link" aria-label="Partners"><small>Partners</small></NavLink>
       </div>

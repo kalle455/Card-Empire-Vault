@@ -3,8 +3,9 @@
   padding: 17px clamp(18px, 4vw, 64px); background: rgba(5, 5, 8, .78);
   border-bottom: 1px solid rgba(213, 174, 59, .22); backdrop-filter: blur(18px);
 }
-.empire-brand { display: grid; align-items:center; line-height: 1; min-width: 164px; }
-.empire-brand img{display:block;width:164px;height:auto;max-height:43px;object-fit:contain;object-position:left center;filter:drop-shadow(0 0 10px rgba(89,244,145,.1));transition:filter .28s ease}
+.empire-brand { display: flex; align-items:center; gap:10px; line-height: 1; min-width: 188px; }
+.empire-brand img{display:block;width:46px;height:46px;border-radius:9px;object-fit:cover;filter:drop-shadow(0 0 10px rgba(89,244,145,.1));transition:filter .28s ease,transform .28s ease}
+.empire-brand-copy{display:grid;gap:5px;min-width:0}.empire-brand-copy strong{margin:0;color:#e8f7eb;font-family:var(--font-display,Georgia,serif);font-size:.9rem;line-height:1;letter-spacing:.06em;text-transform:uppercase}.empire-brand-copy small{color:#84e598;font-size:.48rem;font-weight:900;line-height:1;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
 .brand-partner-cluster{display:flex;align-items:center;gap:10px;flex:0 0 auto}.brand-partner-cluster .empire-brand{min-width:142px}.partners-nav-link{position:relative;display:inline-flex!important;align-items:center;justify-content:center;min-width:76px;height:31px;padding:0 12px;border:1px solid rgba(151,232,168,.22);border-radius:4px;background:rgba(27,71,39,.12);color:#b6d8bc!important;transition:transform .25s ease,border-color .25s ease,background .25s ease!important}.partners-nav-link small{color:#83ed98;font-size:.62rem;font-weight:900;letter-spacing:.11em;line-height:1;text-transform:uppercase}.partners-nav-link:hover,.partners-nav-link.active{border-color:rgba(151,232,168,.7);background:rgba(72,153,89,.2);transform:translateY(-2px)}
 .empire-brand span { color: #f6db81; font-family: Georgia, serif; font-size: 1.05rem; }
 .empire-brand strong { color: #fff; font-size: .8rem; letter-spacing: .17em; text-transform: uppercase; margin-top: 6px; }
@@ -88,7 +89,7 @@
 .nav-vip{position:relative;overflow:hidden;border:1px solid rgba(255,230,139,.58);box-shadow:0 5px 17px rgba(199,147,28,.2);letter-spacing:.07em}.nav-vip::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 22%,rgba(255,255,255,.5) 43%,transparent 62%);transform:translateX(-120%);animation:vip-shimmer 4.4s ease-in-out infinite}
 @keyframes empire-nav-sweep{0%,20%{transform:translateX(0);opacity:0}30%,70%{opacity:1}80%,100%{transform:translateX(490%);opacity:0}}@keyframes notification-pulse{0%,100%{transform:scale(1);box-shadow:0 0 14px rgba(119,240,138,.75)}50%{transform:scale(1.12);box-shadow:0 0 22px rgba(119,240,138,.95)}}@keyframes vip-shimmer{0%,58%{transform:translateX(-120%)}78%,100%{transform:translateX(120%)}}
 @media(prefers-reduced-motion:reduce){.empire-nav::after,.notification-count,.nav-vip::after{animation:none}.empire-nav,.empire-brand,.empire-nav nav a,.empire-nav .notification-bell,.empire-nav .chat-bubble{transition:none}}
-@media(max-width:900px){.empire-nav{min-height:62px;padding-top:10px;padding-bottom:10px}.empire-brand{min-width:132px}.empire-brand img{width:132px}.empire-nav nav a{font-size:.63rem}.empire-nav::after{display:none}}
+@media(max-width:900px){.empire-nav{min-height:62px;padding-top:10px;padding-bottom:10px}.empire-brand{min-width:150px}.empire-brand img{width:42px;height:42px}.empire-nav nav a{font-size:.63rem}.empire-nav::after{display:none}}
 
 
 /* Viewport-safe command bar and crisp action icons. */
@@ -140,7 +141,7 @@ html,body,#root,.app-layout{width:100%;max-width:100%;overflow-x:clip}
   }
   .brand-partner-cluster{min-width:0;margin-right:auto}
   .brand-partner-cluster .empire-brand,.empire-brand{min-width:0;padding-right:12px}
-  .empire-brand img{width:126px;max-height:38px}
+  .empire-brand img{width:39px;height:39px;max-height:none}
   .empire-brand span{font-size:1.05rem}
   .empire-brand strong{font-size:.54rem;letter-spacing:.18em}
   .empire-nav>nav{
@@ -213,6 +214,14 @@ html,body,#root,.app-layout{width:100%;max-width:100%;overflow-x:clip}
   .empire-nav{padding-left:10px;padding-right:10px}
   .empire-brand span{font-size:.95rem}
   .empire-brand strong{font-size:.48rem}
+  .empire-brand-copy small{display:none}
   .empire-nav .notification-bell,.empire-nav .chat-bubble{width:32px;height:32px;min-width:32px;flex-basis:32px}
   .mobile-menu-toggle{width:34px;height:34px;flex-basis:34px}
 }
+
+/* Exact KE mark with a crisp text companion at every viewport size. */
+.empire-brand .empire-brand-copy{display:grid;gap:5px;font-family:var(--font-body,Arial,sans-serif);font-size:initial;font-weight:initial;letter-spacing:normal;text-shadow:none}
+.empire-brand .empire-brand-copy strong{margin:0;color:#e8f7eb;font-family:var(--font-display,Georgia,serif);font-size:.86rem;line-height:1;letter-spacing:.07em;text-transform:uppercase}
+.empire-brand .empire-brand-copy small{color:#84e598;font-size:.47rem;font-weight:900;line-height:1;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
+@media(max-width:720px){.empire-brand .empire-brand-copy strong{font-size:.72rem}.empire-brand .empire-brand-copy small{font-size:.4rem;letter-spacing:.16em}}
+@media(max-width:390px){.empire-brand .empire-brand-copy strong{font-size:.68rem}.empire-brand .empire-brand-copy small{display:none}}

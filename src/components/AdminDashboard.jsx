@@ -40,22 +40,98 @@ function textSimilarity(left, right) {
   return 1 - previous[b.length] / Math.max(a.length, b.length);
 }
 
-function detectCatalogCards(ocrText) {
-  const normalisedText = normaliseCardName(ocrText);
-  const lines = String(ocrText ?? "").split(/\r?\n/).map(normaliseCardName).filter((line) => line.length > 2);
+function catalogMatchScore(cardName, searchValue) {
+  const name = normaliseCardName(cardName);
+  const query = normaliseCardName(searchValue);
+  if (!name || !query) return 0;
+  if (name === query) return 1;
+  if (name.startsWith(query)) return .97;
+  if (name.includes(query)) return .9;
+
+  const nameTokens = name.split(" ");
+  const queryTokens = query.split(" ");
+  const tokenScore = queryTokens.reduce((sum, queryToken) => {
+    const bestToken = nameTokens.reduce((best, nameToken) => {
+      if (nameToken === queryToken) return 1;
+      if (nameToken.startsWith(queryToken) || queryToken.startsWith(nameToken)) return Math.max(best, .92);
+      return Math.max(best, textSimilarity(nameToken, queryToken));
+    }, 0);
+    return sum + bestToken;
+  }, 0) / queryTokens.length;
+
+  return Math.max(textSimilarity(name, query), tokenScore * .94);
+}
+
+function searchOfficialCatalog(searchValue, limit = 8) {
+  const query = normaliseCardName(searchValue);
+  if (query.length < 2) return [];
+  const minimumScore = query.length <= 3 ? .62 : .48;
   return officialDmoCatalog
-    .map((catalogCard) => {
-      const name = normaliseCardName(catalogCard.name);
-      const exact = normalisedText.includes(name);
-      const bestLine = lines.reduce((best, line) => Math.max(best, textSimilarity(name, line)), 0);
-      const nameTokens = name.split(" ").filter((token) => token.length > 2);
-      const tokenScore = nameTokens.length ? nameTokens.filter((token) => normalisedText.includes(token)).length / nameTokens.length : 0;
-      const score = exact ? .99 : Math.max(bestLine, tokenScore * .86);
-      return { ...catalogCard, confidence: Math.round(score * 100) };
-    })
-    .filter((catalogCard) => catalogCard.confidence >= 58)
-    .sort((a, b) => b.confidence - a.confidence || a.name.localeCompare(b.name))
-    .slice(0, 24);
+    .map((item) => ({ ...item, matchScore: catalogMatchScore(item.name, query) }))
+    .filter((item) => item.matchScore >= minimumScore)
+    .sort((left, right) => right.matchScore - left.matchScore || left.name.localeCompare(right.name))
+    .slice(0, limit);
+}
+
+function detectCatalogCards(ocrText) {
+  const lines = String(ocrText ?? "")
+    .split(/\r?\n/)
+    .map((line) => normaliseCardName(line.replace(/^\d+\s*/, "")))
+    .filter((line) => line.length > 2 && line.length < 90);
+  const matches = new Map();
+
+  for (const line of lines) {
+    const candidate = searchOfficialCatalog(line, 1)[0];
+    if (!candidate || candidate.matchScore < .54) continue;
+    const key = normaliseCardName(candidate.name);
+    const existing = matches.get(key);
+    const confidence = Math.round(candidate.matchScore * 100);
+    matches.set(key, existing
+      ? { ...existing, quantity: existing.quantity + 1, confidence: Math.max(existing.confidence, confidence) }
+      : { ...candidate, quantity: 1, confidence });
+  }
+
+  return [...matches.values()]
+    .sort((left, right) => right.confidence - left.confidence || left.name.localeCompare(right.name))
+    .slice(0, 60);
+}
+
+async function createInventoryTitleSheet(file) {
+  const bitmap = await createImageBitmap(file);
+  const aspect = bitmap.width / bitmap.height;
+  const columns = aspect >= 1.35 ? 10 : aspect >= 1 ? 8 : 6;
+  const cellWidth = bitmap.width / columns;
+  const rows = Math.max(1, Math.round((bitmap.height * columns * .9) / bitmap.width));
+  const cardCount = columns * rows;
+  const sheet = document.createElement("canvas");
+  sheet.width = 760;
+  sheet.height = cardCount * 72;
+  const context = sheet.getContext("2d", { willReadFrequently: true });
+  context.fillStyle = "#fff";
+  context.fillRect(0, 0, sheet.width, sheet.height);
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = "high";
+  context.filter = "grayscale(1) contrast(2.4) brightness(1.18)";
+
+  for (let index = 0; index < cardCount; index += 1) {
+    const column = index % columns;
+    const row = Math.floor(index / columns);
+    const cellHeight = bitmap.height / rows;
+    context.drawImage(
+      bitmap,
+      column * cellWidth + cellWidth * .035,
+      row * cellHeight + cellHeight * .005,
+      cellWidth * .93,
+      cellHeight * .19,
+      12,
+      index * 72 + 8,
+      736,
+      52,
+    );
+  }
+  context.filter = "none";
+  bitmap.close?.();
+  return sheet;
 }
 
 const adminIconPaths = {
@@ -145,18 +221,7 @@ export default function AdminDashboard() {
       return undefined;
     }
 
-    const query = normaliseCardName(term);
-    const exact = officialDmoCatalog.filter((item) => normaliseCardName(item.name) === query);
-    const startsWith = officialDmoCatalog.filter((item) => normaliseCardName(item.name).startsWith(query));
-    const includes = officialDmoCatalog.filter((item) => normaliseCardName(item.name).includes(query));
-    const matches = new Map();
-
-    for (const item of [...exact, ...startsWith, ...includes]) {
-      if (!matches.has(item.name)) matches.set(item.name, item);
-      if (matches.size === 8) break;
-    }
-
-    const localMatches = [...matches.values()];
+    const localMatches = searchOfficialCatalog(term);
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       setSuggestions(localMatches);
@@ -164,7 +229,11 @@ export default function AdminDashboard() {
       try {
         const response = await fetch("/api/card-catalog?q=" + encodeURIComponent(term), { signal: controller.signal });
         const payload = response.ok ? await response.json() : null;
-        if (payload?.cards?.length) setSuggestions(payload.cards);
+        if (payload?.cards?.length) {
+          const artwork = new Map(payload.cards.map((item) => [normaliseCardName(item.name), item]));
+          const merged = localMatches.map((item) => ({ ...item, ...(artwork.get(normaliseCardName(item.name)) ?? {}) }));
+          setSuggestions(merged.length ? merged : payload.cards);
+        }
       } catch (error) {
         if (error.name !== "AbortError") setSuggestions(localMatches);
       } finally {
@@ -238,498 +307,4 @@ export default function AdminDashboard() {
     const preview = URL.createObjectURL(file);
     setInventoryScan({ state: "reading", progress: 0, preview, filename: file.name });
     setScanCandidates([]);
-    setNotice("Reading card names from the screenshot locally in your browserâ€¦");
-
-    try {
-      const { recognize } = await import("tesseract.js");
-      const result = await recognize(file, "eng", {
-        logger: (message) => {
-          if (message.status === "recognizing text") setInventoryScan((current) => ({ ...current, progress: Math.round((message.progress ?? 0) * 100) }));
-        },
-      });
-      const detected = detectCatalogCards(result.data.text);
-      const enriched = await Promise.all(detected.map(async (candidate) => {
-        const match = await enrichCatalogCard(candidate);
-        const existing = data.cards.find((item) => normaliseCardName(item.name) === normaliseCardName(match.name));
-        return {
-          ...candidate,
-          ...match,
-          selected: candidate.confidence >= 78,
-          quantity: 1,
-          price: existing?.price ?? "",
-          existingId: existing?.id ?? null,
-        };
-      }));
-      setScanCandidates(enriched);
-      setInventoryScan((current) => ({ ...current, state: "review", progress: 100 }));
-      setNotice(enriched.length ? `${enriched.length} possible card matches found. Review every row before importing.` : "No safe catalogue match was found. Add cards manually in the review area.");
-    } catch (error) {
-      setInventoryScan((current) => ({ ...current, state: "error" }));
-      setNotice("The screenshot could not be read: " + error.message);
-    }
-  }
-
-  async function addManualScanCandidate(catalogCard) {
-    const match = await enrichCatalogCard(catalogCard);
-    const existing = data.cards.find((item) => normaliseCardName(item.name) === normaliseCardName(match.name));
-    setScanCandidates((current) => current.some((item) => normaliseCardName(item.name) === normaliseCardName(match.name)) ? current : [...current, {
-      ...catalogCard,
-      ...match,
-      confidence: null,
-      selected: true,
-      quantity: 1,
-      price: existing?.price ?? "",
-      existingId: existing?.id ?? null,
-    }]);
-    setScanManualQuery("");
-  }
-
-  function updateScanCandidate(index, patch) {
-    setScanCandidates((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
-  }
-
-  async function importScanCandidates() {
-    const approved = scanCandidates.filter((candidate) => candidate.selected && Number(candidate.quantity) > 0);
-    if (!approved.length) return setNotice("Approve at least one detected card first.");
-    if (approved.some((candidate) => !candidate.existingId && candidate.price === "")) return setNotice("Set your price for every new card before importing.");
-
-    setInventoryScan((current) => ({ ...current, state: "saving" }));
-    for (const candidate of approved) {
-      const quantity = Math.max(1, Math.floor(Number(candidate.quantity)));
-      const result = candidate.existingId
-        ? await supabase.from("cards").update({ quantity: Number(data.cards.find((item) => item.id === candidate.existingId)?.quantity ?? 0) + quantity, ...(candidate.price === "" ? {} : { price: Number(candidate.price) }) }).eq("id", candidate.existingId)
-        : await supabase.from("cards").insert({ name: candidate.name, price: Number(candidate.price), quantity, category: candidate.category, rarity: candidate.rarity, ygo_card_id: candidate.ygo_card_id ?? null, image_url: candidate.image_url ?? null, description: candidate.description ?? "" });
-      if (result.error) {
-        setInventoryScan((current) => ({ ...current, state: "review" }));
-        return setNotice(`${candidate.name} could not be imported: ${result.error.message}`);
-      }
-    }
-
-    setScanCandidates([]);
-    setInventoryScan((current) => ({ ...current, state: "done" }));
-    setNotice(`${approved.length} reviewed card entries were saved to Cardstock.`);
-    load();
-  }
-
-  async function submitEvent(e) {
-    e.preventDefault();
-    const payload = {
-      title: event.title,
-      starts_at: event.starts_at,
-      description: event.description,
-      banlist_id: null,
-      event_format: event.event_format,
-    };
-    const result = editingEventId
-      ? await supabase.from("events").update(payload).eq("id", editingEventId)
-      : await supabase.from("events").insert({ ...payload, created_by: profile.id });
-
-    if (result.error) return setNotice(result.error.message);
-    setNotice(editingEventId ? "Event updated and players were notified." : "Event created and players were notified.");
-    setEvent(blankEvent);
-    setEditingEventId(null);
-    load();
-  }
-
-  function editEvent(item) {
-    setEditingEventId(item.id);
-    setEvent({
-      title: item.title,
-      starts_at: toLocalDateTime(item.starts_at),
-      description: item.description ?? "",
-      event_format: eventFormats.some((format) => format.value === item.event_format) ? item.event_format : "five_way_ffa",
-    });
-    setNotice("Editing " + item.title + ".");
-  }
-
-  async function deleteEvent(id, title) {
-    const { error } = await supabase.from("events").delete().eq("id", id);
-    setNotice(error ? error.message : title + " was removed.");
-    load();
-  }
-
-  async function confirmWinner(eventId, eventTitle) {
-    const winnerId = winnerSelections[eventId];
-    if (!winnerId) return setNotice("Choose a registered player first.");
-
-    const winner = data.players.find((player) => player.id === winnerId);
-    const { error } = await supabase.rpc("set_event_winner", {
-      p_event_id: eventId,
-      p_winner_id: winnerId,
-    });
-
-    if (error) return setNotice(error.message);
-    setNotice((winner?.username ?? "The selected player") + " won " + eventTitle + " and received +1 win.");
-    setWinnerSelections((current) => {
-      const next = { ...current };
-      delete next[eventId];
-      return next;
-    });
-    load();
-  }
-
-  async function deleteCard(id, name) {
-    const { error } = await supabase.from("cards").update({ quantity: 0 }).eq("id", id);
-    setNotice(error ? error.message : name + " was archived safely. Existing orders and trades remain intact.");
-    load();
-  }
-
-  async function saveCard(e) {
-    e.preventDefault();
-    const { error } = await supabase.from("cards").update({
-      price: Number(editingCard.price),
-      avg_price: editingCard.avg_price === "" || editingCard.avg_price == null ? null : Number(editingCard.avg_price),
-      price_status: editingCard.price_status || "unavailable",
-      price_source: editingCard.price_status === "available" ? "DMO Marketplace" : null,
-      price_updated_at: editingCard.price_status === "available" ? new Date().toISOString() : editingCard.price_updated_at,
-      quantity: Number(editingCard.quantity),
-      category: editingCard.category,
-      rarity: editingCard.rarity,
-    }).eq("id", editingCard.id);
-    if (error) return setNotice(error.message);
-    setNotice(editingCard.name + " was updated.");
-    setEditingCard(null);
-    load();
-  }
-
-  async function setOffer(id, status) {
-    const { error } = await supabase.from("offers").update({ status }).eq("id", id);
-    setNotice(error ? error.message : "Offer " + status + ".");
-    load();
-  }
-
-  async function respondToTrade(id, status) {
-    const { data: chatId, error } = await supabase.rpc("respond_to_trade_offer", {
-      p_offer_id: id,
-      p_status: status,
-    });
-    if (error) return setNotice(error.message);
-    setNotice(status === "declined" ? "Trade offer declined." : "Trade chat opened. Taking you to the inboxâ€¦");
-    load();
-    if (chatId) window.setTimeout(() => window.location.assign("/chats"), 450);
-  }
-
-  async function setRole(id, role) {
-    const { error } = await supabase.from("profiles").update({ role }).eq("id", id);
-    setNotice(error ? error.message : "Player role updated.");
-    load();
-  }
-
-  async function deletePlayer(id, username) {
-    const { data, error } = await supabase.rpc("delete_player_profile", { p_player_id: id });
-    setNotice(error ? error.message : (data ?? username) + " was removed from Card Empire.");
-    load();
-  }
-
-  async function publishAnnouncement(e) {
-    e.preventDefault();
-    const { error } = await supabase.from("community_announcements").insert({ title: adminAnnouncement.title.trim(), body: adminAnnouncement.body.trim() });
-    if (error) return setNotice(error.message);
-    setAdminAnnouncement({ title: "", body: "" });
-    setNotice("Announcement published to the Community.");
-  }
-
-  async function publishPoll(e) {
-    e.preventDefault();
-    const labels = adminPoll.options.split(",").map((item) => item.trim()).filter(Boolean).slice(0, 6);
-    if (labels.length < 2) return setNotice("A poll needs at least two comma-separated options.");
-    const { data: poll, error } = await supabase.from("community_polls").insert({ question: adminPoll.question.trim() }).select().single();
-    if (error) return setNotice(error.message);
-    const optionResult = await supabase.from("community_poll_options").insert(labels.map((label, position) => ({ poll_id: poll.id, label, position })));
-    if (optionResult.error) return setNotice(optionResult.error.message);
-    setAdminPoll({ question: "", options: "" });
-    setNotice("Community poll opened.");
-  }
-
-  async function publishAvailability(e) {
-    e.preventDefault();
-    if (new Date(availabilityForm.ends_at) <= new Date(availabilityForm.starts_at)) return setNotice("The pickup window must end after it starts.");
-    const { error } = await supabase.from("empire_availability").insert({
-      title: availabilityForm.title.trim(),
-      location: availabilityForm.location.trim(),
-      starts_at: new Date(availabilityForm.starts_at).toISOString(),
-      ends_at: new Date(availabilityForm.ends_at).toISOString(),
-      note: availabilityForm.note.trim(),
-      created_by: profile.id,
-    });
-    if (error) return setNotice(error.message);
-    setAvailabilityForm(blankAvailability);
-    setNotice("Pickup readiness published live.");
-    load();
-  }
-
-  async function deleteAvailability(id) {
-    const { error } = await supabase.from("empire_availability").delete().eq("id", id);
-    setNotice(error ? error.message : "Pickup window removed live.");
-    load();
-  }
-
-  async function setEmpirePresence(isOnline) {
-    const { error } = await supabase.from("empire_presence").upsert({
-      singleton: true,
-      is_online: isOnline,
-      status_note: presenceNote.trim() || "Kalenski is online now.",
-      updated_by: profile.id,
-      updated_at: new Date().toISOString(),
-    });
-    setNotice(error ? error.message : isOnline ? "The live ticker is now visible." : "Kalenski is offline. The ticker is hidden.");
-    if (!error) load();
-  }
-
-  async function deleteCommunityEntry(table, id, label) {
-    const allowedTables = new Set(["community_suggestions", "community_reviews", "feedback"]);
-    if (!allowedTables.has(table)) return;
-    const { error } = await supabase.from(table).delete().eq("id", id);
-    setNotice(error ? error.message : label + " removed from the Community.");
-    if (!error) load();
-  }
-
-  const discountPayload = (form) => ({
-    percentage: Number(form.percentage),
-    starts_at: form.starts_at ? new Date(form.starts_at).toISOString() : null,
-    ends_at: form.ends_at ? new Date(form.ends_at).toISOString() : null,
-    min_total: Number(form.min_total || 0),
-    min_card_count: Number(form.min_card_count || 0),
-  });
-
-  async function createAutomaticDiscount(e) {
-    e.preventDefault();
-    const { error } = await supabase.from("automatic_discounts").insert({ name: discountForm.name.trim(), ...discountPayload(discountForm) });
-    if (error) return setNotice(error.message);
-    setDiscountForm({ name: "", percentage: "", starts_at: "", ends_at: "", min_total: "0", min_card_count: "0" });
-    setNotice("Automatic discount published.");
-    load();
-  }
-
-  async function createDiscountCode(e) {
-    e.preventDefault();
-    const { error } = await supabase.from("discount_codes").insert({ code: codeForm.code.trim().toUpperCase(), ...discountPayload(codeForm), max_uses: codeForm.max_uses ? Number(codeForm.max_uses) : null });
-    if (error) return setNotice(error.message);
-    setCodeForm({ code: "", percentage: "", starts_at: "", ends_at: "", min_total: "0", min_card_count: "0", max_uses: "" });
-    setNotice("Discount code created.");
-    load();
-  }
-
-  async function togglePricingRule(table, id, active) {
-    const { error } = await supabase.from(table).update({ active }).eq("id", id);
-    setNotice(error ? error.message : active ? "Discount activated." : "Discount paused.");
-    if (!error) load();
-  }
-
-  async function removePricingRule(table, id) {
-    const { error } = await supabase.from(table).delete().eq("id", id);
-    setNotice(error ? error.message : "Discount removed.");
-    if (!error) load();
-  }
-
-  async function respondToBundle(id, status) {
-    const counter = status === "countered" ? Number(bundleCounters[id]) : null;
-    const { data: chatId, error } = await supabase.rpc("respond_to_bundle_offer", { p_offer_id: id, p_status: status, p_counter_total: counter });
-    if (error) return setNotice(error.message);
-    setNotice(status === "declined" ? "Bundle offer declined." : "Bundle chat opened.");
-    load();
-    if (chatId) window.setTimeout(() => window.location.assign("/chats"), 400);
-  }
-
-  const manualScanMatches = scanManualQuery.trim().length < 2 ? [] : officialDmoCatalog
-    .filter((item) => normaliseCardName(item.name).includes(normaliseCardName(scanManualQuery)))
-    .slice(0, 6);
-
-  return (
-    <main className="admin-shell">
-      <header><div><p className="vault-overline">KALENSKIâ„¢ CONTROL ROOM</p><h1>Empire Admin</h1></div><span>Live system</span></header>
-      <nav className="admin-tabs" aria-label="Admin sections">
-        <div className="admin-sidebar-profile">
-          <AdminIcon name="players" />
-          <span><small>CONTROL ROOM</small><b>Hello, {profile?.dmo_name || profile?.username || "Kalenski"}</b></span>
-        </div>
-        {[
-          ["CARDSTOCK", [
-            ["cards", "Cards", data.cards.length + " in stock"],
-            ["pricing", "Pricing", data.bundleOffers.filter((entry) => entry.status === "pending").length + " bundles"],
-          ]],
-          ["ORDERS", [
-            ["books", "Buy Orders", data.purchases.length + " recorded"],
-            ["offers", "Offers", data.offers.filter((entry) => entry.status === "pending").length + " pending"],
-            ["trades", "Trade Orders", data.trades.filter((entry) => entry.status === "pending").length + " pending"],
-          ]],
-          ["EMPIRE", [
-            ["events", "Events", data.events.length + " events"],
-            ["community", "Community", "Team channel"],
-            ["players", "Players", data.players.length + " profiles"],
-          ]],
-        ].map(([group, items]) => (
-          <div className="admin-sidebar-group" key={group}>
-            <p>{group}</p>
-            {items.map(([item, label, detail]) => (
-              <button key={item} className={tab === item ? "active" : ""} aria-current={tab === item ? "page" : undefined} onClick={() => setTab(item)}>
-                <AdminIcon name={item} /><span><b>{label}</b><small>{detail}</small></span><i aria-hidden="true">â€º</i>
-              </button>
-            ))}
-          </div>
-        ))}
-      </nav>
-      {notice && <p className="admin-notice">{notice}</p>}
-
-      {tab === "cards" && <section className="admin-grid">
-        <form className="admin-panel" onSubmit={addCard}>
-          <h2>Add a card</h2><p>Only cards from the official DMO catalogue can enter Cardstock. Their type and rarity are locked to the game list.</p>
-          <div className="card-name-field">
-            <input required autoComplete="off" placeholder="Search the official card catalogue (e.g. PO)" value={card.name} onChange={(e) => { setCard({ ...card, name: e.target.value }); setSelectedCatalogCard(null); }} />
-            {(suggestions.length > 0 || catalogLoading) && <div className="card-suggestions">{catalogLoading && !suggestions.length && <p className="card-suggestion-loading">Finding official card artworkâ€¦</p>}{suggestions.map((item) => (
-              <button type="button" key={item.name} onClick={() => { setCard({ ...card, name: item.name, category: item.category, rarity: item.rarity }); setSelectedCatalogCard(item); setSuggestions([]); }}>
-                <img src={item.image_url_small || item.image_url || "/kalenski-card-back.svg"} alt="" loading="lazy" />
-                <span>{item.name}<small>{item.category} Â· {item.gameRarity}</small></span><b>{item.gameRarity}</b>
-              </button>
-            ))}</div>}
-          </div>
-          <div className="admin-row"><input required type="number" min="0" placeholder="Price in Gold" value={card.price} onChange={(e) => setCard({ ...card, price: e.target.value })} /><input required type="number" min="0" placeholder="Quantity" value={card.quantity} onChange={(e) => setCard({ ...card, quantity: e.target.value })} /></div>
-          <div className="admin-row"><input readOnly value={selectedCatalogCard ? selectedCatalogCard.category.toUpperCase() + " Â· official type" : "Official type"} /><input readOnly value={selectedCatalogCard ? selectedCatalogCard.gameRarity + " Â· official rarity" : "Official rarity"} /></div>
-          <button className="vault-submit" disabled={!selectedCatalogCard}>{selectedCatalogCard ? "Add to Cardstock" : "Choose official card"}</button>
-        </form>
-        <section className="admin-panel"><header className="admin-cardstock-heading"><div><h2>Cardstock inventory</h2><p>DMO averages are shown only when a verified source value exists.</p></div><label>Market data<select value={marketPriceFilter} onChange={(event) => setMarketPriceFilter(event.target.value)}><option value="all">All cards</option><option value="available">Available</option><option value="unavailable">No market data</option><option value="needs_review">Needs review</option></select></label></header><div className="admin-list">
-          {data.cards.filter((item) => marketPriceFilter === "all" || (item.price_status ?? "unavailable") === marketPriceFilter).map((item) => editingCard?.id === item.id ? (
-            <form key={item.id} className="admin-card-edit" onSubmit={saveCard}>
-              <strong>{item.name}</strong>
-              <div className="admin-row"><label>My price<input type="number" min="0" value={editingCard.price} onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })} /></label><label>Stock<input type="number" min="0" value={editingCard.quantity} onChange={(e) => setEditingCard({ ...editingCard, quantity: e.target.value })} /></label></div>
-              <div className="admin-row"><label>AVG DMO price<input type="number" min="0" placeholder="No market data" value={editingCard.avg_price ?? ""} onChange={(e) => setEditingCard({ ...editingCard, avg_price: e.target.value })} /></label><label>Data status<select value={editingCard.price_status ?? "unavailable"} onChange={(e) => setEditingCard({ ...editingCard, price_status: e.target.value })}><option value="available">Available</option><option value="unavailable">No market data</option><option value="needs_review">Needs review</option></select></label></div>
-              <a className="admin-market-source" href="https://dmo-market.onrender.com/" target="_blank" rel="noreferrer">Verify against DMO Market â†—</a>
-              <div className="admin-row"><select value={editingCard.category} onChange={(e) => setEditingCard({ ...editingCard, category: e.target.value })}><option value="monster">Monster</option><option value="spell">Spell</option><option value="trap">Trap</option></select><select value={editingCard.rarity} onChange={(e) => setEditingCard({ ...editingCard, rarity: e.target.value })}><option value="common">Common</option><option value="silver">Silver</option><option value="gold">Gold</option><option value="rainbow">Rainbow</option></select></div>
-              <aside><button type="submit">Save</button><button type="button" onClick={() => setEditingCard(null)}>Cancel</button></aside>
-            </form>
-          ) : (
-            <div key={item.id} className="admin-stock"><span>{item.name}<small className={`market-data-state state-${item.price_status ?? "unavailable"}`}>{item.price_status === "available" && item.avg_price != null ? `AVG ${Number(item.avg_price).toLocaleString()} G` : item.price_status === "needs_review" ? "Market data needs review" : "No market data"}</small></span><b>{item.quantity} Â· {Number(item.price).toLocaleString()} G</b><aside><button onClick={() => setEditingCard(item)}>Edit</button><button onClick={() => deleteCard(item.id, item.name)}>Archive</button></aside></div>
-          ))}
-          {!data.cards.length && <p>No database cards yet.</p>}
-        </div></section>
-        <section className="admin-panel inventory-scanner">
-          <header className="inventory-scanner-heading"><div><AdminIcon name="cards" /><p className="vault-overline">SCREENSHOT INVENTORY</p><h2>Detect multiple cards.</h2><p>Upload one screenshot. Card Empire reads it locally, matches only the official DMO catalogue and waits for your approval before saving anything.</p></div><label className="inventory-upload"><input type="file" accept="image/png,image/jpeg,image/webp" onChange={scanInventoryScreenshot} /><span>{inventoryScan.state === "reading" ? `Readingâ€¦ ${inventoryScan.progress}%` : "Choose screenshot"}</span></label></header>
-          {inventoryScan.preview && <div className="inventory-scan-workspace"><figure><img src={inventoryScan.preview} alt="Inventory screenshot preview" /><figcaption>{inventoryScan.filename}</figcaption></figure><div className="inventory-review"><label className="inventory-manual-search">Add a missed card<input value={scanManualQuery} onChange={(event) => setScanManualQuery(event.target.value)} placeholder="Search official DMO catalogue" /></label>{manualScanMatches.length > 0 && <div className="inventory-manual-results">{manualScanMatches.map((match) => <button key={match.name} type="button" onClick={() => addManualScanCandidate(match)}>{match.name}<small>{match.gameRarity}</small></button>)}</div>}
-            <div className="inventory-candidate-list">{scanCandidates.map((candidate, index) => <article className={candidate.selected ? "is-approved" : "needs-review"} key={candidate.name}><label className="inventory-approve"><input type="checkbox" checked={candidate.selected} onChange={(event) => updateScanCandidate(index, { selected: event.target.checked })} /><span>{candidate.selected ? "Approved" : "Review"}</span></label><span className="inventory-candidate-art">{(candidate.image_url_small || candidate.image_url) && <img src={candidate.image_url_small || candidate.image_url} alt="" />}</span><div><strong>{candidate.name}</strong><small>{candidate.gameRarity} Â· {candidate.category}{candidate.existingId ? " Â· already in Cardstock" : ""}</small><em>{candidate.confidence == null ? "Added manually" : `${candidate.confidence}% OCR confidence`}</em></div><label>Qty<input type="number" min="1" value={candidate.quantity} onChange={(event) => updateScanCandidate(index, { quantity: event.target.value })} /></label><label>My price<input type="number" min="0" value={candidate.price} placeholder={candidate.existingId ? "Keep current" : "Required"} onChange={(event) => updateScanCandidate(index, { price: event.target.value })} /></label><button type="button" className="inventory-remove-candidate" onClick={() => setScanCandidates((current) => current.filter((_, itemIndex) => itemIndex !== index))}>Ã—</button></article>)}{inventoryScan.state === "review" && !scanCandidates.length && <p className="inventory-scan-empty">No automatic match. Use the official catalogue search above to build the review list manually.</p>}</div>
-            {scanCandidates.length > 0 && <footer><span>{scanCandidates.filter((candidate) => candidate.selected).length} approved Â· nothing is saved before confirmation</span><button type="button" className="vault-submit" disabled={inventoryScan.state === "saving"} onClick={importScanCandidates}>{inventoryScan.state === "saving" ? "Saving reviewed cardsâ€¦" : "Confirm reviewed inventory"}</button></footer>}
-          </div></div>}
-        </section>
-      </section>}
-
-      {tab === "events" && <section className="admin-events">
-        <div className="admin-grid">
-          <form className="admin-panel" onSubmit={submitEvent}>
-            <h2>{editingEventId ? "Edit event" : "Create event"}</h2>
-            <input required placeholder="Event name" value={event.title} onChange={(e) => setEvent({ ...event, title: e.target.value })} />
-            <input required type="datetime-local" value={event.starts_at} onChange={(e) => setEvent({ ...event, starts_at: e.target.value })} />
-            <select value={event.event_format} onChange={(e) => setEvent({ ...event, event_format: e.target.value })}>
-              {eventFormats.map((format) => <option value={format.value} key={format.value}>{format.label} Â· {format.detail}</option>)}
-            </select>
-            <p className="event-rule-note"><b>Official rule:</b> The current in-game banlist is always used unless the event description explicitly says otherwise.</p>
-            <textarea placeholder="Rules, location, prizeâ€¦" value={event.description} onChange={(e) => setEvent({ ...event, description: e.target.value })} />
-            <button className="vault-submit">{editingEventId ? "Save event" : "Publish event"}</button>
-            {editingEventId && <button type="button" className="admin-secondary" onClick={() => { setEditingEventId(null); setEvent(blankEvent); }}>Cancel edit</button>}
-          </form>
-
-          <section className="admin-panel admin-event-standard"><AdminIcon name="events" /><p className="vault-overline">GLOBAL EVENT STANDARD</p><h2>One current rule set.</h2><p>Every event follows the current in-game banlist by default. Put a clearly written exception into the event description only when an event truly needs one.</p></section>
-        </div>
-
-        <section className="admin-panel"><h2>Scheduled events</h2><div className="admin-list">
-          {data.events.map((item) => {
-            const registrations = item.registrations ?? [];
-            const eventFormat = getEventFormat(item.event_format);
-            const selectedWinnerId = winnerSelections[item.id] ?? "";
-            const winner = data.players.find((player) => player.id === item.winner_id);
-
-            return <div key={item.id} className="admin-event-row">
-              <span>
-                <b>{item.title}</b>
-                <small>{new Date(item.starts_at).toLocaleString()} Â· {eventFormat.label} Â· {eventFormat.detail} Â· {registrations.length}{eventFormat.capacity ? " / " + eventFormat.capacity : ""} registered Â· Current in-game banlist</small>
-                {winner && <em className="event-winner-badge">WINNER Â· {winner.username} Â· +1 WIN</em>}
-              </span>
-              {!winner && <div className="event-winner-controls">
-                <select value={selectedWinnerId} onChange={(event) => setWinnerSelections((current) => ({ ...current, [item.id]: event.target.value }))}>
-                  <option value="">Choose winner</option>
-                  {registrations.map((registration) => <option key={registration.player_id} value={registration.player_id}>{registration.player?.username ?? "Player"}</option>)}
-                </select>
-                <button disabled={!selectedWinnerId} onClick={() => confirmWinner(item.id, item.title)}>Confirm winner</button>
-              </div>}
-              <aside><button onClick={() => editEvent(item)}>Edit</button><button onClick={() => deleteEvent(item.id, item.title)}>Remove</button></aside>
-            </div>;
-          })}
-          {!data.events.length && <p>No events scheduled yet.</p>}
-        </div></section>
-      </section>}
-
-      {tab === "offers" && <section className="admin-panel"><h2>Offers</h2><div className="admin-list">
-        {data.offers.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> offered {Number(item.amount).toLocaleString()} G for {item.card_name}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => setOffer(item.id, "accepted")}>Accept</button><button onClick={() => setOffer(item.id, "rejected")}>Decline</button></aside>}</div>)}
-        {!data.offers.length && <p>No offers yet.</p>}
-      </div></section>}
-
-      {tab === "trades" && <section className="admin-panel admin-order-panel"><header className="admin-order-heading"><div><p className="vault-overline">EXCHANGE DESK</p><h2>Trade Orders</h2></div><span>{data.trades.filter((entry) => entry.status === "pending").length} awaiting action</span></header><p>Players choose a Cardstock card and propose what they offer in return. Accepting or negotiating opens the private live chat.</p><div className="admin-list">
-        {data.trades.map((item) => <div key={item.id} className="admin-offer"><span><b>{item.player?.username ?? "Player"}</b> wants <strong>{item.card?.name ?? item.card_name_snapshot ?? "Removed Cardstock card"}</strong><br /><small>Offers: {item.offered_cards}</small>{item.message && <small>Message: {item.message}</small>}</span><em>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToTrade(item.id, "accepted")}>Accept + chat</button><button onClick={() => respondToTrade(item.id, "negotiating")}>Negotiate + chat</button><button onClick={() => respondToTrade(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <aside><button onClick={() => window.location.assign("/chats")}>Open chat</button></aside>}</div>)}
-        {!data.trades.length && <p>No Trade Hub offers yet.</p>}
-      </div></section>}
-
-      {tab === "pricing" && <section className="admin-pricing-console">
-        <header className="admin-order-heading"><div><p className="vault-overline">PRICE CONTROL</p><h2>Discounts & bundle offers</h2></div><span>Server verified</span></header>
-        <div className="admin-grid admin-pricing-forms">
-          <form className="admin-panel" onSubmit={createAutomaticDiscount}>
-            <AdminIcon name="pricing" /><h3>Automatic discount</h3><p>Applies automatically when the active time and minimum order rules match.</p>
-            <div className="admin-row"><input required maxLength="80" placeholder="Campaign name" value={discountForm.name} onChange={(e) => setDiscountForm({ ...discountForm, name: e.target.value })} /><input required type="number" min="0.01" max="90" step="0.01" placeholder="Discount %" value={discountForm.percentage} onChange={(e) => setDiscountForm({ ...discountForm, percentage: e.target.value })} /></div>
-            <div className="admin-row"><label>Starts<input type="datetime-local" value={discountForm.starts_at} onChange={(e) => setDiscountForm({ ...discountForm, starts_at: e.target.value })} /></label><label>Ends<input type="datetime-local" value={discountForm.ends_at} onChange={(e) => setDiscountForm({ ...discountForm, ends_at: e.target.value })} /></label></div>
-            <div className="admin-row"><input type="number" min="0" placeholder="Minimum total" value={discountForm.min_total} onChange={(e) => setDiscountForm({ ...discountForm, min_total: e.target.value })} /><input type="number" min="0" placeholder="Minimum card count" value={discountForm.min_card_count} onChange={(e) => setDiscountForm({ ...discountForm, min_card_count: e.target.value })} /></div>
-            <button className="vault-submit">Publish automatic discount</button>
-          </form>
-          <form className="admin-panel" onSubmit={createDiscountCode}>
-            <AdminIcon name="offers" /><h3>Discount code</h3><p>Create a private checkout code with its own limits and active period.</p>
-            <div className="admin-row"><input required minLength="3" maxLength="32" placeholder="CODE" value={codeForm.code} onChange={(e) => setCodeForm({ ...codeForm, code: e.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, "") })} /><input required type="number" min="0.01" max="90" step="0.01" placeholder="Discount %" value={codeForm.percentage} onChange={(e) => setCodeForm({ ...codeForm, percentage: e.target.value })} /></div>
-            <div className="admin-row"><label>Starts<input type="datetime-local" value={codeForm.starts_at} onChange={(e) => setCodeForm({ ...codeForm, starts_at: e.target.value })} /></label><label>Ends<input type="datetime-local" value={codeForm.ends_at} onChange={(e) => setCodeForm({ ...codeForm, ends_at: e.target.value })} /></label></div>
-            <div className="admin-row"><input type="number" min="0" placeholder="Minimum total" value={codeForm.min_total} onChange={(e) => setCodeForm({ ...codeForm, min_total: e.target.value })} /><input type="number" min="0" placeholder="Minimum cards" value={codeForm.min_card_count} onChange={(e) => setCodeForm({ ...codeForm, min_card_count: e.target.value })} /><input type="number" min="1" placeholder="Max uses" value={codeForm.max_uses} onChange={(e) => setCodeForm({ ...codeForm, max_uses: e.target.value })} /></div>
-            <button className="vault-submit">Create discount code</button>
-          </form>
-        </div>
-
-        <div className="admin-grid admin-pricing-lists">
-          <section className="admin-panel"><h3>Automatic campaigns</h3><div className="admin-list">
-            {data.automaticDiscounts.map((item) => <div className="admin-pricing-rule" key={item.id}><span><b>{item.name} Â· {Number(item.percentage)}%</b><small>{item.min_card_count ? `${item.min_card_count}+ cards` : "Any card count"} Â· {Number(item.min_total).toLocaleString()} G minimum</small></span><em className={item.active ? "is-active" : "is-paused"}>{item.active ? "Active" : "Paused"}</em><aside><button onClick={() => togglePricingRule("automatic_discounts", item.id, !item.active)}>{item.active ? "Pause" : "Activate"}</button><button onClick={() => removePricingRule("automatic_discounts", item.id)}>Remove</button></aside></div>)}
-            {!data.automaticDiscounts.length && <p>No automatic discounts configured.</p>}
-          </div></section>
-          <section className="admin-panel"><h3>Checkout codes</h3><div className="admin-list">
-            {data.discountCodes.map((item) => <div className="admin-pricing-rule" key={item.id}><span><b>{item.code} Â· {Number(item.percentage)}%</b><small>{item.use_count}{item.max_uses ? ` / ${item.max_uses}` : ""} uses Â· {item.min_card_count ? `${item.min_card_count}+ cards` : "No card minimum"}</small></span><em className={item.active ? "is-active" : "is-paused"}>{item.active ? "Active" : "Paused"}</em><aside><button onClick={() => togglePricingRule("discount_codes", item.id, !item.active)}>{item.active ? "Pause" : "Activate"}</button><button onClick={() => removePricingRule("discount_codes", item.id)}>Remove</button></aside></div>)}
-            {!data.discountCodes.length && <p>No discount codes configured.</p>}
-          </div></section>
-        </div>
-
-        <section className="admin-panel admin-bundle-orders"><header className="admin-order-heading"><div><p className="vault-overline">3+ CARD ORDERS</p><h3>Bundle offers</h3></div><span>{data.bundleOffers.filter((entry) => entry.status === "pending").length} pending</span></header><div className="admin-list">
-          {data.bundleOffers.map((item) => <article className="admin-bundle-offer" key={item.id}><span><b>{item.buyer?.dmo_name || item.buyer?.username || "Player"}</b><small>{item.card_summary}</small><small>Listed {Number(item.listed_total).toLocaleString()} G Â· proposes <strong>{Number(item.proposed_total).toLocaleString()} G</strong>{item.counter_total != null ? ` Â· counter ${Number(item.counter_total).toLocaleString()} G` : ""}</small></span><em className={`bundle-status status-${item.status}`}>{item.status}</em>{item.status === "pending" && <aside><button onClick={() => respondToBundle(item.id, "accepted")}>Accept + chat</button><label><input type="number" min="0" placeholder="Counter total" value={bundleCounters[item.id] ?? ""} onChange={(e) => setBundleCounters((current) => ({ ...current, [item.id]: e.target.value }))} /><button disabled={!bundleCounters[item.id]} onClick={() => respondToBundle(item.id, "countered")}>Counter + chat</button></label><button onClick={() => respondToBundle(item.id, "declined")}>Decline</button></aside>}{item.chat_id && <button onClick={() => window.location.assign("/chats")}>Open chat</button>}</article>)}
-          {!data.bundleOffers.length && <p>No bundle proposals yet.</p>}
-        </div></section>
-      </section>}
-
-      {tab === "books" && <section className="admin-books admin-order-panel">
-        <div className="sales-summary"><article><small>Total Gold</small><strong>{totalGold.toLocaleString()} G</strong></article><article><small>Cards sold</small><strong>{cardsSold}</strong></article><article><small>Purchases</small><strong>{data.purchases.length}</strong></article></div>
-        <section className="admin-panel"><header className="admin-order-heading"><div><p className="vault-overline">SALES LEDGER</p><h2>Buy Orders</h2></div><span>{data.purchases.length} recorded</span></header><p>Every completed purchase is saved here with buyer, card, price and time.</p><div className="admin-list">
-          {data.purchases.map((item) => <div key={item.id} className="admin-sale"><span><b>{item.card?.name ?? item.card_name ?? "Removed card"}</b><small>Buyer: {item.player?.username ?? "Player"} Â· {item.quantity} copy/copies</small></span><span><b>{Number(item.paid_gold).toLocaleString()} G</b><small>{new Date(item.created_at).toLocaleString()}</small></span></div>)}
-          {!data.purchases.length && <p>No purchases have been recorded yet.</p>}
-        </div></section>
-      </section>}
-
-      {tab === "community" && <section className="admin-community-console">
-        <header><div><p className="vault-overline">CARD EMPIRE TEAM CHANNEL</p><h2>Speak directly to the community.</h2></div><button type="button" onClick={() => window.location.assign("/community")}>View public Community â†—</button></header>
-        <div className="admin-grid">
-          <form className="admin-panel" onSubmit={publishAnnouncement}><AdminIcon name="community" /><h3>New announcement</h3><p>Send an official message to every verified player.</p><input required value={adminAnnouncement.title} onChange={(e) => setAdminAnnouncement({ ...adminAnnouncement, title: e.target.value })} placeholder="Announcement title" /><textarea required value={adminAnnouncement.body} onChange={(e) => setAdminAnnouncement({ ...adminAnnouncement, body: e.target.value })} placeholder="Message to every player" /><button className="vault-submit">Publish announcement</button></form>
-          <form className="admin-panel" onSubmit={publishPoll}><AdminIcon name="offers" /><h3>New community poll</h3><p>Separate each answer with a comma. Up to six options are supported.</p><input required value={adminPoll.question} onChange={(e) => setAdminPoll({ ...adminPoll, question: e.target.value })} placeholder="Community question" /><input required value={adminPoll.options} onChange={(e) => setAdminPoll({ ...adminPoll, options: e.target.value })} placeholder="Option one, Option two, Option three" /><button className="vault-submit">Open poll</button></form>
-          <form className="admin-panel admin-availability-panel" onSubmit={publishAvailability}><AdminIcon name="events" /><h3>Pickup readiness</h3><p>Publish when you are online and when customers can collect their cards.</p><div className="admin-row"><input required value={availabilityForm.title} onChange={(e) => setAvailabilityForm({ ...availabilityForm, title: e.target.value })} placeholder="Card pickup" /><input required value={availabilityForm.location} onChange={(e) => setAvailabilityForm({ ...availabilityForm, location: e.target.value })} placeholder="Location / server" /></div><div className="admin-row"><label>Online from<input required type="datetime-local" value={availabilityForm.starts_at} onChange={(e) => setAvailabilityForm({ ...availabilityForm, starts_at: e.target.value })} /></label><label>Online until<input required type="datetime-local" value={availabilityForm.ends_at} onChange={(e) => setAvailabilityForm({ ...availabilityForm, ends_at: e.target.value })} /></label></div><textarea value={availabilityForm.note} maxLength="600" onChange={(e) => setAvailabilityForm({ ...availabilityForm, note: e.target.value })} placeholder="Optional pickup note" /><button className="vault-submit">Publish live window</button></form>
-          <section className="admin-panel admin-availability-list"><AdminIcon name="community" /><h3>Published windows</h3><p>These times update immediately for every verified player.</p><div>{data.availability.map((slot) => <article key={slot.id}><span><b>{slot.title}</b><small>{new Date(slot.starts_at).toLocaleString()} â€“ {new Date(slot.ends_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} Â· {slot.location}</small></span><button type="button" onClick={() => deleteAvailability(slot.id)}>Remove</button></article>)}{!data.availability.length && <small>No pickup windows published.</small>}</div></section>
-          <section className={"admin-panel admin-presence-panel" + (data.presence?.is_online ? " is-online" : "")}><AdminIcon name="community" /><p className="vault-overline">LIVE PRESENCE</p><h3>{data.presence?.is_online ? "Kalenski is online" : "Kalenski is offline"}</h3><p>The ticker below the navigation appears only while this switch is online.</p><input maxLength="120" value={presenceNote} onChange={(e) => setPresenceNote(e.target.value)} placeholder="Short live status" /><div><button type="button" className="vault-submit" onClick={() => setEmpirePresence(true)}>Go online</button><button type="button" className="admin-secondary" onClick={() => setEmpirePresence(false)}>Go offline</button></div></section>
-        </div>
-        <section className="admin-panel admin-community-moderation"><AdminIcon name="community" /><h3>Community moderation</h3><p>Suggestions, reviews and legacy feedback can be removed here. This control is protected by administrator RLS.</p><div className="admin-list">
-          {data.communitySuggestions.map((item) => <div key={"suggestion-" + item.id}><span><b>Suggestion Â· {item.title}</b><small>{item.body}</small></span><button type="button" onClick={() => deleteCommunityEntry("community_suggestions", item.id, "Suggestion")}>Remove</button></div>)}
-          {data.communityReviews.map((item) => <div key={"review-" + item.id}><span><b>Review Â· {item.rating}/5</b><small>{item.body}</small></span><button type="button" onClick={() => deleteCommunityEntry("community_reviews", item.id, "Review")}>Remove</button></div>)}
-          {data.feedback.map((item) => <div key={"feedback-" + item.id}><span><b>Legacy feedback</b><small>{item.message}</small></span><button type="button" onClick={() => deleteCommunityEntry("feedback", item.id, "Feedback")}>Remove</button></div>)}
-          {!data.communitySuggestions.length && !data.communityReviews.length && !data.feedback.length && <p>No Community entries to moderate.</p>}
-        </div></section>
-      </section>}
-
-      {tab === "players" && <section className="admin-panel"><h2>Player roles</h2><p>Delete removes the player profile and their Empire data. Administrator profiles are protected.</p><div className="admin-list">
-        {data.players.map((item) => <div key={item.id} className="admin-player"><span><b>{item.dmo_name || item.username}</b><small>{item.dmo_name ? `Discord @${item.username}` : roleLabels[item.role] ?? "Player"}{Number(item.wins) || Number(item.losses) ? ` Â· ${item.wins}W / ${item.losses}L` : ""}</small></span><select value={roles.includes(item.role) ? item.role : "customer"} onChange={(e) => setRole(item.id, e.target.value)}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select>{item.id !== profile.id && item.role !== "admin" && <button className="admin-delete-player" onClick={() => deletePlayer(item.id, item.dmo_name || item.username)}>Delete player</button>}</div>)}
-      </div></section>}
-    </main>
-  );
-}
+    setNotice("Reading card names from the screenshot ×M;ÖÚ$z{-®éÜj×76vRbbÇ6ÖÆÃäÖW76vS¢¶—FVÒæÖW76vWÓÂ÷6ÖÆÃçÓÂ÷7ããÆVÓç¶—FVÒç7FGW7ÓÂöVÓç¶—FVÒç7FGW2ÓÓÒ'VæF–ær"bbÆ6–FSãÆ'WGFöâöä6Æ–6³×²‚’Óâ&W7öæEFõG&FR†—FVÒæ–BÂ&66WFVB"—Óä66WB²6†CÂö'WGFöããÆ'WGFöâöä6Æ–6³×²‚’Óâ&W7öæEFõG&FR†—FVÒæ–BÂ&æVv÷F–F–ær"—ÓäæVv÷F–FR²6†CÂö'WGFöããÆ'WGFöâöä6Æ–6³×²‚’Óâ&W7öæEFõG&FR†—FVÒæ–BÂ&FV6Æ–æVB"—ÓäFV6Æ–æSÂö'WGFöããÂö6–FSç×¶—FVÒæ6†Eö–BbbÆ6–FSãÆ'WGFöâöä6Æ–6³×²‚’Óâv–æF÷ræÆö6F–öâæ76–vâ‚"ö6†G2"—Óä÷Vâ6†CÂö'WGFöããÂö6–FSçÓÂöF—câ—Ğ¢²FFçG&FW2æÆVæwF‚bbÇäæòG&FR‡V"öffW'2–WBãÂ÷çĞ¢ÂöF—cãÂ÷6V7F–öãçĞ ¢·F"ÓÓÒ'&–6–ær"bbÇ6V7F–öâ6Æ74æÖSÒ&FÖ–â×&–6–ærÖ6öç6öÆR#à¢Æ†VFW"6Æ74æÖSÒ&FÖ–âÖ÷&FW"Ö†VF–ær#ãÆF—cãÇ6Æ74æÖSÒ'fVÇBÖ÷fW&Æ–æR#å$”4R4ôåE$ôÃÂ÷ãÆƒ#äF—66÷VçG2b'VæFÆRöffW'3Âöƒ#ãÂöF—cãÇ7ãå6W'fW"fW&–f–VCÂ÷7ããÂö†VFW#à¢ÆF—b6Æ74æÖSÒ&FÖ–âÖw&–BFÖ–â×&–6–ærÖf÷&×2#à¢Æf÷&Ò6Æ74æÖSÒ&FÖ–â×æVÂ"öå7V&Ö—C×¶7&VFTWFöÖF–4F—66÷VçGÓà¢ÄFÖ–ä–6öâæÖSÒ'&–6–ær"óãÆƒ3äWFöÖF–2F—66÷VçCÂöƒ3ãÇäÆ–W2WFöÖF–6ÆÇ’v†VâF†R7F—fRF–ÖRæBÖ–æ–×VÒ÷&FW"'VÆW2ÖF6‚ãÂ÷à¢ÆF—b6Æ74æÖSÒ&FÖ–â×&÷r#ãÆ–çWB&WV—&VBÖ„ÆVæwFƒÒ#ƒ"Æ6V†öÆFW#Ò$6×–vâæÖR"fÇVS×¶F—66÷VçDf÷&ÒææÖWÒöä6†ævS×²†R’Óâ6WDF—66÷VçDf÷&Ò‡²ââæF—66÷VçDf÷&ÒÂæÖS¢RçF&vWBçfÇVRÒ—ÒóãÆ–çWB&WV—&VBG—SÒ&çVÖ&W""Ö–ãÒ#ã"ÖƒÒ#“"7FWÒ#ã"Æ6V†öÆFW#Ò$F—66÷VçBR"fÇVS×¶F—66÷VçDf÷&ÒçW&6VçFvWÒöä6†ævS×²†R’Óâ6WDF—66÷VçDf÷&Ò‡²ââæF—66÷VçDf÷&ÒÂW&6VçFvS¢RçF&vWBçfÇVRÒ—ÒóãÂöF—cà¢ÆF—b6Æ74æÖSÒ&FÖ–â×&÷r#ãÆÆ&VÃå7F'G3Æ–çWBG—SÒ&FFWF–ÖRÖÆö6Â"fÇVS×¶F—66÷VçDf÷&Òç7F'G5öGÒöä6†ævS×²†R’Óâ6WDF—66÷VçDf÷&Ò‡²ââæF—66÷VçDf÷&ÒÂ7F'G5öC¢RçF&vWBçfÇVRÒ—ÒóãÂöÆ&VÃãÆÆ&VÃäVæG3Æ–çWBG—SÒ&FFWF–ÖRÖÆö6Â"fÇVS×¶F—66÷VçDf÷&ÒæVæG5öGÒöä6†ævS×²†R’Óâ6WDF—66÷VçDf÷&Ò‡²ââæF—66÷VçDf÷&ÒÂVæG5öC¢RçF&vWBçfÇVRÒ—ÒóãÂöÆ&VÃãÂöF—cà¢ÆF—b6Æ74æÖSÒ&FÖ–â×&÷r#ãÆ–çWBG—SÒ&çVÖ&W""Ö–ãÒ#"Æ6V†öÆFW#Ò$Ö–æ–×VÒF÷FÂ"fÇVS×¶F—66÷VçDf÷&ÒæÖ–å÷F÷FÇÒöä6†ævS×²†R’Óâ6WDF—66÷VçDf÷&Ò‡²ââæF—66÷VçDf÷&ÒÂÖ–å÷F÷FÃ¢RçF&vWBçfÇVRÒ—ÒóãÆ–çWBG—SÒ&çVÖ&W""Ö–ãÒ#"Æ6V†öÆFW#Ò$Ö–æ–×VÒ6&B6÷VçB"fÇVS×¶F—66÷VçDf÷&ÒæÖ–åö6&Eö6÷VçGÒöä6†ævS×²†R’Óâ6WDF—66÷VçDf÷&Ò‡²ââæF—66÷VçDf÷&ÒÂÖ–åö6&Eö6÷VçC¢RçF&vWBçfÇVRÒ—ÒóãÂöF—cà¢Æ'WGFöâ6Æ74æÖSÒ'fVÇB×7V&Ö—B#åV&Æ—6‚WFöÖF–2F—66÷VçCÂö'WGFöãà¢Âöf÷&Óà¢Æf÷&Ò6Æ74æÖSÒ&FÖ–â×æVÂ"öå7V&Ö—C×¶7&VFTF—66÷VçD6öFWÓà¢ÄFÖ–ä–6öâæÖSÒ&öffW'2"óãÆƒ3äF—66÷VçB6öFSÂöƒ3ãÇä7&VFR&—fFR6†V6¶÷WB6öFRv—F‚—G2÷vâÆ–Ö—G2æB7F—fRW&–öBãÂ÷à¢ÆF—b6Æ74æÖSÒ&FÖ–â×&÷r#ãÆ–çWB&WV—&VBÖ–äÆVæwFƒÒ#2"Ö„ÆVæwFƒÒ#3""Æ6V†öÆFW#Ò$4ôDR"fÇVS×¶6öFTf÷&Òæ6öFWÒöä6†ævS×²†R’Óâ6WD6öFTf÷&Ò‡²ââæ6öFTf÷&ÒÂ6öFS¢RçF&vWBçfÇVRçFõWW$66R‚’ç&WÆ6R‚õµäÕ£Ó•òÕÒörÂ""’Ò—ÒóãÆ–çWB&WV—&VBG—SÒ&çVÖ&W""Ö–ãÒ#ã"ÖƒÒ#“"7FWÒ#ã"Æ6V†öÆFW#Ò$F—66÷VçBR"fÇVS×¶6öFTf÷&ÒçW&6VçFvWÒöä6†ævS×²†R’Óâ6WD6öFTf÷&Ò‡²ââæ6öFTf÷&ÒÂW&6VçFvS¢RçF&vWBçfÇVRÒ—ÒóãÂöF—cà¢ÆF—b6Æ74æÖSÒ&FÖ–â×&÷r#ãÆÆ&VÃå7F'G3Æ–çWBG—SÒ&FFWF–ÖRÖÆö6Â"fÇVS×¶6öFTf÷&Òç7F'G5öGÒöä6†ævS×²†R’Óâ6WD6öFTf÷&Ò‡²ââæ6öFTf÷&ÒÂ7F'G5öC¢RçF&vWBçfÇVRÒ—ÒóãÂöÆ&VÃãÆÆ&VÃäVæG3Æ–çWBG—SÒ&FFWF–ÖRÖÆö6Â"fÇVS×¶6öFTf÷&ÒæVæG5öGÒöä6†ævS×²†R’Óâ6WD6öFTf÷&Ò‡²ââæ6öFTf÷&ÒÂVæG5öC¢RçF&vWBçfÇVRÒ—ÒóãÂöÆ&VÃãÂöF—cà¢ÆF—b6Æ74æÖSÒ&FÖ–â×&÷r#ãÆ–çWBG—SÒ&çVÖ&W""Ö–ãÒ#"Æ6V†öÆFW#Ò$Ö–æ–×VÒF÷FÂ"fÇVS×¶6öFTf÷&ÒæÖ–å÷F÷FÇÒöä6†ævS×²†R’Óâ6WD6öFTf÷&Ò‡²ââæ6öFTf÷&ÒÂÖ–å÷F÷FÃ¢RçF&vWBçfÇVRÒ—ÒóãÆ–çWBG—SÒ&çVÖ&W""Ö–ãÒ#"Æ6V†öÆFW#Ò$Ö–æ–×VÒ6&G2"fÇVS×¶6öFTf÷&ÒæÖ–åö6&Eö6÷VçGÒöä6†ævS×²†R’Óâ6WD6öFTf÷&Ò‡²ââæ6öFTf÷&ÒÂÖ–åö6&Eö6÷VçC¢RçF&vWBçfÇVRÒ—ÒóãÆ–çWBG—SÒ&çVÖ&W""Ö–ãÒ#"Æ6V†öÆFW#Ò$Ö‚W6W2"fÇVS×¶6öFTf÷&ÒæÖ…÷W6W7Òöä6†ævS×²†R’Óâ6WD6öFTf÷&Ò‡²ââæ6öFTf÷&ÒÂÖ…÷W6W3¢RçF&vWBçfÇVRÒ—ÒóãÂöF—cà¢Æ'WGFöâ6Æ74æÖSÒ'fVÇB×7V&Ö—B#ä7&VFRF—66÷VçB6öFSÂö'WGFöãà¢Âöf÷&Óà¢ÂöF—cà ¢ÆF—b6Æ74æÖSÒ&FÖ–âÖw&–BFÖ–â×&–6–ærÖÆ—7G2#à¢Ç6V7F–öâ6Æ74æÖSÒ&FÖ–â×æVÂ#ãÆƒ3äWFöÖF–26×–vç3Âöƒ3ãÆF—b6Æ74æÖSÒ&FÖ–âÖÆ—7B#à¢¶FFæWFöÖF–4F—66÷VçG2æÖ‚†—FVÒ’ÓâÆF—b6Æ74æÖSÒ&FÖ–â×&–6–ær×'VÆR"¶W“×¶—FVÒæ–GÓãÇ7ããÆ#ç¶—FVÒææÖWÒ+r´çVÖ&W"†—FVÒçW&6VçFvR—ÒSÂö#ãÇ6ÖÆÃç¶—FVÒæÖ–åö6&Eö6÷VçBòG¶—FVÒæÖ–åö6&Eö6÷VçGÒ²6&G6¢$ç’6&B6÷VçB'Ò+r´çVÖ&W"†—FVÒæÖ–å÷F÷FÂ’çFôÆö6ÆU7G&–ær‚—ÒrÖ–æ–×VÓÂ÷6ÖÆÃãÂ÷7ããÆVÒ6Æ74æÖS×¶—FVÒæ7F—fRò&—2Ö7F—fR"¢&—2×W6VB'Óç¶—FVÒæ7F—fRò$7F—fR"¢%W6VB'ÓÂöVÓãÆ6–FSãÆ'WGFöâöä6Æ–6³×²‚’ÓâFövvÆU&–6–æu'VÆR‚&WFöÖF–5öF—66÷VçG2"Â—FVÒæ–BÂ—FVÒæ7F—fR—Óç¶—FVÒæ7F—fRò%W6R"¢$7F—fFR'ÓÂö'WGFöããÆ'WGFöâöä6Æ–6³×²‚’Óâ&VÖ÷fU&–6–æu'VÆR‚&WFöÖF–5öF—66÷VçG2"Â—FVÒæ–B—Óå&VÖ÷fSÂö'WGFöããÂö6–FSãÂöF—câ—Ğ¢²FFæWFöÖF–4F—66÷VçG2æÆVæwF‚bbÇäæòWFöÖF–2F—66÷VçG26öæf–wW&VBãÂ÷çĞ¢ÂöF—cãÂ÷6V7F–öãà¢Ç6V7F–öâ6Æ74æÖSÒ&FÖ–â×æVÂ#ãÆƒ3ä6†V6¶÷WB6öFW3Âöƒ3ãÆF—b6Æ74æÖSÒ&FÖ–âÖÆ—7B#à¢¶FFæF—66÷VçD6öFW2æÖ‚†—FVÒ’ÓâÆF—b6Æ74æÖSÒ&FÖ–â×&–6–ær×'VÆR"¶W“×¶—FVÒæ–GÓãÇ7ããÆ#ç¶—FVÒæ6öFWÒ+r´çVÖ&W"†—FVÒçW&6VçFvR—ÒSÂö#ãÇ6ÖÆÃç¶—FVÒçW6Uö6÷VçG×¶—FVÒæÖ…÷W6W2òòG¶—FVÒæÖ…÷W6W7Ö¢"'ÒW6W2+r¶—FVÒæÖ–åö6&Eö6÷VçBòG¶—FVÒæÖ–åö6&Eö6÷VçGÒ²6&G6¢$æò6&BÖ–æ–×VÒ'ÓÂ÷6ÖÆÃãÂ÷7ããÆVÒ6Æ74æÖS×¶—FVÒæ7F—fRò&—2Ö7F—fR"¢&—2×W6VB'Óç¶—FVÒæ7F—fRò$7F—fR"¢%W6VB'ÓÂöVÓãÆ6–FSãÆ'WGFöâöä6Æ–6³×²‚’ÓâFövvÆU&–6–æu'VÆR‚&F—66÷VçEö6öFW2"Â—FVÒæ–BÂ—FVÒæ7F—fR—Óç¶—FVÒæ7F—fRò%W6R"¢$7F—fFR'ÓÂö'WGFöããÆ'WGFöâöä6Æ–6³×²‚’Óâ&VÖ÷fU&–6–æu'VÆR‚&F—66÷VçEö6öFW2"Â—FVÒæ–B—Óå&VÖ÷fSÂö'WGFöããÂö6–FSãÂöF—câ—Ğ¢²FFæF—66÷VçD6öFW2æÆVæwF‚bbÇäæòF—66÷VçB6öFW26öæf–wW&VBãÂ÷çĞ¢ÂöF—cãÂ÷6V7F–öãà¢ÂöF—cà ¢Ç6V7F–öâ6Æ74æÖSÒ&FÖ–â×æVÂFÖ–âÖ'VæFÆRÖ÷&FW'2#ãÆ†VFW"6Æ74æÖSÒ&FÖ–âÖ÷&FW"Ö†VF–ær#ãÆF—cãÇ6Æ74æÖSÒ'fVÇBÖ÷fW&Æ–æR#ã2²4$Bõ$DU%3Â÷ãÆƒ3ä'VæFÆRöffW'3Âöƒ3ãÂöF—cãÇ7ãç¶FFæ'VæFÆTöffW'2æf–ÇFW"‚†VçG'’’ÓâVçG'’ç7FGW2ÓÓÒ'VæF–ær"’æÆVæwF‡ÒVæF–æsÂ÷7ããÂö†VFW#ãÆF—b6Æ74æÖSÒ&FÖ–âÖÆ—7B#à¢¶FFæ'VæFÆTöffW'2æÖ‚†—FVÒ’ÓâÆ'F–6ÆR6Æ74æÖSÒ&FÖ–âÖ'VæFÆRÖöffW""¶W“×¶—FVÒæ–GÓãÇ7ããÆ#ç¶—FVÒæ'W–W#òæFÖõöæÖRÇÂ—FVÒæ'W–W#òçW6W&æÖRÇÂ%Æ–W"'ÓÂö#ãÇ6ÖÆÃç¶—FVÒæ6&E÷7VÖÖ'—ÓÂ÷6ÖÆÃãÇ6ÖÆÃäÆ—7FVB´çVÖ&W"†—FVÒæÆ—7FVE÷F÷FÂ’çFôÆö6ÆU7G&–ær‚—Òr+r&÷÷6W2Ç7G&öæsç´çVÖ&W"†—FVÒç&÷÷6VE÷F÷FÂ’çFôÆö6ÆU7G&–ær‚—ÒsÂ÷7G&öæsç¶—FVÒæ6÷VçFW%÷F÷FÂÒçVÆÂò+r6÷VçFW"G´çVÖ&W"†—FVÒæ6÷VçFW%÷F÷FÂ’çFôÆö6ÆU7G&–ær‚—Òv¢"'ÓÂ÷6ÖÆÃãÂ÷7ããÆVÒ6Æ74æÖS×¶'VæFÆR×7FGW27FGW2ÒG¶—FVÒç7FGW7ÖÓç¶—FVÒç7FGW7ÓÂöVÓç¶—FVÒç7FGW2ÓÓÒ'VæF–ær"bbÆ6–FSãÆ'WGFöâöä6Æ–6³×²‚’Óâ&W7öæEFô'VæFÆR†—FVÒæ–BÂ&66WFVB"—Óä66WB²6†CÂö'WGFöããÆÆ&VÃãÆ–çWBG—SÒ&çVÖ&W""Ö–ãÒ#"Æ6V†öÆFW#Ò$6÷VçFW"F÷FÂ"fÇVS×¶'VæFÆT6÷VçFW'5¶—FVÒæ–EÒóò"'Òöä6†ævS×²†R’Óâ6WD'VæFÆT6÷VçFW'2‚†7W'&VçB’Óâ‡²ââæ7W'&VçBÂ¶—FVÒæ–EÓ¢RçF&vWBçfÇVRÒ’—ÒóãÆ'WGFöâF—6&ÆVC×²'VæFÆT6÷VçFW'5¶—FVÒæ–E×Òöä6Æ–6³×²‚’Óâ&W7öæEFô'VæFÆR†—FVÒæ–BÂ&6÷VçFW&VB"—Óä6÷VçFW"²6†CÂö'WGFöããÂöÆ&VÃãÆ'WGFöâöä6Æ–6³×²‚’Óâ&W7öæEFô'VæFÆR†—FVÒæ–BÂ&FV6Æ–æVB"—ÓäFV6Æ–æSÂö'WGFöããÂö6–FSç×¶—FVÒæ6†Eö–BbbÆ'WGFöâöä6Æ–6³×²‚’Óâv–æF÷ræÆö6F–öâæ76–vâ‚"ö6†G2"—Óä÷Vâ6†CÂö'WGFöãçÓÂö'F–6ÆSâ—Ğ¢²FFæ'VæFÆTöffW'2æÆVæwF‚bbÇäæò'VæFÆR&÷÷6Ç2–WBãÂ÷çĞ¢ÂöF—cãÂ÷6V7F–öãà¢Â÷6V7F–öãçĞ ¢·F"ÓÓÒ&&öö·2"bbÇ6V7F–öâ6Æ74æÖSÒ&FÖ–âÖ&öö·2FÖ–âÖ÷&FW"×æVÂ#à¢ÆF—b6Æ74æÖSÒ'6ÆW2×7VÖÖ'’#ãÆ'F–6ÆSãÇ6ÖÆÃåF÷FÂvöÆCÂ÷6ÖÆÃãÇ7G&öæsç·F÷FÄvöÆBçFôÆö6ÆU7G&–ær‚—ÒsÂ÷7G&öæsãÂö'F–6ÆSãÆ'F–6ÆSãÇ6ÖÆÃä6&G26öÆCÂ÷6ÖÆÃãÇ7G&öæsç¶6&G56öÆGÓÂ÷7G&öæsãÂö'F–6ÆSãÆ'F–6ÆSãÇ6ÖÆÃåW&6†6W3Â÷6ÖÆÃãÇ7G&öæsç¶FFçW&6†6W2æÆVæwF‡ÓÂ÷7G&öæsãÂö'F–6ÆSãÂöF—cà¢Ç6V7F–öâ6Æ74æÖSÒ&FÖ–â×æVÂ#ãÆ†VFW"6Æ74æÖSÒ&FÖ–âÖ÷&FW"Ö†VF–ær#ãÆF—cãÇ6Æ74æÖSÒ'fVÇBÖ÷fW&Æ–æR#å4ÄU2ÄTDtU#Â÷ãÆƒ#ä'W’÷&FW'3Âöƒ#ãÂöF—cãÇ7ãç¶FFçW&6†6W2æÆVæwF‡Ò&V6÷&FVCÂ÷7ããÂö†VFW#ãÇäWfW'’6ö×ÆWFVBW&6†6R—26fVB†W&Rv—F‚'W–W"Â6&BÂ&–6RæBF–ÖRãÂ÷ãÆF—b6Æ74æÖSÒ&FÖ–âÖÆ—7B#à¢¶FFçW&6†6W2æÖ‚†—FVÒ’ÓâÆF—b¶W“×¶—FVÒæ–GÒ6Æ74æÖSÒ&FÖ–â×6ÆR#ãÇ7ããÆ#ç¶—FVÒæ6&CòææÖRóò—FVÒæ6&EöæÖRóò%&VÖ÷fVB6&B'ÓÂö#ãÇ6ÖÆÃä'W–W#¢¶—FVÒçÆ–W#òçW6W&æÖRóò%Æ–W"'Ò+r¶—FVÒçVçF—G—Ò6÷’ö6÷–W3Â÷6ÖÆÃãÂ÷7ããÇ7ããÆ#ç´çVÖ&W"†—FVÒç–EövöÆB’çFôÆö6ÆU7G&–ær‚—ÒsÂö#ãÇ6ÖÆÃç¶æWrFFR†—FVÒæ7&VFVEöB’çFôÆö6ÆU7G&–ær‚—ÓÂ÷6ÖÆÃãÂ÷7ããÂöF—câ—Ğ¢²FFçW&6†6W2æÆVæwF‚bbÇäæòW&6†6W2†fR&VVâ&V6÷&FVB–WBãÂ÷çĞ¢ÂöF—cãÂ÷6V7F–öãà¢Â÷6V7F–öãçĞ ¢·F"ÓÓÒ&6öÖ×Væ—G’"bbÇ6V7F–öâ6Æ74æÖSÒ&FÖ–âÖ6öÖ×Væ—G’Ö6öç6öÆR#à¢Æ†VFW#ãÆF—cãÇ6Æ74æÖSÒ'fVÇBÖ÷fW&Æ–æR#ä4$BTÕ•$RDTÒ4„ääTÃÂ÷ãÆƒ#å7V²F—&V7FÇ’FòF†R6öÖ×Væ—G’ãÂöƒ#ãÂöF—cãÆ'WGFöâG—SÒ&'WGFöâ"öä6Æ–6³×²‚’Óâv–æF÷ræÆö6F–öâæ76–vâ‚"ö6öÖ×Væ—G’"—Óåf–WrV&Æ–26öÖ×Væ—G’(isÂö'WGFöããÂö†VFW#à¢ÆF—b6Æ74æÖSÒ&FÖ–âÖw&–B#à¢Æf÷&Ò6Æ74æÖSÒ&FÖ–â×æVÂ"öå7V&Ö—C×·V&Æ—6„ææ÷Væ6VÖVçGÓãÄFÖ–ä–6öâæÖSÒ&6öÖ×Væ—G’"óãÆƒ3äæWrææ÷Væ6VÖVçCÂöƒ3ãÇå6VæBâöff–6–ÂÖW76vRFòWfW'’fW&–f–VBÆ–W"ãÂ÷ãÆ–çWB&WV—&VBfÇVS×¶FÖ–äææ÷Væ6VÖVçBçF—FÆWÒöä6†ævS×²†R’Óâ6WDFÖ–äææ÷Væ6VÖVçB‡²ââæFÖ–äææ÷Væ6VÖVçBÂF—FÆS¢RçF&vWBçfÇVRÒ—ÒÆ6V†öÆFW#Ò$ææ÷Væ6VÖVçBF—FÆR"óãÇFW‡F&V&WV—&VBfÇVS×¶FÖ–äææ÷Væ6VÖVçBæ&öG—Òöä6†ævS×²†R’Óâ6WDFÖ–äææ÷Væ6VÖVçB‡²ââæFÖ–äææ÷Væ6VÖVçBÂ&öG“¢RçF&vWBçfÇVRÒ—ÒÆ6V†öÆFW#Ò$ÖW76vRFòWfW'’Æ–W""óãÆ'WGFöâ6Æ74æÖSÒ'fVÇB×7V&Ö—B#åV&Æ—6‚ææ÷Væ6VÖVçCÂö'WGFöããÂöf÷&Óà¢Æf÷&Ò6Æ74æÖSÒ&FÖ–â×æVÂ"öå7V&Ö—C×·V&Æ—6…öÆÇÓãÄFÖ–ä–6öâæÖSÒ&öffW'2"óãÆƒ3äæWr6öÖ×Væ—G’öÆÃÂöƒ3ãÇå6W&FRV6‚ç7vW"v—F‚6öÖÖâWFò6—‚÷F–öç2&R7W÷'FVBãÂ÷ãÆ–çWB&WV—&VBfÇVS×¶FÖ–åöÆÂçVW7F–öçÒöä6†ævS×²†R’Óâ6WDFÖ–åöÆÂ‡²ââæFÖ–åöÆÂÂVW7F–öã¢RçF&vWBçfÇVRÒ—ÒÆ6V†öÆFW#Ò$6öÖ×Væ—G’VW7F–öâ"óãÆ–çWB&WV—&VBfÇVS×¶FÖ–åöÆÂæ÷F–öç7Òöä6†ævS×²†R’Óâ6WDFÖ–åöÆÂ‡²ââæFÖ–åöÆÂÂ÷F–öç3¢RçF&vWBçfÇVRÒ—ÒÆ6V†öÆFW#Ò$÷F–öâöæRÂ÷F–öâGvòÂ÷F–öâF‡&VR"óãÆ'WGFöâ6Æ74æÖSÒ'fVÇB×7V&Ö—B#ä÷VâöÆÃÂö'WGFöããÂöf÷&Óà¢Æf÷&Ò6Æ74æÖSÒ&FÖ–â×æVÂFÖ–âÖf–Æ&–Æ—G’×æVÂ"öå7V&Ö—C×·V&Æ—6„f–Æ&–Æ—G—ÓãÄFÖ–ä–6öâæÖSÒ&WfVçG2"óãÆƒ3å–6·W&VF–æW73Âöƒ3ãÇåV&Æ—6‚v†Vâ–÷R&RöæÆ–æRæBv†Vâ7W7FöÖW'26â6öÆÆV7BF†V—"6&G2ãÂ÷ãÆF—b6Æ74æÖSÒ&FÖ–â×&÷r#ãÆ–çWB&WV—&VBfÇVS×¶f–Æ&–Æ—G”f÷&ÒçF—FÆWÒöä6†ævS×²†R’Óâ6WDf–Æ&–Æ—G”f÷&Ò‡²ââæf–Æ&–Æ—G”f÷&ÒÂF—FÆS¢RçF&vWBçfÇVRÒ—ÒÆ6V†öÆFW#Ò$6&B–6·W"óãÆ–çWB&WV—&VBfÇVS×¶f–Æ&–Æ—G”f÷&ÒæÆö6F–öçÒöä6†ævS×²†R’Óâ6WDf–Æ&–Æ—G”f÷&Ò‡²ââæf–Æ&–Æ—G”f÷&ÒÂÆö6F–öã¢RçF&vWBçfÇVRÒ—ÒÆ6V†öÆFW#Ò$Æö6F–öâò6W'fW""óãÂöF—cãÆF—b6Æ74æÖSÒ&FÖ–â×&÷r#ãÆÆ&VÃäöæÆ–æRg&öÓÆ–çWB&WV—&VBG—SÒ&FFWF–ÖRÖÆö6Â"fÇVS×¶f–Æ&–Æ—G”f÷&Òç7F'G5öGÒöä6†ævS×²†R’Óâ6WDf–Æ&–Æ—G”f÷&Ò‡²ââæf–Æ&–Æ—G”f÷&ÒÂ7F'G5öC¢RçF&vWBçfÇVRÒ—ÒóãÂöÆ&VÃãÆÆ&VÃäöæÆ–æRVçF–ÃÆ–çWB&WV—&VBG—SÒ&FFWF–ÖRÖÆö6Â"fÇVS×¶f–Æ&–Æ—G”f÷&ÒæVæG5öGÒöä6†ævS×²†R’Óâ6WDf–Æ&–Æ—G”f÷&Ò‡²ââæf–Æ&–Æ—G”f÷&ÒÂVæG5öC¢RçF&vWBçfÇVRÒ—ÒóãÂöÆ&VÃãÂöF—cãÇFW‡F&VfÇVS×¶f–Æ&–Æ—G”f÷&Òææ÷FWÒÖ„ÆVæwFƒÒ#c"öä6†ævS×²†R’Óâ6WDf–Æ&–Æ—G”f÷&Ò‡²ââæf–Æ&–Æ—G”f÷&ÒÂæ÷FS¢RçF&vWBçfÇVRÒ—ÒÆ6V†öÆFW#Ò$÷F–öæÂ–6·Wæ÷FR"óãÆ'WGFöâ6Æ74æÖSÒ'fVÇB×7V&Ö—B#åV&Æ—6‚Æ—fRv–æF÷sÂö'WGFöããÂöf÷&Óà¢Ç6V7F–öâ6Æ74æÖSÒ&FÖ–â×æVÂFÖ–âÖf–Æ&–Æ—G’ÖÆ—7B#ãÄFÖ–ä–6öâæÖSÒ&6öÖ×Væ—G’"óãÆƒ3åV&Æ—6†VBv–æF÷w3Âöƒ3ãÇåF†W6RF–ÖW2WFFR–ÖÖVF–FVÇ’f÷"WfW'’fW&–f–VBÆ–W"ãÂ÷ãÆF—cç¶FFæf–Æ&–Æ—G’æÖ‚‡6Æ÷B’ÓâÆ'F–6ÆR¶W“×·6Æ÷Bæ–GÓãÇ7ããÆ#ç·6Æ÷BçF—FÆWÓÂö#ãÇ6ÖÆÃç¶æWrFFR‡6Æ÷Bç7F'G5öB’çFôÆö6ÆU7G&–ær‚—Ò(	2¶æWrFFR‡6Æ÷BæVæG5öB’çFôÆö6ÆUF–ÖU7G&–ær…µÒÂ²†÷W#¢#"ÖF–v—B"ÂÖ–çWFS¢#"ÖF–v—B"Ò—Ò+r·6Æ÷BæÆö6F–öçÓÂ÷6ÖÆÃãÂ÷7ããÆ'WGFöâG—SÒ&'WGFöâ"öä6Æ–6³×²‚’ÓâFVÆWFTf–Æ&–Æ—G’‡6Æ÷Bæ–B—Óå&VÖ÷fSÂö'WGFöããÂö'F–6ÆSâ—×²FFæf–Æ&–Æ—G’æÆVæwF‚bbÇ6ÖÆÃäæò–6·Wv–æF÷w2V&Æ—6†VBãÂ÷6ÖÆÃçÓÂöF—cãÂ÷6V7F–öãà¢Ç6V7F–öâ6Æ74æÖS×²&FÖ–â×æVÂFÖ–â×&W6Væ6R×æVÂ"²†FFç&W6Væ6Sòæ—5ööæÆ–æRò"—2ÖöæÆ–æR"¢""—ÓãÄFÖ–ä–6öâæÖSÒ&6öÖ×Væ—G’"óãÇ6Æ74æÖSÒ'fVÇBÖ÷fW&Æ–æR#äÄ•dR$U4Tä4SÂ÷ãÆƒ3ç¶FFç&W6Væ6Sòæ—5ööæÆ–æRò$¶ÆVç6¶’—2öæÆ–æR"¢$¶ÆVç6¶’—2öffÆ–æR'ÓÂöƒ3ãÇåF†RF–6¶W"&VÆ÷rF†Ræf–vF–öâV'2öæÇ’v†–ÆRF†—27v—F6‚—2öæÆ–æRãÂ÷ãÆ–çWBÖ„ÆVæwFƒÒ##"fÇVS×·&W6Væ6Tæ÷FWÒöä6†ævS×²†R’Óâ6WE&W6Væ6Tæ÷FR†RçF&vWBçfÇVR—ÒÆ6V†öÆFW#Ò%6†÷'BÆ—fR7FGW2"óãÆF—cãÆ'WGFöâG—SÒ&'WGFöâ"6Æ74æÖSÒ'fVÇB×7V&Ö—B"öä6Æ–6³×²‚’Óâ6WDV×—&U&W6Væ6R‡G'VR—ÓävòöæÆ–æSÂö'WGFöããÆ'WGFöâG—SÒ&'WGFöâ"6Æ74æÖSÒ&FÖ–â×6V6öæF'’"öä6Æ–6³×²‚’Óâ6WDV×—&U&W6Væ6R†fÇ6R—ÓävòöffÆ–æSÂö'WGFöããÂöF—cãÂ÷6V7F–öãà¢ÂöF—cà¢Ç6V7F–öâ6Æ74æÖSÒ&FÖ–â×æVÂFÖ–âÖ6öÖ×Væ—G’ÖÖöFW&F–öâ#ãÄFÖ–ä–6öâæÖSÒ&6öÖ×Væ—G’"óãÆƒ3ä6öÖ×Væ—G’ÖöFW&F–öãÂöƒ3ãÇå7VvvW7F–öç2Â&Wf–Ww2æBÆVv7’fVVF&6²6â&R&VÖ÷fVB†W&RâF†—26öçG&öÂ—2&÷FV7FVB'’FÖ–æ—7G&F÷"$Å2ãÂ÷ãÆF—b6Æ74æÖSÒ&FÖ–âÖÆ—7B#à¢¶FFæ6öÖ×Væ—G•7VvvW7F–öç2æÖ‚†—FVÒ’ÓâÆF—b¶W“×²'7VvvW7F–öâÒ"²—FVÒæ–GÓãÇ7ããÆ#å7VvvW7F–öâ+r¶—FVÒçF—FÆWÓÂö#ãÇ6ÖÆÃç¶—FVÒæ&öG—ÓÂ÷6ÖÆÃãÂ÷7ããÆ'WGFöâG—SÒ&'WGFöâ"öä6Æ–6³×²‚’ÓâFVÆWFT6öÖ×Væ—G”VçG'’‚&6öÖ×Væ—G•÷7VvvW7F–öç2"Â—FVÒæ–BÂ%7VvvW7F–öâ"—Óå&VÖ÷fSÂö'WGFöããÂöF—câ—Ğ¢¶FFæ6öÖ×Væ—G•&Wf–Ww2æÖ‚†—FVÒ’ÓâÆF—b¶W“×²'&Wf–WrÒ"²—FVÒæ–GÓãÇ7ããÆ#å&Wf–Wr+r¶—FVÒç&F–æwÒóSÂö#ãÇ6ÖÆÃç¶—FVÒæ&öG—ÓÂ÷6ÖÆÃãÂ÷7ããÆ'WGFöâG—SÒ&'WGFöâ"öä6Æ–6³×²‚’ÓâFVÆWFT6öÖ×Væ—G”VçG'’‚&6öÖ×Væ—G•÷&Wf–Ww2"Â—FVÒæ–BÂ%&Wf–Wr"—Óå&VÖ÷fSÂö'WGFöããÂöF—câ—Ğ¢¶FFæfVVF&6²æÖ‚†—FVÒ’ÓâÆF—b¶W“×²&fVVF&6²Ò"²—FVÒæ–GÓãÇ7ããÆ#äÆVv7’fVVF&6³Âö#ãÇ6ÖÆÃç¶—FVÒæÖW76vWÓÂ÷6ÖÆÃãÂ÷7ããÆ'WGFöâG—SÒ&'WGFöâ"öä6Æ–6³×²‚’ÓâFVÆWFT6öÖ×Væ—G”VçG'’‚&fVVF&6²"Â—FVÒæ–BÂ$fVVF&6²"—Óå&VÖ÷fSÂö'WGFöããÂöF—câ—Ğ¢²FFæ6öÖ×Væ—G•7VvvW7F–öç2æÆVæwF‚bbFFæ6öÖ×Væ—G•&Wf–Ww2æÆVæwF‚bbFFæfVVF&6²æÆVæwF‚bbÇäæò6öÖ×Væ—G’VçG&–W2FòÖöFW&FRãÂ÷çĞ¢ÂöF—cãÂ÷6V7F–öãà¢Â÷6V7F–öãçĞ ¢·F"ÓÓÒ'Æ–W'2"bbÇ6V7F–öâ6Æ74æÖSÒ&FÖ–â×æVÂ#ãÆƒ#åÆ–W"&öÆW3Âöƒ#ãÇäFVÆWFR&VÖ÷fW2F†RÆ–W"&öf–ÆRæBF†V—"V×—&RFFâFÖ–æ—7G&F÷"&öf–ÆW2&R&÷FV7FVBãÂ÷ãÆF—b6Æ74æÖSÒ&FÖ–âÖÆ—7B#à¢¶FFçÆ–W'2æÖ‚†—FVÒ’ÓâÆF—b¶W“×¶—FVÒæ–GÒ6Æ74æÖSÒ&FÖ–â×Æ–W"#ãÇ7ããÆ#ç¶—FVÒæFÖõöæÖRÇÂ—FVÒçW6W&æÖWÓÂö#ãÇ6ÖÆÃç¶—FVÒæFÖõöæÖRòF—66÷&BG¶—FVÒçW6W&æÖWÖ¢&öÆTÆ&VÇ5¶—FVÒç&öÆUÒóò%Æ–W"'×´çVÖ&W"†—FVÒçv–ç2’ÇÂçVÖ&W"†—FVÒæÆ÷76W2’ò+rG¶—FVÒçv–ç7ÕròG¶—FVÒæÆ÷76W7ÔÆ¢"'ÓÂ÷6ÖÆÃãÂ÷7ããÇ6VÆV7BfÇVS×·&öÆW2æ–æ6ÇVFW2†—FVÒç&öÆR’ò—FVÒç&öÆR¢&7W7FöÖW"'Òöä6†ævS×²†R’Óâ6WE&öÆR†—FVÒæ–BÂRçF&vWBçfÇVR—Óç·&öÆW2æÖ‚‡&öÆR’ÓâÆ÷F–öâ¶W“×·&öÆWÒfÇVS×·&öÆWÓç·&öÆTÆ&VÇ5·&öÆU×ÓÂö÷F–öãâ—ÓÂ÷6VÆV7Cç¶—FVÒæ–BÓÒ&öf–ÆRæ–Bbb—FVÒç&öÆRÓÒ&FÖ–â"bbÆ'WGFöâ6Æ74æÖSÒ&FÖ–âÖFVÆWFR×Æ–W""öä6Æ–6³×²‚’ÓâFVÆWFUÆ–W"†—FVÒæ–BÂ—FVÒæFÖõöæÖRÇÂ—FVÒçW6W&æÖR—ÓäFVÆWFRÆ–W#Âö'WGFöãçÓÂöF—câ—Ğ¢ÂöF—cãÂ÷6V7F–öãçĞ¢ÂöÖ–ãà¢“°§Ğ

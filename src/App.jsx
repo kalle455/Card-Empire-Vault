@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
-import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import AvailabilityCalendar from "./components/AvailabilityCalendar";
 import { useAuth } from "./context/AuthContext";
@@ -57,41 +57,6 @@ function ScrollToTop() {
   }, [pathname, search]);
 
   return null;
-}
-
-function DuelDiscCursor() {
-  const discRef = useRef(null);
-
-  useEffect(() => {
-    const finePointer = window.matchMedia("(hover:hover) and (pointer:fine)");
-    if (!finePointer.matches) return undefined;
-    let frame;
-    const move = (event) => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        if (!discRef.current) return;
-        discRef.current.style.transform = `translate3d(${event.clientX - 9}px, ${event.clientY - 21}px, 0) rotate(-9deg)`;
-        discRef.current.classList.toggle("is-action", Boolean(event.target.closest("a,button,[role='button'],select,summary,label")));
-      });
-    };
-    const down = () => discRef.current?.classList.add("is-pressed");
-    const up = () => discRef.current?.classList.remove("is-pressed");
-    window.addEventListener("pointermove", move, { passive: true });
-    window.addEventListener("pointerdown", down, { passive: true });
-    window.addEventListener("pointerup", up, { passive: true });
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerdown", down);
-      window.removeEventListener("pointerup", up);
-    };
-  }, []);
-
-  return <div className="duel-disc-pointer" ref={discRef} aria-hidden="true">
-    <span className="duel-disc-arm"><i /><i /><i /><i /><i /></span>
-    <b className="duel-disc-core" />
-    <em className="duel-disc-wing" />
-  </div>;
 }
 
 const eventFormats = {
@@ -430,7 +395,8 @@ function EmpireFooter() {
       <div className="empire-footer-top">
         <section className="footer-brand-column">
           <Link to="/" className="footer-brand" aria-label="Kalenski Card Empire home">
-            <img src="/card-empire-wordmark.svg" alt="Kalenski Card Empire" />
+            <img src="/card-empire-logo-384.png" alt="" />
+            <span><strong>Card Empire</strong><small>The one and only</small></span>
           </Link>
           <p>Private cards. Direct deals. Cardstock built for players who collect with intention.</p>
           <span className="footer-signal"><i /> Empire system online</span>
@@ -468,7 +434,7 @@ function EmpireFooter() {
 }
 
 export default function App() {
-  return <BrowserRouter><ScrollToTop /><DuelDiscCursor /><div className="app-layout"><Navbar /><main className="main-content"><Suspense fallback={<section className="route-loading"><i /><span>Opening Card Empire…</span></section>}><Routes>
+  return <BrowserRouter><ScrollToTop /><div className="app-layout"><Navbar /><main className="main-content"><Suspense fallback={<section className="route-loading"><i /><span>Opening Card Empire…</span></section>}><Routes>
     <Route path="/" element={<Home />} /><Route path="/marketplace" element={<DiscordGuard><Marketplace /></DiscordGuard>} />
     <Route path="/trade-hub" element={<DiscordGuard><TradeHub /></DiscordGuard>} />
     <Route path="/events" element={<Events />} />
