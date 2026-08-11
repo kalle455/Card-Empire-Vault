@@ -1,12 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import "./TradeHub.css";
+import "./TradeHubFilters.css";
 import "./TradeHubPreview.css";
+
+const categories = ["All cards", "Monster", "Spell", "Trap"];
+const rarities = ["All rarities", "Common", "Silver", "Gold", "Rainbow"];
 
 export default function TradeHub() {
   const { session, profile } = useAuth();
   const [cards, setCards] = useState([]);
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("All cards");
+  const [rarity, setRarity] = useState("All rarities");
+  const [sort, setSort] = useState("featured");
   const [selectedCard, setSelectedCard] = useState(null);
   const [offeredCards, setOfferedCards] = useState("");
   const [message, setMessage] = useState("");
@@ -33,6 +41,13 @@ export default function TradeHub() {
       .subscribe();
     return () => { active = false; channel.unsubscribe(); };
   }, [isAdmin]);
+
+  const shownCards = useMemo(() => cards
+    .filter((card) => (card.name ?? "").toLowerCase().includes(query.trim().toLowerCase()))
+    .filter((card) => category === "All cards" || (card.category ?? "").toLowerCase().includes(category.toLowerCase()))
+    .filter((card) => rarity === "All rarities" || (card.rarity ?? "").toLowerCase() === rarity.toLowerCase())
+    .sort((a, b) => sort === "low" ? Number(a.price) - Number(b.price) : sort === "high" ? Number(b.price) - Number(a.price) : 0),
+  [cards, query, category, rarity, sort]);
 
   async function submitTrade(event) {
     event.preventDefault();
@@ -81,13 +96,19 @@ export default function TradeHub() {
       </section>
 
       <section className="trade-hub-console">
-        <header><div><p className="trade-kicker">THE VAULT IS OPEN</p><h2>What are you<br /><em>trading for?</em></h2></div><span>{cards.length} cards eligible</span></header>
+        <header><div><p className="trade-kicker">THE VAULT IS OPEN</p><h2>What are you<br /><em>trading for?</em></h2></div><span>{shownCards.length} of {cards.length} cards eligible</span></header>
+        <div className="trade-market-tools" aria-label="Trade Hub card filters">
+          <label className="trade-search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Cardstock" /></label>
+          <div className="trade-filter-line" aria-label="Card category">{categories.map((item) => <button type="button" key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div>
+          <div className="trade-filter-line" aria-label="Card rarity">{rarities.map((item) => <button type="button" key={item} className={rarity === item ? "is-active" : ""} onClick={() => setRarity(item)}>{item}</button>)}</div>
+          <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Sort trade cards"><option value="featured">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select>
+        </div>
         <div className="trade-card-picker">
-          {cards.map((card) => <button type="button" key={card.id} className={"trade-pick-card " + (selectedCard?.id === card.id ? "is-selected" : "")} onClick={() => { setSelectedCard(card); setNotice(""); }}>
+          {shownCards.map((card) => <button type="button" key={card.id} className={"trade-pick-card " + (selectedCard?.id === card.id ? "is-selected" : "")} onClick={() => { setSelectedCard(card); setNotice(""); }}>
             <span className="trade-pick-art">{cardImage(card) && <img src={cardImage(card)} alt="" loading="lazy" />}</span>
             <span><small>{card.rarity} · {card.category}</small><b>{card.name}</b><em>{Number(card.price).toLocaleString()} G</em></span>
           </button>)}
-          {!cards.length && <p className="trade-empty">Cardstock has no tradeable cards right now.</p>}
+          {!shownCards.length && <p className="trade-empty">{cards.length ? "No cards match these filters." : "Cardstock has no tradeable cards right now."}</p>}
         </div>
       </section>
 

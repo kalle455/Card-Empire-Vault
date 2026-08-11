@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
+import IndependenceNotice from "./IndependenceNotice";
 import "./Navbar.css";
 
 const links = [
@@ -87,7 +88,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <><header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "") + (mobileOpen ? " mobile-open" : "")}>
+    <><IndependenceNotice /><header className={"empire-nav" + (pathname === "/" ? " is-home-nav" : "") + (isScrolled ? " is-scrolled" : "") + (mobileOpen ? " mobile-open" : "")}>
       <div className="brand-partner-cluster">
         <NavLink to="/" className="empire-brand" aria-label="Kalenski Card Empire home">
           <img src="/card-empire-logo-384.png" alt="" />

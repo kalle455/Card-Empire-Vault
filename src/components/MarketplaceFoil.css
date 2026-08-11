@@ -1,129 +1,128 @@
-/* One continuous collector foil layer. The oversized sheen never exposes a hard edge. */
-.vault-card:is(.silver,.gold,.rainbow) .vault-card-art,
-.card-detail-modal:is(.silver,.gold,.rainbow) .detail-card-art {
-  overflow: hidden;
-  isolation: isolate;
-}
-
+/* Rarity belongs to the collector holder, never on top of the card artwork. */
+.vault-card:is(.silver,.gold,.rainbow) .vault-card-art::before,
 .vault-card:is(.silver,.gold,.rainbow) .vault-card-art::after,
+.card-detail-modal:is(.silver,.gold,.rainbow) .detail-card-art::before,
 .card-detail-modal:is(.silver,.gold,.rainbow) .detail-card-art::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  inset: -42% -72%;
-  pointer-events: none;
-  border-radius: 0;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  backface-visibility: hidden;
-  transform: translate3d(-13%, 0, 0);
-  transform-origin: center;
-  will-change: transform;
+  content: none !important;
+  display: none !important;
+  animation: none !important;
+  background: none !important;
+  filter: none !important;
 }
 
-.vault-card.silver .vault-card-art,
-.card-detail-modal.silver .detail-card-art {
-  box-shadow: inset 0 0 0 1px rgba(225,238,241,.45), inset 0 0 22px rgba(196,220,226,.12);
-}
-.vault-card.silver .vault-card-art::after,
-.card-detail-modal.silver .detail-card-art::after {
-  opacity: .67;
-  mix-blend-mode: screen;
-  background: linear-gradient(116deg,
-    rgba(116,143,151,.08) 0%, rgba(195,218,224,.13) 24%,
-    rgba(255,255,255,.72) 43%, rgba(141,174,183,.18) 56%,
-    rgba(235,248,251,.38) 69%, rgba(116,143,151,.08) 100%);
-  animation: foil-sheen 4.8s ease-in-out -1.6s infinite alternate;
+.vault-card:is(.silver,.gold,.rainbow) .collector-case,
+.card-detail-modal:is(.silver,.gold,.rainbow) .detail-collector-case {
+  transition: border-color .25s ease, box-shadow .25s ease, transform .2s ease-out;
 }
 
-.vault-card.gold .vault-card-art,
-.card-detail-modal.gold .detail-card-art {
-  box-shadow: inset 0 0 0 1px rgba(255,226,126,.5), inset 0 0 24px rgba(255,199,55,.16);
+/* Silver: a clean polished-metal edge without animated artwork overlays. */
+.vault-card.silver .collector-case,
+.card-detail-modal.silver .detail-collector-case {
+  border-color: #dfeaed;
+  box-shadow:
+    inset 0 0 0 2px rgba(20,27,29,.72),
+    inset 0 0 0 4px rgba(247,253,255,.12),
+    inset 0 0 20px rgba(222,239,244,.12),
+    0 22px 32px rgba(0,0,0,.64),
+    0 0 11px rgba(218,241,247,.22);
 }
-.vault-card.gold .vault-card-art::after,
-.card-detail-modal.gold .detail-card-art::after {
-  opacity: .76;
-  mix-blend-mode: screen;
-  background: linear-gradient(114deg,
-    rgba(139,86,3,.1) 0%, rgba(255,188,40,.2) 25%,
-    rgba(255,251,213,.9) 43%, rgba(224,139,12,.28) 56%,
-    rgba(255,225,117,.52) 70%, rgba(139,86,3,.1) 100%);
-  animation: foil-sheen 5.1s ease-in-out -2.2s infinite alternate;
+.vault-card.silver:hover .collector-case {
+  border-color: #f8feff;
+  box-shadow:
+    inset 0 0 0 2px rgba(20,27,29,.68),
+    inset 0 0 0 4px rgba(255,255,255,.18),
+    inset 0 0 23px rgba(230,247,251,.15),
+    0 27px 36px rgba(0,0,0,.67),
+    0 0 15px rgba(232,250,255,.3);
 }
+
+/* Gold: warm edge with a few restrained points of light. */
 .vault-card.gold .collector-case,
 .card-detail-modal.gold .detail-collector-case {
-  border-color: rgba(246,205,86,.88);
-  box-shadow: inset 0 0 0 2px rgba(75,46,0,.7), inset 0 0 25px rgba(255,211,81,.18), 0 22px 34px rgba(0,0,0,.65), 0 0 22px rgba(231,175,48,.13);
-}
-
-.vault-card.rainbow .vault-card-art,
-.card-detail-modal.rainbow .detail-card-art {
+  border-color: #e6b943;
   box-shadow:
-    inset 0 0 0 1px rgba(223,196,255,.58),
-    inset 0 0 24px rgba(102,218,255,.2),
-    0 0 13px rgba(182,113,255,.12);
+    inset 0 0 0 2px rgba(52,32,0,.76),
+    inset 0 0 0 4px rgba(255,231,152,.13),
+    inset 0 0 22px rgba(255,194,48,.12),
+    0 22px 32px rgba(0,0,0,.64),
+    0 0 12px rgba(232,180,47,.24);
 }
-.vault-card.rainbow .vault-card-art::before,
-.card-detail-modal.rainbow .detail-card-art::before {
+.vault-card.gold .collector-case::after,
+.card-detail-modal.gold .detail-collector-case::after {
   content: "";
   position: absolute;
-  z-index: 2;
-  inset: 0;
+  z-index: 7;
+  inset: -5px;
   pointer-events: none;
-  opacity: .14;
-  mix-blend-mode: screen;
+  border: 0;
+  border-radius: inherit;
   background:
-    radial-gradient(circle at 18% 24%, rgba(255,86,188,.58), transparent 29%),
-    radial-gradient(circle at 80% 72%, rgba(77,225,255,.55), transparent 31%),
-    conic-gradient(from 218deg at 50% 48%, rgba(255,236,118,.28), rgba(114,105,255,.35), rgba(88,244,179,.3), rgba(255,92,185,.34), rgba(255,236,118,.28));
-  background-size: 145% 145%, 150% 150%, 120% 120%;
-  animation: rainbow-ambient 10s ease-in-out infinite alternate;
+    radial-gradient(circle, #fff8ce 0 1px, transparent 2.5px) 14% 0 / 7px 7px no-repeat,
+    radial-gradient(circle, #ffd65b 0 1px, transparent 2.7px) 100% 24% / 8px 8px no-repeat,
+    radial-gradient(circle, #fff3b4 0 1px, transparent 2.5px) 72% 100% / 7px 7px no-repeat,
+    radial-gradient(circle, #eab438 0 1px, transparent 2.5px) 0 73% / 7px 7px no-repeat;
+  box-shadow: none;
+  opacity: .38;
+  transform: none;
+  animation: holder-sparkle 3.8s ease-in-out infinite;
 }
-.vault-card.rainbow .vault-card-art::after,
-.card-detail-modal.rainbow .detail-card-art::after {
-  opacity: .43;
-  mix-blend-mode: screen;
+.vault-card.gold:hover .collector-case { border-color: #ffdd70; }
+
+/* Holo: purple rim with a controlled rainbow glow and coloured sparkles. */
+.vault-card.rainbow .collector-case,
+.card-detail-modal.rainbow .detail-collector-case {
+  border-color: #c68aff;
+  box-shadow:
+    inset 0 0 0 2px rgba(24,9,42,.8),
+    inset 0 0 0 4px rgba(229,193,255,.12),
+    inset 0 0 22px rgba(168,101,255,.13),
+    0 22px 32px rgba(0,0,0,.64),
+    -3px 0 10px rgba(255,101,194,.16),
+    3px 0 10px rgba(86,220,255,.18),
+    0 0 14px rgba(189,123,255,.24);
+}
+.vault-card.rainbow .collector-case::after,
+.card-detail-modal.rainbow .detail-collector-case::after {
+  content: "";
+  position: absolute;
+  z-index: 7;
+  inset: -5px;
+  pointer-events: none;
+  border: 0;
+  border-radius: inherit;
   background:
-    repeating-linear-gradient(119deg,
-      transparent 0%, rgba(255,102,190,.2) 13%,
-      rgba(77,218,255,.38) 25%, rgba(255,239,112,.32) 36%,
-      rgba(147,96,255,.34) 48%, rgba(79,242,165,.26) 60%,
-      rgba(255,103,191,.2) 72%, rgba(80,218,255,.3) 84%,
-      transparent 100%);
-  background-size: 145% 145%;
-  filter: saturate(1.05) contrast(1.01);
-  animation: rainbow-sheen 6.6s linear -2.1s infinite;
+    radial-gradient(circle, #ff9cd9 0 1px, transparent 2.7px) 13% 0 / 8px 8px no-repeat,
+    radial-gradient(circle, #8beaff 0 1px, transparent 2.7px) 100% 27% / 8px 8px no-repeat,
+    radial-gradient(circle, #ffe889 0 1px, transparent 2.7px) 76% 100% / 8px 8px no-repeat,
+    radial-gradient(circle, #b8ffcf 0 1px, transparent 2.7px) 0 70% / 8px 8px no-repeat,
+    radial-gradient(circle, #d49cff 0 1px, transparent 2.7px) 48% 0 / 8px 8px no-repeat;
+  box-shadow: none;
+  opacity: .48;
+  transform: none;
+  animation: holder-sparkle 3.2s ease-in-out -.9s infinite;
+}
+.vault-card.rainbow:hover .collector-case {
+  border-color: #e0b2ff;
+  box-shadow:
+    inset 0 0 0 2px rgba(24,9,42,.76),
+    inset 0 0 0 4px rgba(238,211,255,.16),
+    inset 0 0 24px rgba(168,101,255,.16),
+    0 27px 36px rgba(0,0,0,.67),
+    -4px 0 13px rgba(255,101,194,.21),
+    4px 0 13px rgba(86,220,255,.23),
+    0 0 18px rgba(189,123,255,.3);
 }
 
-@keyframes foil-sheen {
-  from { transform: translate3d(-13%, -1.5%, 0); }
-  to { transform: translate3d(13%, 1.5%, 0); }
-}
-
-@keyframes rainbow-ambient {
-  from { background-position: 0% 15%, 100% 85%, 25% 50%; }
-  to { background-position: 32% 38%, 68% 62%, 75% 50%; }
-}
-
-@keyframes rainbow-sheen {
-  0% { transform: translate3d(-24%, -8%, 0); background-position: 100% 0%; }
-  50% { transform: translate3d(0%, 0%, 0); background-position: 50% 50%; }
-  100% { transform: translate3d(24%, 8%, 0); background-position: 0% 100%; }
-}
-
-@media (hover:hover) and (pointer:fine) {
-  .vault-card:is(.silver,.gold,.rainbow):hover .vault-card-art::after { animation-duration: 3.2s; }
-  .vault-card.rainbow:hover .vault-card-art::after { opacity: .52; animation-duration: 4.6s; }
+@keyframes holder-sparkle {
+  0%, 100% { opacity: .22; filter: brightness(.9); }
+  45% { opacity: .7; filter: brightness(1.25); }
+  58% { opacity: .34; filter: brightness(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vault-card:is(.silver,.gold,.rainbow) .vault-card-art::after,
-  .card-detail-modal:is(.silver,.gold,.rainbow) .detail-card-art::after {
-    animation: none !important;
-    transform: translate3d(0,0,0);
-  }
-  .vault-card.rainbow .vault-card-art::before,
-  .card-detail-modal.rainbow .detail-card-art::before {
-    animation: none !important;
+  .vault-card:is(.gold,.rainbow) .collector-case::after,
+  .card-detail-modal:is(.gold,.rainbow) .detail-collector-case::after {
+    animation: none;
+    opacity: .4;
   }
 }
