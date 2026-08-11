@@ -70,28 +70,29 @@
   z-index: 2;
   inset: 0;
   pointer-events: none;
-  opacity: .3;
-  mix-blend-mode: color-dodge;
+  opacity: .14;
+  mix-blend-mode: screen;
   background:
     radial-gradient(circle at 18% 24%, rgba(255,86,188,.58), transparent 29%),
     radial-gradient(circle at 80% 72%, rgba(77,225,255,.55), transparent 31%),
     conic-gradient(from 218deg at 50% 48%, rgba(255,236,118,.28), rgba(114,105,255,.35), rgba(88,244,179,.3), rgba(255,92,185,.34), rgba(255,236,118,.28));
   background-size: 145% 145%, 150% 150%, 120% 120%;
-  animation: rainbow-ambient 8.5s ease-in-out infinite alternate;
+  animation: rainbow-ambient 10s ease-in-out infinite alternate;
 }
 .vault-card.rainbow .vault-card-art::after,
 .card-detail-modal.rainbow .detail-card-art::after {
-  opacity: .75;
+  opacity: .43;
   mix-blend-mode: screen;
   background:
     repeating-linear-gradient(119deg,
-      rgba(255,71,178,.16) 0%, rgba(255,102,190,.42) 10%,
-      rgba(77,218,255,.62) 22%, rgba(255,239,112,.58) 34%,
-      rgba(147,96,255,.58) 46%, rgba(79,242,165,.46) 58%,
-      rgba(255,103,191,.34) 70%, rgba(80,218,255,.5) 82%,
-      rgba(255,232,105,.3) 94%, rgba(255,71,178,.16) 100%);
-  filter: saturate(1.18) contrast(1.04);
-  animation: foil-sheen 5.4s ease-in-out -2.8s infinite alternate;
+      transparent 0%, rgba(255,102,190,.2) 13%,
+      rgba(77,218,255,.38) 25%, rgba(255,239,112,.32) 36%,
+      rgba(147,96,255,.34) 48%, rgba(79,242,165,.26) 60%,
+      rgba(255,103,191,.2) 72%, rgba(80,218,255,.3) 84%,
+      transparent 100%);
+  background-size: 145% 145%;
+  filter: saturate(1.05) contrast(1.01);
+  animation: rainbow-sheen 6.6s linear -2.1s infinite;
 }
 
 @keyframes foil-sheen {
@@ -104,8 +105,15 @@
   to { background-position: 32% 38%, 68% 62%, 75% 50%; }
 }
 
+@keyframes rainbow-sheen {
+  0% { transform: translate3d(-24%, -8%, 0); background-position: 100% 0%; }
+  50% { transform: translate3d(0%, 0%, 0); background-position: 50% 50%; }
+  100% { transform: translate3d(24%, 8%, 0); background-position: 0% 100%; }
+}
+
 @media (hover:hover) and (pointer:fine) {
   .vault-card:is(.silver,.gold,.rainbow):hover .vault-card-art::after { animation-duration: 3.2s; }
+  .vault-card.rainbow:hover .vault-card-art::after { opacity: .52; animation-duration: 4.6s; }
 }
 
 @media (prefers-reduced-motion: reduce) {

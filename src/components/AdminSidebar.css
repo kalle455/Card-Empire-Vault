@@ -178,6 +178,12 @@
   margin-bottom: 20px;
 }
 .admin-cardstock-heading p { margin: .35rem 0 0; color: #87958b; font-size: .74rem; }
+.admin-inventory-tools {
+  display: grid;
+  grid-template-columns: minmax(230px, 1fr) minmax(175px, .62fr);
+  gap: 10px;
+  width: min(500px, 100%);
+}
 .admin-cardstock-heading label {
   display: grid;
   gap: 6px;
@@ -189,6 +195,39 @@
   text-transform: uppercase;
 }
 .admin-cardstock-heading select { min-height: 39px; }
+.admin-inventory-search > span { position: relative; display: block; }
+.admin-inventory-search input[type="search"] {
+  min-height: 39px;
+  padding-right: 38px;
+  border-color: rgba(145, 225, 159, .27);
+  background: linear-gradient(90deg, rgba(55, 119, 67, .1), #080d0a 35%);
+}
+.admin-inventory-search input[type="search"]:focus {
+  outline: none;
+  border-color: rgba(145, 225, 159, .72);
+  box-shadow: 0 0 0 3px rgba(145, 225, 159, .08);
+}
+.admin-inventory-search input[type="search"]::-webkit-search-cancel-button { display: none; }
+.admin-inventory-search button {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(145, 225, 159, .09);
+  color: #aeeaba;
+  transform: translateY(-50%);
+}
+.admin-inventory-empty {
+  margin: 0;
+  padding: 25px;
+  background: #0b100d;
+  color: #89968d;
+  text-align: center;
+}
 .admin-stock > span { display: grid; gap: 5px; }
 .market-data-state {
   width: max-content;
@@ -214,6 +253,7 @@
 @media (max-width: 620px) {
   .admin-cardstock-heading { align-items: stretch; flex-direction: column; }
   .admin-cardstock-heading label { width: 100%; }
+  .admin-inventory-tools { grid-template-columns: 1fr; }
 }
 
 .inventory-scanner { grid-column: 1 / -1; overflow: hidden; }

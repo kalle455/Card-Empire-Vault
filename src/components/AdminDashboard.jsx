@@ -170,6 +170,7 @@ export default function AdminDashboard() {
   const [codeForm, setCodeForm] = useState({ code: "", percentage: "", starts_at: "", ends_at: "", min_total: "0", min_card_count: "0", max_uses: "" });
   const [bundleCounters, setBundleCounters] = useState({});
   const [marketPriceFilter, setMarketPriceFilter] = useState("all");
+  const [inventoryQuery, setInventoryQuery] = useState("");
   const [inventoryScan, setInventoryScan] = useState({ state: "idle", progress: 0, preview: "", filename: "" });
   const [scanCandidates, setScanCandidates] = useState([]);
   const [scanManualQuery, setScanManualQuery] = useState("");
@@ -623,6 +624,15 @@ export default function AdminDashboard() {
   }
 
   const manualScanMatches = searchOfficialCatalog(scanManualQuery, 8);
+  const normalizedInventoryQuery = inventoryQuery.trim().toLocaleLowerCase();
+  const visibleInventoryCards = data.cards.filter((item) => {
+    const matchesMarketData = marketPriceFilter === "all" || (item.price_status ?? "unavailable") === marketPriceFilter;
+    if (!matchesMarketData) return false;
+    if (!normalizedInventoryQuery) return true;
+    return [item.name, item.category, item.rarity]
+      .filter(Boolean)
+      .some((value) => String(value).toLocaleLowerCase().includes(normalizedInventoryQuery));
+  });
 
   return (
     <main className="admin-shell">
@@ -676,8 +686,8 @@ export default function AdminDashboard() {
           <div className="admin-row"><input readOnly value={selectedCatalogCard ? selectedCatalogCard.category.toUpperCase() + " · official type" : "Official type"} /><input readOnly value={selectedCatalogCard ? selectedCatalogCard.gameRarity + " · official rarity" : "Official rarity"} /></div>
           <button className="vault-submit" disabled={!selectedCatalogCard}>{selectedCatalogCard ? "Add to Cardstock" : "Choose official card"}</button>
         </form>
-        <section className="admin-panel"><header className="admin-cardstock-heading"><div><h2>Cardstock inventory</h2><p>DMO averages are shown only when a verified source value exists.</p></div><label>Market data<select value={marketPriceFilter} onChange={(event) => setMarketPriceFilter(event.target.value)}><option value="all">All cards</option><option value="available">Available</option><option value="unavailable">No market data</option><option value="needs_review">Needs review</option></select></label></header><div className="admin-list">
-          {data.cards.filter((item) => marketPriceFilter === "all" || (item.price_status ?? "unavailable") === marketPriceFilter).map((item) => editingCard?.id === item.id ? (
+        <section className="admin-panel"><header className="admin-cardstock-heading"><div><h2>Cardstock inventory</h2><p>{visibleInventoryCards.length} of {data.cards.length} cards shown.</p></div><div className="admin-inventory-tools"><label className="admin-inventory-search">Search inventory<span><input type="search" value={inventoryQuery} onChange={(event) => setInventoryQuery(event.target.value)} placeholder="Card name, type or rarity" aria-label="Search Cardstock inventory" />{inventoryQuery && <button type="button" onClick={() => setInventoryQuery("")} aria-label="Clear inventory search">×</button>}</span></label><label>Market data<select value={marketPriceFilter} onChange={(event) => setMarketPriceFilter(event.target.value)}><option value="all">All cards</option><option value="available">Available</option><option value="unavailable">No market data</option><option value="needs_review">Needs review</option></select></label></div></header><div className="admin-list">
+          {visibleInventoryCards.map((item) => editingCard?.id === item.id ? (
             <form key={item.id} className="admin-card-edit" onSubmit={saveCard}>
               <strong>{item.name}</strong>
               <div className="admin-row"><label>My price<input type="number" min="0" value={editingCard.price} onChange={(e) => setEditingCard({ ...editingCard, price: e.target.value })} /></label><label>Stock<input type="number" min="0" value={editingCard.quantity} onChange={(e) => setEditingCard({ ...editingCard, quantity: e.target.value })} /></label></div>
@@ -690,6 +700,7 @@ export default function AdminDashboard() {
             <div key={item.id} className="admin-stock"><span>{item.name}<small className={`market-data-state state-${item.price_status ?? "unavailable"}`}>{item.price_status === "available" && item.avg_price != null ? `AVG ${Number(item.avg_price).toLocaleString()} G` : item.price_status === "needs_review" ? "Market data needs review" : "No market data"}</small></span><b>{item.quantity} · {Number(item.price).toLocaleString()} G</b><aside><button onClick={() => setEditingCard(item)}>Edit</button><button onClick={() => deleteCard(item.id, item.name)}>Archive</button></aside></div>
           ))}
           {!data.cards.length && <p>No database cards yet.</p>}
+          {data.cards.length > 0 && !visibleInventoryCards.length && <p className="admin-inventory-empty">No cards match this search.</p>}
         </div></section>
         <section className="admin-panel inventory-scanner">
           <header className="inventory-scanner-heading"><div><AdminIcon name="cards" /><p className="vault-overline">SCREENSHOT INVENTORY</p><h2>Detect multiple cards.</h2><p>Upload one screenshot. Card Empire reads it locally, matches only the official DMO catalogue and waits for your approval before saving anything.</p></div><label className="inventory-upload"><input type="file" accept="image/png,image/jpeg,image/webp" onChange={scanInventoryScreenshot} /><span>{inventoryScan.state === "reading" ? `Reading… ${inventoryScan.progress}%` : "Choose screenshot"}</span></label></header>
