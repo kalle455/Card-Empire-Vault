@@ -37,6 +37,14 @@
 
 .detail-rotator .detail-collector-case {
   transform: translateZ(10px) !important;
+  transform-style: flat !important;
+}
+
+.detail-rotator .detail-collector-case *,
+.detail-rotator .detail-collector-case::before,
+.detail-rotator .detail-collector-case::after {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .detail-case-back {
@@ -70,6 +78,15 @@
   max-height: none;
   object-fit: contain;
   filter: drop-shadow(0 17px 13px rgba(0,0,0,.62));
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.detail-rotator .detail-card-art img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .detail-case-back span {

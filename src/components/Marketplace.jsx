@@ -367,13 +367,13 @@ export default function Marketplace() {
       <article className={"card-detail-modal " + (selectedCard.rarity || "common").toLowerCase()}>
         <button className="detail-close" onClick={() => setSelectedCard(null)}>×</button>
         <div className="detail-image"><div className="detail-rotation-stage">
-          <div className="detail-rotator" role="button" tabIndex="0" aria-label={`Rotate ${selectedCard.name}. Drag horizontally or use arrow keys.`} style={{ "--detail-spin": `${detailRotation}deg` }} onPointerDown={startDetailRotation} onPointerMove={moveDetailRotation} onPointerUp={stopDetailRotation} onPointerCancel={stopDetailRotation} onDoubleClick={() => setDetailRotation(0)} onKeyDown={rotateDetailWithKeyboard}>
+          <div className="detail-rotator" role="button" tabIndex="0" aria-label={`Rotate ${selectedCard.name}. Drag horizontally or use arrow keys.`} style={{ "--detail-spin": `${detailRotation}deg` }} onPointerDown={startDetailRotation} onPointerMove={moveDetailRotation} onPointerUp={stopDetailRotation} onPointerCancel={stopDetailRotation} onDoubleClick={() => setDetailRotation(0)} onKeyDown={rotateDetailWithKeyboard} onDragStart={(event) => event.preventDefault()}>
             <div className="detail-collector-case detail-case-front">
               <span className="detail-case-label"><span className="detail-case-name"><b>{selectedCard.name}</b><small>© KALENSKI™ CARD EMPIRE</small></span><span className="detail-case-grade"><small>CONDITION</small><b>MINT 10</b></span></span>
-              <span className="detail-card-art"><img src={cardImage(selectedCard)} alt={selectedCard.name} decoding="async" /></span>
+              <span className="detail-card-art"><img src={cardImage(selectedCard)} alt={selectedCard.name} decoding="async" draggable="false" /></span>
               <span className="detail-case-glass" aria-hidden="true" /><span className="detail-case-plaque">KALENSKI™ CARD EMPIRE</span>
             </div>
-            <div className="detail-case-back" aria-hidden="true"><img src="/kalenski-card-back.svg" alt="" /><span>KALENSKI™ CARD EMPIRE</span></div>
+            <div className="detail-case-back" aria-hidden="true"><img src="/kalenski-card-back.svg" alt="" draggable="false" /><span>KALENSKI™ CARD EMPIRE</span></div>
           </div>
           <small className="detail-rotate-hint">DRAG TO ROTATE · DOUBLE CLICK TO RESET</small>
         </div></div>
