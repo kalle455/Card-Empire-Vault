@@ -1,0 +1,105 @@
+.trade-collector-case {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: min(100%, 205px);
+  height: 285px;
+  margin: 0 auto;
+  padding: 42px 12px 25px;
+  border: 2px solid rgba(207, 220, 213, .68);
+  border-radius: 3px;
+  background: linear-gradient(112deg, rgba(255,255,255,.18), transparent 20%, rgba(0,0,0,.08) 60%, rgba(255,255,255,.08)), linear-gradient(160deg, #252d2a, #080b09);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.55), inset 0 0 0 5px rgba(234,243,237,.05), 0 16px 25px rgba(0,0,0,.58);
+  transform: perspective(800px) rotateX(1deg) rotateY(-2deg);
+  transform-style: preserve-3d;
+  transition: transform .2s ease, border-color .25s ease, box-shadow .25s ease;
+}
+
+.trade-pick-card:hover .trade-collector-case,
+.trade-pick-card.is-selected .trade-collector-case { transform: perspective(800px) rotateX(0) rotateY(0) translateY(-3px); }
+
+.trade-collector-case::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 4px -6px -7px 5px;
+  border: 2px solid rgba(4,7,7,.9);
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(111,128,121,.42), rgba(0,0,0,.82));
+  box-shadow: 0 9px 14px rgba(0,0,0,.55);
+  transform: translateZ(-12px);
+}
+
+.trade-case-label {
+  position: absolute;
+  z-index: 4;
+  top: 9px;
+  left: 9px;
+  right: 9px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  min-height: 27px;
+  padding: 4px 6px;
+  border: 1px solid #7d8880;
+  background: linear-gradient(180deg, #eef2ed, #bac3ba);
+  color: #111714;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7), 0 1px 2px rgba(0,0,0,.55);
+  text-align: left;
+  transform: translateZ(18px);
+}
+
+.trade-case-label > span { display: grid; min-width: 0; align-content: center; gap: 1px; }
+.trade-case-label > span:last-child { justify-items: end; padding-left: 6px; border-left: 1px solid rgba(32,46,38,.38); }
+.trade-case-label b { overflow: hidden; color: #15231a; font-family: Georgia, serif; font-size: .48rem; line-height: 1; text-overflow: ellipsis; white-space: nowrap; }
+.trade-case-label small { color: #35453b; font-size: .25rem; font-weight: 900; letter-spacing: .065em; line-height: 1; }
+.trade-case-label > span:last-child b { font-family: Arial, sans-serif; font-size: .46rem; letter-spacing: .06em; }
+
+.trade-collector-case .trade-pick-art {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1);
+  background: #050806;
+  box-shadow: inset 0 0 0 3px rgba(0,0,0,.4);
+  transform: translateZ(10px);
+}
+
+.trade-collector-case .trade-pick-art img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 12px 9px rgba(0,0,0,.65)); }
+.trade-case-glass { position: absolute; z-index: 3; inset: 0; border-radius: inherit; background: linear-gradient(124deg, rgba(255,255,255,.14), transparent 17%, transparent 58%, rgba(255,255,255,.07) 70%, transparent 80%); pointer-events: none; transform: translateZ(22px); }
+.trade-case-plaque { position: absolute; z-index: 4; left: 11px; bottom: 8px; color: rgba(225,234,229,.72); font-size: .36rem; font-weight: 800; letter-spacing: .12em; transform: translateZ(18px); }
+
+.trade-rarity-silver .trade-collector-case { border-color: #edf9fb; box-shadow: inset 0 0 0 2px rgba(20,27,29,.72), inset 0 0 0 4px rgba(247,253,255,.18), inset 0 0 20px rgba(222,239,244,.18), 0 20px 30px rgba(0,0,0,.64), 0 0 15px rgba(218,241,247,.34); }
+.trade-rarity-gold .trade-collector-case { border-color: #f2ca58; box-shadow: inset 0 0 0 2px rgba(52,32,0,.76), inset 0 0 0 4px rgba(255,231,152,.18), inset 0 0 22px rgba(255,194,48,.17), 0 20px 30px rgba(0,0,0,.64), 0 0 16px rgba(232,180,47,.34); }
+.trade-rarity-rainbow .trade-collector-case { border-color: #d49bff; box-shadow: inset 0 0 0 2px rgba(24,9,42,.8), inset 0 0 0 4px rgba(229,193,255,.17), inset 0 0 22px rgba(168,101,255,.18), 0 20px 30px rgba(0,0,0,.64), -3px 0 12px rgba(255,101,194,.22), 3px 0 12px rgba(86,220,255,.24), 0 0 17px rgba(189,123,255,.33); }
+
+.trade-rarity-gold .trade-collector-case::after,
+.trade-rarity-rainbow .trade-collector-case::after {
+  content: "";
+  position: absolute;
+  z-index: 7;
+  inset: -5px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: .45;
+  animation: trade-holder-sparkle 3.5s ease-in-out infinite;
+}
+
+.trade-rarity-gold .trade-collector-case::after { background: radial-gradient(circle, #fff8ce 0 1px, transparent 2.5px) 14% 0 / 7px 7px no-repeat, radial-gradient(circle, #ffd65b 0 1px, transparent 2.7px) 100% 24% / 8px 8px no-repeat, radial-gradient(circle, #fff3b4 0 1px, transparent 2.5px) 72% 100% / 7px 7px no-repeat, radial-gradient(circle, #eab438 0 1px, transparent 2.5px) 0 73% / 7px 7px no-repeat; }
+.trade-rarity-rainbow .trade-collector-case::after { background: radial-gradient(circle, #ff9cd9 0 1px, transparent 2.7px) 13% 0 / 8px 8px no-repeat, radial-gradient(circle, #8beaff 0 1px, transparent 2.7px) 100% 27% / 8px 8px no-repeat, radial-gradient(circle, #ffe889 0 1px, transparent 2.7px) 76% 100% / 8px 8px no-repeat, radial-gradient(circle, #b8ffcf 0 1px, transparent 2.7px) 0 70% / 8px 8px no-repeat, radial-gradient(circle, #d49cff 0 1px, transparent 2.7px) 48% 0 / 8px 8px no-repeat; animation-delay: -.8s; }
+
+@keyframes trade-holder-sparkle { 0%, 100% { opacity: .3; filter: brightness(.95); } 45% { opacity: .82; filter: brightness(1.35); } 58% { opacity: .43; filter: brightness(1.08); } }
+
+@media (max-width: 760px) {
+  .trade-collector-case { width: min(100%, 165px); height: 235px; padding: 40px 9px 23px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trade-rarity-gold .trade-collector-case::after,
+  .trade-rarity-rainbow .trade-collector-case::after { animation: none; }
+}

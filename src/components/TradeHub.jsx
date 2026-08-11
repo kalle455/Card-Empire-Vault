@@ -3,6 +3,7 @@ import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import "./TradeHub.css";
 import "./TradeHubFilters.css";
+import "./TradeHubHolders.css";
 import "./TradeHubPreview.css";
 
 const categories = ["All cards", "Monster", "Spell", "Trap"];
@@ -104,8 +105,13 @@ export default function TradeHub() {
           <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Sort trade cards"><option value="featured">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select>
         </div>
         <div className="trade-card-picker">
-          {shownCards.map((card) => <button type="button" key={card.id} className={"trade-pick-card " + (selectedCard?.id === card.id ? "is-selected" : "")} onClick={() => { setSelectedCard(card); setNotice(""); }}>
-            <span className="trade-pick-art">{cardImage(card) && <img src={cardImage(card)} alt="" loading="lazy" />}</span>
+          {shownCards.map((card) => <button type="button" key={card.id} className={"trade-pick-card trade-rarity-" + (card.rarity || "common").toLowerCase() + (selectedCard?.id === card.id ? " is-selected" : "")} onClick={() => { setSelectedCard(card); setNotice(""); }}>
+            <span className="trade-collector-case">
+              <span className="trade-case-label"><span><b>{card.name}</b><small>© KALENSKI™ CARD EMPIRE</small></span><span><small>CONDITION</small><b>MINT 10</b></span></span>
+              <span className="trade-pick-art">{cardImage(card) && <img src={cardImage(card)} alt="" loading="lazy" />}</span>
+              <span className="trade-case-glass" aria-hidden="true" />
+              <span className="trade-case-plaque">KALENSKI™ CARD EMPIRE</span>
+            </span>
             <span><small>{card.rarity} · {card.category}</small><b>{card.name}</b><em>{Number(card.price).toLocaleString()} G</em></span>
           </button>)}
           {!shownCards.length && <p className="trade-empty">{cards.length ? "No cards match these filters." : "Cardstock has no tradeable cards right now."}</p>}

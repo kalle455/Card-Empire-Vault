@@ -18,13 +18,13 @@
 /* Silver: a clean polished-metal edge without animated artwork overlays. */
 .vault-card.silver .collector-case,
 .card-detail-modal.silver .detail-collector-case {
-  border-color: #dfeaed;
+  border-color: #edf9fb;
   box-shadow:
     inset 0 0 0 2px rgba(20,27,29,.72),
-    inset 0 0 0 4px rgba(247,253,255,.12),
-    inset 0 0 20px rgba(222,239,244,.12),
+    inset 0 0 0 4px rgba(247,253,255,.18),
+    inset 0 0 20px rgba(222,239,244,.18),
     0 22px 32px rgba(0,0,0,.64),
-    0 0 11px rgba(218,241,247,.22);
+    0 0 15px rgba(218,241,247,.34);
 }
 .vault-card.silver:hover .collector-case {
   border-color: #f8feff;
@@ -33,19 +33,19 @@
     inset 0 0 0 4px rgba(255,255,255,.18),
     inset 0 0 23px rgba(230,247,251,.15),
     0 27px 36px rgba(0,0,0,.67),
-    0 0 15px rgba(232,250,255,.3);
+    0 0 18px rgba(232,250,255,.42);
 }
 
 /* Gold: warm edge with a few restrained points of light. */
 .vault-card.gold .collector-case,
 .card-detail-modal.gold .detail-collector-case {
-  border-color: #e6b943;
+  border-color: #f2ca58;
   box-shadow:
     inset 0 0 0 2px rgba(52,32,0,.76),
-    inset 0 0 0 4px rgba(255,231,152,.13),
-    inset 0 0 22px rgba(255,194,48,.12),
+    inset 0 0 0 4px rgba(255,231,152,.18),
+    inset 0 0 22px rgba(255,194,48,.17),
     0 22px 32px rgba(0,0,0,.64),
-    0 0 12px rgba(232,180,47,.24);
+    0 0 16px rgba(232,180,47,.34);
 }
 .vault-card.gold .collector-case::after,
 .card-detail-modal.gold .detail-collector-case::after {
@@ -71,15 +71,15 @@
 /* Holo: purple rim with a controlled rainbow glow and coloured sparkles. */
 .vault-card.rainbow .collector-case,
 .card-detail-modal.rainbow .detail-collector-case {
-  border-color: #c68aff;
+  border-color: #d49bff;
   box-shadow:
     inset 0 0 0 2px rgba(24,9,42,.8),
-    inset 0 0 0 4px rgba(229,193,255,.12),
-    inset 0 0 22px rgba(168,101,255,.13),
+    inset 0 0 0 4px rgba(229,193,255,.17),
+    inset 0 0 22px rgba(168,101,255,.18),
     0 22px 32px rgba(0,0,0,.64),
-    -3px 0 10px rgba(255,101,194,.16),
-    3px 0 10px rgba(86,220,255,.18),
-    0 0 14px rgba(189,123,255,.24);
+    -3px 0 12px rgba(255,101,194,.22),
+    3px 0 12px rgba(86,220,255,.24),
+    0 0 17px rgba(189,123,255,.33);
 }
 .vault-card.rainbow .collector-case::after,
 .card-detail-modal.rainbow .detail-collector-case::after {
@@ -114,9 +114,9 @@
 }
 
 @keyframes holder-sparkle {
-  0%, 100% { opacity: .22; filter: brightness(.9); }
-  45% { opacity: .7; filter: brightness(1.25); }
-  58% { opacity: .34; filter: brightness(1); }
+  0%, 100% { opacity: .3; filter: brightness(.95); }
+  45% { opacity: .82; filter: brightness(1.35); }
+  58% { opacity: .43; filter: brightness(1.08); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import PurchaseChat from "./PurchaseChat";
 import "./Marketplace.css";
 import "./MarketplaceFoil.css";
+import "./MarketplaceDetail3D.css";
 import "./MarketplaceVisibility.css";
 import "./MarketplaceCheckout.css";
 
@@ -70,6 +71,7 @@ export default function Marketplace() {
   const [activeChat, setActiveChat] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [detailRotation, setDetailRotation] = useState(0);
   const [redeemLoyalty, setRedeemLoyalty] = useState(false);
   const [wishlistIds, setWishlistIds] = useState([]);
   const [priceHistory, setPriceHistory] = useState([]);
@@ -85,6 +87,7 @@ export default function Marketplace() {
   const initialCardSizeRef = useRef(Math.min(100, Math.max(0, Number(window.localStorage?.getItem("cardstock-card-size") ?? 32))));
   const tiltFrameRef = useRef(0);
   const latestTiltRef = useRef(null);
+  const detailDragRef = useRef(null);
 
   const roleKey = String(profile?.role ?? "guest").toLowerCase().replace(/\s+/g, "_");
   const timedVip = Boolean(profile?.vip_until && new Date(profile.vip_until).getTime() > Date.now());
@@ -145,6 +148,26 @@ export default function Marketplace() {
     const caseElement = event.currentTarget.querySelector(".collector-case");
     caseElement?.style.removeProperty("--case-tilt-x");
     caseElement?.style.removeProperty("--case-tilt-y");
+  }
+  function startDetailRotation(event) {
+    detailDragRef.current = { x: event.clientX, rotation: detailRotation };
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+  }
+  function moveDetailRotation(event) {
+    if (!detailDragRef.current) return;
+    setDetailRotation(detailDragRef.current.rotation + (event.clientX - detailDragRef.current.x) * .7);
+  }
+  function stopDetailRotation(event) {
+    detailDragRef.current = null;
+    event.currentTarget.releasePointerCapture?.(event.pointerId);
+  }
+  function rotateDetailWithKeyboard(event) {
+    if (event.key === "ArrowLeft") setDetailRotation((value) => value - 18);
+    else if (event.key === "ArrowRight") setDetailRotation((value) => value + 18);
+    else if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setDetailRotation((value) => value + 180);
+    }
   }
   function resizeCards(event) {
     const value = Math.min(100, Math.max(0, Number(event.currentTarget.value)));
@@ -207,6 +230,11 @@ export default function Marketplace() {
       active = false;
       channel.unsubscribe();
     };
+  }, [selectedCard?.id]);
+
+  useEffect(() => {
+    setDetailRotation(0);
+    detailDragRef.current = null;
   }, [selectedCard?.id]);
 
   useEffect(() => {
@@ -338,11 +366,17 @@ export default function Marketplace() {
     {selectedCard && <div className="vault-overlay">
       <article className={"card-detail-modal " + (selectedCard.rarity || "common").toLowerCase()}>
         <button className="detail-close" onClick={() => setSelectedCard(null)}>×</button>
-        <div className="detail-image">{selectedCard.image_url && <div className="detail-collector-case">
-          <span className="detail-case-label"><span className="detail-case-name"><b>{selectedCard.name}</b><small>© KALENSKI™ CARD EMPIRE</small></span><span className="detail-case-grade"><small>CONDITION</small><b>MINT 10</b></span></span>
-          <span className="detail-card-art"><img src={cardImage(selectedCard)} alt={selectedCard.name} decoding="async" /></span>
-          <span className="detail-case-glass" aria-hidden="true" /><span className="detail-case-plaque">KALENSKI™ CARD EMPIRE</span>
-        </div>}</div>
+        <div className="detail-image"><div className="detail-rotation-stage">
+          <div className="detail-rotator" role="button" tabIndex="0" aria-label={`Rotate ${selectedCard.name}. Drag horizontally or use arrow keys.`} style={{ "--detail-spin": `${detailRotation}deg` }} onPointerDown={startDetailRotation} onPointerMove={moveDetailRotation} onPointerUp={stopDetailRotation} onPointerCancel={stopDetailRotation} onDoubleClick={() => setDetailRotation(0)} onKeyDown={rotateDetailWithKeyboard}>
+            <div className="detail-collector-case detail-case-front">
+              <span className="detail-case-label"><span className="detail-case-name"><b>{selectedCard.name}</b><small>© KALENSKI™ CARD EMPIRE</small></span><span className="detail-case-grade"><small>CONDITION</small><b>MINT 10</b></span></span>
+              <span className="detail-card-art"><img src={cardImage(selectedCard)} alt={selectedCard.name} decoding="async" /></span>
+              <span className="detail-case-glass" aria-hidden="true" /><span className="detail-case-plaque">KALENSKI™ CARD EMPIRE</span>
+            </div>
+            <div className="detail-case-back" aria-hidden="true"><img src="/kalenski-card-back.svg" alt="" /><span>KALENSKI™ CARD EMPIRE</span></div>
+          </div>
+          <small className="detail-rotate-hint">DRAG TO ROTATE · DOUBLE CLICK TO RESET</small>
+        </div></div>
         <div className="detail-copy">
           <p className="vault-overline">{selectedCard.category} · {selectedCard.rarity}</p>
           <h2>{selectedCard.name}</h2>
